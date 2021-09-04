@@ -1,0 +1,24 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=E4:85:8D:B3:05:F2:E6:FD:D3:8E:C8:89:48:E1:A4:2B:11:8A:D2:38%3Bcom.example.smart_rice_care
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    com.example.smart_rice_care
+
+    SHA-1 certificate fingerprint:
+    E4:85:8D:B3:05:F2:E6:FD:D3:8E:C8:89:48:E1:A4:2B:11:8A:D2:38
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">YOUR_KEY_HERE</string>
+</resources>
