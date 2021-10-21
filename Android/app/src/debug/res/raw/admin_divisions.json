@@ -1,0 +1,33 @@
+{
+  "provinces": [
+   "Northern", "North Western", "Western", "North Central", "Central", "Sabaragamuwa","Eastern", "Uva", "Southern"
+  ],
+  "districts":[
+   "Colombo",
+   "Gampaha",
+   "Kalutara",
+   "Kandy",
+   "Matale",
+   "Nuwera-Eliya",
+   "Galle",
+   "Matara",
+   "Hambanthota",
+   "Jaffna",
+   "Mannar",
+   "Vauniya",
+   "Mulathivu",
+   "Kilinochchi",
+   "Batticaloa",
+   "Ampara",
+   "Trincomalee",
+   "Kurunegala",
+   "Puttalam",
+   "Anuradhapura",
+   "Polonnaruwa",
+   "Badulla",
+   "Monaragala",
+   "Rathnapura",
+   "Kegalle"
+    ]
+  
+}
