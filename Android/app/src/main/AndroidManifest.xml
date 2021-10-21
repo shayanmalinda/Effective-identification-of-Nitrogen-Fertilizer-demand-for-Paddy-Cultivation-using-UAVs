@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Smartricecare">
         <activity
+            android:name=".ListTileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyRequestsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Register2Activity"
             android:exported="false" />
         <activity

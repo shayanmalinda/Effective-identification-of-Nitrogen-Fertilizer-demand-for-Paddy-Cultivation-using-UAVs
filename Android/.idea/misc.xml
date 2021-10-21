@@ -4,10 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/finalYear/4223-groupProject/repository/Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs/Android/app/src/main/res/layout/activity_home.xml" value="0.1947463768115942" />
+        <entry key="..\:/finalYear/4223-groupProject/repository/Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs/Android/app/src/main/res/layout/activity_list_tile.xml" value="0.12604166666666666" />
         <entry key="..\:/finalYear/4223-groupProject/repository/Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs/Android/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/finalYear/4223-groupProject/repository/Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs/Android/app/src/main/res/layout/activity_maps.xml" value="0.1" />
+        <entry key="..\:/finalYear/4223-groupProject/repository/Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs/Android/app/src/main/res/layout/activity_my_requests.xml" value="0.14" />
         <entry key="..\:/finalYear/4223-groupProject/repository/Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs/Android/app/src/main/res/layout/activity_register.xml" value="0.22" />
         <entry key="..\:/finalYear/4223-groupProject/repository/Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs/Android/app/src/main/res/layout/activity_register2.xml" value="0.11145833333333334" />
+        <entry key="..\:/finalYear/4223-groupProject/repository/Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.11145833333333334" />
+        <entry key="..\:/finalYear/4223-groupProject/repository/Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.12604166666666666" />
       </map>
     </option>
   </component>

@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
 
-    Button btn_signin,btn_signup,btn_map;
+    Button btn_signin,btn_signup,btn_map,btn_myrequests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +18,7 @@ public class HomeActivity extends AppCompatActivity {
         btn_signin=findViewById(R.id.button_signin);
         btn_signup=findViewById(R.id.button_signup);
         btn_map=findViewById(R.id.button_map);
+        btn_myrequests=findViewById(R.id.button_myrequests);
 
         btn_signup.setOnClickListener(
                 v -> {
@@ -29,6 +30,13 @@ public class HomeActivity extends AppCompatActivity {
         btn_map.setOnClickListener(
                 v -> {
                     Intent i = new Intent(HomeActivity.this,MapsActivity.class);
+                    startActivity(i);
+                }
+        );
+
+        btn_myrequests.setOnClickListener(
+                v -> {
+                    Intent i = new Intent(HomeActivity.this,MyRequestsActivity.class);
                     startActivity(i);
                 }
         );
