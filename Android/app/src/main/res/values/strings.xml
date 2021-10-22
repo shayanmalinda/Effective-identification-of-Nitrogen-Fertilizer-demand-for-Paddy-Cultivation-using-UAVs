@@ -2,7 +2,9 @@
     <string name="app_name">Smart Rice Care</string>
     <string name="title_activity_maps" translatable="false">Map</string>
     <string name="signin" translatable="false">SignIn</string>
-    <string name="signup" translatable="false">SignUp</string>
+    <string name="register" translatable="false">Register</string>
     <string name="my_requests" translatable="false">My Requests</string>
     <string name="map" translatable="false">Map</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="password" translatable="false">Password</string>
 </resources>
