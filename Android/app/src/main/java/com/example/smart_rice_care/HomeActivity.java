@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
@@ -19,6 +18,20 @@ public class HomeActivity extends AppCompatActivity {
         btn_signup=findViewById(R.id.button_signup);
         btn_map=findViewById(R.id.button_map);
         btn_myrequests=findViewById(R.id.button_myrequests);
+
+        btn_signin.setOnClickListener(
+                v -> {
+                    Intent i = new Intent(HomeActivity.this, SignInActivity.class);
+                    startActivity(i);
+                }
+        );
+
+        btn_signup.setOnClickListener(
+                v -> {
+                    Intent i = new Intent(HomeActivity.this,RegisterActivity.class);
+                    startActivity(i);
+                }
+        );
 
         btn_signup.setOnClickListener(
                 v -> {
