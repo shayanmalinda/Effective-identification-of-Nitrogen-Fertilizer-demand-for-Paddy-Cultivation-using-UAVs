@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">smart-rice-care</string>
+    <string name="title_activity_maps" translatable="false">සිතියම</string>
+    <string name="signin" translatable="false">පුරනය වන්න</string>
+    <string name="signup" translatable="false">ලියාපදිංචි වන්න</string>
+    <string name="my_requests" translatable="false">මගේ ඉල්ලීම්</string>
+    <string name="map" translatable="false">සිතියම</string>
+</resources>

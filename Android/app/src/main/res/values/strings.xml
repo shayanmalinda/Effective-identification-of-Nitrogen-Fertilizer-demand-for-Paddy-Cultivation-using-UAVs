@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">smart-rice-care</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="app_name">Smart Rice Care</string>
+    <string name="title_activity_maps" translatable="false">Map</string>
+    <string name="signin" translatable="false">SignIn</string>
+    <string name="signup" translatable="false">SignUp</string>
+    <string name="my_requests" translatable="false">My Requests</string>
+    <string name="map" translatable="false">Map</string>
 </resources>
