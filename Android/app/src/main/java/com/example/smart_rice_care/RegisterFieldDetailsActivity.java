@@ -1,37 +1,19 @@
 package com.example.smart_rice_care;
 
-import androidx.annotation.RawRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.JsonReader;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.heatmaps.WeightedLatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
-public class Register2Activity extends AppCompatActivity {
+public class RegisterFieldDetailsActivity extends AppCompatActivity {
 
     Spinner ddn_province,ddn_district,ddn_division;
 
@@ -61,7 +43,7 @@ public class Register2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register2);
+        setContentView(R.layout.activity_register_field_details);
 
         ddn_province=findViewById(R.id.province);
         ddn_district=findViewById(R.id.district);
