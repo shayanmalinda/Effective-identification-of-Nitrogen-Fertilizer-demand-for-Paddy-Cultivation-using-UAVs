@@ -3,7 +3,16 @@
     <string name="app_name">smart-rice-care</string>
     <string name="title_activity_maps" translatable="false">සිතියම</string>
     <string name="signin" translatable="false">පුරනය වන්න</string>
-    <string name="signup" translatable="false">ලියාපදිංචි වන්න</string>
+    <string name="register" translatable="false">ලියාපදිංචි වන්න</string>
     <string name="my_requests" translatable="false">මගේ ඉල්ලීම්</string>
     <string name="map" translatable="false">සිතියම</string>
+    <string name="email" translatable="false">විද්යුත් තැපෑල</string>
+    <string name="password" translatable="false">රහස් පදය</string>
+    <string name="create_a_new_account" translatable="false">නව ගිණුමක් සාදන්න</string>
+    <string name="first_name" translatable="false">මුල් නම</string>
+    <string name="last_name" translatable="false">අවසන් නම</string>
+    <string name="phone_number" translatable="false">දුරකතන අංකය</string>
+    <string name="nic" translatable="false">ජාතික හැඳුනුම්පත</string>
+    <string name="re_enter_password" translatable="false">රහස් පදය යළිත්</string>
+    <string name="next" translatable="false">ඊළඟ</string>
 </resources>
