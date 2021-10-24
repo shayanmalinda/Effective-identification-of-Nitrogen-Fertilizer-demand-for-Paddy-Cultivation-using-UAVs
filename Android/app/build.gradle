@@ -11,7 +11,7 @@ android {
 
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         manifestPlaceholders = [GEO_MAP_API_KEY: "${properties.getProperty('GEO_MAP_API_KEY')}"]
-
+        buildConfigField "String", "FLASK_SERVER_URL", properties.getProperty("FLASK_SERVER_URL")
         applicationId "com.example.smart_rice_care"
         minSdkVersion 21
         targetSdkVersion 30

@@ -63,4 +63,19 @@
         app:layout_constraintTop_toBottomOf="@+id/button_myrequests"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
+    <Button
+        android:id="@+id/bt_capture_image"
+        android:layout_width="180dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="141dp"
+        android:layout_marginLeft="141dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="90dp"
+        android:layout_marginBottom="207dp"
+        android:text="@string/capture_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_myrequests" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
