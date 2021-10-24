@@ -14,4 +14,5 @@
     <string name="nic" translatable="false">NIC</string>
     <string name="re_enter_password" translatable="false">Re-enter Password</string>
     <string name="next" translatable="false">Next</string>
+    <string name="capture_image" translatable="false">Capture Image</string>
 </resources>

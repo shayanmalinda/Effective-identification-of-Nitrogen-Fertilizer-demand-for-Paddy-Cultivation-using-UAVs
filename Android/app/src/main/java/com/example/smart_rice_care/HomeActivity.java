@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.widget.Toast;
-
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -20,9 +19,9 @@ import okhttp3.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
-    Button btn_signin,btn_signup,btn_map,btn_myrequests;
+    Button btn_signin,btn_signup,btn_map,btn_myrequests, bt_capture_image;
 
-    private String url = "http://" + "/192.168.1.3" + ":" + 5000 + "/";
+    private String url = "http:///" + BuildConfig.FLASK_SERVER_URL + ":" + 5000 + "/";
     private String postBodyString;
     private MediaType mediaType;
     private RequestBody requestBody;
@@ -31,18 +30,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
+
         btn_signin=findViewById(R.id.button_signin);
         btn_signup=findViewById(R.id.button_signup);
         btn_map=findViewById(R.id.button_map);
         btn_myrequests=findViewById(R.id.button_myrequests);
-
-        btn_signin.setOnClickListener(
-                v -> {
-                    Intent i = new Intent(HomeActivity.this, SignInActivity.class);
-                    startActivity(i);
-                }
-        );
+        bt_capture_image=findViewById(R.id.bt_capture_image);
 
         btn_signup.setOnClickListener(
                 v -> {
@@ -68,6 +63,13 @@ public class HomeActivity extends AppCompatActivity {
         btn_myrequests.setOnClickListener(
                 v -> {
                     Intent i = new Intent(HomeActivity.this,MyRequestsActivity.class);
+                    startActivity(i);
+                }
+        );
+
+        bt_capture_image.setOnClickListener(
+                v -> {
+                    Intent i = new Intent(HomeActivity.this,ImageCaptureActivity.class);
                     startActivity(i);
                 }
         );
