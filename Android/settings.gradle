@@ -1,2 +1,3 @@
 rootProject.name = "smart-rice-care"
 include ':app'
+include ':sdk'
