@@ -9,6 +9,8 @@ import json
 import cv2
 import  numpy as np
 import pandas as pd
+from PIL import Image
+from PIL.ExifTags import TAGS
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -27,9 +29,12 @@ def image():
     print("%%%%%%",image111)
     return img;
 
-@app.route("/preprocess", methods=['GET'])
-def preprocess():
-    image=cv2.imread("IMG_20210721_100346.jpg")
+
+@app.route("/process", methods=['GET'])
+def process():
+    #pre-process
+    file="IMG_20210721_100346.jpg";
+    image=cv2.imread(file)
     cv2.imshow('img',image)
     rgbImage = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
@@ -42,7 +47,36 @@ def preprocess():
     image1=cv2.resize(res, (IMG_HEIGHT, IMG_WIDTH),interpolation = cv2.INTER_AREA)
     image1=np.array(image1)
     img_data=image1
-    return str(img_data)
+
+    #extract metadata
+    df = pd.DataFrame(columns=['image', 'brightness','shutter_speed','exposure_time'])
+    img = Image.open(file)
+    exifdata = img.getexif()
+    img_mdata=np.zeros(3)
+    # iterating over all EXIF data fields
+    for tag_id in exifdata:
+        # get the tag name, instead of human unreadable tag id
+        tag = TAGS.get(tag_id, tag_id)
+        data = exifdata.get(tag_id)
+
+        # decode bytes
+        if isinstance(data, bytes):
+            data = data.decode()
+        print(f"{tag:25}: {data}")
+        if(tag=='BrightnessValue'): #string brightness value not found
+            img_mdata[0]=data[0]/data[1]
+            print("@@@@@@@",img_mdata[0])
+
+        if(tag=='ShutterSpeedValue'):
+            img_mdata[1]=data[0]/data[1]
+
+        if(tag=='ExposureTime'):
+            img_mdata[2]=data[0]/data[1]
+
+    df.loc[0] = [file] + [img_mdata[0]] + [img_mdata[1]] + [img_mdata[2]]
+
+    return str(df)
+
 
 
 
