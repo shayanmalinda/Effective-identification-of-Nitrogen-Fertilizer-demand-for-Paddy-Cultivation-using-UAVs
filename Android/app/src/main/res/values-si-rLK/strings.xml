@@ -8,11 +8,23 @@
     <string name="map" translatable="false">සිතියම</string>
     <string name="email" translatable="false">විද්යුත් තැපෑල</string>
     <string name="password" translatable="false">රහස් පදය</string>
-    <string name="create_a_new_account" translatable="false">නව ගිණුමක් සාදන්න</string>
+    <string name="farmer_registration" translatable="false">ගොවි ලියාපදිංචිය</string>
     <string name="first_name" translatable="false">මුල් නම</string>
     <string name="last_name" translatable="false">අවසන් නම</string>
     <string name="phone_number" translatable="false">දුරකතන අංකය</string>
-    <string name="nic" translatable="false">ජාතික හැඳුනුම්පත</string>
+    <string name="nic" translatable="false">ජාතික හැඳුනුම්පත් අංකය</string>
     <string name="re_enter_password" translatable="false">රහස් පදය යළිත්</string>
     <string name="next" translatable="false">ඊළඟ</string>
+    <string name="capture_image" translatable="false">රූපය ගන්න</string>
+    <string name="please_check_the_form_again" translatable="false">කරුණාකර පෝරමය නැවත පරීක්ෂා කරන්න</string>
+    <string name="first_name_can_not_be_empty" translatable="false">මුල් නම හිස් විය නොහැක</string>
+    <string name="last_name_can_not_be_empty" translatable="false">අවසාන නම හිස් විය නොහැක</string>
+    <string name="invalid_email" translatable="false">වලංගු නොවන විද්‍යුත් තැපෑලක්</string>
+    <string name="email_can_not_be_empty" translatable="false">විද්‍යුත් තැපෑල හිස් විය නොහැක</string>
+    <string name="invalid_phone_number" translatable="true">අවලංගු දුරකථන අංකයක්</string>
+    <string name="phone_number_can_not_be_empty" translatable="false">දුරකථන අංකය හිස් විය නොහැක</string>
+    <string name="invalid_nic" translatable="false">වලංගු නොවන ජාතික හැඳුනුම්පත් අංකයක්</string>
+    <string name="nic_can_not_be_empty" translatable="true">ජාතික හැඳුනුම්පත් අංකය හිස් විය නොහැක</string>
+    <string name="password_mismatches" translatable="false">මුරපද නොගැලපේ</string>
+    <string name="password_should_have_at_least_6_characters" translatable="false">මුරපදයේ අවම වශයෙන් අක්ෂර 6ක් වත් තිබිය යුතුය</string>
 </resources>

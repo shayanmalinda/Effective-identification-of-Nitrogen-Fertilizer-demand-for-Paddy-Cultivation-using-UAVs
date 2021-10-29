@@ -1,18 +1,29 @@
 <resources>
-    <string name="app_name">Smart Rice Care</string>
-    <string name="title_activity_maps" translatable="false">Map</string>
-    <string name="signin" translatable="false">SignIn</string>
-    <string name="register" translatable="false">Register</string>
-    <string name="my_requests" translatable="false">My Requests</string>
-    <string name="map" translatable="false">Map</string>
-    <string name="email" translatable="false">Email</string>
-    <string name="password" translatable="false">Password</string>
-    <string name="create_a_new_account" translatable="false">Create a New Account</string>
-    <string name="first_name" translatable="false">First Name</string>
-    <string name="last_name" translatable="false">Last Name</string>
-    <string name="phone_number" translatable="false">Phone Number</string>
-    <string name="nic" translatable="false">NIC</string>
-    <string name="re_enter_password" translatable="false">Re-enter Password</string>
-    <string name="next" translatable="false">Next</string>
-    <string name="capture_image" translatable="false">Capture Image</string>
+    <string name="app_name" translatable="false">Smart Rice Care</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="signin">SignIn</string>
+    <string name="register">Register</string>
+    <string name="my_requests">My Requests</string>
+    <string name="map">Map</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="farmer_registration">Farmer Registration</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="nic">NIC</string>
+    <string name="re_enter_password">Re-enter Password</string>
+    <string name="next">Next</string>
+    <string name="capture_image">Capture Image</string>
+    <string name="please_check_the_form_again">Please Check the form again</string>
+    <string name="first_name_can_not_be_empty">First Name can not be empty</string>
+    <string name="last_name_can_not_be_empty">Last Name can not be empty</string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="email_can_not_be_empty">Email can not be empty</string>
+    <string name="invalid_phone_number" translatable="true">Invalid Phone Number</string>
+    <string name="phone_number_can_not_be_empty">Phone Number can not be empty</string>
+    <string name="invalid_nic">Invalid NIC</string>
+    <string name="nic_can_not_be_empty" translatable="true">NIC can not be empty</string>
+    <string name="password_mismatches">Password Mismatches</string>
+    <string name="password_should_have_at_least_6_characters">Password should have at least 6 characters</string>
 </resources>
