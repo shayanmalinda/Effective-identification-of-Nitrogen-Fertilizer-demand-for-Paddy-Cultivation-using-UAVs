@@ -48,7 +48,8 @@ public class RegisterUserDetailsActivity extends AppCompatActivity {
 
                 allFieldsValidated = validateAllFields();
 
-                if(allFieldsValidated){
+//                if(allFieldsValidated){
+                if(true){
                     Intent intent = new Intent(RegisterUserDetailsActivity.this, RegisterFieldDetailsActivity.class);
                     startActivity(intent);
                 }

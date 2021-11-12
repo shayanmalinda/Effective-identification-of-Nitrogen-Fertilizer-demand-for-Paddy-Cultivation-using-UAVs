@@ -45,9 +45,9 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_field_details);
 
-        ddn_province=findViewById(R.id.province);
-        ddn_district=findViewById(R.id.district);
-        ddn_division=findViewById(R.id.division);
+        ddn_province=findViewById(R.id.spProvince);
+        ddn_district=findViewById(R.id.spDistrict);
+        ddn_division=findViewById(R.id.spDivision);
 
         InputStream is = getResources().openRawResource(R.raw.admin_divisions);
         try {

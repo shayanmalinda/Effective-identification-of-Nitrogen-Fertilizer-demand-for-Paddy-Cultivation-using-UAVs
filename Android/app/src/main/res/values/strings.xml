@@ -15,7 +15,7 @@
     <string name="re_enter_password">Re-enter Password</string>
     <string name="next">Next</string>
     <string name="capture_image">Capture Image</string>
-    <string name="please_check_the_form_again">Please Check the form again</string>
+    <string name="please_check_the_form_again">Please check your the form again</string>
     <string name="first_name_can_not_be_empty">First Name can not be empty</string>
     <string name="last_name_can_not_be_empty">Last Name can not be empty</string>
     <string name="invalid_email">Invalid Email</string>
@@ -26,4 +26,10 @@
     <string name="nic_can_not_be_empty" translatable="true">NIC can not be empty</string>
     <string name="password_mismatches">Password Mismatches</string>
     <string name="password_should_have_at_least_6_characters">Password should have at least 6 characters</string>
+    <string name="field_registration" translatable="false">Field Registration</string>
+    <string name="registration_number" translatable="false">Registration Number</string>
+    <string name="province" translatable="false">Province</string>
+    <string name="district" translatable="false">District</string>
+    <string name="division" translatable="false">Division</string>
+    <string name="address" translatable="false">Field Address</string>
 </resources>
