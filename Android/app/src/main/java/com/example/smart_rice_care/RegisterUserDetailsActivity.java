@@ -51,6 +51,12 @@ public class RegisterUserDetailsActivity extends AppCompatActivity {
 //                if(allFieldsValidated){
                 if(true){
                     Intent intent = new Intent(RegisterUserDetailsActivity.this, RegisterFieldDetailsActivity.class);
+                    intent.putExtra("firstName", firstName);
+                    intent.putExtra("lastName", lastName);
+                    intent.putExtra("email", email);
+                    intent.putExtra("phone", phone);
+                    intent.putExtra("nic", nic);
+                    intent.putExtra("password", password);
                     startActivity(intent);
                 }
                 else{

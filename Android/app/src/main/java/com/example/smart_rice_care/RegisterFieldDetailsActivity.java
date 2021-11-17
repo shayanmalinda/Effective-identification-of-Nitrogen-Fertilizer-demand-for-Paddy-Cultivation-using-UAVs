@@ -1,15 +1,29 @@
 package com.example.smart_rice_care;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,10 +32,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterFieldDetailsActivity extends AppCompatActivity {
 
     Spinner spProvince,spDistrict,spDivision;
+    EditText etRegistrationNumber, etAddress;
+    Button btRegister;
     ArrayAdapter<String> provinceAdapter, districtAdapter, divisionAdapter;
     JSONObject divisionalSecretariats;
 
@@ -29,7 +47,10 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
     ArrayList<String> districts = new ArrayList<String>();
     ArrayList<String> divisions = new ArrayList<String>();
 
-    String selectedProvince, selectedDistrict, selectedDivision;
+    String firstName, lastName, email, phone, nic, password;
+    String registrationNumber, address, selectedProvince, selectedDistrict, selectedDivision;
+
+    FirebaseAuth mAuth;
 
     public String readJSON(InputStream inputStream) {
         String json = null;
@@ -53,9 +74,23 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_field_details);
 
+        firstName = getIntent().getStringExtra("firstName");
+        lastName = getIntent().getStringExtra("lastName");
+        email = getIntent().getStringExtra("email");
+        phone = getIntent().getStringExtra("phone");
+        nic = getIntent().getStringExtra("nic");
+        password = getIntent().getStringExtra("password");
+
+        etRegistrationNumber = findViewById(R.id.etRegistrationNumber);
+        etAddress = findViewById(R.id.etAddress);
+
         spProvince = findViewById(R.id.spProvince);
         spDistrict = findViewById(R.id.spDistrict);
         spDivision = findViewById(R.id.spDivision);
+
+        btRegister = findViewById(R.id.btRegister);
+
+        mAuth = FirebaseAuth.getInstance();
 
         InputStream is = getResources().openRawResource(R.raw.divisional_secretariats);
         try {
@@ -138,12 +173,81 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
             }
         });
 
+        btRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                registrationNumber = etRegistrationNumber.getText().toString();
+                address = etAddress.getText().toString();
+
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            String userId = task.getResult().getUser().getUid();
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("userId", userId);
+                            user.put("firstname", firstName);
+                            user.put("lastName", lastName);
+                            user.put("lastName", lastName);
+                            user.put("email", email);
+                            user.put("phone", phone);
+                            user.put("nic", nic);
+
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                            db.collection("Users")
+                                    .add(user)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Map<String, Object> field = new HashMap<>();
+                                            field.put("farmerId", userId);
+                                            field.put("address", address);
+                                            field.put("registrationNumber", registrationNumber);
+                                            field.put("province", selectedProvince);
+                                            field.put("district", selectedDistrict);
+                                            field.put("division", selectedDivision);
+
+                                            db.collection("FieldDetails")
+                                                    .add(field)
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            Toast.makeText(getApplicationContext(), "User registration success", Toast.LENGTH_LONG).show();
+                                                            Intent intent = new Intent(RegisterFieldDetailsActivity.this, SignInActivity.class);
+                                                            startActivity(intent);
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull @NotNull Exception e) {
+                                                            Toast.makeText(getApplicationContext(), "Registration Error: " + e.getMessage() , Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull @NotNull Exception e) {
+                                            Toast.makeText(getApplicationContext(), "Registration Error: " + e.getMessage() , Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Registration Error: " +task.getException().getMessage() , Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+
+            }
+        });
+
 
     }
 
-//    public void handleProvinceSelection() throws JSONException {
-//        handleDistrictSelection();
-//    }
     public void handleDistrictSelection() throws JSONException {
         districts.clear();
         for(int i=0;i<divisionalSecretariats.getJSONArray(selectedProvince).length();i++){
