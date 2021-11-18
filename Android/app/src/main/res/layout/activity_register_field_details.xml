@@ -1,162 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:orientation="vertical"
     tools:context=".RegisterFieldDetailsActivity">
 
-    <LinearLayout
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/orange_900"
+        android:scaleY="2"
+        />
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp">
+        android:fillViewport="true"
+        tools:context=".RegisterFieldDetailsActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="30dp"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/field_registration"
-                android:gravity="center"
-                android:textColor="@color/green_800"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:paddingTop="20dp"
-            android:layout_weight="6">
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.7"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="30dp"
+                android:layout_weight="1">
 
-                <EditText
-                    android:id="@+id/etRegistrationNumber"
+                <TextView
+                    android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/registration_number"
-                    android:inputType="text"
-                    android:paddingTop="10dp"
-                    android:textSize="16sp" />
+                    android:text="@string/field_registration"
+                    android:gravity="center"
+                    android:textColor="@color/green_800"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.7"
-                android:layout_gravity="bottom"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_weight="6">
 
-                <EditText
-                    android:id="@+id/etAddress"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/address"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.7"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/etRegistrationNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/registration_number"
+                        android:inputType="text"
+                        android:paddingTop="10dp"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.7"
                     android:layout_gravity="bottom"
-                    android:inputType="text"
-                    android:paddingTop="10dp"
-                    android:textSize="16sp" />
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/etAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/address"
+                        android:layout_gravity="bottom"
+                        android:inputType="text"
+                        android:paddingTop="10dp"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/province"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"/>
+                    <Spinner
+                        android:id="@+id/spProvince"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/btn_dropdown"
+                        android:spinnerMode="dropdown"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/district"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"/>
+                    <Spinner
+                        android:id="@+id/spDistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/btn_dropdown"
+                        android:spinnerMode="dropdown"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/division"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"/>
+                    <Spinner
+                        android:id="@+id/spDivision"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/btn_dropdown"
+                        android:spinnerMode="dropdown"/>
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="vertical"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/province"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
-                <Spinner
-                    android:id="@+id/spProvince"
+                android:layout_weight="1.2"
+                android:paddingTop="30dp"
+                android:layout_marginBottom="20dp">
+
+                <Button
+                    android:id="@+id/btRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown"/>
+                    android:gravity="center"
+                    android:text="@string/register"
+                    android:paddingVertical="10dp"
+                    android:textSize="18sp"
+                    android:textAllCaps="false"/>
+
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/district"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
-                <Spinner
-                    android:id="@+id/spDistrict"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/division"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
-                <Spinner
-                    android:id="@+id/spDivision"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown"/>
-            </LinearLayout>
-
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1.2"
-            android:paddingTop="30dp"
-            android:layout_marginBottom="20dp">
+    </ScrollView>
+</LinearLayout>
 
-            <Button
-                android:id="@+id/btRegister"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/register"
-                android:paddingVertical="10dp"
-                android:textSize="18sp"
-                android:textAllCaps="false"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</ScrollView>
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +33,7 @@ public class SignInActivity extends AppCompatActivity {
     Button btRegister, btSignIn;
     EditText etEmail, etPassword;
     String email, password;
+    ProgressBar progressBar;
 
     FirebaseAuth mAuth;
 
@@ -39,6 +41,9 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
 
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
@@ -68,6 +73,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void loginUser(String email, String password) {
+        progressBar.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
@@ -86,22 +92,28 @@ public class SignInActivity extends AppCompatActivity {
                                             String userRole = (String) user.get("userRole");
                                             switch (userRole) {
                                                 case "farmer":
+                                                    progressBar.setVisibility(View.GONE);
+                                                    Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
                                                     Intent farmerIntent = new Intent(SignInActivity.this, FarmerHome.class);
                                                     startActivity(farmerIntent);
                                                     break;
                                                 case "ai":
+                                                    progressBar.setVisibility(View.GONE);
+                                                    Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
                                                     // Open AI Intent
                                                     break;
                                                 default:
+                                                    progressBar.setVisibility(View.GONE);
                                                     Toast.makeText(getApplicationContext(), "User role Error", Toast.LENGTH_LONG).show();
                                             }
-                                            Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
                                         }
                                         else{
+                                            progressBar.setVisibility(View.GONE);
                                             Toast.makeText(getApplicationContext(), "No user found", Toast.LENGTH_LONG).show();
                                         }
                                     }
                                     else{
+                                        progressBar.setVisibility(View.GONE);
                                         Toast.makeText(getApplicationContext(), "Signin Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
@@ -109,9 +121,11 @@ public class SignInActivity extends AppCompatActivity {
 
                 }
                 else{
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Signin Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
+
         });
     }
 }

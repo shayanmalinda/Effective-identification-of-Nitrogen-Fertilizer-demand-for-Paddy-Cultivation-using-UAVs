@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
     Spinner spProvince,spDistrict,spDivision;
     EditText etRegistrationNumber, etAddress;
     Button btRegister;
+    ProgressBar progressBar;
     ArrayAdapter<String> provinceAdapter, districtAdapter, divisionAdapter;
     JSONObject divisionalSecretariats;
 
@@ -52,27 +54,13 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
-    public String readJSON(InputStream inputStream) {
-        String json = null;
-        try {
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            // read values in the byte array
-            inputStream.read(buffer);
-            inputStream.close();
-            // convert byte to string
-            json = new String(buffer, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return json;
-        }
-        return json;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_field_details);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
 
         firstName = getIntent().getStringExtra("firstName");
         lastName = getIntent().getStringExtra("lastName");
@@ -177,6 +165,7 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                progressBar.setVisibility(View.VISIBLE);
                 registrationNumber = etRegistrationNumber.getText().toString();
                 address = etAddress.getText().toString();
 
@@ -214,6 +203,7 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                         @Override
                                                         public void onSuccess(DocumentReference documentReference) {
+                                                            progressBar.setVisibility(View.GONE);
                                                             Toast.makeText(getApplicationContext(), "User registration success", Toast.LENGTH_LONG).show();
                                                             Intent intent = new Intent(RegisterFieldDetailsActivity.this, SignInActivity.class);
                                                             startActivity(intent);
@@ -222,6 +212,7 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull @NotNull Exception e) {
+                                                            progressBar.setVisibility(View.GONE);
                                                             Toast.makeText(getApplicationContext(), "Registration Error: " + e.getMessage() , Toast.LENGTH_LONG).show();
                                                         }
                                                     });
@@ -230,14 +221,17 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull @NotNull Exception e) {
+                                            progressBar.setVisibility(View.GONE);
                                             Toast.makeText(getApplicationContext(), "Registration Error: " + e.getMessage() , Toast.LENGTH_LONG).show();
                                         }
                                     });
 
                         }
                         else{
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "Registration Error: " +task.getException().getMessage() , Toast.LENGTH_LONG).show();
                         }
+
                     }
                 });
 
@@ -246,6 +240,23 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public String readJSON(InputStream inputStream) {
+        String json = null;
+        try {
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            // read values in the byte array
+            inputStream.read(buffer);
+            inputStream.close();
+            // convert byte to string
+            json = new String(buffer, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return json;
+        }
+        return json;
     }
 
     public void handleDistrictSelection() throws JSONException {
