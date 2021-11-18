@@ -55,8 +55,7 @@
                     android:layout_marginTop="15dp"
                     android:drawablePadding="10dp"
                     android:nextFocusDown="@id/etPassword"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
+                    android:inputType="textEmailAddress"
                     />
 
             </LinearLayout>
