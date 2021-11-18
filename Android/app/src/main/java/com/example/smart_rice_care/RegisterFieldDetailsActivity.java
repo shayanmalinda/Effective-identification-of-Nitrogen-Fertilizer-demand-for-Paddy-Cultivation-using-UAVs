@@ -186,7 +186,7 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             String userId = task.getResult().getUser().getUid();
                             Map<String, Object> user = new HashMap<>();
-                            user.put("userId", userId);
+                            user.put("userRole", "farmer");
                             user.put("firstname", firstName);
                             user.put("lastName", lastName);
                             user.put("lastName", lastName);
@@ -196,11 +196,11 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                            db.collection("Users")
-                                    .add(user)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            db.collection("Users").document(userId)
+                                    .set(user)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
-                                        public void onSuccess(DocumentReference documentReference) {
+                                        public void onSuccess(Void unused) {
                                             Map<String, Object> field = new HashMap<>();
                                             field.put("farmerId", userId);
                                             field.put("address", address);
