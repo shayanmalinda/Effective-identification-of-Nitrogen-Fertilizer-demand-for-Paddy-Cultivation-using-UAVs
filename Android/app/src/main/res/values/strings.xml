@@ -32,4 +32,6 @@
     <string name="district" translatable="false">District</string>
     <string name="division" translatable="false">Division</string>
     <string name="address" translatable="false">Field Address</string>
+    <string name="send_request" translatable="false">Send Request</string>
+    <string name="add_location" translatable="false">Add Location</string>
 </resources>
