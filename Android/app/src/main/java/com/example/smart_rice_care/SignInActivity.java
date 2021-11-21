@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,18 +12,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Document;
 
 import java.util.Map;
 
@@ -44,6 +40,13 @@ public class SignInActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
+
+        // Checking if user already logged in
+        FirebaseUser user = mAuth.getInstance().getCurrentUser();
+        if(user!=null){
+            progressBar.setVisibility(View.VISIBLE);
+            navigateUserRole(user.getUid());
+        }
 
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
@@ -79,46 +82,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     String userId = task.getResult().getUser().getUid();
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    DocumentReference docRef = db.collection("Users").document(userId);
-                    docRef.get()
-                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
-                                    if(task.isSuccessful()){
-                                        DocumentSnapshot document = task.getResult();
-                                        if(document.exists()){
-                                            Map<String, Object> user = document.getData();
-                                            String userRole = (String) user.get("userRole");
-                                            switch (userRole) {
-                                                case "farmer":
-                                                    progressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
-                                                    Intent farmerIntent = new Intent(SignInActivity.this, FarmerHome.class);
-                                                    startActivity(farmerIntent);
-                                                    break;
-                                                case "ai":
-                                                    progressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
-                                                    // Open AI Intent
-                                                    break;
-                                                default:
-                                                    progressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(getApplicationContext(), "User role Error", Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                        else{
-                                            progressBar.setVisibility(View.GONE);
-                                            Toast.makeText(getApplicationContext(), "No user found", Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                    else{
-                                        progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(getApplicationContext(), "Signin Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
-
+                    navigateUserRole(userId);
                 }
                 else{
                     progressBar.setVisibility(View.GONE);
@@ -127,5 +91,48 @@ public class SignInActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void navigateUserRole(String userId) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document(userId);
+        docRef.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists()){
+                                Map<String, Object> user = document.getData();
+                                String userRole = (String) user.get("userRole");
+                                switch (userRole) {
+                                    case "farmer":
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
+                                        Intent farmerIntent = new Intent(SignInActivity.this, FarmerHomeActivity.class);
+                                        startActivity(farmerIntent);
+                                        break;
+                                    case "ai":
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
+                                        // Open AI Intent
+                                        break;
+                                    default:
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(getApplicationContext(), "User role Error", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else{
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "No user found", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else{
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Signin Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 }
