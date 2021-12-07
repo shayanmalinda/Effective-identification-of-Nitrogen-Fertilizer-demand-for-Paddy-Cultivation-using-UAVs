@@ -28,11 +28,17 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".SendRequestMapActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".SendRequestActivity" />
-        <activity android:name=".FarmerHomeActivity" />
-        <activity android:name=".ImageCaptureActivity" />
-        <activity android:name=".SignInActivity" />
+            android:label="@string/title_activity_maps"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SendRequestActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FarmerHomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ImageCaptureActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignInActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ListTileActivity"
             android:exported="false"
@@ -52,7 +58,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -71,7 +76,8 @@
         -->
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

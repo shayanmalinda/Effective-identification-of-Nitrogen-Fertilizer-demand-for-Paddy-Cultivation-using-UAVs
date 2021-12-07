@@ -41,6 +41,8 @@ public class SignInActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
+        mAuth = FirebaseAuth.getInstance();
+
         // Checking if user already logged in
         FirebaseUser user = mAuth.getInstance().getCurrentUser();
         if(user!=null){
@@ -54,7 +56,6 @@ public class SignInActivity extends AppCompatActivity {
         btRegister = findViewById(R.id.btRegister);
         btSignIn = findViewById(R.id.btSignIn);
 
-        mAuth = FirebaseAuth.getInstance();
 
         btRegister.setOnClickListener(new View.OnClickListener() {
             @Override
