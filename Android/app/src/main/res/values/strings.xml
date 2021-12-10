@@ -40,4 +40,6 @@
     <string name="longitude" translatable="false">Longitude</string>
     <string name="not_yet_selected" translatable="false">Not Yet Selected</string>
     <string name="notes" translatable="false">Notes</string>
+    <string name="signout" translatable="false">Signout</string>
+    <string name="view_requests" translatable="false">View Requests</string>
 </resources>

@@ -10,22 +10,22 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class FarmerHomeActivity extends AppCompatActivity {
+public class AgriculturalOfficerHomeActivity extends AppCompatActivity {
 
-    Button btSendRequest, btSignout;
+    Button btViewRequests, btSignout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_farmer_home);
+        setContentView(R.layout.activity_agricultural_officer_home);
 
-        btSendRequest = findViewById(R.id.btSendRequest);
+        btViewRequests = findViewById(R.id.btViewRequests);
         btSignout = findViewById(R.id.btSignout);
 
-        btSendRequest.setOnClickListener(new View.OnClickListener() {
+        btViewRequests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FarmerHomeActivity.this, SendRequestActivity.class);
+                Intent intent = new Intent(AgriculturalOfficerHomeActivity.this, ViewRequests.class);
                 startActivity(intent);
             }
         });
@@ -34,8 +34,8 @@ public class FarmerHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(FarmerHomeActivity.this, SignInActivity.class);
-                Toast.makeText(FarmerHomeActivity.this, "Signout Success", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AgriculturalOfficerHomeActivity.this, SignInActivity.class);
+                Toast.makeText(AgriculturalOfficerHomeActivity.this, "Signout Success", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
