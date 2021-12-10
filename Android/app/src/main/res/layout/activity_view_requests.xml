@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,10 +17,21 @@
         android:paddingBottom="10dp"
         android:text="Field Requests"/>
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/orange_900"
+        android:scaleY="1"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRequests"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="15dp"/>
+        android:scrollbars="vertical"
+        android:paddingTop="10dp"/>
 
 </LinearLayout>

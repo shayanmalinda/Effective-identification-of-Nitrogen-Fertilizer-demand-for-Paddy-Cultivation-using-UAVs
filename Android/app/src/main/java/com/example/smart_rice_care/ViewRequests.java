@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,13 +28,15 @@ import java.util.ArrayList;
 public class ViewRequests extends AppCompatActivity {
 
     String division;
+    ProgressBar progressBar;
     ArrayList<Request> requests = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_requests);
-
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         getRequests();
 
     }
@@ -54,7 +58,6 @@ public class ViewRequests extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()){
-                                Log.d("fetching data",task.getResult().toString());
                                 for(QueryDocumentSnapshot document: task.getResult()){
                                     String requestId = document.getId();
                                     String date = document.getString("date");
@@ -113,13 +116,15 @@ public class ViewRequests extends AppCompatActivity {
 
                                     }
                                 }
-
+                                progressBar.setVisibility(View.GONE);
                             }
                             else{
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(ViewRequests.this, "Requests fetching failed", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
+
             }
         });
     }
