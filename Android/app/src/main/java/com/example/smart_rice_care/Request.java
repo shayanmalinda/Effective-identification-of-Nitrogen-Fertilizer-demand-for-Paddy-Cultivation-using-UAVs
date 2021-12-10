@@ -7,6 +7,8 @@ public class Request {
     private String fieldId;
     private String requestId;
     private String date;
+    private String address;
+    private String registrationNumber;
     private String farmerFirstName;
     private String farmerLastName;
     private String division;
@@ -17,10 +19,13 @@ public class Request {
     private Double latitude;
     private String requestNote;
 
-    public Request(String farmerId, String fieldId, String requestId, String date, String farmerFirstName, String farmerLastName, String division, String email, String nic, String phone, Double longitude, Double latitude, String requestNote) {
+    public Request(String farmerId, String fieldId, String requestId, String date, String address, String registrationNumber, String farmerFirstName, String farmerLastName, String division, String email, String nic, String phone, Double longitude, Double latitude, String requestNote) {
         this.farmerId = farmerId;
         this.fieldId = fieldId;
         this.requestId = requestId;
+        this.date = date;
+        this.address = address;
+        this.registrationNumber = registrationNumber;
         this.farmerFirstName = farmerFirstName;
         this.farmerLastName = farmerLastName;
         this.division = division;
@@ -62,6 +67,22 @@ public class Request {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
     }
 
     public String getFarmerFirstName() {
@@ -136,10 +157,4 @@ public class Request {
         this.requestNote = requestNote;
     }
 
-    private static int lastRequestId = 0;
-
-    public static ArrayList<Request> createRequestsList(ArrayList<Request> requests, String farmerId, String fieldId, String requestId, String date, String farmerFirstName, String farmerLastName, String division, String email, String nic, String phone, Double longitude, Double latitude, String requestNote) {
-        requests.add(new Request(farmerId, fieldId, requestId, date, farmerFirstName, farmerLastName, division, email, nic, phone, longitude, latitude, requestNote ));
-        return requests;
-    }
 }

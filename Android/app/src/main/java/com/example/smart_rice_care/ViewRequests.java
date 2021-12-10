@@ -46,7 +46,7 @@ public class ViewRequests extends AppCompatActivity {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                division = documentSnapshot.getString("Division");
+                division = documentSnapshot.getString("division");
                 db.collection("FieldRequests")
                     .whereEqualTo("division",division)
                     .get()
@@ -56,22 +56,62 @@ public class ViewRequests extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 Log.d("fetching data",task.getResult().toString());
                                 for(QueryDocumentSnapshot document: task.getResult()){
-                                    Toast.makeText(ViewRequests.this, "====", Toast.LENGTH_SHORT).show();
+                                    String requestId = document.getId();
                                     String date = document.getString("date");
+                                    Log.d("printing date", date.toString());
                                     String division = document.getString("division");
                                     String fieldId = document.getString("fieldId");
                                     Double latitude = document.getDouble("latitude");
                                     Double longitude = document.getDouble("longitude");
                                     String requestNote = document.getString("requestNote");
                                     String status = document.getString("status");
+                                    if(status.equals("pending")) {
+                                        DocumentReference docRef = db.collection("FieldDetails").document(fieldId);
+                                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    DocumentSnapshot document = task.getResult();
+                                                    if(document.exists()){
+                                                        String address = document.getString("address");
+                                                        String farmerId = document.getString("farmerId");
+                                                        String registrationNumber = document.getString("registrationNumber");
 
-                                    Log.d("fetching data",date);
+                                                        DocumentReference docRef = db.collection("Users").document(farmerId);
+                                                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                                                                if(task.isSuccessful()){
+                                                                    DocumentSnapshot document = task.getResult();
+                                                                    if(document.exists()){
+                                                                        String email = document.getString("email");
+                                                                        String firstName = document.getString("firstName");
+                                                                        String lastName = document.getString("lastName");
+                                                                        String nic = document.getString("nic");
+                                                                        String phone = document.getString("phone");
 
-                                    requests.add(new Request("", "", "", date, "", "", division,  "", "", "",longitude, latitude, requestNote));
-                                    RecyclerView rvRequests = (RecyclerView) findViewById(R.id.rvRequests);
-                                    RequestAdapter adapter = new RequestAdapter(requests);
-                                    rvRequests.setAdapter(adapter);
-                                    rvRequests.setLayoutManager(new LinearLayoutManager(ViewRequests.this));
+                                                                        requests.add(new Request(farmerId, fieldId, requestId, date, address, registrationNumber, firstName, lastName, division,  email, nic, phone,longitude, latitude, requestNote));
+                                                                        RecyclerView rvRequests = (RecyclerView) findViewById(R.id.rvRequests);
+                                                                        RequestAdapter adapter = new RequestAdapter(requests);
+                                                                        rvRequests.setAdapter(adapter);
+                                                                        rvRequests.setLayoutManager(new LinearLayoutManager(ViewRequests.this));
+                                                                    }
+                                                                }
+                                                                else{
+                                                                    Toast.makeText(ViewRequests.this, "Farmer details fetching failed", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            }
+                                                        });
+
+                                                    }
+                                                }
+                                                else{
+                                                    Toast.makeText(ViewRequests.this, "Field details fetching failed", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+
+                                    }
                                 }
 
                             }

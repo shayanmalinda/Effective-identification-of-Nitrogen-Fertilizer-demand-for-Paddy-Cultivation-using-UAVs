@@ -23,9 +23,10 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView division;
-        public TextView longitude;
-        public TextView latitude;
+        public TextView tvDate;
+        public TextView tvFarmerName;
+        public TextView tvPhone;
+        public TextView tvRequestNote;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -34,9 +35,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            division = (TextView) itemView.findViewById(R.id.division);
-            longitude = (TextView) itemView.findViewById(R.id.longitude);
-            latitude = (TextView) itemView.findViewById(R.id.latitude);
+            tvDate = (TextView) itemView.findViewById(R.id.tvDate);
+            tvFarmerName = (TextView) itemView.findViewById(R.id.tvFarmerName);
+            tvPhone = (TextView) itemView.findViewById(R.id.tvPhone);
+            tvRequestNote = (TextView) itemView.findViewById(R.id.tvRequestNote);
+
         }
 
     }
@@ -67,12 +70,14 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         Request request = mRequests.get(position);
 
         // Set item views based on your views and data model
-        TextView tvDivision = holder.division;
-        tvDivision.setText(request.getDivision());
-        TextView tvLongitude = holder.longitude;
-        tvLongitude.setText(request.getLongitude().toString());
-        TextView tvLatitude = holder.latitude;
-        tvLatitude.setText(request.getLatitude().toString());
+        TextView tvDate = holder.tvDate;
+        tvDate.setText(request.getDate());
+        TextView tvFarmerName = holder.tvFarmerName;
+        tvFarmerName.setText(request.getFarmerFirstName() + " " + request.getFarmerLastName());
+        TextView tvPhone = holder.tvPhone;
+        tvPhone.setText(request.getPhone());
+        TextView tvRequestNote = holder.tvRequestNote;
+        tvRequestNote.setText(request.getRequestNote());
     }
 
     @Override
