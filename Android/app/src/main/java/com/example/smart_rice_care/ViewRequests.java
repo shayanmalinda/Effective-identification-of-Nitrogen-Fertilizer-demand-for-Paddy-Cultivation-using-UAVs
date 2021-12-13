@@ -17,7 +17,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -52,6 +54,7 @@ public class ViewRequests extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 division = documentSnapshot.getString("division");
                 db.collection("FieldRequests")
+                    .orderBy(FieldPath.documentId(), Query.Direction.DESCENDING)
                     .whereEqualTo("division",division)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -105,7 +108,6 @@ public class ViewRequests extends AppCompatActivity {
                                                                 }
                                                             }
                                                         });
-
                                                     }
                                                 }
                                                 else{

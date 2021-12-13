@@ -1,10 +1,14 @@
 package com.example.smart_rice_care;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,10 +27,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView tvDate;
-        public TextView tvFarmerName;
-        public TextView tvPhone;
-        public TextView tvRequestNote;
+        private TextView tvDate, tvFarmerName, tvPhone, tvRequestNote, tvAddress;
+        private Button btViewLocation, btStartExamine;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -38,7 +40,10 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             tvDate = (TextView) itemView.findViewById(R.id.tvDate);
             tvFarmerName = (TextView) itemView.findViewById(R.id.tvFarmerName);
             tvPhone = (TextView) itemView.findViewById(R.id.tvPhone);
+            tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
             tvRequestNote = (TextView) itemView.findViewById(R.id.tvRequestNote);
+            btViewLocation = (Button) itemView.findViewById(R.id.btViewLocation);
+            btStartExamine = (Button) itemView.findViewById(R.id.btStartExamine);
 
         }
 
@@ -76,8 +81,39 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         tvFarmerName.setText(request.getFarmerFirstName() + " " + request.getFarmerLastName());
         TextView tvPhone = holder.tvPhone;
         tvPhone.setText(request.getPhone());
+        TextView tvAddress = holder.tvAddress;
+        tvAddress.setText(request.getAddress());
         TextView tvRequestNote = holder.tvRequestNote;
         tvRequestNote.setText(request.getRequestNote());
+
+        Button btViewLocation = holder.btViewLocation;
+        btViewLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create a Uri from an intent string. Use the result to create an Intent.
+                Uri gmmIntentUri = Uri.parse("geo:"+request.getLatitude()+","+request.getLongitude()+"?q="+request.getLatitude()+","+request.getLongitude());
+
+                // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                // Make the Intent explicit by setting the Google Maps package
+                mapIntent.setPackage("com.google.android.apps.maps");
+
+                // Attempt to start an activity that can handle the Intent
+                v.getContext().startActivity(mapIntent);
+            }
+        });
+
+        Button btStartExamine = holder.btStartExamine;
+        btStartExamine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ExamineFieldActivity.class);
+                intent.putExtra("requestId", request.getRequestId());
+                intent.putExtra("fieldId", request.getFieldId());
+                intent.putExtra("farmerId", request.getFarmerId());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

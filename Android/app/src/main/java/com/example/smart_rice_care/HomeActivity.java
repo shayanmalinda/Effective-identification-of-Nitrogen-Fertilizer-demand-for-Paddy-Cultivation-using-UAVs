@@ -59,7 +59,7 @@ public class HomeActivity extends AppCompatActivity {
 
         btn_capture.setOnClickListener(
                 v -> {
-                    Intent i=new Intent(HomeActivity.this,UploadImageActivity.class);
+                    Intent i=new Intent(HomeActivity.this,ImageCaptureActivity.class);
                     startActivity(i);
                 }
         );
