@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "smart-rice-care": {
+      "hosting": {
+        "pk2-angular": [
+          "smart-rice-care"
+        ]
+      }
+    }
+  }
+}
