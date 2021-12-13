@@ -11,6 +11,7 @@ import androidx.camera.core.PreviewConfig;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Matrix;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
 
     private int REQUEST_CODE_PERMISSIONS = 101;
     private String[] REQUIRED_PERMISSSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    String requestId, fieldId, farmerId;
 
     TextureView textureView;
 
@@ -41,6 +43,11 @@ public class ImageCaptureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_capture);
+
+        Intent getIntent = getIntent();
+        requestId = getIntent.getStringExtra("requestId");
+        fieldId = getIntent.getStringExtra("fieldId");
+        farmerId = getIntent.getStringExtra("farmerId");
 
         getSupportActionBar().hide();
 
@@ -83,7 +90,18 @@ public class ImageCaptureActivity extends AppCompatActivity {
         findViewById(R.id.bt_capture_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/CameraX/"+System.currentTimeMillis()+".jpg");
+                Log.d("testing","capturing image");
+                File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId);
+                try{
+                    if(dir.mkdir()) {
+                        Log.d("Directory creation","Directory created");
+                    } else {
+                        Log.d("Directory creation","Directory creation failed");
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId+"/"+System.currentTimeMillis()+".jpg");
                 imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
                     @Override
                     public void onImageSaved(@NonNull @NotNull File file) {

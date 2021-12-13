@@ -7,11 +7,15 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,8 +26,13 @@ import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.PolyUtil;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SendRequestMapActivity extends FragmentActivity
         implements
@@ -35,17 +44,43 @@ public class SendRequestMapActivity extends FragmentActivity
     private GoogleMap mMap;
     private UiSettings mUiSettings;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private Button btSelectLocation;
+    LatLng currentMarker;
+
+//    List<LatLng> pts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-//        setContentView(binding.getRoot());
+
+        btSelectLocation = findViewById(R.id.btSelectLocation);
+        btSelectLocation.setVisibility(View.GONE);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+
+//        pts.add(new LatLng(6.136867224626448,80.76938051730394));
+//        pts.add(new LatLng(6.136923894936177,80.76948914676905));
+//        pts.add(new LatLng(6.136819221535854,80.76954580843449));
+//        pts.add(new LatLng(6.136748883666119,80.7694512605667));
+
+        btSelectLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SendRequestMapActivity.this,SendRequestActivity.class);
+                intent.putExtra("latitude", currentMarker.latitude);
+                intent.putExtra("longitude", currentMarker.longitude);
+                startActivity(intent);
+                finish();
+                finish();
+                finish();
+            }
+        });
     }
 
     @Override
@@ -57,9 +92,20 @@ public class SendRequestMapActivity extends FragmentActivity
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setCompassEnabled(true);
         mUiSettings.setMyLocationButtonEnabled(true);
-//        LatLng marker = new LatLng(6.0718297, 80.23611111111111);
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
         enableMyLocation();
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull @NotNull LatLng latLng) {
+                if(btSelectLocation.getVisibility()==View.GONE){
+                    btSelectLocation.setVisibility(View.VISIBLE);
+                }
+                currentMarker = latLng;
+
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(latLng));
+            }
+        });
 
     }
 
@@ -73,10 +119,16 @@ public class SendRequestMapActivity extends FragmentActivity
 
                 Location location = locationManager.getLastKnownLocation(locationManager
                         .getBestProvider(criteria, false));
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                LatLng marker = new LatLng(latitude , longitude);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker,19.0F));
+                try {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    LatLng marker = new LatLng(latitude , longitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker,19.0F));
+                }
+                catch (Exception e){
+                    Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Location Error",e.getMessage());
+                }
             }
         } else {
             // Permission to access the location is missing. Show rationale and request permission
