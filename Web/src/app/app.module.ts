@@ -37,7 +37,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     ComponentsModule,
     ExamplesModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, 'mytestapp'),
+    AngularFireModule.initializeApp(environment.firebaseConfig, 'smart-rice-care'),
 AngularFirestoreModule, // Only required for database features
 AngularFireAuthModule, // Only required for auth features,
 AngularFireStorageModule // Only required for storage features
