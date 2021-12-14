@@ -14,6 +14,12 @@ import { ExamplesModule } from './pages/examples.module';
 import { LoginComponent } from './login/login.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 
+// Firebase
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -31,6 +37,10 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
     ComponentsModule,
     ExamplesModule,
     AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig, 'smart-rice-care'),
+AngularFirestoreModule, // Only required for database features
+AngularFireAuthModule, // Only required for auth features,
+AngularFireStorageModule // Only required for storage features
   ],
   providers: [],
   bootstrap: [AppComponent]
