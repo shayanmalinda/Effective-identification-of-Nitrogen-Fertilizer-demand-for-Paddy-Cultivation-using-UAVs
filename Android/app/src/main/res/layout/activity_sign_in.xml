@@ -7,19 +7,30 @@
     android:orientation="vertical"
     tools:context=".SignInActivity">
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/orange_900"
+        android:scaleY="2"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"
         android:orientation="vertical"
-        android:paddingTop="30dp">
+        android:paddingTop="60dp"
+        >
 
-<!--        <ImageView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/logo"-->
-<!--            android:scaleType="centerInside"-->
-<!--            android:layout_gravity="center"/>-->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/smart_rice_logo"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 
@@ -47,16 +58,15 @@
                 android:paddingTop="20dp">
 
                 <EditText
-                    android:id="@+id/et_email"
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
                     android:padding="12dp"
                     android:layout_marginTop="15dp"
                     android:drawablePadding="10dp"
-                    android:nextFocusDown="@id/et_password"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
+                    android:nextFocusDown="@id/etPassword"
+                    android:inputType="textEmailAddress"
                     />
 
             </LinearLayout>
@@ -68,7 +78,7 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/et_password"
+                    android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
@@ -88,6 +98,7 @@
                 android:paddingBottom="7dp">
 
                 <Button
+                    android:id="@+id/btRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/orange_900"
@@ -96,13 +107,13 @@
                     android:textSize="18sp"
                     android:layout_weight="1"
                     android:layout_marginRight="9dp"
-                    android:id="@+id/bt_signup"
                     android:paddingLeft="20dp"
                     android:drawablePadding="-30dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"/>
 
                 <Button
+                    android:id="@+id/btSignIn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/green_500"
@@ -111,7 +122,6 @@
                     android:textSize="18sp"
                     android:layout_weight="1"
                     android:layout_marginLeft="9dp"
-                    android:id="@+id/bt_login"
                     android:paddingLeft="20dp"
                     android:drawablePadding="-30dp"
                     android:paddingTop="10dp"

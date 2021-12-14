@@ -63,13 +63,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//        mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
+        mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
         LatLng marker = new LatLng(6.0718297, 80.23611111111111);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
 
         mMap.setMinZoomPreference(20.0f);
         mMap.setMaxZoomPreference(50.0f);
-//        addHeatMap();
+        addHeatMap();
 
         fetchFieldData();
     }
