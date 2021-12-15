@@ -8,10 +8,14 @@ import { User } from '../models/user.model';
 })
 export class UserService {
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private fireStore: AngularFirestore) { }
 
   getUsers() {
-    return this.firestore.collection('Users').snapshotChanges();
+    return this.fireStore.collection('Users').snapshotChanges();
+  }
+
+  getUser(userId:String){
+    return this.fireStore.collection('Users', ref => ref.where('nic', '==', '867286151V')).get();
   }
 
 }
