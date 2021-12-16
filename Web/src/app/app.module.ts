@@ -12,6 +12,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { ComponentsModule } from './components/components.module';
 import { ExamplesModule } from './pages/examples.module';
 import { LoginComponent } from './login/login.component';
+// import { UsersComponent } from './pages/users/users.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 
 // Firebase
@@ -20,6 +21,10 @@ import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+ 
+
 
 @NgModule({
   declarations: [
@@ -27,7 +32,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     NavbarComponent,
     FooterComponent,
     LoginComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -40,7 +46,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     AngularFireModule.initializeApp(environment.firebaseConfig, 'smart-rice-care'),
 AngularFirestoreModule, // Only required for database features
 AngularFireAuthModule, // Only required for auth features,
-AngularFireStorageModule // Only required for storage features
+AngularFireStorageModule, NoopAnimationsModule, // Only required for storage features
+
   ],
   providers: [],
   bootstrap: [AppComponent]
