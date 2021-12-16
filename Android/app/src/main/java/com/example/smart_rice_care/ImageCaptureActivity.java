@@ -14,6 +14,12 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Matrix;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.hardware.TriggerEvent;
+import android.hardware.TriggerEventListener;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -31,13 +37,29 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class ImageCaptureActivity extends AppCompatActivity {
+public class ImageCaptureActivity extends AppCompatActivity implements SensorEventListener {
 
     private int REQUEST_CODE_PERMISSIONS = 101;
     private String[] REQUIRED_PERMISSSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
     String requestId, fieldId, farmerId;
-
     TextureView textureView;
+
+    private SensorManager sensorMan;
+    private Sensor accelerometer;
+    private boolean sensorRegistered;
+
+    private float[] mGravity;
+    private double mAccel;
+    private double mAccelCurrent;
+    private double mAccelLast;
+
+    private int hitCount = 0;
+    private double hitSum = 0;
+    private double hitResult = 0;
+
+    private final int SAMPLE_SIZE = 50; // change this sample size as you want, higher is more precise but slow measure.
+    private final double THRESHOLD = 0.2; // change this threshold as you want, higher is more spike movement
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +71,17 @@ public class ImageCaptureActivity extends AppCompatActivity {
         fieldId = getIntent.getStringExtra("fieldId");
         farmerId = getIntent.getStringExtra("farmerId");
 
+        sensorMan = (SensorManager) this.getSystemService(ImageCaptureActivity.this.SENSOR_SERVICE);
+        accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccel = 0.00f;
+        mAccelCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelLast = SensorManager.GRAVITY_EARTH;
+        sensorMan.registerListener(this, accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL);
+        sensorRegistered = true;
+
         getSupportActionBar().hide();
-
         textureView = (TextureView) findViewById(R.id.txv_camera);
-
         if(allPermissionGranted()){
             startCamera();
         }
@@ -90,44 +119,48 @@ public class ImageCaptureActivity extends AppCompatActivity {
         findViewById(R.id.bt_capture_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("testing","capturing image");
-                File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId);
-                try{
-                    if(dir.mkdir()) {
-                        Log.d("Directory creation","Directory created");
-                    } else {
-                        Log.d("Directory creation","Directory creation failed");
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId+"/"+System.currentTimeMillis()+".jpg");
-                imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
-                    @Override
-                    public void onImageSaved(@NonNull @NotNull File file) {
-                        String msg = "Pic captured at " + file.getAbsolutePath();
-                        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onError(@NonNull @NotNull ImageCapture.UseCaseError useCaseError, @NonNull @NotNull String message, @Nullable @org.jetbrains.annotations.Nullable Throwable cause) {
-
-                        String msg = "Pic capture failed " + message;
-                        Log.e("Pic capture failed", message);
-                        Log.e("Pic capture failed", useCaseError.toString());
-                        Log.e("Pic capture failed", cause.toString());
-                        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
-
-                        if(cause != null) {
-                            cause.printStackTrace();
-                        }
-                    }
-                });
-
-
+                captureImage(imgCap);
             }
         });
+
         CameraX.bindToLifecycle(this, preview, imgCap);
+    }
+
+    private void captureImage(ImageCapture imgCap) {
+
+        Log.d("testing","capturing image");
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId);
+        try{
+            if(dir.mkdir()) {
+                Log.d("Directory creation","Directory created");
+            } else {
+                Log.d("Directory creation","Directory creation failed");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId+"/"+System.currentTimeMillis()+".jpg");
+        imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
+            @Override
+            public void onImageSaved(@NonNull @NotNull File file) {
+                String msg = "Pic captured at " + file.getAbsolutePath();
+                Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(@NonNull @NotNull ImageCapture.UseCaseError useCaseError, @NonNull @NotNull String message, @Nullable @org.jetbrains.annotations.Nullable Throwable cause) {
+
+                String msg = "Pic capture failed " + message;
+                Log.e("Pic capture failed", message);
+                Log.e("Pic capture failed", useCaseError.toString());
+                Log.e("Pic capture failed", cause.toString());
+                Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
+
+                if(cause != null) {
+                    cause.printStackTrace();
+                }
+            }
+        });
     }
 
     private void updateTransform() {
@@ -172,4 +205,42 @@ public class ImageCaptureActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            mGravity = event.values.clone();
+            // Shake detection
+            double x = mGravity[0];
+            double y = mGravity[1];
+            double z = mGravity[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = Math.sqrt(x * x + y * y + z * z);
+            double delta = mAccelCurrent - mAccelLast;
+            mAccel = mAccel * 0.9f + delta;
+
+            if (hitCount <= SAMPLE_SIZE) {
+                hitCount++;
+                hitSum += Math.abs(mAccel);
+            } else {
+                hitResult = hitSum / SAMPLE_SIZE;
+
+                Log.d("hiii=", String.valueOf(hitResult));
+
+                if (hitResult > THRESHOLD) {
+                    Log.d("hiii=", "Walking");
+                } else {
+                    Log.d("hiii=", "Stop Walking");
+                }
+
+                hitCount = 0;
+                hitSum = 0;
+                hitResult = 0;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }

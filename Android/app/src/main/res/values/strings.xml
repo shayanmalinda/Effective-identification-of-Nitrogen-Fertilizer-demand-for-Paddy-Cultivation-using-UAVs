@@ -42,4 +42,5 @@
     <string name="notes" translatable="false">Notes</string>
     <string name="signout" translatable="false">Signout</string>
     <string name="view_requests" translatable="false">View Requests</string>
+    <string name="view_results" translatable="false">View Results</string>
 </resources>
