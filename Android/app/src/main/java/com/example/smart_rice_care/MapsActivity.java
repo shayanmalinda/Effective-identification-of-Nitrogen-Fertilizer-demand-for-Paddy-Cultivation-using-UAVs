@@ -225,19 +225,9 @@ public class MapsActivity extends FragmentActivity implements
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         mMap.moveCamera(cu);
 
-//        double centerLatitude = 0.0, centerLongitude = 0.0;
-//        for(FieldData data: fieldData){
-//            centerLatitude += data.getLatitude();
-//            centerLongitude += data.getLongitude();
-//        }
-//
-//
-//        LatLng marker = new LatLng(centerLatitude/fieldData.size(), centerLongitude/fieldData.size());
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker,20.0F));
     }
 
     private void addHeatMap(List<WeightedLatLng> weightedList,int[] colors) {
-
 
         float[] startPoints = {
                 0.6f, 1f
@@ -262,8 +252,6 @@ public class MapsActivity extends FragmentActivity implements
             Toast.makeText(this, "No data found yet", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
