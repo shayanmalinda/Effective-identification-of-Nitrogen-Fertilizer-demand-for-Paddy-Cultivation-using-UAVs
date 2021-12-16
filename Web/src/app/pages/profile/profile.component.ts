@@ -1,5 +1,7 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
 
 @Component({
     selector: 'app-profile',
@@ -9,11 +11,24 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 export class ProfileComponent implements OnInit {
 
-    constructor(private db: AngularFirestore) {
-        const things = db.collection('Users').valueChanges();
-        things.subscribe(console.log);
+    users: User[];
+    user:User;
+    constructor(private userService: UserService) {
     }
+    
 
-    ngOnInit() {}
+    ngOnInit() {
+        
+        this.userService.getUser("86728615V")
+        .subscribe(data => {
+            data.docs.forEach(element => {      
+                this.user=element.data() as User;
+            });
+           
+        });
+    }
+    printUser(){
+        console.log(this.user.firstName);
+    }
 
 }
