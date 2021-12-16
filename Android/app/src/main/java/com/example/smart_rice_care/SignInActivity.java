@@ -41,6 +41,8 @@ public class SignInActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
+        mAuth = FirebaseAuth.getInstance();
+
         // Checking if user already logged in
         FirebaseUser user = mAuth.getInstance().getCurrentUser();
         if(user!=null){
@@ -54,7 +56,6 @@ public class SignInActivity extends AppCompatActivity {
         btRegister = findViewById(R.id.btRegister);
         btSignIn = findViewById(R.id.btSignIn);
 
-        mAuth = FirebaseAuth.getInstance();
 
         btRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,8 +70,12 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 email = etEmail.getText().toString();
                 password = etPassword.getText().toString();
-
-                loginUser(email, password);
+                if(email.equals("") || password.equals("")){
+                    Toast.makeText(SignInActivity.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    loginUser(email, password);
+                }
             }
         });
     }
@@ -113,10 +118,11 @@ public class SignInActivity extends AppCompatActivity {
                                         Intent farmerIntent = new Intent(SignInActivity.this, FarmerHomeActivity.class);
                                         startActivity(farmerIntent);
                                         break;
-                                    case "ai":
+                                    case "agricultural officer":
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
-                                        // Open AI Intent
+                                        Intent agriculturalOfficerIntent = new Intent(SignInActivity.this, AgriculturalOfficerHomeActivity.class);
+                                        startActivity(agriculturalOfficerIntent);
                                         break;
                                     default:
                                         progressBar.setVisibility(View.GONE);

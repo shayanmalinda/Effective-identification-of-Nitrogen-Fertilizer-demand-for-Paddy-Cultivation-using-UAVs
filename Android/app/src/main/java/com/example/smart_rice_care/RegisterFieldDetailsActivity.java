@@ -176,8 +176,7 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
                             String userId = task.getResult().getUser().getUid();
                             Map<String, Object> user = new HashMap<>();
                             user.put("userRole", "farmer");
-                            user.put("firstname", firstName);
-                            user.put("lastName", lastName);
+                            user.put("firstName", firstName);
                             user.put("lastName", lastName);
                             user.put("email", email);
                             user.put("phone", phone);
