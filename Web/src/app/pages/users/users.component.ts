@@ -20,7 +20,7 @@ export interface UserData {
 })
 
 export class UsersComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name','email','phone','nic','division'];
+  displayedColumns: string[] = ['name', 'email', 'phone', 'nic', 'division'];
   dataSource: MatTableDataSource<User>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
