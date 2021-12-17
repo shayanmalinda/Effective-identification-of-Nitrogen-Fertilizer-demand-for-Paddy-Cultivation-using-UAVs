@@ -12,6 +12,7 @@ export class UserService {
 
   getUsers() {
     return this.fireStore.collection('Users').snapshotChanges();
+    
   }
 
   getUser(userId:String){

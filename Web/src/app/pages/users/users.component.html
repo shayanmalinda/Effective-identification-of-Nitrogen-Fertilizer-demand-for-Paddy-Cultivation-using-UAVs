@@ -3,7 +3,7 @@
         <div class="filter"></div>
         <div class="content-center">
             <div class="container">
-                <div class="title-brand">
+                <!-- <div class="title-brand"> -->
                     <label>Users</label>
                     <mat-form-field appearance="standard">
                         <mat-label>Filter</mat-label>
@@ -14,27 +14,31 @@
                         <table mat-table [dataSource]="dataSource" matSort>
                       
                           <!-- ID Column -->
-                          <ng-container matColumnDef="id">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                            <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                          <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header > Name </th>
+                            <td mat-cell *matCellDef="let row"> {{row.firstName}}&nbsp;{{row.lastName}}&nbsp;&nbsp; </td>
                           </ng-container>
                       
                           <!-- Progress Column -->
-                          <ng-container matColumnDef="progress">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
-                            <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
+                          <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                            <td mat-cell *matCellDef="let row"> {{row.email}}&nbsp;&nbsp; </td>
                           </ng-container>
-                      
-                          <!-- Name Column -->
-                          <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+                          <!-- Progress Column -->
+                          <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
+                            <td mat-cell *matCellDef="let row"> {{row.phone}}&nbsp;&nbsp; </td>
+                          </ng-container>
+                          <!-- Progress Column -->
+                          <ng-container matColumnDef="nic">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> NIC </th>
+                            <td mat-cell *matCellDef="let row"> {{row.nic}} </td>
                           </ng-container>
                       
                           <!-- Fruit Column -->
-                          <ng-container matColumnDef="fruit">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fruit </th>
-                            <td mat-cell *matCellDef="let row"> {{row.fruit}} </td>
+                          <ng-container matColumnDef="division">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Division </th>
+                            <td mat-cell *matCellDef="let row"> &nbsp;&nbsp;{{row.division}} </td>
                           </ng-container>
                       
                           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -71,4 +75,4 @@
 
     </div>
    
-</div>
+<!-- </div> -->
