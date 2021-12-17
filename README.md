@@ -1,6 +1,14 @@
 # Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs
 
-## Please follow these steps to setup the repository
+This work is intended to automate the manual process of indentifying Nitrogen fertilizer demand for paddy cultivation using an image processing based Machine Learning approach
+
+## The system provides following software deliverables :
+    - A mobile application for the Aggricultural officers
+    - A mobile application for the farmers
+    - Web applications for the admin and aggricultural office
+
+
+## Please go through the following steps to configure the web server
 
 1. Go to your terminal and type the following command:
 
