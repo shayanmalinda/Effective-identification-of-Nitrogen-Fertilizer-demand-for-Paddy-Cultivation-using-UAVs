@@ -1,6 +1,6 @@
 # Effective-identification-of-Nitrogen-Fertilizer-demand-for-Paddy-Cultivation-using-UAVs
 
-This work is intended to automate the manual process of indentifying Nitrogen fertilizer demand for paddy cultivation using an image processing based Machine Learning approach
+This work is intended to automate the manual process of identifying Nitrogen fertilizer demand for paddy cultivation using an image processing based Machine Learning approach
 
 ## The system provides following software deliverables :
     - A mobile application for the Aggricultural officers
