@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CalibrateSensorActivity"
+    android:layout_weight="1"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:paddingTop="25dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calibrate Motion Sensor"
+            android:textColor="@color/green_800"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="How to Calibrate?"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="15dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You need to calibrate the motion sensor by mounting the mobile device into the drone you are using."
+            android:textSize="16sp"
+            android:paddingTop="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="In the calibration process, drone should be in a still position."
+            android:textSize="16sp"
+            android:paddingTop="2dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You need to enter a flying time (in seconds), which might need to fly the drone into a still position."
+            android:textSize="16sp"
+            android:paddingTop="2dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Then press the start button and fly the drone into a still position with a height around 8-10 feet within the selected delay time."
+            android:textSize="16sp"
+            android:paddingTop="2dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You will hear first beep sound at the end of the delay time. Then the calibration starts."
+            android:textSize="16sp"
+            android:paddingTop="2dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please make sure not to move the drone within the calibration process.  This will take around 10 seconds."
+            android:textSize="16sp"
+            android:paddingTop="2dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You will hear the second beep when the calibration finishes."
+            android:textSize="16sp"
+            android:paddingTop="2dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Then take the drone to ground level and press stop button."
+            android:textSize="16sp"
+            android:paddingTop="2dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:padding="15dp"
+        android:gravity="bottom">
+
+        <EditText
+            android:id="@+id/etFlyingTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Flying Time(in seconds)"
+            android:inputType="number"
+            android:paddingTop="15dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btStart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Start"
+                android:backgroundTint="@color/green_800"
+                android:textColor="@color/white"
+                android:layout_marginRight="10dp"
+                android:textSize="16dp"
+                />
+
+            <Button
+                android:id="@+id/btStop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Stop"
+                android:backgroundTint="@color/orange_900"
+                android:textColor="@color/white"
+                android:layout_marginLeft="10dp"
+                android:textSize="16dp"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Current Sensor Value : "/>
+
+            <TextView
+                android:id="@+id/tvThresholdValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -31,6 +31,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Intent intent = new Intent(HomeActivity.this, CalibrateSensorActivity.class);
+        startActivity(intent);
+
         btn_signin = findViewById(R.id.button_signin);
         btn_signup = findViewById(R.id.button_signup);
         btn_map = findViewById(R.id.button_map);
