@@ -14,3 +14,6 @@ table {
     margin-top: 5rem;
 }
   
+.mat-row.highlighted {
+  background: lightgreen;
+  }

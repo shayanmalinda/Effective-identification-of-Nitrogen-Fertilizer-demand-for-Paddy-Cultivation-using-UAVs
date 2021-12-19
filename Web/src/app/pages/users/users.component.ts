@@ -36,6 +36,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   model: NgbDateStruct;
   users: User[];
   data: any[];
+  selectedRowIndex;
 
   constructor(private renderer: Renderer2, private userService: UserService) {
   }
@@ -51,6 +52,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+  getRecord(row) {
+    this.selectedRowIndex = row.id;
+    console.log(row);
   }
 
   applyFilter(event: Event) {
