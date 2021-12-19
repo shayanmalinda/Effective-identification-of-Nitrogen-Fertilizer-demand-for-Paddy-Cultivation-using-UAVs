@@ -17,3 +17,6 @@ table {
 .mat-row.highlighted {
   background: lightgreen;
   }
+  .mat-icon {
+    font-size: 15px;
+  }

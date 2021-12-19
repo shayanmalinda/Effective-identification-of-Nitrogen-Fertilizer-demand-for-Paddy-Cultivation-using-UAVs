@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
+import { Router } from '@angular/router';
 
 export interface UserData {
   id: string;
@@ -20,7 +21,7 @@ export interface UserData {
 })
 
 export class UsersComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name', 'email', 'phone', 'nic', 'division'];
+  displayedColumns: string[] = ['name', 'email', 'phone', 'nic', 'division','action'];
   dataSource: MatTableDataSource<User>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -37,8 +38,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
   users: User[];
   data: any[];
   selectedRowIndex;
+  user:User;
 
-  constructor(private renderer: Renderer2, private userService: UserService) {
+  constructor(private renderer: Renderer2, private userService: UserService,private router: Router) {
   }
 
   isWeekend(date: NgbDateStruct) {
@@ -55,7 +57,12 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
   getRecord(row) {
     this.selectedRowIndex = row.id;
-    console.log(row);
+    this.user=row;
+  }
+  viewUser() {
+    // this.selectedRowIndex = row.id;
+    console.log(this.user);
+    this.router.navigate(['/admin-profile'],{ state: { user: this.user }});
   }
 
   applyFilter(event: Event) {
