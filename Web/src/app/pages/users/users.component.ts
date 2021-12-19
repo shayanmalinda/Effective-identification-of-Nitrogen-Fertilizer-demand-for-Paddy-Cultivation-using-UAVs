@@ -62,7 +62,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   viewUser() {
     // this.selectedRowIndex = row.id;
     console.log(this.user);
-    this.router.navigate(['/admin-profile'],{ state: { user: this.user }});
+    this.router.navigate(['/user-profile'],{ state: { user: this.user }});
   }
 
   applyFilter(event: Event) {

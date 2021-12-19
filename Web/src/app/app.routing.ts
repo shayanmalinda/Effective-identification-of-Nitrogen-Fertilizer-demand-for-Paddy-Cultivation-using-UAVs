@@ -17,7 +17,7 @@ const routes: Routes =[
     // { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home',             component: ComponentsComponent },
     { path: 'user-profile',     component: UserProfileComponent },
-    { path: 'admin-profile',     component: ProfileComponent },
+    { path: 'profile',     component: ProfileComponent },
     { path: 'signup',           component: SignupComponent },
     { path: 'login',           component: LoginComponent },
     { path: 'landing',          component: LandingComponent },

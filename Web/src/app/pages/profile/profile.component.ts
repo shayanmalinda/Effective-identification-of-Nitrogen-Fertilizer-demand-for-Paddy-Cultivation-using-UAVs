@@ -2,7 +2,6 @@ import { DOCUMENT } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-profile',
@@ -15,21 +14,19 @@ export class ProfileComponent implements OnInit {
     users: User[];
     user:User;
 
-    constructor(private userService: UserService,private router: Router) {
-        this.user=this.router.getCurrentNavigation().extras.state.user; 
-
+    constructor(private userService: UserService) {
     }
     
 
     ngOnInit() {
         
-        // this.userService.getUser("86728615V")
-        // .subscribe(data => {
-        //     data.docs.forEach(element => {      
-        //         this.user=element.data() as User;
-        //     });
+        this.userService.getUser("86728615V")
+        .subscribe(data => {
+            data.docs.forEach(element => {      
+                this.user=element.data() as User;
+            });
            
-        // });
+        });
     }
     // printUser(){
     //     console.log(this.user.firstName);
