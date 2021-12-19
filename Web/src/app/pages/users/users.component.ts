@@ -21,7 +21,7 @@ export interface UserData {
 })
 
 export class UsersComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name', 'email', 'phone', 'nic', 'division','action'];
+  displayedColumns: string[] = ['name', 'email', 'phone', 'nic', 'division','view','delete'];
   dataSource: MatTableDataSource<User>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -60,9 +60,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.user=row;
   }
   viewUser() {
-    // this.selectedRowIndex = row.id;
     console.log(this.user);
     this.router.navigate(['/user-profile'],{ state: { user: this.user }});
+  }
+  deleteUser() {
+    this.userService.deleteUser(this.user.id);
   }
 
   applyFilter(event: Event) {

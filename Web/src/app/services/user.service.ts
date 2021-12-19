@@ -19,6 +19,10 @@ export class UserService {
     return this.fireStore.collection('Users', ref => ref.where('nic', '==', '867286151V')).get();
   }
 
+  deleteUser(userId:String){
+    console.log(userId);
+    this.fireStore.doc('Users/' + userId).delete();  }
+
 }
 
 
