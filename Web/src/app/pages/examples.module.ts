@@ -15,7 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon';
+import { FieldsComponent } from './fields/fields.component'
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { MatIconModule } from '@angular/material/icon'
         LandingComponent,
         SignupComponent,
         ProfileComponent,
-        UsersComponent
+        UsersComponent,
+        FieldsComponent
     ]
 })
 export class ExamplesModule { }
