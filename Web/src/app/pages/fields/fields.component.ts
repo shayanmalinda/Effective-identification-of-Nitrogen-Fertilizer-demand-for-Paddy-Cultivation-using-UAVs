@@ -1,9 +1,11 @@
+import { User } from './../../models/user.model';
 import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FieldService } from '../../services/field.service';
+import { UserService } from '../../services/user.service';
 import { Field } from '../../models/field.model';
 import { Router } from '@angular/router';
 
@@ -16,7 +18,7 @@ import { Router } from '@angular/router';
 })
 
 export class FieldsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['address', 'division','view','delete'];
+  displayedColumns: string[] = ['address', 'division', 'farmer', 'view', 'delete'];
   dataSource: MatTableDataSource<Field>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -33,9 +35,11 @@ export class FieldsComponent implements OnInit, AfterViewInit {
   fields: Field[];
   data: any[];
   selectedRowIndex;
-  field:Field;
+  field: Field;
+  farmer:User;
+  farmerName: any;
 
-  constructor(private renderer: Renderer2, private fieldService: FieldService,private router: Router) {
+  constructor(private renderer: Renderer2, private fieldService: FieldService, private userService: UserService, private router: Router) {
   }
 
   isWeekend(date: NgbDateStruct) {
@@ -52,11 +56,11 @@ export class FieldsComponent implements OnInit, AfterViewInit {
   }
   getRecord(row) {
     this.selectedRowIndex = row.id;
-    this.field=row;
+    this.field = row;
   }
   viewField() {
     console.log(this.field);
-    this.router.navigate(['/field-profile'],{ state: { field: this.field }});
+    this.router.navigate(['/field-profile'], { state: { field: this.field } });
   }
   deleteField() {
     this.fieldService.deleteField(this.field.id);
@@ -72,7 +76,7 @@ export class FieldsComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
     let input_group_focus = document.getElementsByClassName('form-control');
     let input_group = document.getElementsByClassName('input-group');
     for (let i = 0; i < input_group.length; i++) {
@@ -91,7 +95,16 @@ export class FieldsComponent implements OnInit, AfterViewInit {
           ...e.payload.doc.data() as {}
         } as Field;
       })
-      this.dataSource = new MatTableDataSource(this.fields);
+      this.fields.forEach(f => {
+        this.userService.getUserNamebyID(f.farmerId).subscribe(data=>
+          {
+            this.farmer=data.payload.data() as User;
+            f.farmer=this.farmer.firstName+" "+this.farmer.lastName;
+
+            this.dataSource = new MatTableDataSource(this.fields);
+          });
+
+      })
 
     });
 
