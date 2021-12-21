@@ -15,21 +15,11 @@ export class UserService {
     return this.fireStore.collection('Users').snapshotChanges();
     
   }
-  getUserNamebyID(id:string){
+  getUser(id:string){
     return this.fireStore.collection('Users').doc(id).snapshotChanges()
-    // .subscribe(
-    //             res => {
-    //               this.user = { ...res.payload.data() as User };
-    //               console.log('in user serv')
-    //               console.log(this.user.firstName+" "+this.user.lastName);
-    //               return this.user.firstName+" "+this.user.lastName;
-    //             }
-    //           )
   }
 
-  getUser(userId:String){
-    return this.fireStore.collection('Users', ref => ref.where('nic', '==', '867286151V')).get();
-  }
+  
 
   deleteUser(userId:String){
     console.log(userId);

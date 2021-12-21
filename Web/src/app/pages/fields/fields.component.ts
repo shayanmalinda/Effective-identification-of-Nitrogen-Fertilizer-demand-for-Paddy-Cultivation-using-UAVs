@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 })
 
 export class FieldsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['address', 'division', 'farmer', 'view', 'delete'];
+  displayedColumns: string[] = ['registrationNumber','address', 'division', 'farmer', 'view', 'delete'];
   dataSource: MatTableDataSource<Field>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -59,8 +59,7 @@ export class FieldsComponent implements OnInit, AfterViewInit {
     this.field = row;
   }
   viewField() {
-    console.log(this.field);
-    this.router.navigate(['/field-profile'], { state: { field: this.field } });
+    this.router.navigate(['/field-details'], { state: { field: this.field } });
   }
   deleteField() {
     this.fieldService.deleteField(this.field.id);
@@ -96,7 +95,7 @@ export class FieldsComponent implements OnInit, AfterViewInit {
         } as Field;
       })
       this.fields.forEach(f => {
-        this.userService.getUserNamebyID(f.farmerId).subscribe(data=>
+        this.userService.getUser(f.farmerId).subscribe(data=>
           {
             this.farmer=data.payload.data() as User;
             f.farmer=this.farmer.firstName+" "+this.farmer.lastName;
