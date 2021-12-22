@@ -21,6 +21,13 @@
             android:text="@string/view_requests"
             />
 
+        <Button
+            android:id="@+id/btCalibrateSensor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calibrate_sensor"
+            />
+
     </LinearLayout>
 
     <LinearLayout

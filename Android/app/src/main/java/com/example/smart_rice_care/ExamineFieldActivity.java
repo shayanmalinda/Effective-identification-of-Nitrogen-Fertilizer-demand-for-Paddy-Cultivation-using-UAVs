@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,8 +22,8 @@ public class ExamineFieldActivity extends AppCompatActivity implements SensorEve
 
     String requestId, fieldId, farmerId;
     TextView textView1, textView2;
-    EditText editText1;
-    Button button;
+    EditText etFlyingTime;
+    Button btStart, btStop;
 
     private SensorManager sensorMan;
     private Sensor accelerometer;
@@ -40,6 +41,9 @@ public class ExamineFieldActivity extends AppCompatActivity implements SensorEve
     private final int SAMPLE_SIZE = 1; // change this sample size as you want, higher is more precise but slow measure.
     private double THRESHOLD = 0; // change this threshold as you want, higher is more spike movement
 
+    Integer flyingTime;
+    Boolean calibrationState = false;
+
     MediaPlayer mp;
 
     @Override
@@ -55,8 +59,9 @@ public class ExamineFieldActivity extends AppCompatActivity implements SensorEve
         mp = MediaPlayer.create(ExamineFieldActivity.this, R.raw.beep);
         textView1 = findViewById(R.id.textView1);
         textView2 = findViewById(R.id.textView2);
-        editText1 = findViewById(R.id.editText1);
-        button = findViewById(R.id.button);
+        etFlyingTime = findViewById(R.id.etFlyingTime);
+        btStart = findViewById(R.id.btStart);
+        btStop = findViewById(R.id.btStop);
 
         sensorMan = (SensorManager) this.getSystemService(ExamineFieldActivity.this.SENSOR_SERVICE);
         accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -67,12 +72,18 @@ public class ExamineFieldActivity extends AppCompatActivity implements SensorEve
                 SensorManager.SENSOR_DELAY_NORMAL);
         sensorRegistered = true;
 
-        button.setOnClickListener(new View.OnClickListener() {
+        btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = editText1.getText().toString();
-                double val = Double.parseDouble(str);
-                THRESHOLD = val;
+                flyingTime = Integer.parseInt(findViewById(R.id.etFlyingTime).toString());
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        calibrationState = true;
+                        mp.start();
+
+                    }
+                }, flyingTime*1000);
             }
         });
 
@@ -106,10 +117,8 @@ public class ExamineFieldActivity extends AppCompatActivity implements SensorEve
                 Log.d("hiii=", String.valueOf(hitResult));
                 textView1.setText(String.valueOf(hitResult));
                 if (hitResult > THRESHOLD) {
-                    mp.start();
                     textView2.setText("Moving");
                 } else {
-                    mp.pause();
                     textView2.setText("Still");
                 }
 
