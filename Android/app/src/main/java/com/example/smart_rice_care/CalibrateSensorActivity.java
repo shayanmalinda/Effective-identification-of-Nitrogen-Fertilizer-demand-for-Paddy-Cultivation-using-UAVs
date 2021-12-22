@@ -3,6 +3,7 @@ package com.example.smart_rice_care;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -21,8 +22,7 @@ import android.widget.Toast;
 
 public class CalibrateSensorActivity extends AppCompatActivity implements SensorEventListener {
 
-    TextView textView1, textView2;
-    EditText etFlyingTime;
+    EditText etFlyingTime, etDelayTime;
     Button btStart, btStop, btReset;
 
     private SensorManager sensorMan;
@@ -41,21 +41,21 @@ public class CalibrateSensorActivity extends AppCompatActivity implements Sensor
     private final int SAMPLE_SIZE = 1; // change this sample size as you want, higher is more precise but slow measure.
     private double THRESHOLD = 0; // change this threshold as you want, higher is more spike movement
 
-    Integer flyingTime;
+    Integer flyingTime, delayTime;
     Boolean calibrationState = false;
 
     MediaPlayer mp;
 
-
-    TextView tvThredholdValue,tvHitValue;
+    TextView tvThresholdValue,tvHitValue, tvCalibrationState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_sensor);
 
-        tvThredholdValue = findViewById(R.id.tvThresholdValue);
+        tvThresholdValue = findViewById(R.id.tvThresholdValue);
         tvHitValue = findViewById(R.id.tvHitValue);
+        tvCalibrationState = findViewById(R.id.tvCalibrationState);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String threshold = preferences.getString("SENSORTHRESHOLD", "");
@@ -63,11 +63,12 @@ public class CalibrateSensorActivity extends AppCompatActivity implements Sensor
         {
             THRESHOLD = Double.parseDouble(threshold);
         }
-        tvThredholdValue.setText(String.valueOf(THRESHOLD));
+        tvThresholdValue.setText(String.valueOf(THRESHOLD));
+        tvCalibrationState.setText("Calibration Not Yet Started");
+        tvCalibrationState.setTextColor(getResources().getColor(R.color.orange_900));
 
         mp = MediaPlayer.create(CalibrateSensorActivity.this, R.raw.beep);
-        textView1 = findViewById(R.id.textView1);
-        textView2 = findViewById(R.id.textView2);
+        etDelayTime = findViewById(R.id.etDelayTime);
         etFlyingTime = findViewById(R.id.etFlyingTime);
         btStart = findViewById(R.id.btStart);
         btStop = findViewById(R.id.btStop);
@@ -85,22 +86,42 @@ public class CalibrateSensorActivity extends AppCompatActivity implements Sensor
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(etFlyingTime.getText().toString())){
+                if(TextUtils.isEmpty(etDelayTime.getText().toString())){
+                    Toast.makeText(CalibrateSensorActivity.this, "Please enter a delay time", Toast.LENGTH_SHORT).show();
+                }
+                else if(TextUtils.isEmpty(etFlyingTime.getText().toString())){
                     Toast.makeText(CalibrateSensorActivity.this, "Please enter a flying time", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     flyingTime = Integer.parseInt(etFlyingTime.getText().toString());
+                    delayTime = Integer.parseInt(etDelayTime.getText().toString());
                     Handler handler = new Handler();
-                    if(flyingTime<3){
-                        Toast.makeText(CalibrateSensorActivity.this, "Flying time should be at least 3 seconds", Toast.LENGTH_SHORT).show();
+                    if(delayTime<3){
+                        Toast.makeText(CalibrateSensorActivity.this, "Delay time should be at least 3 seconds", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(flyingTime<10){
+                        Toast.makeText(CalibrateSensorActivity.this, "Flying time should be at least 10 seconds", Toast.LENGTH_SHORT).show();
                     }
                     else{
+                        tvCalibrationState.setText("Flying delay countdown");
+                        tvCalibrationState.setTextColor(getResources().getColor(R.color.black));
                         handler.postDelayed(new Runnable() {
                             public void run() {
                                 calibrationState = true;
                                 mp.start();
+                                tvCalibrationState.setText("Calibrating");
+                                tvCalibrationState.setTextColor(getResources().getColor(R.color.black));
+
+                                handler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        calibrationState = false;
+                                        mp.stop();
+                                        tvCalibrationState.setText("Calibration Success");
+                                        tvCalibrationState.setTextColor(getResources().getColor(R.color.green_500));
+                                    }
+                                }, flyingTime*1000);
                             }
-                        }, flyingTime*1000);
+                        }, delayTime*1000);
                     }
                 }
             }
@@ -131,7 +152,7 @@ public class CalibrateSensorActivity extends AppCompatActivity implements Sensor
                 }
                 else{
                     THRESHOLD = 0;
-                    tvThredholdValue.setText(String.valueOf(THRESHOLD));
+                    tvThresholdValue.setText(String.valueOf(THRESHOLD));
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CalibrateSensorActivity.this);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("SENSORTHRESHOLD",String.valueOf(THRESHOLD));
@@ -168,12 +189,10 @@ public class CalibrateSensorActivity extends AppCompatActivity implements Sensor
                 hitSum += Math.abs(mAccel);
             } else {
                 hitResult = hitSum / SAMPLE_SIZE;
-                System.out.println("printingAAA");
                 tvHitValue.setText(String.valueOf(hitResult));
                 if(hitResult>=THRESHOLD && calibrationState){
-                    System.out.println("printingBBB");
                     THRESHOLD = hitResult;
-                    tvThredholdValue.setText(String.valueOf(THRESHOLD));
+                    tvThresholdValue.setText(String.valueOf(THRESHOLD));
                 }
 
                 hitCount = 0;

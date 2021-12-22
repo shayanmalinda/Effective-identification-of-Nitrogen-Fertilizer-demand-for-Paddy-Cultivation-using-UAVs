@@ -8,7 +8,6 @@
     android:layout_weight="1"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -34,61 +33,81 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:text="You need to calibrate the motion sensor by mounting the mobile device into the drone you are using."
-            android:textSize="16sp" />
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_marginTop="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:text="In the calibration process, drone should be in a still position."
-            android:textSize="16sp" />
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="1">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:text="Please make sure to reset the calibration before starting the calibration"
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="You need to calibrate the motion sensor by mounting the mobile device into the drone you are using."
+                    android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:text="You need to enter a flying time (in seconds), which might need to fly the drone into a still position."
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="In the calibration process, drone should be in a still position."
+                    android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:text="Then press the start button and fly the drone into a still position with a height around 8-10 feet within the selected delay time."
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="Please make sure to reset the calibration before starting the calibration"
+                    android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:text="You will hear a music within the calibration process."
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="You need to enter a delay time (in seconds), which might need to fly the drone into a still position."
+                    android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:text="Please make sure not to move the drone within the calibration process. This will take around 10 seconds."
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="You need to enter a flying time (in seconds), which will be the calibration time."
+                    android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:text="After the music stops, take the drone to ground level and gently press stop button."
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="Then press the start button and fly the drone into a still position with a height around 8-10 feet within the selected delay time."
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="You will hear a music within the calibration process."
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="Please make sure not to move the drone within the calibration process."
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="After the music stops, take the drone to ground level and gently press stop button."
+                    android:textSize="16sp" />
+
+            </TableLayout>
+        </ScrollView>
 
     </LinearLayout>
 
@@ -96,11 +115,19 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="1.2"
+        android:layout_weight="1.9"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:gravity="bottom"
         android:paddingBottom="15dp">
+
+        <EditText
+            android:id="@+id/etDelayTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Delay Time (in seconds)"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/etFlyingTime"
@@ -152,6 +179,25 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Calibration State : "/>
+
+            <TextView
+                android:id="@+id/tvCalibrationState"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
