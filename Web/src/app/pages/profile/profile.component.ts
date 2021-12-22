@@ -13,6 +13,7 @@ export class ProfileComponent implements OnInit {
 
     users: User[];
     user:User;
+
     constructor(private userService: UserService) {
     }
     
@@ -27,8 +28,8 @@ export class ProfileComponent implements OnInit {
            
         });
     }
-    printUser(){
-        console.log(this.user.firstName);
-    }
+    // printUser(){
+    //     console.log(this.user.firstName);
+    // }
 
 }

@@ -4,7 +4,7 @@
         <div class="content-center">
             <div class="container">
                 <div>
-                    <div class="title-brand"><label>Users</label></div>
+                    <div class="title-brand"><label>Fields</label></div>
 
                     <!-- <div class="title-brand-left"> -->
                     <mat-form-field appearance="standard">
@@ -18,30 +18,19 @@
                         <table mat-table [dataSource]="dataSource" matSort>
 
                             <!-- ID Column -->
-                            <ng-container matColumnDef="name">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                                <td mat-cell *matCellDef="let row"> {{row.firstName}}&nbsp;{{row.lastName}}&nbsp;&nbsp;
+                            <ng-container matColumnDef="address">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+                                <td mat-cell *matCellDef="let row"> {{row.address}}&nbsp;&nbsp;
                                 </td>
                             </ng-container>
 
-                            <!-- Progress Column -->
-                            <ng-container matColumnDef="email">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-                                <td mat-cell *matCellDef="let row"> {{row.email}}&nbsp;&nbsp; </td>
-                            </ng-container>
-                            <!-- Progress Column -->
-                            <ng-container matColumnDef="phone">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
-                                <td mat-cell *matCellDef="let row"> {{row.phone}}&nbsp;&nbsp; </td>
-                            </ng-container>
-                            <!-- Progress Column -->
-                            <ng-container matColumnDef="nic">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> NIC </th>
-                                <td mat-cell *matCellDef="let row"> {{row.nic}}&nbsp;&nbsp; </td>
-                            </ng-container>
-
                             <!-- Fruit Column -->
-                            <ng-container matColumnDef="division">
+                            <ng-container matColumnDef="farmer">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Farmer </th>
+                                <td mat-cell *matCellDef="let row"> {{row.farmer}} </td>
+                            </ng-container>
+                             <!-- Fruit Column -->
+                             <ng-container matColumnDef="division">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Division </th>
                                 <td mat-cell *matCellDef="let row"> {{row.division}} </td>
                             </ng-container>
@@ -59,7 +48,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
                                 <td mat-cell *matCellDef="let element">
                                     
-                                    <button mat-icon-button color="primary" (click)="viewUser()"
+                                    <button mat-icon-button color="primary" (click)="viewField()"
                                         aria-label="Example icon button with a home icon">
                                         <mat-icon  [ngStyle]="{'color':'gray'}">visibility</mat-icon>
                                     </button>
@@ -69,7 +58,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
                                 <td mat-cell *matCellDef="let element">
                                     
-                                    <button mat-icon-button color="primary" (click)="deleteUser()"
+                                    <button mat-icon-button color="primary" (click)="deleteField()"
                                         aria-label="Example icon button with a home icon">
                                         <mat-icon  [ngStyle]="{'color':'gray'}">delete</mat-icon>
                                     </button>
@@ -87,7 +76,7 @@
                         </table>
 
                         <mat-paginator [pageSizeOptions]="[5,6,7,8,9,10,15,20, 25,50, 100]"
-                            aria-label="Select page of users"></mat-paginator>
+                            aria-label="Select page of Fields"></mat-paginator>
                     </div>
 
 
