@@ -20,13 +20,13 @@ export class ProfileComponent implements OnInit {
 
     ngOnInit() {
         
-        this.userService.getUser("86728615V")
-        .subscribe(data => {
-            data.docs.forEach(element => {      
-                this.user=element.data() as User;
-            });
+        // this.userService.getUser("86728615V")
+        // .subscribe(data => {
+        //     data.docs.forEach(element => {      
+        //         this.user=element.data() as User;
+        //     });
            
-        });
+        // });
     }
     // printUser(){
     //     console.log(this.user.firstName);

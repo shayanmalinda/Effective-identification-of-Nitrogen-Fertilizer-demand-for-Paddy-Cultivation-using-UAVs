@@ -60,7 +60,6 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.user=row;
   }
   viewUser() {
-    console.log(this.user);
     this.router.navigate(['/user-profile'],{ state: { user: this.user }});
   }
   deleteUser() {

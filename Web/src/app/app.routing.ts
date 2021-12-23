@@ -12,6 +12,7 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
 import { UsersComponent } from './pages/users/users.component';
 import { FieldsComponent } from './pages/fields/fields.component';
+import { FieldDetailsComponent } from './pages/field-details/field-details.component';
 
 
 
@@ -25,7 +26,9 @@ const routes: Routes =[
     { path: 'landing',          component: LandingComponent },
     { path: 'nucleoicons',      component: NucleoiconsComponent },
     { path: 'users',      component: UsersComponent },
-    { path: 'fields',      component: FieldsComponent }
+    { path: 'fields',      component: FieldsComponent },
+    { path: 'field-details',      component: FieldDetailsComponent }
+
 
 ];
 
