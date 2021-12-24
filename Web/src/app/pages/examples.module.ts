@@ -6,17 +6,39 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LandingComponent } from './landing/landing.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignupComponent } from './signup/signup.component';
+import { UsersComponent } from './users/users.component';
+
+//material
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatRippleModule } from '@angular/material/core';
+import { MatTableModule } from '@angular/material/table'
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { FieldsComponent } from './fields/fields.component';
+import { FieldDetailsComponent } from './field-details/field-details.component'
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         NgbModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatRippleModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatIconModule
     ],
     declarations: [
         LandingComponent,
         SignupComponent,
-        ProfileComponent
+        ProfileComponent,
+        UsersComponent,
+        FieldsComponent,
+        FieldDetailsComponent
     ]
 })
 export class ExamplesModule { }

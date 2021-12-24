@@ -10,16 +10,26 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { LandingComponent } from './pages/landing/landing.component';
 import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
+import { UsersComponent } from './pages/users/users.component';
+import { FieldsComponent } from './pages/fields/fields.component';
+import { FieldDetailsComponent } from './pages/field-details/field-details.component';
+
+
 
 const routes: Routes =[
     // { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home',             component: ComponentsComponent },
-    { path: 'user-profile',     component: UserProfileComponent },
-    { path: 'admin-profile',     component: ProfileComponent },
+    { path: 'user-profile',     component: UserProfileComponent },// to view a profile by admin
+    { path: 'profile',     component: ProfileComponent },
     { path: 'signup',           component: SignupComponent },
     { path: 'login',           component: LoginComponent },
     { path: 'landing',          component: LandingComponent },
-    { path: 'nucleoicons',      component: NucleoiconsComponent }
+    { path: 'nucleoicons',      component: NucleoiconsComponent },
+    { path: 'users',      component: UsersComponent },
+    { path: 'fields',      component: FieldsComponent },
+    { path: 'field-details',      component: FieldDetailsComponent }
+
+
 ];
 
 @NgModule({

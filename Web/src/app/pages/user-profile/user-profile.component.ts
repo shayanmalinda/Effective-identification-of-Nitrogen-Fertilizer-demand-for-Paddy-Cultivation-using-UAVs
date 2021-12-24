@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 
+import { Component, OnInit } from '@angular/core';
+import { User } from '../../models/user.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserProfileComponent implements OnInit {
 
-  constructor() { }
+  users: User[];
+  user: User;
 
-  ngOnInit(): void {
+  constructor(private router: Router) {
+    this.user = this.router.getCurrentNavigation().extras.state.user;
   }
 
+
+  ngOnInit() {
+
+  }
+ 
+
 }
+

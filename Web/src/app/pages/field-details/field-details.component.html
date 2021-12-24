@@ -1,0 +1,46 @@
+<div class="wrapper">
+
+    <div class="page-header section-dark" style="background-image: url('./assets/img/paddy field.jpg')">
+        <div class="filter"></div>
+        <div class="section profile-content">
+            <div class="container">
+                <div class="owner">
+
+                    <div class="name">
+                        <!-- <h4 class="title">{{field.firstName+" "+field.lastName}}<br /></h4>
+                    <h6 class="description">{{field.email}}</h6> -->
+                        <h6>Field Details</h6><br />
+                        <!-- <h6 class="description">{{field.nic}}</h6> -->
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- <p>NIC : {{field.nic}}</p> -->
+
+                    <div class="ml-auto mr-auto container">
+                        <p>Reg No : {{field.registrationNumber}}</p>
+                        <p>Address : {{field.address}}</p>
+                        <p>Farmer : {{field.farmer}}</p>
+                        <p>Division : {{field.division}}</p>
+                        <p>District : {{field.district}}</p>
+                        <p>Province : {{field.province}}</p>
+                        <br />
+                        <!-- <button class="btn btn-outline-default btn-round"><i class="fa fa-cog"></i> Settings</button> -->
+                    </div>
+
+                </div>
+                <div>
+                    <h6>Field Visits</h6>
+                </div>
+                <div>
+                    <!-- <p ng-repeat="(status, count) in this.counts">{{status}}: {{count}}</p> -->
+                    <ul>
+                        <li *ngFor="let index of this.counts">
+                          {{ index.status }} - {{index.count}}
+                        </li>
+                      </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

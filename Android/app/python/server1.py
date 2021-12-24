@@ -3,19 +3,14 @@ from io import BytesIO
 import base64
 from flask_cors import CORS, cross_origin
 import os
-import sys
-from urllib.request import urlopen
-import json
 import cv2
 import  numpy as np
 import pandas as pd
 import piexif
 import joblib
-import sklearn
 from PIL import Image
 from flask import request
 import io
-import requests
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -31,13 +26,22 @@ def image():
     b = BytesIO()
     image_bytes.save(b,"jpeg")
     image_bytes.save("image.jpg",quality=95,subsampling=0)
-
     print("######",str(img),type(img))
+    os.remove("image.jpg")
     return str(image_bytes);
 
-@app.route("/image", methods=['POST','GET'])
+@app.route("/process", methods=['POST','GET'])
 def process():
-    image_name="./image.jpg";
+    #capture the image from request
+    img = request.files["image"]
+    #img.raw.decode_content = True
+    image_bytes = Image.open(io.BytesIO(img.read()))
+    b = BytesIO()
+    image_bytes.save(b,"jpeg")
+    image_name="image.jpg"
+    image_bytes.save(image_name,quality=95,subsampling=0)
+
+    #preprocess & predict from saved image
     preprocessed_image=preprocess(image_name);
     arr_rgb=rgb_mean(preprocessed_image);
     df=extract_metadata(image_name);
@@ -46,6 +50,7 @@ def process():
     df['bvalue']=arr_rgb[2];
     result=predict(df);
     #print(str(arr_rgb))
+    os.remove(image_name)
     return str(result);
 
 def predict(df):
