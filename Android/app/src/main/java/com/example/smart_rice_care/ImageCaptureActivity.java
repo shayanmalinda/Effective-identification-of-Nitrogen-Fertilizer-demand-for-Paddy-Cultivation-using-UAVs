@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Matrix;
 import android.hardware.Sensor;
@@ -20,8 +21,11 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.hardware.TriggerEvent;
 import android.hardware.TriggerEventListener;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Rational;
 import android.util.Size;
@@ -57,8 +61,16 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     private double hitSum = 0;
     private double hitResult = 0;
 
-    private final int SAMPLE_SIZE = 50; // change this sample size as you want, higher is more precise but slow measure.
-    private final double THRESHOLD = 0.2; // change this threshold as you want, higher is more spike movement
+    private final int SAMPLE_SIZE = 5; // change this sample size as you want, higher is more precise but slow measure.
+    private double THRESHOLD = 0; // change this threshold as you want, higher is more spike movement
+
+    ImageCaptureConfig imageCaptureConfig;
+    ImageCapture imgCap;
+
+    MediaPlayer shutterSound;
+
+    private boolean captured = false;
+    private boolean waiting = false;
 
 
     @Override
@@ -70,6 +82,15 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         requestId = getIntent.getStringExtra("requestId");
         fieldId = getIntent.getStringExtra("fieldId");
         farmerId = getIntent.getStringExtra("farmerId");
+
+        shutterSound = MediaPlayer.create(ImageCaptureActivity.this, R.raw.shutter);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String threshold = preferences.getString("SENSORTHRESHOLD", "");
+        if(!threshold.equalsIgnoreCase(""))
+        {
+            THRESHOLD = Double.parseDouble(threshold);
+        }
 
         sensorMan = (SensorManager) this.getSystemService(ImageCaptureActivity.this.SENSOR_SERVICE);
         accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -112,9 +133,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                 }
         );
 
-        ImageCaptureConfig imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
+        imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
                     .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).build();
-        final ImageCapture imgCap = new ImageCapture(imageCaptureConfig);
+        imgCap = new ImageCapture(imageCaptureConfig);
 
         findViewById(R.id.bt_capture_image).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,9 +147,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         CameraX.bindToLifecycle(this, preview, imgCap);
     }
 
-    private void captureImage(ImageCapture imgCap) {
-
-        Log.d("testing","capturing image");
+    private File captureImage(ImageCapture imgCap) {
         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId);
         try{
             if(dir.mkdir()) {
@@ -161,6 +180,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                 }
             }
         });
+        return file;
     }
 
     private void updateTransform() {
@@ -224,12 +244,29 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
             } else {
                 hitResult = hitSum / SAMPLE_SIZE;
 
-                Log.d("hiii=", String.valueOf(hitResult));
-
                 if (hitResult > THRESHOLD) {
-                    Log.d("hiii=", "Walking");
+//                    Moving
+                    captured = false;
                 } else {
-                    Log.d("hiii=", "Stop Walking");
+//                    Not Moving
+                }
+
+                if(hitResult <= THRESHOLD && !captured && !waiting){
+                    System.out.println("testing== Capturing");
+                    captured = true;
+                    shutterSound.start();
+                    waiting = true;
+
+                    File file = captureImage(imgCap);
+
+                    System.out.println("testing== "+file.getName());
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            waiting = false;
+                        }
+                    }, 3000);
                 }
 
                 hitCount = 0;
@@ -242,5 +279,11 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        shutterSound.stop();
     }
 }

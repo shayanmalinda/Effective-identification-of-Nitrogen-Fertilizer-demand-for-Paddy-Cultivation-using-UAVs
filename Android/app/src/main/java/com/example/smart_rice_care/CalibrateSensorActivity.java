@@ -38,7 +38,7 @@ public class CalibrateSensorActivity extends AppCompatActivity implements Sensor
     private double hitSum = 0;
     private double hitResult = 0;
 
-    private final int SAMPLE_SIZE = 1; // change this sample size as you want, higher is more precise but slow measure.
+    private final int SAMPLE_SIZE = 5; // change this sample size as you want, higher is more precise but slow measure.
     private double THRESHOLD = 0; // change this threshold as you want, higher is more spike movement
 
     Integer flyingTime, delayTime;
