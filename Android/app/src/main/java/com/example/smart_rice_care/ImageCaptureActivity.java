@@ -19,8 +19,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.hardware.TriggerEvent;
-import android.hardware.TriggerEventListener;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,11 +33,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.TileOverlay;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class ImageCaptureActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -225,6 +240,80 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         return true;
     }
 
+    public void processImage() {
+        File file = captureImage(imgCap);
+        String url = "http://192.168.8.103:5000/process";
+
+
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                SyncHttpClient client = new SyncHttpClient();
+                RequestParams params = new RequestParams();
+                params.put("text", "some string");
+                try {
+                    params.put("image", new File(file.getAbsolutePath()));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                client.post(url, params, new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        System.out.println("Response===Failed "+ responseString);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        String level = responseString.substring(1, responseString.length() - 1);
+                        System.out.println("Response===Success =  "+ level);
+                    }
+                });
+
+
+//                try  {
+//
+//                    try {
+//                        HttpClient httpclient = new DefaultHttpClient();
+//
+//                        HttpPost httppost = new HttpPost(url);
+//                        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+//                        FileBody fileBody = new FileBody(file); //image should be a String
+//                        builder.addPart("image", fileBody);
+//                        HttpEntity entity = builder.build();
+//                        httppost.setEntity(entity);
+//                        HttpResponse response = httpclient.execute(httppost);
+//
+//                        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+//                        String body = "";
+//                        while ((body = rd.readLine()) != null)
+//                        {
+//                            System.out.print("Response==="+body);
+//                        }
+//
+//                    } catch (Exception e) {
+//                        Log.e("Response===", e.toString());
+//                        Log.e("Response===", e.getMessage());
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    Log.e("Response===", e.toString());
+//                }
+            }
+        });
+
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                thread.start();
+            }
+        }, 500);
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -252,14 +341,12 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                 }
 
                 if(hitResult <= THRESHOLD && !captured && !waiting){
-                    System.out.println("testing== Capturing");
                     captured = true;
                     shutterSound.start();
                     waiting = true;
 
-                    File file = captureImage(imgCap);
+                    processImage();
 
-                    System.out.println("testing== "+file.getName());
 
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
