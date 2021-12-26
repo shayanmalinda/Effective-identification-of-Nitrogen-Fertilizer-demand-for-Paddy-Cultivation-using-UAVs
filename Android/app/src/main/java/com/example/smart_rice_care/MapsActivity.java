@@ -8,12 +8,15 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -55,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private UiSettings mUiSettings;
+    private ImageView ivFocus;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -64,6 +68,7 @@ public class MapsActivity extends FragmentActivity implements
     List<WeightedLatLng> level2List = new ArrayList<>();
     List<WeightedLatLng> level3List = new ArrayList<>();
     List<WeightedLatLng> level4List = new ArrayList<>();
+    List<WeightedLatLng> level5List = new ArrayList<>();
     List<Marker> markers = new ArrayList<>();
 
     int[] level2Colors = {
@@ -77,6 +82,10 @@ public class MapsActivity extends FragmentActivity implements
     int[] level4Colors = {
             Color.rgb(68, 204, 0),
             Color.rgb(68, 204, 0)
+    };
+    int[] level5Colors = {
+            Color.rgb(0, 102, 0),
+            Color.rgb(0, 102, 0)
     };
 
     @Override
@@ -94,6 +103,16 @@ public class MapsActivity extends FragmentActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        ivFocus = findViewById(R.id.ivFocus);
+
+        ivFocus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveCameraToCenter();
+            }
+        });
+
     }
 
     @Override
@@ -212,6 +231,39 @@ public class MapsActivity extends FragmentActivity implements
                 });
 
 
+
+        db.collection("FieldData")
+                .whereEqualTo("level",5)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.w("Fetching Error", "Listen failed.", error);
+                            Toast.makeText(MapsActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        for (QueryDocumentSnapshot doc : value) {
+                            Double latitude = doc.getDouble("latitude");
+                            Double longitude = doc.getDouble("longitude");;
+                            Integer level = doc.getLong("level").intValue();
+                            String officerId = doc.getString("officerId");
+                            String requestId = doc.getString("requestId");
+                            FieldData obj = new FieldData(latitude, longitude, level, officerId, requestId, level);
+                            fieldData.add(obj);
+
+                            LatLng latLng = new LatLng(latitude, longitude);
+                            WeightedLatLng weightedLatLngObj = new WeightedLatLng(latLng, 1);
+                            level4List.add(weightedLatLngObj);
+
+                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).draggable(true).visible(false));
+                            markers.add(marker);
+                        }
+
+                        addHeatMap(level5List, level5Colors);
+                    }
+                });
+
+
     }
 
     public void moveCameraToCenter() {
@@ -223,7 +275,7 @@ public class MapsActivity extends FragmentActivity implements
 
         int padding = 100; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        mMap.moveCamera(cu);
+        mMap.animateCamera(cu);
 
     }
 

@@ -5,7 +5,6 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
     defaultConfig {
         Properties properties = new Properties()
 
@@ -36,6 +35,9 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding{
+            enabled=true
+        }
     }
     packagingOptions {
         resources.excludes.add("META-INF/*")

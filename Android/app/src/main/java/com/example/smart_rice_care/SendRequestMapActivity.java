@@ -47,14 +47,14 @@ public class SendRequestMapActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_send_request_map);
 
         btSelectLocation = findViewById(R.id.btSelectLocation);
         btSelectLocation.setVisibility(View.GONE);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.sendRequestMap);
         mapFragment.getMapAsync(this);
 
         btSelectLocation.setOnClickListener(new View.OnClickListener() {
