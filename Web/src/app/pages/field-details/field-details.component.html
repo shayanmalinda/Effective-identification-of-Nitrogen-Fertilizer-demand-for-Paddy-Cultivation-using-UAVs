@@ -7,10 +7,7 @@
                 <div class="owner">
 
                     <div class="name">
-                        <!-- <h4 class="title">{{field.firstName+" "+field.lastName}}<br /></h4>
-                    <h6 class="description">{{field.email}}</h6> -->
                         <h6>Field Details</h6><br />
-                        <!-- <h6 class="description">{{field.nic}}</h6> -->
                     </div>
                 </div>
                 <div class="row">
@@ -24,20 +21,23 @@
                         <p>District : {{field.district}}</p>
                         <p>Province : {{field.province}}</p>
                         <br />
-                        <!-- <button class="btn btn-outline-default btn-round"><i class="fa fa-cog"></i> Settings</button> -->
                     </div>
 
                 </div>
-                <div>
-                    <h6>Field Visits</h6>
+                <div class="row">
+                    <h6>Field Requests</h6>
                 </div>
-                <div>
-                    <!-- <p ng-repeat="(status, count) in this.counts">{{status}}: {{count}}</p> -->
+                <div class="row">
                     <ul>
                         <li *ngFor="let index of this.counts">
-                          {{ index.status }} - {{index.count}}
+                            <label color="#228B22">{{ index.status }} - {{index.count}}</label>
                         </li>
-                      </ul>
+                    </ul>
+                </div>
+                <div class="left">
+                    <button  mat-raised-button color="#228B22" aria-label="View Field Requests">
+                        View Field Requests
+                    </button>
                 </div>
 
             </div>
