@@ -7,6 +7,10 @@
     <color name="orange_900">#E65100</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="level2_color">#FF3C00</color>
+    <color name="level3_color">#FFFF1a</color>
+    <color name="level4_color">#44CC00</color>
+    <color name="level5_color">#006600</color>
 <!--    <color name="level2_color">(255, 0, 0)</color>-->
 <!--    <color name="level3_color">(255, 255, 26)</color>-->
 <!--    <color name="level4_color">(68, 204, 0)</color>-->

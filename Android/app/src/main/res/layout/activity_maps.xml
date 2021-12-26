@@ -16,6 +16,27 @@
     <androidx.cardview.widget.CardView
         android:layout_width="38dp"
         android:layout_height="38dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:elevation="0dp"
+        map:cardBackgroundColor="@android:color/transparent"
+        map:cardCornerRadius="2dp">
+
+        <ImageView
+            android:id="@+id/ivSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:src="@drawable/ic_settings"
+            android:backgroundTint="#D7D7D7"
+            android:visibility="visible"
+            android:alpha="0.96"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:layout_marginTop="65dp"
         android:layout_marginRight="12dp"
         android:elevation="0dp"
