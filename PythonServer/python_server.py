@@ -48,7 +48,7 @@ def process():
     result=predict(df);
     print(str(arr_rgb))
 
-    return str(result);
+    return str(result[0]);
 
 def predict(df):
     print("predict")
