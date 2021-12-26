@@ -1,7 +1,6 @@
-from flask import Flask, Response, request, jsonify
+from flask import Flask,request
 from io import BytesIO
-import base64
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import os
 import cv2
 import  numpy as np
@@ -9,7 +8,6 @@ import pandas as pd
 import piexif
 import joblib
 from PIL import Image
-from flask import request
 import io
 
 app = Flask(__name__)
@@ -26,7 +24,7 @@ def image():
     b = BytesIO()
     image_bytes.save(b,"jpeg")
     image_bytes.save("image.jpg",quality=95,subsampling=0)
-    print("######",str(img),type(img))
+    #print("######",str(img),type(img))
     os.remove("image.jpg")
     return str(image_bytes);
 
@@ -38,16 +36,15 @@ def process():
     #preprocess & predict from saved image
     preprocessed_image=preprocess(img);
     arr_rgb=rgb_mean(preprocessed_image);
-    df1=extract_metadata(img);
+    df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
     df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
-    df['brightness']=df1['brightness']
-    df['shutter_speed']=df1['shutter_speed']
-    df['exposure_time']=df1['exposure_time']
+    df['brightness']=df_metadata['brightness']
+    df['shutter_speed']=df_metadata['shutter_speed']
+    df['exposure_time']=df_metadata['exposure_time']
     print(str(df))
     result=predict(df);
-    print(str(arr_rgb))
-
+    #print(str(arr_rgb))
     return str(result[0]);
 
 def predict(df):
@@ -76,11 +73,11 @@ def preprocess(image):
     return image1;
 
 def rgb_mean(image):
-    print("rgb_mean" ,str(image.shape))
+    #print("rgb_mean" ,str(image.shape))
     rowcnt=image.shape[0]
     colcnt=image.shape[1]
 
-    rgbarr1=np.zeros((3))
+    rgb_array=np.zeros((3))
 
     r=0
     b=0
@@ -96,11 +93,11 @@ def rgb_mean(image):
                 g+=image[k][l][1];
                 b+=image[k][l][2];#we dont remove images..just removing pixels..so rgbarr size no need to change
     if(nonzerocnt>0):
-        rgbarr1[0]=r/nonzerocnt;
-        rgbarr1[1]=g/nonzerocnt;
-        rgbarr1[2]=b/nonzerocnt;
+        rgb_array[0]=r/nonzerocnt;
+        rgb_array[1]=g/nonzerocnt;
+        rgb_array[2]=b/nonzerocnt;
 
-    return  rgbarr1;
+    return  rgb_array;
 
 def extract_metadata(image):
     #pre-process
@@ -130,7 +127,6 @@ def extract_metadata(image):
             img_mdata[2]=tag_value[0]/tag_value[1]
 
     df.loc[0] =[img_mdata[0]] + [img_mdata[1]] + [img_mdata[2]]
-    #df.loc[0] = [image_name] + [img_mdata[0]] + [img_mdata[1]] + [img_mdata[2]]
     #print("###Metadata",str(df))
     return df
 
