@@ -50,8 +50,7 @@ def process():
 def predict(df):
     print("predict")
     # Load the model from the file
-    #model = joblib.load('./model.pkl')
-    model = joblib.load('./model_rgb.pkl')
+    model = joblib.load('./model.pkl')
     
     # Use the loaded model to make predictions
     prd=model.predict(df)
