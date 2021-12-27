@@ -442,7 +442,6 @@ public class MapsActivity extends FragmentActivity implements
 
         Gradient gradient = new Gradient(colors, startPoints);
 
-        // Create a heat map tile provider, passing it the latlngs of the police stations.
         if(!weightedList.isEmpty()){
             HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
                     .weightedData(weightedList)
