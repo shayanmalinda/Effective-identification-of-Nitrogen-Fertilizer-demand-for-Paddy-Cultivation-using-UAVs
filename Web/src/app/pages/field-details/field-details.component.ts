@@ -24,12 +24,7 @@ export class FieldDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.fieldRequestService.getFieldVisitRequests(this.field.id).subscribe(data => {
-    //   this.fieldRequests = data;
-    // });
     this.counts = this.fieldRequestService.getFieldVisitCountsByStatus(this.field.id);
-    // console.log(this.counts);
-    // });
 
   }
 
