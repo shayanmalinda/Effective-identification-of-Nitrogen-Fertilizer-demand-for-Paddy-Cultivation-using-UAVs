@@ -2,6 +2,7 @@ package com.example.smart_rice_care;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraX;
 import androidx.camera.core.ImageCapture;
@@ -11,6 +12,7 @@ import androidx.camera.core.PreviewConfig;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,7 +21,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,8 +38,13 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -61,7 +73,10 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     private int REQUEST_CODE_PERMISSIONS = 101;
     private String[] REQUIRED_PERMISSSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
     String requestId, fieldId, farmerId;
-    TextureView textureView;
+    TextureView txvCamera;
+    TextView tvColorLevel;
+    ImageButton btCaptureImage;
+    FrameLayout frameLayout;
 
     private SensorManager sensorMan;
     private Sensor accelerometer;
@@ -86,7 +101,6 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     private boolean captured = false;
     private boolean waiting = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +131,13 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         sensorRegistered = true;
 
         getSupportActionBar().hide();
-        textureView = (TextureView) findViewById(R.id.txv_camera);
+        frameLayout = findViewById(R.id.frameLayout);
+        txvCamera = (TextureView) findViewById(R.id.txvCamera);
+        btCaptureImage = findViewById(R.id.btCaptureImage);
+        tvColorLevel = findViewById(R.id.tvColorLevel);
+
+//        frameLayout.addView(btCaptureImage);
+
         if(allPermissionGranted()){
             startCamera();
         }
@@ -128,8 +148,8 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     private void startCamera() {
         CameraX.unbindAll();
-        Rational aspectRatio = new Rational(textureView.getWidth(), textureView.getHeight());
-        Size screen = new Size(textureView.getWidth(), textureView.getHeight());
+        Rational aspectRatio = new Rational(txvCamera.getWidth(), txvCamera.getHeight());
+        Size screen = new Size(txvCamera.getWidth(), txvCamera.getHeight());
 
         PreviewConfig pConfig = new PreviewConfig.Builder().setTargetAspectRatio(aspectRatio).setTargetResolution(screen).build();
         Preview preview = new Preview(pConfig);
@@ -138,21 +158,21 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                 new Preview.OnPreviewOutputUpdateListener() {
                     @Override
                     public void onUpdated(Preview.PreviewOutput output) {
-                        ViewGroup parent = (ViewGroup) textureView.getParent();
-                        parent.removeView(textureView);
-                        parent.addView(textureView);
+                        ViewGroup parent = (ViewGroup) txvCamera.getParent();
+                        parent.removeView(txvCamera);
+                        parent.addView(txvCamera);
 
-                        textureView.setSurfaceTexture(output.getSurfaceTexture());
+                        txvCamera.setSurfaceTexture(output.getSurfaceTexture());
                         updateTransform();
                     }
                 }
         );
 
-        imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
+        imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MAX_QUALITY)
                     .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).build();
         imgCap = new ImageCapture(imageCaptureConfig);
 
-        findViewById(R.id.bt_capture_image).setOnClickListener(new View.OnClickListener() {
+        btCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 captureImage(imgCap);
@@ -175,9 +195,32 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         }
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId+"/"+System.currentTimeMillis()+".jpg");
         imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onImageSaved(@NonNull @NotNull File file) {
+
+                if (ContextCompat.checkSelfPermission(ImageCaptureActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    LocationManager locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+                    Criteria criteria= new Criteria();
+
+                    Location location = locationManager.getLastKnownLocation(locationManager
+                            .getBestProvider(criteria, false));
+                } else {
+                    // Permission to access the location is missing. Show rationale and request permission
+                    PermissionUtils.requestPermission(ImageCaptureActivity.this, LOCATION_PERMISSION_REQUEST_CODE,
+                            Manifest.permission.ACCESS_FINE_LOCATION, true);
+                }
+                ExifInterface exif = null;
+                try {
+                    exif = new ExifInterface(file.getAbsoluteFile());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, "location");
+                shutterSound.start();
                 String msg = "Pic captured at " + file.getAbsolutePath();
+                processImage(file);
                 Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
             }
 
@@ -200,14 +243,14 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     private void updateTransform() {
         Matrix mx = new Matrix();
-        float w = textureView.getMeasuredWidth();
-        float h = textureView.getMeasuredHeight();
+        float w = txvCamera.getMeasuredWidth();
+        float h = txvCamera.getMeasuredHeight();
 
         float cx = w/2f;
         float cy = h/2f;
 
         int rotationDgr;
-        int rotation = (int) textureView.getRotation();
+        int rotation = (int) txvCamera.getRotation();
 
         switch(rotation){
             case Surface.ROTATION_0:
@@ -227,7 +270,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         }
 
         mx.postRotate((float)rotationDgr, cx, cy);
-        textureView.setTransform(mx);
+        txvCamera.setTransform(mx);
     }
 
     private boolean allPermissionGranted() {
@@ -240,10 +283,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         return true;
     }
 
-    public void processImage() {
-        File file = captureImage(imgCap);
-        String url = "http://192.168.8.103:5000/process";
-
+    public void processImage(File file) {
+        tvColorLevel.setText("Processing...");
+        String url = "http://192.168.8.101:5000/process";
 
         Thread thread = new Thread(new Runnable() {
 
@@ -252,7 +294,6 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
                 SyncHttpClient client = new SyncHttpClient();
                 RequestParams params = new RequestParams();
-                params.put("text", "some string");
                 try {
                     params.put("image", new File(file.getAbsolutePath()));
                 } catch (FileNotFoundException e) {
@@ -267,41 +308,12 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        String level = responseString.substring(1, responseString.length() - 1);
+                        String level = responseString;
                         System.out.println("Response===Success =  "+ level);
+                        tvColorLevel.setText("Level "+level);
                     }
                 });
 
-
-//                try  {
-//
-//                    try {
-//                        HttpClient httpclient = new DefaultHttpClient();
-//
-//                        HttpPost httppost = new HttpPost(url);
-//                        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-//                        FileBody fileBody = new FileBody(file); //image should be a String
-//                        builder.addPart("image", fileBody);
-//                        HttpEntity entity = builder.build();
-//                        httppost.setEntity(entity);
-//                        HttpResponse response = httpclient.execute(httppost);
-//
-//                        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-//                        String body = "";
-//                        while ((body = rd.readLine()) != null)
-//                        {
-//                            System.out.print("Response==="+body);
-//                        }
-//
-//                    } catch (Exception e) {
-//                        Log.e("Response===", e.toString());
-//                        Log.e("Response===", e.getMessage());
-//                    }
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Log.e("Response===", e.toString());
-//                }
             }
         });
 
@@ -342,11 +354,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
                 if(hitResult <= THRESHOLD && !captured && !waiting){
                     captured = true;
-                    shutterSound.start();
                     waiting = true;
 
-                    processImage();
-
+//                    captureImage(imgCap);
 
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
