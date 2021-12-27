@@ -51,7 +51,7 @@ def predict(df):
     print("predict")
     # Load the model from the file
     model = joblib.load('./model.pkl')
-
+    
     # Use the loaded model to make predictions
     prd=model.predict(df)
     return prd;

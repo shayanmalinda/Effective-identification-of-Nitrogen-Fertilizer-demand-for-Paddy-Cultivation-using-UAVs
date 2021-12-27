@@ -13,6 +13,7 @@ import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.compo
 import { UsersComponent } from './pages/users/users.component';
 import { FieldsComponent } from './pages/fields/fields.component';
 import { FieldDetailsComponent } from './pages/field-details/field-details.component';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 
 
 
@@ -27,7 +28,11 @@ const routes: Routes =[
     { path: 'nucleoicons',      component: NucleoiconsComponent },
     { path: 'users',      component: UsersComponent },
     { path: 'fields',      component: FieldsComponent },
-    { path: 'field-details',      component: FieldDetailsComponent }
+    { path: 'field-details',      component: FieldDetailsComponent },
+    { path: 'agricultural-officers',      component: UsersComponent },
+    { path: 'admin-dashboard',      component: AdminDashboardComponent },
+
+
 
 
 ];

@@ -1,3 +1,15 @@
 ul {
     list-style-type: none;
 }
+.container {
+    width: 500px;
+}
+.left {
+    text-align: right;
+}
+.row {
+    margin-left: 20px;
+}
+.name{
+    margin-top: 20px;
+}
