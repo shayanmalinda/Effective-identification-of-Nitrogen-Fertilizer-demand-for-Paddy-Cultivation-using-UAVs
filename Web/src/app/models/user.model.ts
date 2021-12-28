@@ -11,5 +11,6 @@ export class User {
     province: string;
     time:String;
     name:String;
+    status:string;
     
 }

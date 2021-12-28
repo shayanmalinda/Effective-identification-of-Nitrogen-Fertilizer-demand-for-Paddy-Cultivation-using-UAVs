@@ -17,7 +17,10 @@ export class UserService {
       userRole = 'farmer'
     else
       userRole = 'agricultural officer'
-    return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', '==', status)).snapshotChanges();
+    if (status == 'approved')
+      return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', '==', status)).snapshotChanges();
+    else return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', 'in', ['pending','declined'])).snapshotChanges();
+
   }
 
   getUser(id: string) {

@@ -44,6 +44,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   title;
   role;
   status;
+  selectedType: String;
   constructor(private renderer: Renderer2, private userService: UserService, private router: Router) {
     this.type = this.router.getCurrentNavigation().extras.state.type;
     this.role = this.router.getCurrentNavigation().extras.state.role;
@@ -51,10 +52,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.title = this.role;
     if (this.type != 'request') {
       this.title += "s";
-      this.displayedColumns = ['firstName','lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'view', 'delete'];
+      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'view', 'delete'];
     } else {
       this.title += " requests";
-      this.displayedColumns = ['firstName','lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'view', 'accept', 'decline', 'delete'];
+      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'accept', 'decline', 'delete'];
     }
 
   }
@@ -91,12 +92,23 @@ export class UsersComponent implements OnInit, AfterViewInit {
   decline() {
     this.userService.declineUser(this.user.id);
   }
-  // isRequest() {
-  //   if(this.type=="request")
-  // }
+  selectReqType() {
+    let filterValue;
+    if (this.selectedType == "all") {
+      filterValue = '';
+    } else {
+      filterValue = this.selectedType;
+    }
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    console.log(filterValue)
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
@@ -122,7 +134,6 @@ export class UsersComponent implements OnInit, AfterViewInit {
     } else {
       this.status = "approved"
     }
-    //if (this.role == "user") {
 
     this.userService.getUsers(this.role, this.status).subscribe(data => {
       this.users = data.map(e => {
@@ -136,19 +147,6 @@ export class UsersComponent implements OnInit, AfterViewInit {
       this.dataSource.sort = this.sort;
 
     });
-    //} 
-    // else if (this.type == "request") {
-    //   this.userService.getUsers("farmer", "pending").subscribe(data => {
-    //     this.users = data.map(e => {
-    //       return {
-    //         id: e.payload.doc.id,
-    //         ...e.payload.doc.data() as {}
-    //       } as User;
-    //     })
-    //     this.dataSource = new MatTableDataSource(this.users);
-
-    //   });
-    // }
 
   }
 

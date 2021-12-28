@@ -24,3 +24,11 @@ table {
   text-transform:uppercase;
   font-weight: bold;
 }
+.toggle{
+  text-transform:uppercase;
+  align-content: left;
+}
+.mat-button-toggle-group {
+  height: 32px;
+  align-items: center;
+}
