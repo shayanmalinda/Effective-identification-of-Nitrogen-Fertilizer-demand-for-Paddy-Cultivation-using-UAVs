@@ -7,23 +7,32 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class UserService {
-  user:User;
+  user: User;
 
   constructor(private fireStore: AngularFirestore) { }
 
-  getUsers() {
-    return this.fireStore.collection('Users').snapshotChanges();
-    
+  getUsers(userRole, status) {
+    // console.log(userRole+"mmm"+status);
+    if (userRole == 'user')
+      userRole = 'farmer'
+    else
+      userRole = 'agricultural officer'
+    return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', '==', status)).snapshotChanges();
   }
-  getUser(id:string){
+
+  getUser(id: string) {
     return this.fireStore.collection('Users').doc(id).snapshotChanges()
   }
 
-  
-
-  deleteUser(userId:String){
-    console.log(userId);
-    this.fireStore.doc('Users/' + userId).delete();  }
+  deleteUser(userId: String) {
+    this.fireStore.doc('Users/' + userId).delete();
+  }
+  acceptUser(userId: String) {
+    this.fireStore.doc('Users/' + userId).update({ status: 'approved' });
+  }
+  declineUser(userId: String) {
+    this.fireStore.doc('Users/' + userId).update({ status: 'declined' });
+  }
 
 }
 

@@ -52,7 +52,7 @@ export class NavbarComponent implements OnInit {
       if(titlee.charAt(0) === '#'){
           titlee = titlee.slice( 1 );
       }
-        if( titlee === '/home' ) {
+        if( titlee === '/home') {
             return true;
         }
         else {

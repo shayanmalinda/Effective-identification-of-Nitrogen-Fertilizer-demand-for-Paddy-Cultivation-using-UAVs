@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -8,10 +9,24 @@ import { Component, OnInit } from '@angular/core';
 export class AdminDashboardComponent implements OnInit {
   focus: any;
   focus1: any;
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
-
+  viewFields() {
+    this.router.navigate(['/fields']);
+  }
+  viewUsers() {
+    this.router.navigate(['/users'], { state: { role: 'user' } });
+  }
+  viewRequests() {
+    this.router.navigate(['/requests'], { state: { role: 'user', type: 'request' } });
+  }
+  viewOfficerRequests() {
+    this.router.navigate(['/officer-requests'], { state: { role: 'officer', type: 'request' } });
+  }
+  viewOfficers() {
+    this.router.navigate(['/officers'], { state: { role: 'officer'} });
+  }
 }
 

@@ -21,7 +21,8 @@ export interface UserData {
 })
 
 export class UsersComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name', 'email', 'phone', 'nic', 'division','view','delete'];
+  displayedColumns: string[];
+  // = ['name', 'email', 'phone', 'nic', 'province','district','division','view','delete'];
   dataSource: MatTableDataSource<User>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -38,9 +39,24 @@ export class UsersComponent implements OnInit, AfterViewInit {
   users: User[];
   data: any[];
   selectedRowIndex;
-  user:User;
+  user: User;
+  type;
+  title;
+  role;
+  status;
+  constructor(private renderer: Renderer2, private userService: UserService, private router: Router) {
+    this.type = this.router.getCurrentNavigation().extras.state.type;
+    this.role = this.router.getCurrentNavigation().extras.state.role;
 
-  constructor(private renderer: Renderer2, private userService: UserService,private router: Router) {
+    this.title = this.role;
+    if (this.type != 'request') {
+      this.title+="s";
+      this.displayedColumns = ['name', 'email', 'phone', 'nic', 'province', 'district', 'division', 'view', 'delete'];
+    } else {
+      this.title+=" requests";
+      this.displayedColumns = ['name', 'email', 'phone', 'nic', 'province', 'district', 'division', 'request time', 'view', 'accept', 'decline', 'delete'];
+    }
+ 
   }
 
   isWeekend(date: NgbDateStruct) {
@@ -57,14 +73,27 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
   getRecord(row) {
     this.selectedRowIndex = row.id;
-    this.user=row;
+    this.user = row;
   }
   viewUser() {
-    this.router.navigate(['/user-profile'],{ state: { user: this.user }});
+    if (this.type == 'request')
+      this.router.navigate(['/user-request'], { state: { user: this.user } });
+    else
+      this.router.navigate(['/user-profile'], { state: { user: this.user } });// should be changed to profile with updates
+
   }
   deleteUser() {
     this.userService.deleteUser(this.user.id);
   }
+  accept() {
+    this.userService.acceptUser(this.user.id);
+  }
+  decline() {
+    this.userService.declineUser(this.user.id);
+  }
+  // isRequest() {
+  //   if(this.type=="request")
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -88,7 +117,14 @@ export class UsersComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.userService.getUsers().subscribe(data => {
+    if (this.type == "request") {
+      this.status = "pending"
+    } else {
+      this.status = "approved"
+    }
+    //if (this.role == "user") {
+
+    this.userService.getUsers(this.role, this.status).subscribe(data => {
       this.users = data.map(e => {
         return {
           id: e.payload.doc.id,
@@ -98,6 +134,19 @@ export class UsersComponent implements OnInit, AfterViewInit {
       this.dataSource = new MatTableDataSource(this.users);
 
     });
+    //} 
+    // else if (this.type == "request") {
+    //   this.userService.getUsers("farmer", "pending").subscribe(data => {
+    //     this.users = data.map(e => {
+    //       return {
+    //         id: e.payload.doc.id,
+    //         ...e.payload.doc.data() as {}
+    //       } as User;
+    //     })
+    //     this.dataSource = new MatTableDataSource(this.users);
+
+    //   });
+    // }
 
   }
 

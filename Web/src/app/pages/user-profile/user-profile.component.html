@@ -16,6 +16,7 @@
                     <h6 class="description">{{user.phone}}</h6><br />
                     <!-- <h6 class="description">{{user.nic}}</h6> -->
                 </div>
+
             </div>
             <div class="row">
                 <!-- <p>NIC : {{user.nic}}</p> -->
@@ -25,9 +26,15 @@
                     <p>Province : {{user.province}}</p>
                     <p>District : {{user.district}}</p>
                     <p>Division : {{user.division}}</p>
+                    <p>Requested Time : {{user.time}}</p>
                     <br />
                     <!-- <button class="btn btn-outline-default btn-round"><i class="fa fa-cog"></i> Settings</button> -->
                 </div>
+
+            </div>
+            <div class="actions">
+                <button type="button" class="btn btn-outline-neutral btn-round accept"  (click)="accept()">Accept</button><br />
+                <button type="button" class="btn btn-outline-neutral btn-round decline"  (click)="decline()">Decline</button><br />
             </div>
             <br />
         </div>

@@ -18,7 +18,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { FieldsComponent } from './fields/fields.component';
 import { FieldDetailsComponent } from './field-details/field-details.component';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component'
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 @NgModule({
     imports: [
@@ -40,7 +40,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
         UsersComponent,
         FieldsComponent,
         FieldDetailsComponent,
-        AdminDashboardComponent
+        AdminDashboardComponent,
     ]
 })
 export class ExamplesModule { }

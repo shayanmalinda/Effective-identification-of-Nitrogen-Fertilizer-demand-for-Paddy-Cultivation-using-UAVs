@@ -4,7 +4,7 @@
         <div class="content-center">
             <div class="container">
                 <div>
-                    <div class="title-brand"><label>Users</label></div>
+                    <div class="title-brand"><label>{{title}}</label></div>
 
                     <!-- <div class="title-brand-left"> -->
                     <mat-form-field appearance="standard">
@@ -39,11 +39,25 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> NIC </th>
                                 <td mat-cell *matCellDef="let row"> {{row.nic}}&nbsp;&nbsp; </td>
                             </ng-container>
+                            <!-- Progress Column -->
+                            <ng-container matColumnDef="province">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Province </th>
+                                <td mat-cell *matCellDef="let row"> {{row.province}}&nbsp;&nbsp; </td>
+                            </ng-container>
+                            <!-- Progress Column -->
+                            <ng-container matColumnDef="district">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> District </th>
+                                <td mat-cell *matCellDef="let row"> {{row.district}}&nbsp;&nbsp; </td>
+                            </ng-container>
 
                             <!-- Fruit Column -->
                             <ng-container matColumnDef="division">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Division </th>
                                 <td mat-cell *matCellDef="let row"> {{row.division}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="request time" >
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Time </th>
+                                <td mat-cell *matCellDef="let row"> {{row.time}} </td>
                             </ng-container>
 
                             <!-- <ng-container matColumnDef="action">
@@ -61,7 +75,27 @@
                                     
                                     <button mat-icon-button color="primary" (click)="viewUser()"
                                         aria-label="Example icon button with a home icon">
-                                        <mat-icon  [ngStyle]="{'color':'gray'}">visibility</mat-icon>
+                                        <mat-icon  [ngStyle]="{'color':'blue'}">visibility</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="accept">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
+                                <td mat-cell *matCellDef="let element">
+                                    
+                                    <button mat-icon-button color="primary" (click)="accept()"
+                                        aria-label="Example icon button with a home icon">
+                                        <mat-icon  [ngStyle]="{'color':'green'}">check</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="decline">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
+                                <td mat-cell *matCellDef="let element">
+                                    
+                                    <button mat-icon-button color="primary" (click)="decline()"
+                                        aria-label="Example icon button with a home icon">
+                                        <mat-icon  [ngStyle]="{'color':'orange'}">close</mat-icon>
                                     </button>
                                 </td>
                             </ng-container>
@@ -71,10 +105,11 @@
                                     
                                     <button mat-icon-button color="primary" (click)="deleteUser()"
                                         aria-label="Example icon button with a home icon">
-                                        <mat-icon  [ngStyle]="{'color':'gray'}">delete</mat-icon>
+                                        <mat-icon  [ngStyle]="{'color':'red'}">delete</mat-icon>
                                     </button>
                                 </td>
                             </ng-container>
+                 
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"
