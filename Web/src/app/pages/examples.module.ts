@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FieldsComponent } from './fields/fields.component';
 import { FieldDetailsComponent } from './field-details/field-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
     imports: [
@@ -30,6 +31,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
         MatInputModule,
         MatRippleModule,
         MatTableModule,
+        MatSortModule,
         MatPaginatorModule,
         MatIconModule
     ],

@@ -50,13 +50,13 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
     this.title = this.role;
     if (this.type != 'request') {
-      this.title+="s";
-      this.displayedColumns = ['name', 'email', 'phone', 'nic', 'province', 'district', 'division', 'view', 'delete'];
+      this.title += "s";
+      this.displayedColumns = ['firstName','lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'view', 'delete'];
     } else {
-      this.title+=" requests";
-      this.displayedColumns = ['name', 'email', 'phone', 'nic', 'province', 'district', 'division', 'request time', 'view', 'accept', 'decline', 'delete'];
+      this.title += " requests";
+      this.displayedColumns = ['firstName','lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'view', 'accept', 'decline', 'delete'];
     }
- 
+
   }
 
   isWeekend(date: NgbDateStruct) {
@@ -68,8 +68,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
     return date.month !== current.month;
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    //   this.dataSource.paginator = this.paginator;
+    //   this.dataSource.sort = this.sort;
   }
   getRecord(row) {
     this.selectedRowIndex = row.id;
@@ -132,6 +132,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
         } as User;
       })
       this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
 
     });
     //} 

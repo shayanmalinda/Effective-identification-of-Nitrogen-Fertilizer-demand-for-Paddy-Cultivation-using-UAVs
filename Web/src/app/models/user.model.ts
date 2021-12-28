@@ -10,5 +10,6 @@ export class User {
     division: string;
     province: string;
     time:String;
+    name:String;
     
 }
