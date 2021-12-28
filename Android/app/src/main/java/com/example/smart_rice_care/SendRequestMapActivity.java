@@ -27,12 +27,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.PolyUtil;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class SendRequestMapActivity extends FragmentActivity
         implements
@@ -47,27 +44,18 @@ public class SendRequestMapActivity extends FragmentActivity
     private Button btSelectLocation;
     LatLng currentMarker;
 
-//    List<LatLng> pts = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_send_request_map);
 
         btSelectLocation = findViewById(R.id.btSelectLocation);
         btSelectLocation.setVisibility(View.GONE);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.sendRequestMap);
         mapFragment.getMapAsync(this);
-
-
-
-//        pts.add(new LatLng(6.136867224626448,80.76938051730394));
-//        pts.add(new LatLng(6.136923894936177,80.76948914676905));
-//        pts.add(new LatLng(6.136819221535854,80.76954580843449));
-//        pts.add(new LatLng(6.136748883666119,80.7694512605667));
 
         btSelectLocation.setOnClickListener(new View.OnClickListener() {
             @Override
