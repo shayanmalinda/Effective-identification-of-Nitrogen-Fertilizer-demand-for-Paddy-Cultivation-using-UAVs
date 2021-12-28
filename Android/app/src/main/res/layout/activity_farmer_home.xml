@@ -22,6 +22,13 @@
             android:text="@string/send_request"
         />
 
+        <Button
+            android:id="@+id/btViewResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/view_results"
+            />
+
     </LinearLayout>
 
     <LinearLayout

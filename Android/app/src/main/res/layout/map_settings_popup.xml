@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/map_popup_border"
+    android:alpha="0.9"
+    android:layout_margin="30dp"
+    android:elevation="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Color Level Filters"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingBottom="20dp"
+                android:layout_weight="5"
+                android:paddingTop="7dp"/>
+
+            <ImageView
+                android:id="@+id/ivClose"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_baseline_cancel_24"
+                android:visibility="visible"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#c0c0c0"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="40dp"
+            android:paddingTop="20dp">
+
+            <CheckBox
+                android:id="@+id/cbLevel2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Level 02"
+                android:paddingRight="5dp"
+                android:buttonTint="@color/level2_color"
+                />
+            <CheckBox
+                android:id="@+id/cbLevel3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Level 03"
+                android:paddingRight="5dp"
+                android:buttonTint="@color/level3_color"
+                android:layout_marginTop="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbLevel4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Level 04"
+                android:paddingRight="5dp"
+                android:buttonTint="@color/level4_color"
+                android:layout_marginTop="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbLevel5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Level 05"
+                android:paddingRight="5dp"
+                android:buttonTint="@color/level5_color"
+                android:layout_marginTop="10dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
