@@ -45,6 +45,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
   role;
   status;
   selectedType: String;
+  all = 0;
+  pending = 0;
+  declined = 0;
   constructor(private renderer: Renderer2, private userService: UserService, private router: Router) {
     this.type = this.router.getCurrentNavigation().extras.state.type;
     this.role = this.router.getCurrentNavigation().extras.state.role;
@@ -105,6 +108,18 @@ export class UsersComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  getCounts() {
+
+    this.users.forEach(data => {
+      if (data.status == 'pending') {
+        this.pending++;
+      } else {
+        this.declined++;
+      }
+    });
+    this.all = this.declined + this.pending;
+  }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -145,7 +160,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
       this.dataSource = new MatTableDataSource(this.users);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-
+      this.getCounts();
     });
 
   }

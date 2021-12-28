@@ -29,6 +29,9 @@ export class UserProfileComponent implements OnInit {
   decline() {
     this.userService.declineUser(this.user.id);
   }
+  delete() {
+    this.userService.deleteUser(this.user.id);
+  }
  
 
 }

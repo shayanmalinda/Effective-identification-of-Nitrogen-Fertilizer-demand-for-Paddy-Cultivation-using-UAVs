@@ -5,14 +5,26 @@
             <div class="container">
                 <div>
                     <div class="title-brand"><label>{{title}}</label></div>
-                    <div class="toggle">
-                        <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()  aria-label="Font Style">
-                            <mat-button-toggle value="all">All</mat-button-toggle>
-                            <mat-button-toggle value="pending">Pending</mat-button-toggle>
-                            <mat-button-toggle value="declined">Declined</mat-button-toggle>
-                        </mat-button-toggle-group>
-                        <!-- <p>Chosen value is {{fontStyle}}</p> -->
+                    <div class="toggle label-bar">
+                        <div class="left">
+                            <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()
+                                aria-label="Font Style">
+                                <mat-button-toggle value="all">All</mat-button-toggle>
+                                <mat-button-toggle value="pending">Pending</mat-button-toggle>
+                                <mat-button-toggle value="declined">Declined</mat-button-toggle>
+                            </mat-button-toggle-group>
+                            <!-- <p>Chosen value is {{fontStyle}}</p> -->
+                        </div>
+                        <div class="labels">
+                            <label class="label label-default right">all : {{all}}</label>&nbsp;
+                            <label class="label label-primary right">pending : {{pending}}</label>&nbsp;
+                            <label class="label label-warning right">declined : {{declined}}</label>&nbsp;
+
+                            <!-- <div>Pending : <label class="label label-primary">all</label></div>
+                            <div>Declined: <label class="label label-warning">all</label></div> -->
+                        </div>
                     </div>
+
 
                     <!-- <div class="title-brand-left"> -->
                     <mat-form-field appearance="standard">

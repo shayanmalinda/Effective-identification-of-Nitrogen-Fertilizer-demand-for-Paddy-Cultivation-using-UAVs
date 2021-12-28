@@ -26,9 +26,26 @@ table {
 }
 .toggle{
   text-transform:uppercase;
-  align-content: left;
+  /* align-content: left; */
 }
 .mat-button-toggle-group {
   height: 32px;
   align-items: center;
 }
+.labels{
+  display: inline-flex;
+  align-items: center;
+float: right;}
+
+.label-bar{
+  width: 100%;
+  display: flex;
+}
+.left{
+  flex:1;
+}
+.right{
+  font-weight: bold;
+}
+
+
