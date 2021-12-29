@@ -1,8 +1,8 @@
-import { FieldRequest } from './../../models/field-request.model';
+import { FieldVisitService } from './../../services/field-visit.service';
+import { FieldVisit } from '../../models/field-visit.model';
 import { Component, OnInit } from '@angular/core';
 import { Field } from '../../models/field.model';
 import { Router } from '@angular/router';
-import { FieldRequestService } from '../../services/field-request.service';
 import { reduce } from 'rxjs-compat/operator/reduce';
 
 @Component({
@@ -16,11 +16,11 @@ export class FieldDetailsComponent implements OnInit {
   title = 'My first AGM project';
   lat = 51.678418;
   lng = 7.809007;
-  fieldRequests: FieldRequest[];
+  fieldRequests: FieldVisit[];
   counts: any[];
   valueChanged;
 
-  constructor(private router: Router, private fieldRequestService: FieldRequestService) {
+  constructor(private router: Router,private fieldVisitService:FieldVisitService) {
     this.field = this.router.getCurrentNavigation().extras.state.field;
 
   }
@@ -29,7 +29,7 @@ export class FieldDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.counts = this.fieldRequestService.getFieldVisitCountsByStatus(this.field.id);
+    this.counts = this.fieldVisitService.getFieldVisitCountsByStatus(this.field.id);
 
   }
 

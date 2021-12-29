@@ -4,20 +4,10 @@ import { AngularFirestore } from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root'
 })
-export class FieldRequestService {
-
-
-
+export class FieldVisitService {
+  
   constructor(private fireStore: AngularFirestore) { }
 
-  // getFields() {
-  //   return this.fireStore.collection('FieldDetails').snapshotChanges();
-  // }
-
-
-  // deleteField(fieldId: String) {
-  //   this.fireStore.doc('FieldDetails/' + fieldId).delete();
-  // }
   getFieldVisitRequests(fieldId: String) {
     return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)).valueChanges();
   }
@@ -50,6 +40,16 @@ export class FieldRequestService {
     return counts;
   }
 
+  getFieldVisits() {
+    return this.fireStore.collection('FieldRequests').snapshotChanges();
+  }
+ 
+
+  deleteFieldVisit(fieldVisitId: String) {
+    this.fireStore.doc('FieldRequests/' + fieldVisitId).delete();
+  }
+
 }
+
 
 
