@@ -31,6 +31,13 @@ const routes: Routes =[
     { path: 'field-details',      component: FieldDetailsComponent },
     { path: 'agricultural-officers',      component: UsersComponent },
     { path: 'admin-dashboard',      component: AdminDashboardComponent },
+    { path: 'requests',      component: UsersComponent },
+    { path: 'user-request',     component: UserProfileComponent },
+    { path: 'officer-requests',     component: UsersComponent },
+    { path: 'officers',     component: UsersComponent },
+
+
+
 
 
 

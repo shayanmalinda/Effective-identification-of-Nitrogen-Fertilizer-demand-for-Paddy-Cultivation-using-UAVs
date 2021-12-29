@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 })
 
 export class FieldsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['registrationNumber','address', 'division', 'farmer', 'view', 'delete'];
+  displayedColumns: string[] = ['registrationNumber', 'address', 'division', 'farmer', 'view', 'delete'];
   dataSource: MatTableDataSource<Field>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -36,7 +36,7 @@ export class FieldsComponent implements OnInit, AfterViewInit {
   data: any[];
   selectedRowIndex;
   field: Field;
-  farmer:User;
+  farmer: User;
   farmerName: any;
 
   constructor(private renderer: Renderer2, private fieldService: FieldService, private userService: UserService, private router: Router) {
@@ -46,8 +46,8 @@ export class FieldsComponent implements OnInit, AfterViewInit {
     return date.month !== current.month;
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
   }
   getRecord(row) {
     this.selectedRowIndex = row.id;
@@ -90,13 +90,14 @@ export class FieldsComponent implements OnInit, AfterViewInit {
         } as Field;
       })
       this.fields.forEach(f => {
-        this.userService.getUser(f.farmerId).subscribe(data=>
-          {
-            this.farmer=data.payload.data() as User;
-            f.farmer=this.farmer.firstName+" "+this.farmer.lastName;
+        this.userService.getUser(f.farmerId).subscribe(data => {
+          this.farmer = data.payload.data() as User;
+          f.farmer = this.farmer.firstName + " " + this.farmer.lastName;
 
-            this.dataSource = new MatTableDataSource(this.fields);
-          });
+          this.dataSource = new MatTableDataSource(this.fields);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        });
 
       })
 

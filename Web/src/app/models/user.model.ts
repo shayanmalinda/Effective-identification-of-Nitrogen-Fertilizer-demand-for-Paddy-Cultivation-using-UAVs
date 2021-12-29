@@ -9,5 +9,8 @@ export class User {
     district: string;
     division: string;
     province: string;
+    time:String;
+    name:String;
+    status:string;
     
 }
