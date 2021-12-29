@@ -28,5 +28,9 @@ export class AdminDashboardComponent implements OnInit {
   viewOfficers() {
     this.router.navigate(['/officers'], { state: { role: 'officer'} });
   }
+
+  viewFieldVisits() {
+    this.router.navigate(['/field-visits']);
+  }
 }
 

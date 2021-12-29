@@ -1,3 +1,4 @@
+import { FieldVisitRequestsComponent } from './pages/field-visits/field-visits.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
@@ -35,6 +36,7 @@ const routes: Routes =[
     { path: 'user-request',     component: UserProfileComponent },
     { path: 'officer-requests',     component: UsersComponent },
     { path: 'officers',     component: UsersComponent },
+    { path: 'field-visits',      component: FieldVisitRequestsComponent },
 
 
 

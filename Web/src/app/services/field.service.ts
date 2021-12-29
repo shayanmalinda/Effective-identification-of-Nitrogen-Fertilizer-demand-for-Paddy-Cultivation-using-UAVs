@@ -19,7 +19,9 @@ export class FieldService {
     return this.fireStore.collection('FieldDetails').snapshotChanges();
   }
  
-
+  getField(id: string) {
+    return this.fireStore.collection('FieldDetails').doc(id).snapshotChanges()
+  }
   deleteField(fieldId: String) {
     this.fireStore.doc('FieldDetails/' + fieldId).delete();
   }
