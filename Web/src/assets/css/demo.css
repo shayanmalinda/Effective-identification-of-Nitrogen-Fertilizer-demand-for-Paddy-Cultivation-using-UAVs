@@ -1296,3 +1296,10 @@ pre.prettyprint {
     position: relative;
     z-index: 2;
 }
+
+.card-formfields {
+    margin-bottom: 10px;
+    align-items: center;
+    margin-right : 200px;
+    width: 500px;
+}
