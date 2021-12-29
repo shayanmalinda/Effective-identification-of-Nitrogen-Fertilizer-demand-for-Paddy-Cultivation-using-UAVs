@@ -84,20 +84,20 @@ public class MapsActivity extends FragmentActivity implements
     List<Marker> currentMarkers = new ArrayList<>();
 
     int[] level2Colors = {
-            Color.rgb(255, 60, 0),
-            Color.rgb(255, 60, 0)
+            Color.rgb(255, 0, 0),
+            Color.rgb(255, 0, 0)
     };
     int[] level3Colors = {
-            Color.rgb(255, 255, 26),
-            Color.rgb(255, 255, 26)
+            Color.rgb(255, 200, 0),
+            Color.rgb(255, 200, 0)
     };
     int[] level4Colors = {
             Color.rgb(68, 204, 0),
             Color.rgb(68, 204, 0)
     };
     int[] level5Colors = {
-            Color.rgb(0, 102, 0),
-            Color.rgb(0, 102, 0)
+            Color.rgb(0, 221, 255),
+            Color.rgb(0, 221, 255)
     };
 
     @Override
@@ -261,7 +261,7 @@ public class MapsActivity extends FragmentActivity implements
 
                         }
 
-                        addHeatMap(level2List, level2Colors);
+                        addHeatMap(level2List, level2Colors, false);
 
                     }
                 });
@@ -295,7 +295,7 @@ public class MapsActivity extends FragmentActivity implements
                             markers.add(marker);
                         }
 
-                        addHeatMap(level3List, level3Colors);
+                        addHeatMap(level3List, level3Colors, false);
                     }
                 });
 
@@ -329,7 +329,7 @@ public class MapsActivity extends FragmentActivity implements
                             markers.add(marker);
                         }
 
-                        addHeatMap(level4List, level4Colors);
+                        addHeatMap(level4List, level4Colors, false);
                     }
                 });
 
@@ -357,13 +357,13 @@ public class MapsActivity extends FragmentActivity implements
 
                             LatLng latLng = new LatLng(latitude, longitude);
                             WeightedLatLng weightedLatLngObj = new WeightedLatLng(latLng, 1);
-                            level4List.add(weightedLatLngObj);
+                            level5List.add(weightedLatLngObj);
 
                             Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).draggable(true).visible(false));
                             markers.add(marker);
                         }
 
-                        addHeatMap(level5List, level5Colors);
+                        addHeatMap(level5List, level5Colors, false);
                     }
                 });
 
@@ -425,16 +425,16 @@ public class MapsActivity extends FragmentActivity implements
         fetchCount = 0;
         mMap.clear();
         if(filterLevel2)
-            addHeatMap(level2List, level2Colors);
+            addHeatMap(level2List, level2Colors, true);
         if(filterLevel3)
-            addHeatMap(level3List, level3Colors);
+            addHeatMap(level3List, level3Colors,  true);
         if(filterLevel4)
-            addHeatMap(level4List, level4Colors);
+            addHeatMap(level4List, level4Colors,  true);
         if(filterLevel5)
-            addHeatMap(level5List, level5Colors);
+            addHeatMap(level5List, level5Colors,  true);
     }
 
-    private void addHeatMap(List<WeightedLatLng> weightedList,int[] colors) {
+    private void addHeatMap(List<WeightedLatLng> weightedList,int[] colors, Boolean checkData) {
 
         float[] startPoints = {
                 0.6f, 1f
@@ -457,7 +457,7 @@ public class MapsActivity extends FragmentActivity implements
         else{
             fetchCount++;
         }
-        if(fetchCount>=4){
+        if(fetchCount>=4 && checkData){
             Toast.makeText(this, "No any results to show", Toast.LENGTH_SHORT).show();
         }
     }

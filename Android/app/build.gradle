@@ -70,6 +70,6 @@ dependencies {
     implementation "androidx.camera:camera-camera2:${cameraxVersion}"
     implementation "org.apache.httpcomponents:httpmime:4.3"
     implementation "com.loopj.android:android-async-http:1.4.9"
-
+    implementation "com.google.android.gms:play-services-location:15.0.1"
 
 }

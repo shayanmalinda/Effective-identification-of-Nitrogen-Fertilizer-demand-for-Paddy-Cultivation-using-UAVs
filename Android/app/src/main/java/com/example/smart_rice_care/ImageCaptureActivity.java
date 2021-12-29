@@ -1,5 +1,7 @@
 package com.example.smart_rice_care;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -13,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,6 +26,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.media.MediaPlayer;
@@ -43,32 +47,31 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-public class ImageCaptureActivity extends AppCompatActivity implements SensorEventListener {
+public class ImageCaptureActivity extends AppCompatActivity implements SensorEventListener, LocationListener {
 
     private int REQUEST_CODE_PERMISSIONS = 101;
     private String[] REQUIRED_PERMISSSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
@@ -102,10 +105,29 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     private boolean captured = false;
     private boolean waiting = false;
 
+    private FusedLocationProviderClient fusedLocationClient;
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
+
+    protected String latitude, longitude;
+    protected boolean gps_enabled, network_enabled;
+
+    Location currentLocation;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_capture);
+
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            System.out.println("testing=== requesting permission");
+            ActivityCompat.requestPermissions(ImageCaptureActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},225);
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ImageCaptureActivity.this);
 
         Intent getIntent = getIntent();
         requestId = getIntent.getStringExtra("requestId");
@@ -116,8 +138,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String threshold = preferences.getString("SENSORTHRESHOLD", "");
-        if(!threshold.equalsIgnoreCase(""))
-        {
+        if (!threshold.equalsIgnoreCase("")) {
             THRESHOLD = Double.parseDouble(threshold);
         }
 
@@ -136,12 +157,13 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         btCaptureImage = findViewById(R.id.btCaptureImage);
         tvColorLevel = findViewById(R.id.tvColorLevel);
 
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 //        frameLayout.addView(btCaptureImage);
 
-        if(allPermissionGranted()){
+        if (allPermissionGranted()) {
             startCamera();
-        }
-        else{
+        } else {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSSIONS, REQUEST_CODE_PERMISSIONS);
         }
     }
@@ -169,7 +191,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         );
 
         imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MAX_QUALITY)
-                    .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).build();
+                .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).build();
         imgCap = new ImageCapture(imageCaptureConfig);
 
         btCaptureImage.setOnClickListener(new View.OnClickListener() {
@@ -183,45 +205,39 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     }
 
     private File captureImage(ImageCapture imgCap) {
-        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId);
-        try{
-            if(dir.mkdir()) {
-                Log.d("Directory creation","Directory created");
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + requestId);
+        try {
+            if (dir.mkdir()) {
+                Log.d("Directory creation", "Directory created");
             } else {
-                Log.d("Directory creation","Directory creation failed");
+                Log.d("Directory creation", "Directory creation failed");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId+"/"+System.currentTimeMillis()+".jpg");
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + requestId + "/" + System.currentTimeMillis() + ".jpg";
+        File file = new File(filePath);
         imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onImageSaved(@NonNull @NotNull File file) {
 
-                if (ContextCompat.checkSelfPermission(ImageCaptureActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    LocationManager locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
-                    Criteria criteria= new Criteria();
-
-                    Location location = locationManager.getLastKnownLocation(locationManager
-                            .getBestProvider(criteria, false));
-                } else {
-                    // Permission to access the location is missing. Show rationale and request permission
-                    PermissionUtils.requestPermission(ImageCaptureActivity.this, LOCATION_PERMISSION_REQUEST_CODE,
-                            Manifest.permission.ACCESS_FINE_LOCATION, true);
-                }
                 ExifInterface exif = null;
                 try {
-                    exif = new ExifInterface(file.getAbsoluteFile());
+                    exif = new ExifInterface(filePath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, "location");
-                shutterSound.start();
-                String msg = "Pic captured at " + file.getAbsolutePath();
-                processImage(file);
-                Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
+                exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, GPS.convert(currentLocation.getLatitude()));
+                exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,  GPS.convert(currentLocation.getLongitude()));
+                try {
+                    exif.saveAttributes();
+                    shutterSound.start();
+                    String msg = "Pic captured at " + file.getAbsolutePath();
+                    processImage(file, currentLocation);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -283,9 +299,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         return true;
     }
 
-    public void processImage(File file) {
+    public void processImage(File file, Location location) {
         tvColorLevel.setText("Processing...");
-        String url = "http://192.168.8.101:5000/process";
+        String url = "http://192.168.8.104:5000/process";
 
         Thread thread = new Thread(new Runnable() {
 
@@ -311,6 +327,33 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                         String level = responseString;
                         System.out.println("Response===Success =  "+ level);
                         tvColorLevel.setText("Level "+level);
+
+                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        String uId = mAuth.getInstance().getUid();
+
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("requestId", requestId);
+                        data.put("latitude", location.getLatitude());
+                        data.put("longitude", location.getLongitude());
+                        data.put("officerId", uId);
+                        data.put("level", Integer.parseInt(level));
+
+                        db.collection("FieldData")
+                                .add(data)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Toast.makeText(ImageCaptureActivity.this, "ALL SUCCESS", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull @NotNull Exception e) {
+                                        Toast.makeText(ImageCaptureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
                     }
                 });
 
@@ -382,5 +425,10 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     protected void onPause() {
         super.onPause();
         shutterSound.stop();
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        currentLocation = location;
     }
 }
