@@ -84,7 +84,7 @@
                               <a href="#">Link 1</a>
                               <a href="#">Link 2</a>
                               <a href="#">Link 3</a> -->
-                              <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)">
+                              <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding-top: 10px;">
                                 <!-- <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
@@ -105,7 +105,7 @@
                               <a href="#">Link 1</a>
                               <a href="#">Link 2</a>
                               <a href="#">Link 3</a> -->
-                              <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none">
+                              <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding-top: 0px;">
                                 <!-- <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
@@ -126,7 +126,7 @@
                               <a href="#">Link 1</a>
                               <a href="#">Link 2</a>
                               <a href="#">Link 3</a> -->
-                              <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" >
+                              <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding-top: 0px;">
                                 <!-- <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
@@ -145,14 +145,14 @@
                             </div>
                               <input type="text" class="form-control" placeholder="NIC" (focus)="focus=true" (blur)="focus=false" id="nic" name="nic" [(ngModel)]="user.nic" style="font-size: large;">
                           </div>
-                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                          <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                             <div class="input-group-prepend">
                               <span class="input-group-text">
                                   <i class="nc-icon nc-circle-10"></i>
                               </span>
                             </div>
                               <input type="text" class="form-control" placeholder="Role" (focus)="focus=true" (blur)="focus=false" id="userRole" name="userRole" [(ngModel)]="user.userRole" style="font-size: large;">
-                          </div>
+                          </div> -->
                           <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                             <div class="input-group-prepend">
                               <span class="input-group-text">
