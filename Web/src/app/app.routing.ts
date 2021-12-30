@@ -1,9 +1,9 @@
-import { FieldVisitRequestsComponent } from './pages/field-visits/field-visits.component';
+import { FieldVisitsComponent } from './pages/field-visits/field-visits.component';
+import { FieldVisitDetailsComponent } from './pages/field-visit-details/field-visit-details.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
-
 import { ComponentsComponent } from './components/components.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -39,8 +39,9 @@ const routes: Routes =[
     { path: 'user-request',     component: UserProfileComponent },
     { path: 'officer-requests',     component: UsersComponent },
     { path: 'officers',     component: UsersComponent },
-    { path: 'field-visits',      component: FieldVisitRequestsComponent },
     { path: 'lcc-details',      component: LccDetailsComponent },
+    { path: 'field-visits',      component: FieldVisitsComponent },
+    { path: 'field-visit-details',      component: FieldVisitDetailsComponent },
 
 
 

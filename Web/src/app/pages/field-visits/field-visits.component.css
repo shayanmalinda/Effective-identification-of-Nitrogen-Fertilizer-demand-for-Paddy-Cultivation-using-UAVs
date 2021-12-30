@@ -36,6 +36,10 @@ table {
   .right{
     font-weight: bold;
   }
+  .mat-button-toggle-group {
+    height: 32px;
+    align-items: center;
+  }
   .title-brand{
     text-transform:uppercase;
     font-weight: bold;

@@ -12,5 +12,6 @@ export class FieldVisit {
     farmer:any;
     farmerName:string;
     farmerTel:string;
+    registrationNo:string;
    
 }
