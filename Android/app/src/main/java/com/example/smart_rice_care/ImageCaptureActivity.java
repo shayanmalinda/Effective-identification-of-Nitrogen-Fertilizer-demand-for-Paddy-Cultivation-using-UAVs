@@ -1,7 +1,10 @@
 package com.example.smart_rice_care;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraX;
 import androidx.camera.core.ImageCapture;
@@ -11,6 +14,8 @@ import androidx.camera.core.PreviewConfig;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,7 +24,13 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,37 +42,44 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-public class ImageCaptureActivity extends AppCompatActivity implements SensorEventListener {
+public class ImageCaptureActivity extends AppCompatActivity implements SensorEventListener, LocationListener {
 
     private int REQUEST_CODE_PERMISSIONS = 101;
     private String[] REQUIRED_PERMISSSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
     String requestId, fieldId, farmerId;
-    TextureView textureView;
+    TextureView txvCamera;
+    TextView tvColorLevel;
+    ImageButton btCaptureImage;
+    FrameLayout frameLayout;
 
     private SensorManager sensorMan;
     private Sensor accelerometer;
@@ -87,11 +105,29 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     private boolean captured = false;
     private boolean waiting = false;
 
+    private FusedLocationProviderClient fusedLocationClient;
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
 
+    protected String latitude, longitude;
+    protected boolean gps_enabled, network_enabled;
+
+    Location currentLocation;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_capture);
+
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            System.out.println("testing=== requesting permission");
+            ActivityCompat.requestPermissions(ImageCaptureActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},225);
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ImageCaptureActivity.this);
 
         Intent getIntent = getIntent();
         requestId = getIntent.getStringExtra("requestId");
@@ -102,8 +138,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String threshold = preferences.getString("SENSORTHRESHOLD", "");
-        if(!threshold.equalsIgnoreCase(""))
-        {
+        if (!threshold.equalsIgnoreCase("")) {
             THRESHOLD = Double.parseDouble(threshold);
         }
 
@@ -117,19 +152,26 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         sensorRegistered = true;
 
         getSupportActionBar().hide();
-        textureView = (TextureView) findViewById(R.id.txv_camera);
-        if(allPermissionGranted()){
+        frameLayout = findViewById(R.id.frameLayout);
+        txvCamera = (TextureView) findViewById(R.id.txvCamera);
+        btCaptureImage = findViewById(R.id.btCaptureImage);
+        tvColorLevel = findViewById(R.id.tvColorLevel);
+
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        frameLayout.addView(btCaptureImage);
+
+        if (allPermissionGranted()) {
             startCamera();
-        }
-        else{
+        } else {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSSIONS, REQUEST_CODE_PERMISSIONS);
         }
     }
 
     private void startCamera() {
         CameraX.unbindAll();
-        Rational aspectRatio = new Rational(textureView.getWidth(), textureView.getHeight());
-        Size screen = new Size(textureView.getWidth(), textureView.getHeight());
+        Rational aspectRatio = new Rational(txvCamera.getWidth(), txvCamera.getHeight());
+        Size screen = new Size(txvCamera.getWidth(), txvCamera.getHeight());
 
         PreviewConfig pConfig = new PreviewConfig.Builder().setTargetAspectRatio(aspectRatio).setTargetResolution(screen).build();
         Preview preview = new Preview(pConfig);
@@ -138,21 +180,21 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                 new Preview.OnPreviewOutputUpdateListener() {
                     @Override
                     public void onUpdated(Preview.PreviewOutput output) {
-                        ViewGroup parent = (ViewGroup) textureView.getParent();
-                        parent.removeView(textureView);
-                        parent.addView(textureView);
+                        ViewGroup parent = (ViewGroup) txvCamera.getParent();
+                        parent.removeView(txvCamera);
+                        parent.addView(txvCamera);
 
-                        textureView.setSurfaceTexture(output.getSurfaceTexture());
+                        txvCamera.setSurfaceTexture(output.getSurfaceTexture());
                         updateTransform();
                     }
                 }
         );
 
-        imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
-                    .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).build();
+        imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MAX_QUALITY)
+                .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).build();
         imgCap = new ImageCapture(imageCaptureConfig);
 
-        findViewById(R.id.bt_capture_image).setOnClickListener(new View.OnClickListener() {
+        btCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 captureImage(imgCap);
@@ -163,22 +205,39 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     }
 
     private File captureImage(ImageCapture imgCap) {
-        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId);
-        try{
-            if(dir.mkdir()) {
-                Log.d("Directory creation","Directory created");
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + requestId);
+        try {
+            if (dir.mkdir()) {
+                Log.d("Directory creation", "Directory created");
             } else {
-                Log.d("Directory creation","Directory creation failed");
+                Log.d("Directory creation", "Directory creation failed");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+requestId+"/"+System.currentTimeMillis()+".jpg");
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + requestId + "/" + System.currentTimeMillis() + ".jpg";
+        File file = new File(filePath);
         imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onImageSaved(@NonNull @NotNull File file) {
-                String msg = "Pic captured at " + file.getAbsolutePath();
-                Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
+
+                ExifInterface exif = null;
+                try {
+                    exif = new ExifInterface(filePath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, GPS.convert(currentLocation.getLatitude()));
+                exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,  GPS.convert(currentLocation.getLongitude()));
+                try {
+                    exif.saveAttributes();
+                    shutterSound.start();
+                    String msg = "Pic captured at " + file.getAbsolutePath();
+                    processImage(file, currentLocation);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -200,14 +259,14 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     private void updateTransform() {
         Matrix mx = new Matrix();
-        float w = textureView.getMeasuredWidth();
-        float h = textureView.getMeasuredHeight();
+        float w = txvCamera.getMeasuredWidth();
+        float h = txvCamera.getMeasuredHeight();
 
         float cx = w/2f;
         float cy = h/2f;
 
         int rotationDgr;
-        int rotation = (int) textureView.getRotation();
+        int rotation = (int) txvCamera.getRotation();
 
         switch(rotation){
             case Surface.ROTATION_0:
@@ -227,7 +286,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         }
 
         mx.postRotate((float)rotationDgr, cx, cy);
-        textureView.setTransform(mx);
+        txvCamera.setTransform(mx);
     }
 
     private boolean allPermissionGranted() {
@@ -240,10 +299,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         return true;
     }
 
-    public void processImage() {
-        File file = captureImage(imgCap);
-        String url = "http://192.168.8.103:5000/process";
-
+    public void processImage(File file, Location location) {
+        tvColorLevel.setText("Processing...");
+        String url = "http://192.168.8.104:5000/process";
 
         Thread thread = new Thread(new Runnable() {
 
@@ -252,7 +310,6 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
                 SyncHttpClient client = new SyncHttpClient();
                 RequestParams params = new RequestParams();
-                params.put("text", "some string");
                 try {
                     params.put("image", new File(file.getAbsolutePath()));
                 } catch (FileNotFoundException e) {
@@ -267,41 +324,39 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        String level = responseString.substring(1, responseString.length() - 1);
+                        String level = responseString;
                         System.out.println("Response===Success =  "+ level);
+                        tvColorLevel.setText("Level "+level);
+
+                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        String uId = mAuth.getInstance().getUid();
+
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("requestId", requestId);
+                        data.put("latitude", location.getLatitude());
+                        data.put("longitude", location.getLongitude());
+                        data.put("officerId", uId);
+                        data.put("level", Integer.parseInt(level));
+
+                        db.collection("FieldData")
+                                .add(data)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Toast.makeText(ImageCaptureActivity.this, "ALL SUCCESS", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull @NotNull Exception e) {
+                                        Toast.makeText(ImageCaptureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
                     }
                 });
 
-
-//                try  {
-//
-//                    try {
-//                        HttpClient httpclient = new DefaultHttpClient();
-//
-//                        HttpPost httppost = new HttpPost(url);
-//                        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-//                        FileBody fileBody = new FileBody(file); //image should be a String
-//                        builder.addPart("image", fileBody);
-//                        HttpEntity entity = builder.build();
-//                        httppost.setEntity(entity);
-//                        HttpResponse response = httpclient.execute(httppost);
-//
-//                        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-//                        String body = "";
-//                        while ((body = rd.readLine()) != null)
-//                        {
-//                            System.out.print("Response==="+body);
-//                        }
-//
-//                    } catch (Exception e) {
-//                        Log.e("Response===", e.toString());
-//                        Log.e("Response===", e.getMessage());
-//                    }
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Log.e("Response===", e.toString());
-//                }
             }
         });
 
@@ -342,11 +397,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
                 if(hitResult <= THRESHOLD && !captured && !waiting){
                     captured = true;
-                    shutterSound.start();
                     waiting = true;
 
-                    processImage();
-
+//                    captureImage(imgCap);
 
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -372,5 +425,10 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     protected void onPause() {
         super.onPause();
         shutterSound.stop();
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        currentLocation = location;
     }
 }
