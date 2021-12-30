@@ -70,7 +70,7 @@ export class ProfileComponent implements OnInit {
         this.user.lastName = (sessionStorage.getItem("lastName") != "" ? sessionStorage.getItem("lastName") : "");
         this.user.nic = (sessionStorage.getItem("nic") != "" ? sessionStorage.getItem("nic") : "");
         this.user.email = (sessionStorage.getItem("email") != "" ? sessionStorage.getItem("email") : "");
-        this.user.userRole = (sessionStorage.getItem("userRole") != "" ? sessionStorage.getItem("userRole") : "");
+        this.user.userRole = (sessionStorage.getItem("userRole") != "" ? (sessionStorage.getItem("userRole").replace(/\s/g, "").toLowerCase() == "agriculturalofficer" ? "Agricultural Officer" : sessionStorage.getItem("userRole")) : "");
         this.user.phone = (sessionStorage.getItem("phone") != "" ? sessionStorage.getItem("phone") : "");
         this.user.division = (sessionStorage.getItem("division") != "" ? sessionStorage.getItem("division") : "");
         this.user.district = (sessionStorage.getItem("district") != "" ? sessionStorage.getItem("district") : "");

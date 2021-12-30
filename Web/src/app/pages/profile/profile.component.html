@@ -50,6 +50,14 @@
                           <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                             <div class="input-group-prepend">
                               <span class="input-group-text">
+                                  <i class="nc-icon nc-circle-10"></i>
+                              </span>
+                            </div>
+                              <input type="text" class="form-control" placeholder="Role" (focus)="focus=true" (blur)="focus=false" id="userRole" name="userRole" [(ngModel)]="user.userRole" style="font-size: medium;" disabled>
+                          </div>
+                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
                                   <i class="nc-icon nc-pin-3"></i>
                               </span>
                             </div>
@@ -78,14 +86,6 @@
                               </span>
                             </div>
                               <input type="text" class="form-control" placeholder="NIC" (focus)="focus=true" (blur)="focus=false" id="nic" name="nic" [(ngModel)]="user.nic" style="font-size: medium;" disabled>
-                          </div>
-                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text">
-                                  <i class="nc-icon nc-circle-10"></i>
-                              </span>
-                            </div>
-                              <input type="text" class="form-control" placeholder="Role" (focus)="focus=true" (blur)="focus=false" id="userRole" name="userRole" [(ngModel)]="user.userRole" style="font-size: medium;" disabled>
                           </div>
                           <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                             <div class="input-group-prepend">
