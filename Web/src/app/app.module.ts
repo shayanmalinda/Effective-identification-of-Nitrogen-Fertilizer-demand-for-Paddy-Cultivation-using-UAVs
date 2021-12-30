@@ -28,6 +28,7 @@ import { ShowMessageComponent } from './show-message/show-message.component';
 
 //material
 import { MaterialModule } from './material/material.module';
+import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { MaterialModule } from './material/material.module';
     UserProfileComponent,
     UpdateProfileComponent,
     ShowMessageComponent,
+    LccDetailsComponent,
     
   ],
   imports: [
