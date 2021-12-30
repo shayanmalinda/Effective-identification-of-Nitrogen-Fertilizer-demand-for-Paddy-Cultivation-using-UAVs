@@ -21,7 +21,8 @@ import { FieldDetailsComponent } from './field-details/field-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { MatSortModule } from '@angular/material/sort';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import { FieldVisitRequestsComponent } from './field-visits/field-visits.component';
+import { FieldVisitsComponent } from './field-visits/field-visits.component';
+import { FieldVisitDetailsComponent } from './field-visit-details/field-visit-details.component';
 
 @NgModule({
     imports: [
@@ -46,7 +47,8 @@ import { FieldVisitRequestsComponent } from './field-visits/field-visits.compone
         FieldsComponent,
         FieldDetailsComponent,
         AdminDashboardComponent,
-        FieldVisitRequestsComponent,
+        FieldVisitsComponent,
+        FieldVisitDetailsComponent,
     ]
 })
 export class ExamplesModule { }
