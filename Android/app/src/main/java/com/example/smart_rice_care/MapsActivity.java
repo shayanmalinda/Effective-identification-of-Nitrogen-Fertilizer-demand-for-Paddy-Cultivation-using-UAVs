@@ -24,6 +24,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -68,6 +69,7 @@ public class MapsActivity extends FragmentActivity implements
     private UiSettings mUiSettings;
     private ImageView ivFocus, ivSettings, ivClose;
     private CheckBox cbLevel2, cbLevel3, cbLevel4, cbLevel5;
+    private SeekBar sbRadius;
     private Boolean filterLevel2 = true, filterLevel3 = true, filterLevel4 = true, filterLevel5 = true;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     FirebaseAuth mAuth;
@@ -82,23 +84,26 @@ public class MapsActivity extends FragmentActivity implements
     List<WeightedLatLng> level5List = new ArrayList<>();
     List<Marker> markers = new ArrayList<>();
     List<Marker> currentMarkers = new ArrayList<>();
+    Integer radius = 40;
+    Double opacity = 0.8;
 
     int[] level2Colors = {
-            Color.rgb(255, 60, 0),
-            Color.rgb(255, 60, 0)
+            Color.rgb(255, 0, 0),
+            Color.rgb(255, 0, 0)
     };
     int[] level3Colors = {
-            Color.rgb(255, 255, 26),
-            Color.rgb(255, 255, 26)
+            Color.rgb(255, 200, 0),
+            Color.rgb(255, 200, 0)
     };
     int[] level4Colors = {
             Color.rgb(68, 204, 0),
             Color.rgb(68, 204, 0)
     };
     int[] level5Colors = {
-            Color.rgb(0, 102, 0),
-            Color.rgb(0, 102, 0)
+            Color.rgb(0, 221, 255),
+            Color.rgb(0, 221, 255)
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +123,7 @@ public class MapsActivity extends FragmentActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
 
         ivFocus = findViewById(R.id.ivFocus);
         ivSettings = findViewById(R.id.ivSettings);
@@ -210,10 +216,34 @@ public class MapsActivity extends FragmentActivity implements
                     }
                 });
 
+
+                SeekBar seekBar = popupView.findViewById(R.id.sbRadius);
+                seekBar.setProgress(radius);
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        radius = progress;
+                        filterHeatMap();
+                        seekBar.setProgress(radius);
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        filterHeatMap();
+                    }
+                });
+
             }
         });
 
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -261,7 +291,7 @@ public class MapsActivity extends FragmentActivity implements
 
                         }
 
-                        addHeatMap(level2List, level2Colors);
+                        addHeatMap(level2List, level2Colors, false);
 
                     }
                 });
@@ -295,7 +325,7 @@ public class MapsActivity extends FragmentActivity implements
                             markers.add(marker);
                         }
 
-                        addHeatMap(level3List, level3Colors);
+                        addHeatMap(level3List, level3Colors, false);
                     }
                 });
 
@@ -329,7 +359,7 @@ public class MapsActivity extends FragmentActivity implements
                             markers.add(marker);
                         }
 
-                        addHeatMap(level4List, level4Colors);
+                        addHeatMap(level4List, level4Colors, false);
                     }
                 });
 
@@ -357,13 +387,13 @@ public class MapsActivity extends FragmentActivity implements
 
                             LatLng latLng = new LatLng(latitude, longitude);
                             WeightedLatLng weightedLatLngObj = new WeightedLatLng(latLng, 1);
-                            level4List.add(weightedLatLngObj);
+                            level5List.add(weightedLatLngObj);
 
                             Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).draggable(true).visible(false));
                             markers.add(marker);
                         }
 
-                        addHeatMap(level5List, level5Colors);
+                        addHeatMap(level5List, level5Colors, false);
                     }
                 });
 
@@ -425,30 +455,29 @@ public class MapsActivity extends FragmentActivity implements
         fetchCount = 0;
         mMap.clear();
         if(filterLevel2)
-            addHeatMap(level2List, level2Colors);
+            addHeatMap(level2List, level2Colors, true);
         if(filterLevel3)
-            addHeatMap(level3List, level3Colors);
+            addHeatMap(level3List, level3Colors,  true);
         if(filterLevel4)
-            addHeatMap(level4List, level4Colors);
+            addHeatMap(level4List, level4Colors,  true);
         if(filterLevel5)
-            addHeatMap(level5List, level5Colors);
+            addHeatMap(level5List, level5Colors,  true);
     }
 
-    private void addHeatMap(List<WeightedLatLng> weightedList,int[] colors) {
+    private void addHeatMap(List<WeightedLatLng> weightedList,int[] colors, Boolean checkData) {
 
         float[] startPoints = {
-                0.6f, 1f
+                0.7f, 1f
         };
 
         Gradient gradient = new Gradient(colors, startPoints);
 
-        // Create a heat map tile provider, passing it the latlngs of the police stations.
         if(!weightedList.isEmpty()){
             HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
                     .weightedData(weightedList)
                     .gradient(gradient)
-                    .radius(40)
-                    .opacity(1)
+                    .radius(radius)
+                    .opacity(opacity)
                     .build();
 
             // Add a tile overlay to the map, using the heat map tile provider.
@@ -458,7 +487,7 @@ public class MapsActivity extends FragmentActivity implements
         else{
             fetchCount++;
         }
-        if(fetchCount>=4){
+        if(fetchCount>=4 && checkData){
             Toast.makeText(this, "No any results to show", Toast.LENGTH_SHORT).show();
         }
     }
