@@ -16,6 +16,7 @@ import { DialogService } from 'app/services/dialog.service';
 export class UpdateProfileComponent implements OnInit {
 
   user : User = {
+    id : '',
     email: '',
     firstName: '',
     lastName: '',
@@ -26,7 +27,9 @@ export class UpdateProfileComponent implements OnInit {
     division: '',
     province: '',          
     image : '',      
-    status : '',
+    status : '',      
+    time : '',        
+    name : '',
     registeredDate : '',
   };
 

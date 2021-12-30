@@ -25,6 +25,7 @@ export class SignupComponent implements OnInit {
     loginForm : FormGroup;
 
     user : User = {
+        id : '',
         email: '',
         firstName: '',
         lastName: '',
@@ -35,7 +36,9 @@ export class SignupComponent implements OnInit {
         division: '',
         province: '',          
         image : '',        
-        status : '',
+        status : '',      
+        time : '',        
+        name : '',
         registeredDate : '',
     };
 

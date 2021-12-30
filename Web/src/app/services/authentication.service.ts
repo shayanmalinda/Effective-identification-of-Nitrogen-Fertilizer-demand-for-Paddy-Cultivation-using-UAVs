@@ -14,6 +14,7 @@ import { resolve } from '@angular/compiler-cli/src/ngtsc/file_system';
 export class AuthenticationService {
 
   user : User = {
+    id : '',
     email: '',
     firstName: '',
     lastName: '',
@@ -24,7 +25,9 @@ export class AuthenticationService {
     division: '',
     province: '',          
     image : '',        
-    status : '',
+    status : '',      
+    time : '',        
+    name : '',
     registeredDate : '',
   };
 
