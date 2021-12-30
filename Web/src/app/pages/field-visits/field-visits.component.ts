@@ -17,7 +17,7 @@ import { Field } from 'app/models/field.model';
   styleUrls: ['./field-visits.component.css']
 })
 export class FieldVisitsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['registrationNo','address', 'farmerName', 'date', 'division','requestNote','status', 'view', 'delete'];
+  displayedColumns: string[] = ['registrationNo', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status', 'view', 'delete'];
   dataSource: MatTableDataSource<FieldVisit>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -38,9 +38,10 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
   farmer: User;
   field: Field;
   farmerName: any;
-  pending=0;
-  processing=0;
-  completed=0;
+  requestPending = 0;
+  visitPending = 0;
+  processing = 0;
+  completed = 0;
   selectedType: String;
 
   constructor(private renderer: Renderer2, private fieldVisitService: FieldVisitService, private fieldService: FieldService, private userService: UserService, private router: Router) {
@@ -109,20 +110,20 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
       })
 
       this.fieldVisits.forEach(f => {
-        if (f.status == 'pending') this.pending+=1;
-        else if (f.status == 'processing') this.processing+=1;
-        else if (f.status == 'completed') this.completed+=1;
+        if (f.status == 'request pending') this.requestPending += 1;
+        else if (f.status == 'visit pending') this.visitPending += 1;
+        else if (f.status == 'processing') this.processing += 1;
+        else if (f.status == 'completed') this.completed += 1;
 
         this.fieldService.getField(f.fieldId).subscribe(data => {
           this.field = data.payload.data() as Field;
           f.field = this.field;
           f.address = this.field.address;
-          f.registrationNo=this.field.registrationNumber;
+          f.registrationNo = this.field.registrationNumber;
           this.userService.getUser(this.field.farmerId).subscribe(data => {
             this.farmer = data.payload.data() as User;
             f.farmer = this.farmer;
             f.farmerName = this.farmer.firstName + " " + this.farmer.lastName;
-             console.log(this.pending);
             this.dataSource = new MatTableDataSource(this.fieldVisits);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;

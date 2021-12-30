@@ -11,7 +11,8 @@
                             <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()
                                 aria-label="Font Style">
                                 <mat-button-toggle value="all">All</mat-button-toggle>
-                                <mat-button-toggle value="pending">Pending</mat-button-toggle>
+                                <mat-button-toggle value="request pending">Request Pending</mat-button-toggle>
+                                <mat-button-toggle value="visit pending">Visit Pending</mat-button-toggle>
                                 <mat-button-toggle value="processing">Processing</mat-button-toggle>
                                 <mat-button-toggle value="completed">Completed</mat-button-toggle>
                             </mat-button-toggle-group>
@@ -19,7 +20,8 @@
                         </div>
                         <div class="labels">
                             <label class="label label-primary right">All : {{fieldVisits.length}}</label>&nbsp;
-                            <label class="label label-warning right">Pending : {{pending}}</label>&nbsp;
+                            <label class="label label-warning right">Request Pending : {{requestPending}}</label>&nbsp;
+                            <label class="label label-warning right">Visit Pending : {{visitPending}}</label>&nbsp;
                             <label class="label label-info right">Processing : {{processing}}</label>&nbsp;
                             <label class="label label-success right">Completed : {{completed}}</label>&nbsp;
                         </div>
@@ -63,9 +65,11 @@
                             <ng-container matColumnDef="status">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <label *ngIf="row.status=='pending'"
+                                    <label *ngIf="row.status=='request pending'"
                                         class="label label-warning">{{row.status}}</label>
-                                        <label *ngIf="row.status=='processing'"
+                                    <label *ngIf="row.status=='visit pending'"
+                                        class="label label-warning">{{row.status}}</label>
+                                    <label *ngIf="row.status=='processing'"
                                         class="label label-info">{{row.status}}</label>
                                     <label *ngIf="row.status=='completed'"
                                         class="label label-success">{{row.status}}</label>
@@ -76,7 +80,7 @@
                                 <td mat-cell *matCellDef="let row"> {{row.requestNote}}&nbsp;&nbsp;
                                 </td>
                             </ng-container>
-                  
+
 
                             <ng-container matColumnDef="view">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
