@@ -12,5 +12,12 @@ export class User {
     time:String;
     name:String;
     status:string;
-    
+    image : string;             //to store the image of the user as base64 string
+    registeredDate : string;
+}
+
+export class UserCredential {
+    userID : string;
+    email : string;
+    password : string;
 }

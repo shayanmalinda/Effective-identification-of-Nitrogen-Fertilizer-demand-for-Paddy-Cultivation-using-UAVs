@@ -4,8 +4,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-sm-6 mr-auto ml-auto">
-                      <div class="card card-register">
-                          <h3 class="title">Register Here</h3>
+                      <div class="card card-register" style="width:400px; ">
+                      <!-- <div class="card card-register" style="width:400px; min-height: 1100px;"> -->
+                          <h3 class="title" style="margin-bottom: 0px">Register Here</h3>
                           <!-- <div class="social-line text-center">
                               <a href="#pablo" class="btn btn-neutral btn-facebook btn-just-icon">
                                   <i class="fa fa-facebook-square"></i>
@@ -17,29 +18,176 @@
                                   <i class="fa fa-twitter"></i>
                               </a>
                           </div> -->
-                          <form class="register-form">
-                              <label>Email</label>
-                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                          <form class="register-form" #loginForm="ngForm" (ngSubmit)="signUpClicked()">
+                              <label style="color : black; margin-bottom: 0px; margin-top: 10px;">Email : </label>
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}" style='margin-bottom: 0px;'>
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text">
+                                  <span class="input-group-text" style="padding-bottom: 0px;">
                                       <i class="nc-icon nc-email-85"></i>
                                   </span>
                                 </div>
-
-                                  <input type="text" class="form-control" placeholder="Email" (focus)="focus=true" (blur)="focus=false" >
+                                  <input type="email" class="form-control" placeholder="Email" (focus)="focus=true" (blur)="focus=false" id="email" name="email" [(ngModel)]="userCredential.email" #email="ngModel"  style="padding-bottom: 0px;" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" required>
+                                  <!-- <div [hidden]="(email.valid || email.prestine || submitted)" class="form-control-feedback" style="padding-left: 170px;">
+                                    <p style="font-style:italic; font-weight: bold; font-size:x-small;">This field is required</p>
+                                </div> -->
+                                <div *ngIf="submitted && email.errors" class="invalid-feedback" style="padding-left: 170px; padding-top: 0px;">
+                                  <p *ngIf="submitted && email.errors.required" style="font-style:italic; font-weight: bold; font-size:x-small; margin-bottom: 0px;">Email is required</p>
+                                  <!-- <p *ngIf="submitted && email.errors.email" style="font-style:italic; font-weight: bold; font-size:x-small; margin-bottom: 0px;">Email is invalid</p> -->
+                                </div>
                               </div>
-
-                              <label>Password</label>
-                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
+                              <label style="color : black; margin-bottom: 0px;">Password : </label>
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style='margin-bottom: 5px;'>
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text">
+                                  <span class="input-group-text" style="padding-bottom: 0px;">
                                       <i class="nc-icon nc-key-25"></i>
                                   </span>
                                 </div>
-                                  <input type="text" class="form-control" placeholder="Password" (focus)="focus1=true" (blur)="focus1=false" >
+                                  <input type="password" class="form-control" placeholder="Password" (focus)="focus1=true" (blur)="focus1=false" name="password" id="password" [(ngModel)]="userCredential.password" #password="ngModel" style="padding-bottom: 0px;">
+                                  <!-- <div *ngIf="submitted && password.errors"  style="padding-left: 170px; padding-top: 0px;">
+                                    <p *ngIf="submitted && password.errors.required" style="font-style:italic; font-weight: bold; font-size:x-small; margin-bottom: 0px;">Password is required</p>
+                                  </div> -->
+                              </div>
+                              <label style="color : black; margin-bottom: 0px;">First Name : </label>
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style='margin-bottom: 5px;'>
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" style="padding-bottom: 0px;">
+                                    <i class="nc-icon nc-circle-10"></i>
+                                  </span>
+                                </div>
+                                  <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="firstName" id="firstName" [(ngModel)]="user.firstName" #firstName="ngModel" required style="padding-bottom: 0px;" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
+                                  <div *ngIf="submitted && firstName.errors" class="invalid-feedback" style="padding-left: 170px; padding-top: 0px;">
+                                    <p *ngIf="submitted && firstName.errors.required" style="font-style:italic; font-weight: bold; font-size:x-small; margin-bottom: 0px;">First name is required</p>
+                                  </div>
+                              </div>
+                              <label style="color : black; margin-bottom: 0px;">Last Name : </label>
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style='margin-bottom: 5px;'>
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text " style="padding-bottom: 0px;">
+                                    <i class="nc-icon nc-circle-10"></i>
+                                  </span>
+                                </div>
+                                  <input type="text" class="form-control" placeholder="Last Name" (focus)="focus1=true" (blur)="focus1=false" name="lastName" id="lastName" [(ngModel)]="user.lastName" #lastName="ngModel" required style="padding-bottom: 0px;" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+                                  <div *ngIf="submitted && lastName.errors" class="invalid-feedback" style="padding-left: 170px; padding-top: 0px;">
+                                    <p *ngIf="submitted && lastName.errors.required" style="font-style:italic; font-weight: bold; font-size:x-small; margin-bottom: 0px;">Last name is required</p>
+                                  </div>
+                              </div>
+                              <label style="color : black; margin-bottom: 15px;">Location : </label>
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style='margin-bottom: 5px;'>
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" >
+                                    <i class="nc-icon nc-pin-3"></i>
+                                  </span>
+                                </div>
+                                <div class="dropdown" >
+                                    <!-- <button class="dropbtn">Province</button>
+                                    <div class="dropdown-content dropdown-scrollbar" (click)="dropClick($event)"> -->
+                                    <!-- <a value="1">Link 1</a>
+                                    <a value="2">Link 2</a>
+                                    <a value="3">Link 3</a> -->
+                                    <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding-bottom:4px; padding-top: 4px;">
+                                      <!-- <option style="color: black;">hello</option>
+                                      <option style="color: black;">hello</option>
+                                      <option style="color: black;">hello</option>
+                                      <option style="color: black;">Heshan</option> -->
+                                      <option [value]="none" disabled selected hidden>Province</option>
+                                      <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
+                                    </select>
+                                    <!-- </div> -->
+                                </div>
+                              </div>
+                              <!-- <label style="color : black">District : </label> -->
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style='margin-bottom: 5px;'>
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">
+                                    <i class="nc-icon nc-pin-3"></i>
+                                  </span>
+                                </div>
+                                <div class="dropdown">
+                                    <!-- <button class="dropbtn">District</button>
+                                    <div class="dropdown-content dropdown-scrollbar">
+                                    <a class="dropdown-list">Link 1Link 1Link 1Link 1Link 1Link 1Link 1Link 1</a>
+                                    <a >Link 2</a>
+                                    <a >Link 3</a>
+                                    <a href="#">Link 1</a>
+                                    <a href="#">Link 2</a>
+                                    <a href="#">Link 3</a> -->
+                                    <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" style="padding-bottom:4px; padding-top: 4px;" [disabled]="provinceSelected==undefined">
+                                      <!-- <option style="color: black;">hello</option>
+                                      <option style="color: black;">hello</option>
+                                      <option style="color: black;">hello</option>
+                                      <option style="color: black;">Heshan</option> -->
+                                      <option [value]="none" disabled selected hidden>District</option>
+                                      <option *ngFor="let district of districts" [value]="district">{{district}}</option>
+                                    </select>
+                                    <!-- </div> -->
+                                </div>
+                              </div>
+                              <!-- <label style="color : black">Division : </label> -->
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style='margin-bottom: 5px;'>
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">
+                                    <i class="nc-icon nc-pin-3"></i>
+                                  </span>
+                                </div>
+                                <div class="dropdown">
+                                  <!-- <button class="dropbtn">District</button>
+                                  <div class="dropdown-content dropdown-scrollbar">
+                                  <a class="dropdown-list">Link 1Link 1Link 1Link 1Link 1Link 1Link 1Link 1</a>
+                                  <a >Link 2</a>
+                                  <a >Link 3</a>
+                                  <a href="#">Link 1</a>
+                                  <a href="#">Link 2</a>
+                                  <a href="#">Link 3</a> -->
+                                  <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding-bottom:4px; padding-top: 4px;" [disabled]="provinceSelected==undefined">
+                                    <!-- <option style="color: black;">hello</option>
+                                    <option style="color: black;">hello</option>
+                                    <option style="color: black;">hello</option>
+                                    <option style="color: black;">Heshan</option> -->
+                                    <option [value]="none" disabled selected hidden>Division</option>
+                                    <option *ngFor="let division of divisions" [value]="division">{{division}}</option>
+                                  </select>
+                                  <!-- </div> -->
+                                </div>
+                              </div>
+                              <label style="color : black; margin-bottom: 0px;">NIC : </label>
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style='margin-bottom: 5px;'>
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" style="padding-bottom: 0px;">
+                                    <i class="nc-icon nc-badge"></i>
+                                  </span>
+                                </div>
+                                  <input type="text" class="form-control" placeholder="NIC" (focus)="focus1=true" (blur)="focus1=false" name="nic" id="nic" [(ngModel)]="user.nic" #nic="ngModel" required style="padding-bottom: 0px;" [ngClass]="{ 'is-invalid': submitted && f.nic.errors }">
+                                  <div *ngIf="submitted && nic.errors" class="invalid-feedback" style="padding-left: 170px; padding-top: 0px;">
+                                    <p *ngIf="submitted && nic.errors.required" style="font-style:italic; font-weight: bold; font-size:x-small; margin-bottom: 0px;">NIC is required</p>
+                                  </div>
+                              </div>
+                              <label style="color : black; margin-bottom: 0px;">User Role : </label>
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style='margin-bottom: 5px;'>
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" style="padding-bottom: 0px;">
+                                    <i class="nc-icon nc-circle-10"></i>
+                                  </span>
+                                </div>
+                                  <input type="text" class="form-control" placeholder="User Role" (focus)="focus1=true" (blur)="focus1=false" name="userRole" id="userRole" [(ngModel)]="user.userRole" #userRole="ngModel" required style="padding-bottom: 0px;" [ngClass]="{ 'is-invalid': submitted && f.userRole.errors }">
+                                  <div *ngIf="submitted && userRole.errors" class="invalid-feedback" style="padding-left: 170px; padding-top: 0px;">
+                                    <p *ngIf="submitted && userRole.errors.required" style="font-style:italic; font-weight: bold; font-size:x-small; margin-bottom: 0px;">User role is required</p>
+                                  </div>
+                              </div>
+                              <label style="color : black; margin-bottom: 0px;">Phone Number : </label>
+                              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style='margin-bottom: 5px;'>
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" style="padding-bottom: 0px;">
+                                    <i class="nc-icon nc-mobile"></i>
+                                  </span>
+                                </div>
+                                  <input type="text" class="form-control" placeholder="Phone Number" (focus)="focus1=true" (blur)="focus1=false" name="phoneNumber" id="phoneNumber" [(ngModel)]="user.phone" #phoneNumber="ngModel" required style="padding-bottom: 0px;" [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }">
+                                  <div *ngIf="submitted && phoneNumber.errors" class="invalid-feedback" style="padding-left: 170px; padding-top: 0px;">
+                                    <p *ngIf="submitted && phoneNumber.errors.required" style="font-style:italic; font-weight: bold; font-size:x-small; margin-bottom: 0px;">Phone is required</p>
+                                  </div>
                               </div>
                               <!-- <button class="btn btn-danger btn-block btn-round">Register</button> -->
-                              <button class="btn btn-signin btn-block btn-round">Sign up</button>
+                              <!-- <button class="btn btn-signin btn-block btn-round" (click)="signUpClicked()">Sign up</button> -->
+                              <button class="btn btn-signin btn-block btn-round" type="submit" style="margin-top: 20px;">Sign up</button>
                           </form>
                           <!-- <div class="forgot">
                               <a href="/user-profile" class="btn btn-link btn-forget">Forgot password?</a>

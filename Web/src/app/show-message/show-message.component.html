@@ -1,0 +1,11 @@
+<div>
+    <div class="content-container">
+        <div class="motto text-center" style="padding-bottom: 10px;">
+            <h1 [style]="titleStyle">{{data.title}}</h1>
+            <h3 style="padding-top: 10px;">{{data.showMessage}}</h3>
+            <br>
+            <button type="button" [class]="btnStyleOne" [mat-dialog-close]="true">{{btnTextOne}}</button>
+            <button type="button" [class]="btnStyleTwo" [hidden]="isVisible" [mat-dialog-close]="false">{{btnTextTwo}}</button>
+        </div>
+    </div>
+</div>
