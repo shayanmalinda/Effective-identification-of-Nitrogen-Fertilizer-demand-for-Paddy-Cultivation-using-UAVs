@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user.model';
 import { UserService } from 'app/services/user.service';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -10,65 +10,29 @@ import { Observable } from 'rxjs';
 })
 export class UserProfileComponent implements OnInit {
 
-  users : Array<any> = [];
-  user : any;
+  users: User[];
+  user: User;
 
-  constructor(private userService : UserService) { 
+  constructor(private router: Router,private userService: UserService) {
+    this.user = this.router.getCurrentNavigation().extras.state.user;
   }
 
-  ngOnInit(): void {
-    this.getUsers();
+
+  ngOnInit() {
+
   }
 
-  getUsers (){
-    // this.users = this.userService.getUsers();
-    // this.users = [
-    //   {
-    //     email: "Heshan kavinda",
-    //     firstName: '',
-    //     lastName: '',
-    //     nic: '',
-    //     phone: '',
-    //     userRole: '',
-    //     district: '',
-    //     division: '',
-    //     province: ''
-    //   },
-    //   {
-    //     email: "Kaveesha Shaminda",
-    //     firstName: '',
-    //     lastName: '',
-    //     nic: '',
-    //     phone: '',
-    //     userRole: '',
-    //     district: '',
-    //     division: '',
-    //     province: ''
-    //   },
-    //   {
-    //     email: "Hello lanka",
-    //     firstName: '',
-    //     lastName: '',
-    //     nic: '',
-    //     phone: '',
-    //     userRole: '',
-    //     district: '',
-    //     division: '',
-    //     province: ''
-    //   },
-    // ];
-    // this.userService.getUsers().subscribe(data=>{
-    //   console.log(data);
-    // })
-
-    this.userService.getallUsers()
-        .subscribe(data => {
-            data.docs.forEach(element => {      
-                console.log(element.data());
-                // this.users.push(element.data());
-            });
-            // console.log(this.users);
-        });
+  accept() {
+    console.log('ss');
+    this.userService.acceptUser(this.user.id);
   }
+  decline() {
+    this.userService.declineUser(this.user.id);
+  }
+  delete() {
+    this.userService.deleteUser(this.user.id);
+  }
+ 
 
 }
+

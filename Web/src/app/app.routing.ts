@@ -1,3 +1,4 @@
+import { FieldVisitRequestsComponent } from './pages/field-visits/field-visits.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
@@ -12,6 +13,10 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
 import { UsersComponent } from './pages/users/users.component';
 import { UpdateProfileComponent } from './pages/update-profile/update-profile.component';
+import { FieldsComponent } from './pages/fields/fields.component';
+import { FieldDetailsComponent } from './pages/field-details/field-details.component';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+
 
 
 const routes: Routes =[
@@ -23,8 +28,24 @@ const routes: Routes =[
     { path: 'login',            component: LoginComponent },
     { path: 'landing',          component: LandingComponent },
     { path: 'nucleoicons',      component: NucleoiconsComponent },
-    { path: 'users',            component: UsersComponent },
+    { path: 'users',      component: UsersComponent },
     { path: 'updateuser',       component: UpdateProfileComponent },
+    { path: 'fields',      component: FieldsComponent },
+    { path: 'field-details',      component: FieldDetailsComponent },
+    { path: 'agricultural-officers',      component: UsersComponent },
+    { path: 'admin-dashboard',      component: AdminDashboardComponent },
+    { path: 'requests',      component: UsersComponent },
+    { path: 'user-request',     component: UserProfileComponent },
+    { path: 'officer-requests',     component: UsersComponent },
+    { path: 'officers',     component: UsersComponent },
+    { path: 'field-visits',      component: FieldVisitRequestsComponent },
+
+
+
+
+
+
+
 ];
 
 @NgModule({

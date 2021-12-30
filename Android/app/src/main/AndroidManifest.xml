@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Smartricecare"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FarmerViewResultsActivity"></activity>
+        <activity android:name=".CalibrateSensorActivity"></activity>
+        <activity android:name=".FarmerViewResultsActivity" />
         <activity android:name=".ExamineFieldActivity" />
         <activity android:name=".ViewRequests" />
         <activity android:name=".AgriculturalOfficerHomeActivity" />
@@ -102,6 +103,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

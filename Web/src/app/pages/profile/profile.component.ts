@@ -93,5 +93,8 @@ export class ProfileComponent implements OnInit {
         sessionStorage.setItem('province',this.user.province);
         sessionStorage.setItem('image',this.user.image);
     }
+    // printUser(){
+    //     console.log(this.user.firstName);
+    // }
 
 }
