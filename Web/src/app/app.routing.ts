@@ -16,6 +16,7 @@ import { UpdateProfileComponent } from './pages/update-profile/update-profile.co
 import { FieldsComponent } from './pages/fields/fields.component';
 import { FieldDetailsComponent } from './pages/field-details/field-details.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
 
 
 
@@ -38,6 +39,7 @@ const routes: Routes =[
     { path: 'user-request',     component: UserProfileComponent },
     { path: 'officer-requests',     component: UsersComponent },
     { path: 'officers',     component: UsersComponent },
+    { path: 'lcc-details',      component: LccDetailsComponent },
     { path: 'field-visits',      component: FieldVisitsComponent },
     { path: 'field-visit-details',      component: FieldVisitDetailsComponent },
 
