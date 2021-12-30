@@ -24,6 +24,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -68,6 +69,7 @@ public class MapsActivity extends FragmentActivity implements
     private UiSettings mUiSettings;
     private ImageView ivFocus, ivSettings, ivClose;
     private CheckBox cbLevel2, cbLevel3, cbLevel4, cbLevel5;
+    private SeekBar sbRadius;
     private Boolean filterLevel2 = true, filterLevel3 = true, filterLevel4 = true, filterLevel5 = true;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     FirebaseAuth mAuth;
@@ -82,6 +84,8 @@ public class MapsActivity extends FragmentActivity implements
     List<WeightedLatLng> level5List = new ArrayList<>();
     List<Marker> markers = new ArrayList<>();
     List<Marker> currentMarkers = new ArrayList<>();
+    Integer radius = 40;
+    Double opacity = 0.8;
 
     int[] level2Colors = {
             Color.rgb(255, 0, 0),
@@ -99,6 +103,7 @@ public class MapsActivity extends FragmentActivity implements
             Color.rgb(0, 221, 255),
             Color.rgb(0, 221, 255)
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +123,7 @@ public class MapsActivity extends FragmentActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
 
         ivFocus = findViewById(R.id.ivFocus);
         ivSettings = findViewById(R.id.ivSettings);
@@ -210,10 +216,34 @@ public class MapsActivity extends FragmentActivity implements
                     }
                 });
 
+
+                SeekBar seekBar = popupView.findViewById(R.id.sbRadius);
+                seekBar.setProgress(radius);
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        radius = progress;
+                        filterHeatMap();
+                        seekBar.setProgress(radius);
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        filterHeatMap();
+                    }
+                });
+
             }
         });
 
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -437,7 +467,7 @@ public class MapsActivity extends FragmentActivity implements
     private void addHeatMap(List<WeightedLatLng> weightedList,int[] colors, Boolean checkData) {
 
         float[] startPoints = {
-                0.6f, 1f
+                0.7f, 1f
         };
 
         Gradient gradient = new Gradient(colors, startPoints);
@@ -446,8 +476,8 @@ public class MapsActivity extends FragmentActivity implements
             HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
                     .weightedData(weightedList)
                     .gradient(gradient)
-                    .radius(40)
-                    .opacity(1)
+                    .radius(radius)
+                    .opacity(opacity)
                     .build();
 
             // Add a tile overlay to the map, using the heat map tile provider.

@@ -71,7 +71,7 @@ public class ViewRequests extends AppCompatActivity {
                                     Double longitude = document.getDouble("longitude");
                                     String requestNote = document.getString("requestNote");
                                     String status = document.getString("status");
-                                    if(status.equals("pending")) {
+                                    if(status.equals("request pending")) {
                                         DocumentReference docRef = db.collection("FieldDetails").document(fieldId);
                                         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
