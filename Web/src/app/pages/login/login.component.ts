@@ -69,7 +69,6 @@ export class LoginComponent implements OnInit {
   }
 
   logInClicked(){
-    // this.authenticationService.logIn(this.userCredential);
     this.submitted = true;
     if(this.userCredential.email == "" || this.userCredential.password == ""){
       this.message.title = "Error";
@@ -97,45 +96,12 @@ export class LoginComponent implements OnInit {
     })}
   }
 
-  // loginClick(){
-  //   // console.log("Login clicked");
-  //   this.userCredential.password = this.encryptPassword(this.plainPassword);
-  //   this.userService.logInUser(this.user).subscribe(data => {
-  //       if(data.docs.length > 0){
-  //         this.user = data.docs[0].data() as User;
-  //         this.user.docId = data.docs[0].id.toString();
-  //         this.updateSessionDetails();
-  //         this.router.navigate(['/profile']);
-  //         // console.log("there is an element" + data.docs.length);
-  //         // data.docs.forEach(element => {   
-  //         //   // console.log(element.data());
-  //         //   // this.users.push(element.data());
-  //         //   // console.log(this.users); 
-  //         // });
-  //       }else{
-  //         window.alert("Check the E-mail and the password");
-  //       }
-  //       // console.log(this.users);
-  //   });
-  //   // sessionStorage.setItem('email',this.user.email);
-  //   // sessionStorage.setItem('firstName',this.user.firstName);
-  //   // sessionStorage.setItem('lastName',this.user.lastName);
-  //   // sessionStorage.setItem('nic',this.user.nic);
-  //   // sessionStorage.setItem('phone',this.user.phone);
-  //   // sessionStorage.setItem('userRole',this.user.userRole);
-  //   // sessionStorage.setItem('district',this.user.district);
-  //   // sessionStorage.setItem('division',this.user.division);
-  //   // sessionStorage.setItem('province',this.user.province);
-  //   // sessionStorage.setItem('image',this.user.image);
-  // }
-
   encryptPassword(password : string){
     var originalPassword = password;
 
     const md5 = new Md5();
     var encryptedPassword = md5.appendStr(originalPassword).end().toString();       //to encrypt the pass using md5
     var finalPassword = btoa(encryptedPassword);                                    //to convert the encrypted pass to base64
-    // console.log(finalPassword);
     return finalPassword;
   }
 
