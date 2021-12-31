@@ -15,6 +15,9 @@ import { ExamplesModule } from './pages/examples.module';
 import { LoginComponent } from './pages/login/login.component';
 // import { UsersComponent } from './pages/users/users.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
+import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
+import { ShowMessageComponent } from './show-message/show-message.component';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -24,11 +27,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { UpdateProfileComponent } from './pages/update-profile/update-profile.component';
-import { ShowMessageComponent } from './show-message/show-message.component';
 
 //material
 import { MaterialModule } from './material/material.module';
-import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
     UpdateProfileComponent,
     ShowMessageComponent,
     LccDetailsComponent,
+    UserDashboardComponent,
     
   ],
   imports: [

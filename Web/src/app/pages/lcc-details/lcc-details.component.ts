@@ -11,25 +11,9 @@ import { LccService } from 'app/services/lcc.service';
 import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
 
-export interface PeriodicElement {
-  week: number;
-  levelOne: string;
-  levelTwo: number;
-  levelThree: string;
-}
-
 const NO_OF_WEEKS = 8;
 
-const ELEMENT_DATA: LCCWeekDetails[] = [
-  {week: 1, levelOne: 0, levelTwo: 0, levelThree: 0},
-  {week: 2, levelOne: 0, levelTwo: 0, levelThree: 0},
-  {week: 3, levelOne: 0, levelTwo: 0, levelThree: 0},
-  {week: 4, levelOne: 0, levelTwo: 0, levelThree: 0},
-  {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
-  {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0},
-  {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
-  {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0}
-];
+// var changedWeekDetails = Array<LCCWeekDetails>(NO_OF_WEEKS);
 
 @Component({
   selector: 'app-lcc-details',
@@ -70,32 +54,24 @@ export class LccDetailsComponent implements OnInit {
     showMessage : ''
   }
 
-  changedWeekDetails = Array<LCCWeekDetails>(NO_OF_WEEKS);
-
-
-  lccMainDetails : LCCMainDetails = {
-    userID : '',
-    division : '',
-    weekDetails : this.changedWeekDetails
-  }
+  changedWeekDetails: LCCWeekDetails[];
+  lccMainDetails : LCCMainDetails;
+  havePreviousRecords : boolean = false;
 
 
   displayedColumns: string[] = ['week', 'levelOne', 'levelTwo', 'levelThree'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  dataSource : MatTableDataSource<LCCWeekDetails>;;
 
   constructor(private lccService : LccService, private dialog : DialogService, private router : Router) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
-    setTimeout(() => this.dataSource.paginator = this.paginator);
-    setTimeout(() => this.dataSource.sort = this.sort);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
     this.getLCCDetails();
-  }
-
-  clickOn(row){
-    console.log(row);
+    // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
+    // setTimeout(() => this.dataSource.paginator = this.paginator);
+    // setTimeout(() => this.dataSource.sort = this.sort);
+    // this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(filterValue : string){
@@ -109,12 +85,18 @@ export class LccDetailsComponent implements OnInit {
   }
 
   onSaveClick(){
-    console.log(this.changedWeekDetails);
-    this.lccMainDetails.userID = 'heshan';
-    this.lccMainDetails.division = 'division';
+    console.log("in the onsave" + this.changedWeekDetails);
+    console.log(sessionStorage.getItem('userID'));
+    this.lccMainDetails = {
+      userID : '',
+      division : '',
+      weekDetails : this.changedWeekDetails
+    };
+    this.lccMainDetails.userID = sessionStorage.getItem('userID');
+    this.lccMainDetails.division = sessionStorage.getItem('division');
     this.updateWeekDetails();
     this.lccMainDetails.weekDetails = this.changedWeekDetails;
-    this.lccService.saveLccDetails(this.lccMainDetails)
+    this.lccService.saveLccDetails(this.lccMainDetails, this.havePreviousRecords)
           .then(res =>{
               this.message.title = "success";
               this.message.showMessage = "You have successfully update the LCC details !";
@@ -171,13 +153,38 @@ export class LccDetailsComponent implements OnInit {
   }
 
   getLCCDetails(){
-    this.lccMainDetails.division = sessionStorage.getItem('division');
-    console.log(this.lccMainDetails.division);
-    this.lccService.getLccDetailsByDivision(this.lccMainDetails).subscribe(
-      res => {
-        console.log(res.docs.length);
+    this.user.division = sessionStorage.getItem('division');
+    this.lccService.getLccDetailsByDivision(this.user).subscribe(
+      data => {
+        if(data.docs.length > 0){
+          this.havePreviousRecords = true;
+          this.lccMainDetails = data.docs[0].data() as LCCMainDetails;
+          this.changedWeekDetails = this.lccMainDetails.weekDetails;
+          sessionStorage.setItem('LCCID', data.docs[0].id);
+          console.log(this.changedWeekDetails);
+          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
+          setTimeout(() => this.dataSource.paginator = this.paginator);
+          setTimeout(() => this.dataSource.sort = this.sort);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        }else{
+          this.changedWeekDetails = [
+            {week: 1, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 2, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 3, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 4, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 7, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 8, levelOne: 0, levelTwo: 0, levelThree: 0}
+          ];
+          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
+          setTimeout(() => this.dataSource.paginator = this.paginator);
+          setTimeout(() => this.dataSource.sort = this.sort);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        }
       }
     )
   }
-
 }

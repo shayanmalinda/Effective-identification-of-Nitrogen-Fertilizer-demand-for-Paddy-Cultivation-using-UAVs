@@ -17,6 +17,7 @@ import { FieldsComponent } from './pages/fields/fields.component';
 import { FieldDetailsComponent } from './pages/field-details/field-details.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
+import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
 
 
 
@@ -42,6 +43,7 @@ const routes: Routes =[
     { path: 'lcc-details',      component: LccDetailsComponent },
     { path: 'field-visits',      component: FieldVisitsComponent },
     { path: 'field-visit-details',      component: FieldVisitDetailsComponent },
+    { path: 'user-dashboard',     component: UserDashboardComponent },
 
 
 
