@@ -21,14 +21,14 @@ export interface PeriodicElement {
 const NO_OF_WEEKS = 8;
 
 const ELEMENT_DATA: LCCWeekDetails[] = [
-  {week: 1, levelOne: '', levelTwo: 0, levelThree: ''},
-  {week: 2, levelOne: '', levelTwo: 0, levelThree: ''},
-  {week: 3, levelOne: '', levelTwo: 0, levelThree: ''},
-  {week: 4, levelOne: '', levelTwo: 0, levelThree: ''},
-  {week: 5, levelOne: '', levelTwo: 0, levelThree: ''},
-  {week: 6, levelOne: '', levelTwo: 0, levelThree: ''},
-  {week: 5, levelOne: '', levelTwo: 0, levelThree: ''},
-  {week: 6, levelOne: '', levelTwo: 0, levelThree: ''}
+  {week: 1, levelOne: 0, levelTwo: 0, levelThree: 0},
+  {week: 2, levelOne: 0, levelTwo: 0, levelThree: 0},
+  {week: 3, levelOne: 0, levelTwo: 0, levelThree: 0},
+  {week: 4, levelOne: 0, levelTwo: 0, levelThree: 0},
+  {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
+  {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0},
+  {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
+  {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0}
 ];
 
 @Component({
@@ -91,6 +91,7 @@ export class LccDetailsComponent implements OnInit {
     setTimeout(() => this.dataSource.sort = this.sort);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.getLCCDetails();
   }
 
   clickOn(row){
@@ -111,9 +112,8 @@ export class LccDetailsComponent implements OnInit {
     console.log(this.changedWeekDetails);
     this.lccMainDetails.userID = 'heshan';
     this.lccMainDetails.division = 'division';
-    this.lccMainDetails.weekDetails = this.changedWeekDetails;
     this.updateWeekDetails();
-    // console.log(this.lccMainDetails);
+    this.lccMainDetails.weekDetails = this.changedWeekDetails;
     this.lccService.saveLccDetails(this.lccMainDetails)
           .then(res =>{
               this.message.title = "success";
@@ -125,7 +125,6 @@ export class LccDetailsComponent implements OnInit {
               this.message.title = "error";
               this.message.showMessage = err;
               this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-                // this.clearFields();
             });
           }
         )
@@ -158,18 +157,27 @@ export class LccDetailsComponent implements OnInit {
     for(var i = 0; i < NO_OF_WEEKS; i++ ){
       var j = i;
       if(this.changedWeekDetails[i] == undefined){
-        this.changedWeekDetails[i] = {week: j+1, levelOne: '0', levelTwo: 0, levelThree: '0'}
+        this.changedWeekDetails[i] = {week: j+1, levelOne: 0, levelTwo: 0, levelThree: 0}
       }else{
-        if(this.changedWeekDetails[i].levelOne == ''){
-          this.changedWeekDetails[i].levelOne = '0';
+        if(this.changedWeekDetails[i].levelOne == 0){
+          this.changedWeekDetails[i].levelOne = 0;
         }if(this.changedWeekDetails[i].levelTwo == 0){
           this.changedWeekDetails[i].levelTwo = 0;
-        }if(this.changedWeekDetails[i].levelThree == ''){
-          this.changedWeekDetails[i].levelThree = '0';
+        }if(this.changedWeekDetails[i].levelThree == 0){
+          this.changedWeekDetails[i].levelThree = 0;
         }
       } 
     }
-    // console.log("this is in the update funtion : " + this.changedWeekDetails);
+  }
+
+  getLCCDetails(){
+    this.lccMainDetails.division = sessionStorage.getItem('division');
+    console.log(this.lccMainDetails.division);
+    this.lccService.getLccDetailsByDivision(this.lccMainDetails).subscribe(
+      res => {
+        console.log(res.docs.length);
+      }
+    )
   }
 
 }

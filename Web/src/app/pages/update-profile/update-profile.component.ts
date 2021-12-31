@@ -118,11 +118,7 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   onSaveClick(){
-    // console.log(this.user.image);
-    // this.userService.logInUser(this.user);
-    // this.userService.saveUserDetails(this.userCredential, this.user);
-    console.log(this.userCredential);
-    console.log(this.user)
+    this.user.userRole = this.user.userRole.toLowerCase();
     this.userService.saveUserDetails(this.userCredential, this.user)
     .then(res => {
       this.message.title = "success";

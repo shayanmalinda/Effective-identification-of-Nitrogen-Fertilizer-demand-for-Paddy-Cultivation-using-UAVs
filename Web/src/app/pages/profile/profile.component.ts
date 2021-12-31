@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit {
     }
 
     onLccDetailsClick(){
-        this.authentication.logOut();
+        this.updateSessionDetails();
         this.router.navigate(['/lcc-details']);
     }
 

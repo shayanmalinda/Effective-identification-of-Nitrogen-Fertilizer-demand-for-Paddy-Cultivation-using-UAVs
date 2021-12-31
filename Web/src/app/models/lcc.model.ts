@@ -1,8 +1,8 @@
 export class LCCWeekDetails {
     week: number;
-    levelOne: string;
+    levelOne: number;
     levelTwo: number;
-    levelThree: string;
+    levelThree: number;
 }
 
 export class LCCMainDetails {

@@ -19,4 +19,8 @@ export class LccService {
       ,err => reject(err.message))
     })
   }
+
+  getLccDetailsByDivision(lccMainDetails : LCCMainDetails) {
+    return this.fireStore.collection('LCCDetails', ref => ref.where('division', '==', lccMainDetails.division)).get();
+  }
 }

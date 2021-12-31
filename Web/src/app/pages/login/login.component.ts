@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit {
     }else{
       this.authenticationService.logIn(this.userCredential)
       .then(res =>{
+        // console.log("This is the user id in login : " + this.userCredential.userID);
         this.router.navigate(['/profile']);
       }, err => {
         this.message.title = "error";
