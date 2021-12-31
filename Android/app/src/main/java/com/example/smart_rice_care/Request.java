@@ -18,8 +18,11 @@ public class Request {
     private Double longitude;
     private Double latitude;
     private String requestNote;
+    private Integer plantAge;
+    private Long timestamp;
+    private String status;
 
-    public Request(String farmerId, String fieldId, String requestId, String date, String address, String registrationNumber, String farmerFirstName, String farmerLastName, String division, String email, String nic, String phone, Double longitude, Double latitude, String requestNote) {
+    public Request(String farmerId, String fieldId, String requestId, String date, String address, String registrationNumber, String farmerFirstName, String farmerLastName, String division, String email, String nic, String phone, Double longitude, Double latitude, String requestNote, Integer plantAge, Long timestamp, String status) {
         this.farmerId = farmerId;
         this.fieldId = fieldId;
         this.requestId = requestId;
@@ -35,6 +38,9 @@ public class Request {
         this.longitude = longitude;
         this.latitude = latitude;
         this.requestNote = requestNote;
+        this.plantAge = plantAge;
+        this.timestamp = timestamp;
+        this.status = status;
     }
 
     public String getFarmerId() {
@@ -157,4 +163,27 @@ public class Request {
         this.requestNote = requestNote;
     }
 
+    public Integer getPlantAge() {
+        return plantAge;
+    }
+
+    public void setPlantAge(Integer plantAge) {
+        this.plantAge = plantAge;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

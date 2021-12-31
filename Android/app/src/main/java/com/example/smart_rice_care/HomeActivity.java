@@ -127,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-        String requestId = "oFGNDVeqA1BzriEStRK8";
+        String requestId = "3t9oAQrw1UxcXqCUda2j";
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String uId = mAuth.getInstance().getUid();
@@ -136,7 +136,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.d("size==", String.valueOf(l3LatLng.size()));
         Log.d("size==", String.valueOf(l4LatLng.size()));
 
-        for(int i=0;i<10;i++){
+        for(int i=0;i<l2LatLng.size();i++){
 
             System.out.println("inserting="+i);
             Map<String, Object> data = new HashMap<>();
@@ -145,11 +145,12 @@ public class HomeActivity extends AppCompatActivity {
             data.put("longitude", l2LatLng.get(i).longitude);
             data.put("level", 2);
             data.put("officerId", uId);
+            data.put("timestamp",System.currentTimeMillis());
 
             db.collection("FieldData")
                     .add(data);
         }
-        for(int i=0;i<10;i++){
+        for(int i=0;i<l3LatLng.size();i++){
 
             System.out.println("inserting="+i);
             Map<String, Object> data = new HashMap<>();
@@ -158,11 +159,12 @@ public class HomeActivity extends AppCompatActivity {
             data.put("longitude", l3LatLng.get(i).longitude);
             data.put("level", 3);
             data.put("officerId", uId);
+            data.put("timestamp",System.currentTimeMillis());
 
             db.collection("FieldData")
                     .add(data);
         }
-        for(int i=0;i<10;i++){
+        for(int i=0;i<l4LatLng.size();i++){
 
             System.out.println("inserting="+i);
             Map<String, Object> data = new HashMap<>();
@@ -171,6 +173,7 @@ public class HomeActivity extends AppCompatActivity {
             data.put("longitude", l4LatLng.get(i).longitude);
             data.put("level", 4);
             data.put("officerId", uId);
+            data.put("timestamp",System.currentTimeMillis());
 
             db.collection("FieldData")
                     .add(data);
