@@ -90,6 +90,7 @@ export class AuthenticationService {
           this.userService.getUserByEmail(userCredential).subscribe(data => {
             if(data.docs.length > 0){
               this.user = data.docs[0].data() as User;
+              userCredential.userID = data.docs[0].id;
               this.updateSessionDetails(userCredential,this.user);
               resolve("Success")
             }
@@ -114,6 +115,7 @@ export class AuthenticationService {
 
   updateSessionDetails(userCredential : UserCredential, user : User){
     sessionStorage.setItem('email',userCredential.email);
+    sessionStorage.setItem('userID',userCredential.userID);
     sessionStorage.setItem('firstName',user.firstName);
     sessionStorage.setItem('lastName',user.lastName);
     sessionStorage.setItem('nic',user.nic);
