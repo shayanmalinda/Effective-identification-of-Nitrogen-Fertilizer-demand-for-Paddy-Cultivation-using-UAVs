@@ -17,10 +17,10 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/fields']);
   }
   viewUsers() {
-    this.router.navigate(['/users'], { state: { role: 'user' } });
+    this.router.navigate(['/farmers'], { state: { role: 'farmer' } });
   }
   viewRequests() {
-    this.router.navigate(['/requests'], { state: { role: 'user', type: 'request' } });
+    this.router.navigate(['/requests'], { state: { role: 'farmer', type: 'request' } });
   }
   viewOfficerRequests() {
     this.router.navigate(['/officer-requests'], { state: { role: 'officer', type: 'request' } });

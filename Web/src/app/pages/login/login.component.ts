@@ -18,10 +18,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm : FormGroup;
+  loginForm: FormGroup;
 
-  user : User = {
-    id : '',
+  user: User = {
+    id: '',
     email: '',
     firstName: '',
     lastName: '',
@@ -30,73 +30,78 @@ export class LoginComponent implements OnInit {
     userRole: '',
     district: '',
     division: '',
-    province: '',         
-    image : '',        
-    status : '',        
-    time : '',        
-    name : '',
-    registeredDate : '',
+    province: '',
+    image: '',
+    status: '',
+    time: '',
+    name: '',
+    registeredDate: '',
   };
 
-  userCredential : UserCredential = {
-    email : '',
-    password : '',
-    userID : '',
+  userCredential: UserCredential = {
+    email: '',
+    password: '',
+    userID: '',
   };
 
-  message : Message = {
-    title : '',
-    showMessage : '',
+  message: Message = {
+    title: '',
+    showMessage: '',
   }
-  
-  users : Array<any> = [];
+
+  users: Array<any> = [];
   plainPassword = "";
   submitted = true;
 
-  constructor(private formBuilder : FormBuilder, private dialog : DialogService, private userService : UserService, private router : Router, private authenticationService : AuthenticationService) { }
+  constructor(private formBuilder: FormBuilder, private dialog: DialogService, private userService: UserService, private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group(
       {
         email: ['', [Validators.email, Validators.required]],
-        firstName : ['',[Validators.required]],
-        lastName : ['',[Validators.required]],
-        nic : ['',[Validators.required]],
-        userRole : ['',[Validators.required]],
-        phoneNumber : ['',[Validators.required]],
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
+        nic: ['', [Validators.required]],
+        userRole: ['', [Validators.required]],
+        phoneNumber: ['', [Validators.required]],
       }
     )
   }
 
-  logInClicked(){
+  logInClicked() {
     this.submitted = true;
-    if(this.userCredential.email == "" || this.userCredential.password == ""){
+    if (this.userCredential.email == "" || this.userCredential.password == "") {
       this.message.title = "Error";
       this.message.showMessage = "You have to enter relevant fields to login !";
       this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
         this.clearFields();
       })
-    }else{
+    } else {
       this.authenticationService.logIn(this.userCredential)
-      .then(res =>{
-        this.router.navigate(['/profile']);
-      }, err => {
-        this.message.title = "error";
-        console.log(err);
-        if(err == "auth/wrong-password"){
-          this.message.showMessage = "You have entered invalid password !";
-        }else if(err == "auth/user-not-found"){
-          this.message.showMessage = "The Email you have entered do not have an account here !";
-        }else{
-          this.message.showMessage = "Invalid Email and password !"
-        }
-        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-          this.clearFields();
-      });
-    })}
+        .then(res => {
+          let userRole = (sessionStorage.getItem("userRole") != "" ? sessionStorage.getItem("userRole") : "");
+          if (userRole == "admin")
+            this.router.navigate(['/admin-dashboard']);
+          else this.router.navigate(['/profile']);
+
+        }, err => {
+          this.message.title = "error";
+          console.log(err);
+          if (err == "auth/wrong-password") {
+            this.message.showMessage = "You have entered invalid password !";
+          } else if (err == "auth/user-not-found") {
+            this.message.showMessage = "The Email you have entered do not have an account here !";
+          } else {
+            this.message.showMessage = "Invalid Email and password !"
+          }
+          this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+            this.clearFields();
+          });
+        })
+    }
   }
 
-  encryptPassword(password : string){
+  encryptPassword(password: string) {
     var originalPassword = password;
 
     const md5 = new Md5();
@@ -105,22 +110,22 @@ export class LoginComponent implements OnInit {
     return finalPassword;
   }
 
-  updateSessionDetails(){
-    sessionStorage.setItem('email',this.user.email);
-    sessionStorage.setItem('firstName',this.user.firstName);
-    sessionStorage.setItem('lastName',this.user.lastName);
-    sessionStorage.setItem('nic',this.user.nic);
-    sessionStorage.setItem('phone',this.user.phone);
-    sessionStorage.setItem('userRole',this.user.userRole);
-    sessionStorage.setItem('district',this.user.district);
-    sessionStorage.setItem('division',this.user.division);
-    sessionStorage.setItem('province',this.user.province);
-    sessionStorage.setItem('image',this.user.image);
-    sessionStorage.setItem('status',this.user.status);
-    sessionStorage.setItem('useID',this.userCredential.userID);
+  updateSessionDetails() {
+    sessionStorage.setItem('email', this.user.email);
+    sessionStorage.setItem('firstName', this.user.firstName);
+    sessionStorage.setItem('lastName', this.user.lastName);
+    sessionStorage.setItem('nic', this.user.nic);
+    sessionStorage.setItem('phone', this.user.phone);
+    sessionStorage.setItem('userRole', this.user.userRole);
+    sessionStorage.setItem('district', this.user.district);
+    sessionStorage.setItem('division', this.user.division);
+    sessionStorage.setItem('province', this.user.province);
+    sessionStorage.setItem('image', this.user.image);
+    sessionStorage.setItem('status', this.user.status);
+    sessionStorage.setItem('useID', this.userCredential.userID);
   }
 
-  clearFields(){
+  clearFields() {
     this.userCredential.email = "";
     this.userCredential.password = "";
   }

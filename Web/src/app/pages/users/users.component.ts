@@ -58,7 +58,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
       this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'view', 'delete'];
     } else {
       this.title += " requests";
-      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'accept', 'decline', 'delete'];
+      if (this.role = 'farmer')
+        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'delete'];
+      else
+        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'accept', 'decline', 'delete'];
     }
 
   }
@@ -81,9 +84,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
   viewUser() {
     if (this.type == 'request')
-      this.router.navigate(['/user-request'], { state: { user: this.user } });
+      this.router.navigate(['/farmer-request'], { state: { user: this.user } });
     else
-      this.router.navigate(['/user-profile'], { state: { user: this.user } });// should be changed to profile with updates
+      this.router.navigate(['/farmer-profile'], { state: { user: this.user } });// should be changed to profile with updates
 
   }
   deleteUser() {
