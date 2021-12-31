@@ -6,23 +6,29 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Message } from 'app/models/message.model';
 import { User, UserCredential } from 'app/models/user.model';
+import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
+import { LccService } from 'app/services/lcc.service';
+import { DialogService } from 'app/services/dialog.service';
+import { Router } from '@angular/router';
 
 export interface PeriodicElement {
-  levelOne: string;
   week: number;
+  levelOne: string;
   levelTwo: number;
   levelThree: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {week: 1, levelOne: 'Hydrogen', levelTwo: 1.0079, levelThree: 'H'},
-  {week: 2, levelOne: 'Helium', levelTwo: 4.0026, levelThree: 'He'},
-  {week: 3, levelOne: 'Lithium', levelTwo: 6.941, levelThree: 'Li'},
-  {week: 4, levelOne: 'Beryllium', levelTwo: 9.0122, levelThree: 'Be'},
-  {week: 5, levelOne: 'Boron', levelTwo: 10.811, levelThree: 'B'},
-  {week: 6, levelOne: 'Carbon', levelTwo: 12.0107, levelThree: 'C'},
-  {week: 5, levelOne: 'Boron', levelTwo: 10.811, levelThree: 'B'},
-  {week: 6, levelOne: 'Carbon', levelTwo: 12.0107, levelThree: 'C'}
+const NO_OF_WEEKS = 8;
+
+const ELEMENT_DATA: LCCWeekDetails[] = [
+  {week: 1, levelOne: '', levelTwo: 0, levelThree: ''},
+  {week: 2, levelOne: '', levelTwo: 0, levelThree: ''},
+  {week: 3, levelOne: '', levelTwo: 0, levelThree: ''},
+  {week: 4, levelOne: '', levelTwo: 0, levelThree: ''},
+  {week: 5, levelOne: '', levelTwo: 0, levelThree: ''},
+  {week: 6, levelOne: '', levelTwo: 0, levelThree: ''},
+  {week: 5, levelOne: '', levelTwo: 0, levelThree: ''},
+  {week: 6, levelOne: '', levelTwo: 0, levelThree: ''}
 ];
 
 @Component({
@@ -64,10 +70,20 @@ export class LccDetailsComponent implements OnInit {
     showMessage : ''
   }
 
+  changedWeekDetails = Array<LCCWeekDetails>(NO_OF_WEEKS);
+
+
+  lccMainDetails : LCCMainDetails = {
+    userID : '',
+    division : '',
+    weekDetails : this.changedWeekDetails
+  }
+
+
   displayedColumns: string[] = ['week', 'levelOne', 'levelTwo', 'levelThree'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
-  constructor() { }
+  constructor(private lccService : LccService, private dialog : DialogService, private router : Router) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
@@ -85,27 +101,42 @@ export class LccDetailsComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  onSaveClick(row){
-    // // console.log(this.user.image);
-    // // this.userService.logInUser(this.user);
-    // // this.userService.saveUserDetails(this.userCredential, this.user);
-    // console.log(this.userCredential);
-    // console.log(this.user)
-    // this.userService.saveUserDetails(this.userCredential, this.user)
-    // .then(res => {
-    //   this.message.title = "success";
-    //   this.message.showMessage = "You have successfully updated the user details !";
-    //   this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-    //   this.updateSessionDetails();
-    //   this.router.navigate(['/profile']);
-    //   });
-    // }, err => {
-    //   this.message.title = "error";
-    //   this.message.showMessage = err;
-    //   this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-    //   this.clearFields();
-    // })});
-    console.log(row);
+  onChange(row){
+    var weekNo = row.week;
+    var rowDetails = row;
+    this.changedWeekDetails[weekNo - 1] = rowDetails;
+  }
+
+  onSaveClick(){
+    console.log(this.changedWeekDetails);
+    this.lccMainDetails.userID = 'heshan';
+    this.lccMainDetails.division = 'division';
+    this.lccMainDetails.weekDetails = this.changedWeekDetails;
+    this.updateWeekDetails();
+    // console.log(this.lccMainDetails);
+    this.lccService.saveLccDetails(this.lccMainDetails)
+          .then(res =>{
+              this.message.title = "success";
+              this.message.showMessage = "You have successfully update the LCC details !";
+              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
+              this.router.navigate(['/profile']);
+              });
+            }, err => {
+              this.message.title = "error";
+              this.message.showMessage = err;
+              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
+                // this.clearFields();
+            });
+          }
+        )
+  }
+
+  onCancelClick(){
+    this.message.title = "warning";
+    this.message.showMessage = "The changes you have done not be applied to the LCC details !";
+    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
+      this.router.navigate(['/profile']);
+      });
   }
 
   loadSessionDetails(){
@@ -121,6 +152,24 @@ export class LccDetailsComponent implements OnInit {
     this.user.district = (sessionStorage.getItem("district") != "" ? sessionStorage.getItem("district") : "");
     this.user.province = (sessionStorage.getItem("province") != "" ? sessionStorage.getItem("province") : "");
     this.user.image = (sessionStorage.getItem("image") != "" ? sessionStorage.getItem("image") : "./assets/img/faces/user_profile_default.jpg");
+  }
+
+  updateWeekDetails(){
+    for(var i = 0; i < NO_OF_WEEKS; i++ ){
+      var j = i;
+      if(this.changedWeekDetails[i] == undefined){
+        this.changedWeekDetails[i] = {week: j+1, levelOne: '0', levelTwo: 0, levelThree: '0'}
+      }else{
+        if(this.changedWeekDetails[i].levelOne == ''){
+          this.changedWeekDetails[i].levelOne = '0';
+        }if(this.changedWeekDetails[i].levelTwo == 0){
+          this.changedWeekDetails[i].levelTwo = 0;
+        }if(this.changedWeekDetails[i].levelThree == ''){
+          this.changedWeekDetails[i].levelThree = '0';
+        }
+      } 
+    }
+    // console.log("this is in the update funtion : " + this.changedWeekDetails);
   }
 
 }
