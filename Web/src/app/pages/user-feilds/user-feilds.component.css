@@ -39,3 +39,7 @@ table {
     padding:10px;
     margin-right: 5px;
   }
+
+  .mat-icon {
+    font-size: 15px;
+  }

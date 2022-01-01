@@ -21,10 +21,6 @@ table {
     width: 200px;
   }
 
-  .mat-table {
-    /* outline-bott: 2px solid purple; */
-  }
-
   .mat-paginator {
     background-color: #CEDCC3;
   }
@@ -42,4 +38,8 @@ table {
   .label-styles{
     padding:10px;
     margin-right: 5px;
+  }
+
+  .mat-icon {
+    font-size: 15px;
   }
