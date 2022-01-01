@@ -40,6 +40,12 @@
                 <li class="nav-item" *ngIf="isHome()">
                     <a href="/login" class="btn btn-outline-success btn-round" id="loginButton">Log in</a>
                 </li>
+                <!-- <li class="nav-item" *ngIf="isDashboard()">
+                    <a class="btn btn-outline-success btn-round" id="profileButton" [routerLink]="['/profile']" routerLinkActive="router-link-active" ><i class="fa fa-user"></i>&nbsp; &nbsp; Profile</a>
+                </li> -->
+                <li class="nav-item" *ngIf="isRelevantPages()">
+                    <a class="btn btn-outline-success btn-round" id="profileButton" [routerLink]="['/profile']" routerLinkActive="router-link-active" ><i class="fa fa-user"></i>&nbsp; &nbsp; Profile</a>
+                </li>
                 <li class="nav-item" *ngIf="isLogin()">
                     <a href="/signup" class="btn btn-outline-success btn-round">Sign up</a>
                 </li>

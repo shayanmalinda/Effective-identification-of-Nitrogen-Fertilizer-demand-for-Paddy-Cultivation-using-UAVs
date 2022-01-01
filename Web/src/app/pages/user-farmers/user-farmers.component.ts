@@ -7,25 +7,23 @@ import { MatSort } from '@angular/material/sort';
 import { Message } from 'app/models/message.model';
 import { User, UserCredential } from 'app/models/user.model';
 import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
-import { LccService } from 'app/services/lcc.service';
 import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
+import { UserFarmersService } from 'app/services/user-farmers.service';
 
 const NO_OF_WEEKS = 8;
 
-// var changedWeekDetails = Array<LCCWeekDetails>(NO_OF_WEEKS);
-
 @Component({
-  selector: 'app-lcc-details',
-  templateUrl: './lcc-details.component.html',
-  styleUrls: ['./lcc-details.component.css']
+  selector: 'app-user-farmers',
+  templateUrl: './user-farmers.component.html',
+  styleUrls: ['./user-farmers.component.css']
 })
-export class LccDetailsComponent implements OnInit {
+export class UserFarmersComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort : MatSort;
 
-  user : User = {
+  user : User  = {
     id : '',
     email: '',
     firstName: '',
@@ -54,19 +52,24 @@ export class LccDetailsComponent implements OnInit {
     showMessage : ''
   }
 
+  users : User [];
+
   changedWeekDetails: LCCWeekDetails[];
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
+  approved = 0;
+  declined = 0;
+  pending = 0;
+  all = 0;
 
+  displayedColumns: string[] = ['email', 'division', 'status'];
+  dataSource : MatTableDataSource<User>;
 
-  displayedColumns: string[] = ['week', 'levelOne', 'levelTwo', 'levelThree'];
-  dataSource : MatTableDataSource<LCCWeekDetails>;
-
-  constructor(private lccService : LccService, private dialog : DialogService, private router : Router) { }
+  constructor(private userFarmersService : UserFarmersService, private dialog : DialogService, private router : Router) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
-    this.getLCCDetails();
+    this.getFarmerDetails();
     // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
     // setTimeout(() => this.dataSource.paginator = this.paginator);
     // setTimeout(() => this.dataSource.sort = this.sort);
@@ -82,42 +85,6 @@ export class LccDetailsComponent implements OnInit {
     var weekNo = row.week;
     var rowDetails = row;
     this.changedWeekDetails[weekNo - 1] = rowDetails;
-  }
-
-  onSaveClick(){
-    console.log("in the onsave" + this.changedWeekDetails);
-    console.log(sessionStorage.getItem('userID'));
-    this.lccMainDetails = {
-      userID : '',
-      division : '',
-      weekDetails : this.changedWeekDetails
-    };
-    this.lccMainDetails.userID = sessionStorage.getItem('userID');
-    this.lccMainDetails.division = sessionStorage.getItem('division');
-    this.updateWeekDetails();
-    this.lccMainDetails.weekDetails = this.changedWeekDetails;
-    this.lccService.saveLccDetails(this.lccMainDetails, this.havePreviousRecords)
-          .then(res =>{
-              this.message.title = "success";
-              this.message.showMessage = "You have successfully update the LCC details !";
-              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-              this.router.navigate(['/profile']);
-              });
-            }, err => {
-              this.message.title = "error";
-              this.message.showMessage = err;
-              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-            });
-          }
-        )
-  }
-
-  onCancelClick(){
-    this.message.title = "warning";
-    this.message.showMessage = "The changes you have done not be applied to the LCC details !";
-    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-      this.router.navigate(['/profile']);
-      });
   }
 
   loadSessionDetails(){
@@ -152,39 +119,42 @@ export class LccDetailsComponent implements OnInit {
     }
   }
 
-  getLCCDetails(){
+  getFarmerDetails(){
     this.user.division = sessionStorage.getItem('division');
-    this.lccService.getLccDetailsByDivision(this.user).subscribe(
+    this.userFarmersService.getAllFarmersByDivion(this.user).subscribe(
       data => {
-        if(data.docs.length > 0){
-          this.havePreviousRecords = true;
-          this.lccMainDetails = data.docs[0].data() as LCCMainDetails;
-          this.changedWeekDetails = this.lccMainDetails.weekDetails;
-          sessionStorage.setItem('LCCID', data.docs[0].id);
-          console.log(this.changedWeekDetails);
-          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
-          setTimeout(() => this.dataSource.paginator = this.paginator);
-          setTimeout(() => this.dataSource.sort = this.sort);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-        }else{
-          this.changedWeekDetails = [
-            {week: 1, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 2, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 3, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 4, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 7, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 8, levelOne: 0, levelTwo: 0, levelThree: 0}
-          ];
-          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
-          setTimeout(() => this.dataSource.paginator = this.paginator);
-          setTimeout(() => this.dataSource.sort = this.sort);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-        }
+        this.users = data.map(e => {
+          return {
+            id: e.payload.doc.id,
+            ...e.payload.doc.data() as {}
+          } as User;
+        })
+        this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.getCounts();
       }
     )
   }
+
+  getCounts() {
+
+    this.users.forEach(data => {
+      if (data.status == 'pending') {
+        this.pending++;
+      }else if (data.status == 'declined') {
+        this.declined++;
+      } else {
+        this.approved++;
+      }
+    });
+    this.all = this.declined + this.pending + this.approved;
+  }
+
+  onClick(row){
+    this.message.showMessage = "You have entered invalid password !";
+    this.message.title = 'success';
+    this.dialog.openConfirmDialog(this.message).afterClosed();
+  }
+
 }
