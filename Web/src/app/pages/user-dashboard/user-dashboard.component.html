@@ -1,0 +1,77 @@
+<div class="page-header" style="background-image: url('assets/img/paddy one.jpg');">
+    <div class="filter"></div>
+    <div class="container">
+        <!-- <div class="profile" style="padding-right: 20px;"> -->
+            <!-- <button type="button" class="btn btn-info btn-outline-neutral btn-just-icon"><i class="fa fa-user"></i></button> -->
+            <!-- <a aria-haspopup="true" id="dropdownBasic1" ngbdropdowntoggle="" class="dropdown-toggle nav-link" aria-expanded="false" style="color: white;">
+                <i class="fa fa-user" style="color: white;"></i>
+                </a>
+                <div ngbdropdownmenu="" aria-labelledby="dropdownBasic1" class="dropdown-danger dropdown-menu-right dropdown-menu show" style="margin-right: 25px; padding-top: 0px;">
+                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Action - 1</a>
+                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Another Action</a>
+                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Action - 1</a>
+                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Another Action</a>
+                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Action - 1</a>
+                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Another Action</a>
+                </div> -->
+                <!-- <div _ngcontent-emb-c218="" ngbdropdown="" class="d-inline-block show dropdown" style="padding-right: 20px; "><a _ngcontent-emb-c218="" aria-haspopup="true" id="dropdownBasic1" ngbdropdowntoggle="" class="dropdown-toggle nav-link" aria-expanded="false">Dropdown</a><div _ngcontent-emb-c218="" ngbdropdownmenu="" aria-labelledby="dropdownBasic1" class="dropdown-primary dropdown-menu show"><a _ngcontent-emb-c218="" class="dropdown-item">Action - 1</a><a _ngcontent-emb-c218="" class="dropdown-item">Another Action</a><a _ngcontent-emb-c218="" class="dropdown-item">Something else is here</a></div></div>
+        </div> -->
+        <div class="profile" style="margin-top: 20px; padding-right: 80px;">
+            <!-- <button type="button" class="btn btn-info btn-outline-neutral btn-just-icon" > Profile</button> -->
+            <!-- <button type="button" class="btn btn-info btn-outline-neutral btn-round"><i class="fa fa-user"></i>  Profile</button> -->
+            <!-- <button type="button" class="btn btn-info btn-outline-neutral btn-just-icon" (click)="onProfileClick()"><i class="fa fa-user"></i></button> -->
+        </div>
+        <br>
+        <br>
+        <div class="row content">
+            <div class="motto left col-sm-11 col-lg-4" style="text-align: center; margin-top: 50px;">
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/profile']" routerLinkActive="router-link-active" >Profile</button>
+                <br />
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" (click)="viewRequests()">Farmer Requests</button>
+                <br />
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" (click)="viewUsers()">Farmers</button>
+                <br />
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard"(click)="viewFields()">Fields</button>
+                <br />
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" (click)="viewFieldVisits()">Field Visits</button>
+                <br />
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" (click)="viewFields()">Reports</button>
+                <br />
+            </div>
+            <div class="motto right col-sm-12 col-lg-8" style="margin-top: 15px;">
+                <div class="row">
+                    <div class="col-sm-3" ></div>
+                    <div class="col-sm-8 ">
+                        <h1>User Dashboard</h1>
+                    </div>
+                    <div class="col-sm-1 "></div>
+                </div>
+                <!-- <button type="button" class="btn btn-outline-neutral btn-round">Download</button><br /> -->
+                <div class="row">
+                    <!-- <div class="col-sm-1"></div> -->
+                    <div class="col-sm-11 col-lg-3 dash-card">
+                        <p style="color: black;">one</p>
+                    </div>
+                    <div class="col-sm-11 col-lg-3 dash-card">
+                        <p style="color: black;">two</p>
+                    </div>
+                    <div class="col-sm-11 col-lg-3 dash-card">
+                        <p style="color: black;">three</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- <div class="col-sm-1"></div> -->
+                    <div class="col-sm-11 col-lg-3 dash-card">
+                        <p style="color: black;">four</p>
+                    </div>
+                    <div class="col-sm-11 col-lg-3 dash-card">
+                        <p style="color: black;">five</p>
+                    </div>
+                    <div class="col-sm-11 col-lg-3 dash-card">
+                        <p style="color: black;">six</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

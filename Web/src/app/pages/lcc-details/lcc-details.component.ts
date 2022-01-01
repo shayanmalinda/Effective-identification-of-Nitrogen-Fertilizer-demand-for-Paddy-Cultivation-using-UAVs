@@ -4,28 +4,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Message } from 'app/models/message.model';
+import { User, UserCredential } from 'app/models/user.model';
+import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
+import { LccService } from 'app/services/lcc.service';
+import { DialogService } from 'app/services/dialog.service';
+import { Router } from '@angular/router';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+const NO_OF_WEEKS = 8;
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-];
+// var changedWeekDetails = Array<LCCWeekDetails>(NO_OF_WEEKS);
 
 @Component({
   selector: 'app-lcc-details',
@@ -37,24 +25,166 @@ export class LccDetailsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort : MatSort;
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  user : User = {
+    id : '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    nic: '',
+    phone: '',
+    userRole: '',
+    district: '',
+    division: '',
+    province: '',          
+    image : '',      
+    status : '',      
+    time : '',        
+    name : '',
+    registeredDate : '',
+  };
 
-  constructor() { }
+  userCredential : UserCredential = {
+    email : '',
+    password : '',
+    userID : '',
+  };
 
-  ngOnInit(): void {
-    setTimeout(() => this.dataSource.paginator = this.paginator);
-    setTimeout(() => this.dataSource.sort = this.sort);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+  message : Message = {
+    title : '',
+    showMessage : ''
   }
 
-  clickOn(row){
-    console.log(row);
+  changedWeekDetails: LCCWeekDetails[];
+  lccMainDetails : LCCMainDetails;
+  havePreviousRecords : boolean = false;
+
+
+  displayedColumns: string[] = ['week', 'levelOne', 'levelTwo', 'levelThree'];
+  dataSource : MatTableDataSource<LCCWeekDetails>;;
+
+  constructor(private lccService : LccService, private dialog : DialogService, private router : Router) { }
+
+  ngOnInit(): void {
+    this.loadSessionDetails();
+    this.getLCCDetails();
+    // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
+    // setTimeout(() => this.dataSource.paginator = this.paginator);
+    // setTimeout(() => this.dataSource.sort = this.sort);
+    // this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(filterValue : string){
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  onChange(row){
+    var weekNo = row.week;
+    var rowDetails = row;
+    this.changedWeekDetails[weekNo - 1] = rowDetails;
+  }
+
+  onSaveClick(){
+    console.log("in the onsave" + this.changedWeekDetails);
+    console.log(sessionStorage.getItem('userID'));
+    this.lccMainDetails = {
+      userID : '',
+      division : '',
+      weekDetails : this.changedWeekDetails
+    };
+    this.lccMainDetails.userID = sessionStorage.getItem('userID');
+    this.lccMainDetails.division = sessionStorage.getItem('division');
+    this.updateWeekDetails();
+    this.lccMainDetails.weekDetails = this.changedWeekDetails;
+    this.lccService.saveLccDetails(this.lccMainDetails, this.havePreviousRecords)
+          .then(res =>{
+              this.message.title = "success";
+              this.message.showMessage = "You have successfully update the LCC details !";
+              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
+              this.router.navigate(['/profile']);
+              });
+            }, err => {
+              this.message.title = "error";
+              this.message.showMessage = err;
+              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
+            });
+          }
+        )
+  }
+
+  onCancelClick(){
+    this.message.title = "warning";
+    this.message.showMessage = "The changes you have done not be applied to the LCC details !";
+    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
+      this.router.navigate(['/profile']);
+      });
+  }
+
+  loadSessionDetails(){
+    this.userCredential.userID = sessionStorage.getItem('userID');
+    this.user.status = sessionStorage.getItem('status');
+    this.user.firstName = (sessionStorage.getItem("firstName") != "" ? sessionStorage.getItem("firstName") : "");
+    this.user.lastName = (sessionStorage.getItem("lastName") != "" ? sessionStorage.getItem("lastName") : "");
+    this.user.nic = (sessionStorage.getItem("nic") != "" ? sessionStorage.getItem("nic") : "");
+    this.user.email = (sessionStorage.getItem("email") != "" ? sessionStorage.getItem("email") : "");
+    this.user.userRole = (sessionStorage.getItem("userRole") != "" ? sessionStorage.getItem("userRole") : "");
+    this.user.phone = (sessionStorage.getItem("phone") != "" ? sessionStorage.getItem("phone") : "");
+    this.user.division = (sessionStorage.getItem("division") != "" ? sessionStorage.getItem("division") : "");
+    this.user.district = (sessionStorage.getItem("district") != "" ? sessionStorage.getItem("district") : "");
+    this.user.province = (sessionStorage.getItem("province") != "" ? sessionStorage.getItem("province") : "");
+    this.user.image = (sessionStorage.getItem("image") != "" ? sessionStorage.getItem("image") : "./assets/img/faces/user_profile_default.jpg");
+  }
+
+  updateWeekDetails(){
+    for(var i = 0; i < NO_OF_WEEKS; i++ ){
+      var j = i;
+      if(this.changedWeekDetails[i] == undefined){
+        this.changedWeekDetails[i] = {week: j+1, levelOne: 0, levelTwo: 0, levelThree: 0}
+      }else{
+        if(this.changedWeekDetails[i].levelOne == 0){
+          this.changedWeekDetails[i].levelOne = 0;
+        }if(this.changedWeekDetails[i].levelTwo == 0){
+          this.changedWeekDetails[i].levelTwo = 0;
+        }if(this.changedWeekDetails[i].levelThree == 0){
+          this.changedWeekDetails[i].levelThree = 0;
+        }
+      } 
+    }
+  }
+
+  getLCCDetails(){
+    this.user.division = sessionStorage.getItem('division');
+    this.lccService.getLccDetailsByDivision(this.user).subscribe(
+      data => {
+        if(data.docs.length > 0){
+          this.havePreviousRecords = true;
+          this.lccMainDetails = data.docs[0].data() as LCCMainDetails;
+          this.changedWeekDetails = this.lccMainDetails.weekDetails;
+          sessionStorage.setItem('LCCID', data.docs[0].id);
+          console.log(this.changedWeekDetails);
+          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
+          setTimeout(() => this.dataSource.paginator = this.paginator);
+          setTimeout(() => this.dataSource.sort = this.sort);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        }else{
+          this.changedWeekDetails = [
+            {week: 1, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 2, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 3, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 4, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 7, levelOne: 0, levelTwo: 0, levelThree: 0},
+            {week: 8, levelOne: 0, levelTwo: 0, levelThree: 0}
+          ];
+          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
+          setTimeout(() => this.dataSource.paginator = this.paginator);
+          setTimeout(() => this.dataSource.sort = this.sort);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        }
+      }
+    )
+  }
 }

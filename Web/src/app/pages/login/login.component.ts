@@ -79,7 +79,19 @@ export class LoginComponent implements OnInit {
     }else{
       this.authenticationService.logIn(this.userCredential)
       .then(res =>{
-        this.router.navigate(['/profile']);
+        // console.log("This is the user id in login : " + this.userCredential.userID);
+        // this.router.navigate(['/user-dashboard']);
+
+        //testing region 
+        console.log("is logged in : " + this.authenticationService.isLoggedIn);
+        if(this.authenticationService.isLoggedIn){
+          console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
+          const redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
+          this.router.navigateByUrl(redirect);
+        }
+
+        //end of the testing region
+
       }, err => {
         this.message.title = "error";
         console.log(err);
@@ -117,7 +129,7 @@ export class LoginComponent implements OnInit {
     sessionStorage.setItem('province',this.user.province);
     sessionStorage.setItem('image',this.user.image);
     sessionStorage.setItem('status',this.user.status);
-    sessionStorage.setItem('useID',this.userCredential.userID);
+    sessionStorage.setItem('userID',this.userCredential.userID);
   }
 
   clearFields(){

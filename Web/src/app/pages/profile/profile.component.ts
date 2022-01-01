@@ -64,6 +64,16 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['/login']);
     }
 
+    onLccDetailsClick(){
+        this.updateSessionDetails();
+        this.router.navigate(['/lcc-details']);
+    }
+
+    onDashboardClick(){
+        this.updateSessionDetails();
+        this.router.navigate(['/user-dashboard']);
+    }
+
     loadSessionDetails(){
         // this.user.docId = (sessionStorage.getItem("docId") != "" ? sessionStorage.getItem("docId") : "");
         this.user.firstName = (sessionStorage.getItem("firstName") != "" ? sessionStorage.getItem("firstName") : "");
