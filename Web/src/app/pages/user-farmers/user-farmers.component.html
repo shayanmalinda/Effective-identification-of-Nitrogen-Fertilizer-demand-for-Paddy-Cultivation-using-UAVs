@@ -4,10 +4,11 @@
         <div class="content-center">
             <div class="container">
                 <div>
+                    <br>
+                    <br>
                     <div class="title-brand">
                         <h1>Farmers Details</h1>
                     </div>
-                    <br>
                     <div class="row">
                         <div class="col-sm-4">
                             <label style="color:white">Province : </label>
@@ -75,7 +76,7 @@
                                     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
                                     <tr mat-row (change)="onChange(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
                                   </table>
-                                  <mat-paginator [pageSizeOptions]="[5]" aria-label="Select page of Fields" showFirstLastButtons></mat-paginator>
+                                  <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons></mat-paginator>
                             </div>
                         </div>
                     </div>
