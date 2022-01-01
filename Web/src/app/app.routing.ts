@@ -18,6 +18,7 @@ import { FieldDetailsComponent } from './pages/field-details/field-details.compo
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
 import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
+import { AuthGuard } from './services/auth/auth.guard';
 
 
 
@@ -25,13 +26,13 @@ const routes: Routes =[
     // { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home',             component: ComponentsComponent },
     { path: 'user-profile',     component: UserProfileComponent },
-    { path: 'profile',          component: ProfileComponent },
+    { path: 'profile',          component: ProfileComponent, canActivate : [AuthGuard] },
     { path: 'signup',           component: SignupComponent },
     { path: 'login',            component: LoginComponent },
     { path: 'landing',          component: LandingComponent },
     { path: 'nucleoicons',      component: NucleoiconsComponent },
     { path: 'users',      component: UsersComponent },
-    { path: 'updateuser',       component: UpdateProfileComponent },
+    { path: 'updateuser',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
     { path: 'fields',      component: FieldsComponent },
     { path: 'field-details',      component: FieldDetailsComponent },
     { path: 'agricultural-officers',      component: UsersComponent },
@@ -40,10 +41,10 @@ const routes: Routes =[
     { path: 'user-request',     component: UserProfileComponent },
     { path: 'officer-requests',     component: UsersComponent },
     { path: 'officers',     component: UsersComponent },
-    { path: 'lcc-details',      component: LccDetailsComponent },
+    { path: 'lcc-details',      component: LccDetailsComponent, canActivate : [AuthGuard] },
     { path: 'field-visits',      component: FieldVisitsComponent },
     { path: 'field-visit-details',      component: FieldVisitDetailsComponent },
-    { path: 'user-dashboard',     component: UserDashboardComponent },
+    { path: 'user-dashboard',     component: UserDashboardComponent, canActivate : [AuthGuard] },
 
 
 

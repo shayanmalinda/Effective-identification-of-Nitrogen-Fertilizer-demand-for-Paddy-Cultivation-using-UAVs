@@ -214,7 +214,7 @@ export class SignupComponent implements OnInit {
               this.message.title = "success";
               this.message.showMessage = "You have successfully registered within the system and wait until the system administor's approval !";
               this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-                this.router.navigate(['/profile']);
+                this.router.navigate(['/user-dashboard']);
               });
             }, err => {
               this.message.title = "error";

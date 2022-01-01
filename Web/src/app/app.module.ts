@@ -31,6 +31,9 @@ import { UpdateProfileComponent } from './pages/update-profile/update-profile.co
 //material
 import { MaterialModule } from './material/material.module';
 
+//route authentication
+import { AuthGuard } from './services/auth/auth.guard';
+
 @NgModule({
   declarations: [
     AppComponent,
