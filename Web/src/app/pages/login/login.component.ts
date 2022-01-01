@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
       this.authenticationService.logIn(this.userCredential)
       .then(res =>{
         // console.log("This is the user id in login : " + this.userCredential.userID);
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/user-dashboard']);
       }, err => {
         this.message.title = "error";
         console.log(err);
