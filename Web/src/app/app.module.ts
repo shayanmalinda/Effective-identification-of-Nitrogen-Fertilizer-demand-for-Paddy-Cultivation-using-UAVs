@@ -33,6 +33,7 @@ import { MaterialModule } from './material/material.module';
 
 //route authentication
 import { AuthGuard } from './services/auth/auth.guard';
+import { UserFarmersComponent } from './pages/user-farmers/user-farmers.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AuthGuard } from './services/auth/auth.guard';
     ShowMessageComponent,
     LccDetailsComponent,
     UserDashboardComponent,
+    UserFarmersComponent,
     
   ],
   imports: [

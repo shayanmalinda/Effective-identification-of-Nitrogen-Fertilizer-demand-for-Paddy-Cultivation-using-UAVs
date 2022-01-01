@@ -13,14 +13,12 @@ import { Router } from '@angular/router';
 
 const NO_OF_WEEKS = 8;
 
-// var changedWeekDetails = Array<LCCWeekDetails>(NO_OF_WEEKS);
-
 @Component({
-  selector: 'app-lcc-details',
-  templateUrl: './lcc-details.component.html',
-  styleUrls: ['./lcc-details.component.css']
+  selector: 'app-user-farmers',
+  templateUrl: './user-farmers.component.html',
+  styleUrls: ['./user-farmers.component.css']
 })
-export class LccDetailsComponent implements OnInit {
+export class UserFarmersComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort : MatSort;
@@ -187,4 +185,5 @@ export class LccDetailsComponent implements OnInit {
       }
     )
   }
+
 }
