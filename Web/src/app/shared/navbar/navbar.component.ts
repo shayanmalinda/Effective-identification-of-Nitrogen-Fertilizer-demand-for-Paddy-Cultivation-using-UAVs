@@ -111,4 +111,23 @@ export class NavbarComponent implements OnInit {
               return false;
           }
       };
+
+      isRelevantPages(){
+        var titlee = this.location.prepareExternalUrl(this.location.path());
+        if(titlee.charAt(0) === '#'){
+            titlee = titlee.slice( 1 );
+        }
+          if( titlee === '/user-dashboard' ) {
+              return true;
+          }
+          if( titlee === '/lcc-details' ) {
+            return true;
+          }
+          if( titlee === '/updateuser' ) {
+            return true;
+          }
+          else {
+              return false;
+          }
+      };
 }

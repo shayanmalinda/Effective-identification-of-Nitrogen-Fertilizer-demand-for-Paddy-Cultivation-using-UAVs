@@ -30,6 +30,8 @@ export class ProfileComponent implements OnInit {
         name : '',
         registeredDate : '',
       };
+
+      
     cardImageBase64: string;
     fullName : string;
     location : string;
