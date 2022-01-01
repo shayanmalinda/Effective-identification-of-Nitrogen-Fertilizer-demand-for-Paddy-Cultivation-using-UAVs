@@ -21,6 +21,7 @@ import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.co
 import { AuthGuard } from './services/auth/auth.guard';
 import { UserFarmersComponent } from './pages/user-farmers/user-farmers.component';
 import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-farmer-requests.component';
+import { UserFeildsComponent } from './pages/user-feilds/user-feilds.component';
 
 
 
@@ -49,6 +50,7 @@ const routes: Routes =[
     { path: 'user-dashboard',     component: UserDashboardComponent, canActivate : [AuthGuard] },
     { path: 'user-farmers',     component: UserFarmersComponent},
     { path: 'user-farmerRequests',     component: UserFarmerRequestsComponent},
+    { path: 'user-fields',     component: UserFeildsComponent},
 
 
 

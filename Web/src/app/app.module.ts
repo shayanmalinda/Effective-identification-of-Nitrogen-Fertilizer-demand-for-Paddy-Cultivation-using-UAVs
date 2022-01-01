@@ -35,6 +35,7 @@ import { MaterialModule } from './material/material.module';
 import { AuthGuard } from './services/auth/auth.guard';
 import { UserFarmersComponent } from './pages/user-farmers/user-farmers.component';
 import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-farmer-requests.component';
+import { UserFeildsComponent } from './pages/user-feilds/user-feilds.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-f
     UserDashboardComponent,
     UserFarmersComponent,
     UserFarmerRequestsComponent,
+    UserFeildsComponent,
     
   ],
   imports: [
