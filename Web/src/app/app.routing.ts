@@ -20,6 +20,7 @@ import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
 import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
 import { AuthGuard } from './services/auth/auth.guard';
 import { UserFarmersComponent } from './pages/user-farmers/user-farmers.component';
+import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-farmer-requests.component';
 
 
 
@@ -47,6 +48,7 @@ const routes: Routes =[
     { path: 'field-visit-details',      component: FieldVisitDetailsComponent },
     { path: 'user-dashboard',     component: UserDashboardComponent, canActivate : [AuthGuard] },
     { path: 'user-farmers',     component: UserFarmersComponent},
+    { path: 'user-farmerRequests',     component: UserFarmerRequestsComponent},
 
 
 
