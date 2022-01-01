@@ -22,6 +22,7 @@ import { AuthGuard } from './services/auth/auth.guard';
 import { UserFarmersComponent } from './pages/user-farmers/user-farmers.component';
 import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-farmer-requests.component';
 import { UserFeildsComponent } from './pages/user-feilds/user-feilds.component';
+import { UserFieldVisitsComponent } from './pages/user-field-visits/user-field-visits.component';
 
 
 
@@ -51,6 +52,7 @@ const routes: Routes =[
     { path: 'user-farmers',     component: UserFarmersComponent},
     { path: 'user-farmerRequests',     component: UserFarmerRequestsComponent},
     { path: 'user-fields',     component: UserFeildsComponent},
+    { path: 'user-fieldVisits',     component: UserFieldVisitsComponent},
 
 
 
