@@ -6,7 +6,8 @@ import { UserService } from './user.service';
 import { Router, RouteReuseStrategy } from '@angular/router';
 import { Message } from 'app/models/message.model';
 import { DialogService } from './dialog.service';
-import { resolve } from '@angular/compiler-cli/src/ngtsc/file_system';
+import { tap, delay } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,9 @@ export class AuthenticationService {
   };
 
   message : Message;
+
+  isLoggedIn = false;
+  redirectUrl : string;
 
   constructor(private dialog : DialogService, private angularFireAuth : AngularFireAuth, private userService : UserService, private router : Router) { }
 
@@ -74,6 +78,7 @@ export class AuthenticationService {
       sessionStorage.setItem("userID", res.user.uid);
       this.userService.addUser(userCredential,user);
       this.updateSessionDetails(userCredential, user);
+      this.isLoggedIn = true;
       resolve("Success");
     }
       ,err => reject(err.message))
@@ -92,6 +97,7 @@ export class AuthenticationService {
               this.user = data.docs[0].data() as User;
               userCredential.userID = data.docs[0].id;
               this.updateSessionDetails(userCredential,this.user);
+              this.isLoggedIn = true;
               resolve("Success")
             }
           })
@@ -109,6 +115,7 @@ export class AuthenticationService {
 
   //log out service with authentication in firebase
   logOut(){
+    this.isLoggedIn = false;
     this.angularFireAuth.signOut();
     this.removeSessionDetails();
   }
@@ -143,5 +150,18 @@ export class AuthenticationService {
     sessionStorage.removeItem('image');
     sessionStorage.removeItem('userID');
     sessionStorage.removeItem('status');
+  }
+
+  //to secure the routes
+  login(): Observable<boolean> {
+    return of(true).pipe(
+      delay(1000),
+      tap(val => this.isLoggedIn = true)
+    );
+  }
+
+  //to sercure the routes
+  logout(): void {
+    this.isLoggedIn = false;
   }
 }
