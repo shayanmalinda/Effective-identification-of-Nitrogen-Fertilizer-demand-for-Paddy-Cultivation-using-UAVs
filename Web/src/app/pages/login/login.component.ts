@@ -18,10 +18,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm : FormGroup;
+  loginForm: FormGroup;
 
-  user : User = {
-    id : '',
+  user: User = {
+    id: '',
     email: '',
     firstName: '',
     lastName: '',
@@ -30,53 +30,53 @@ export class LoginComponent implements OnInit {
     userRole: '',
     district: '',
     division: '',
-    province: '',         
-    image : '',        
-    status : '',        
-    time : '',        
-    name : '',
-    registeredDate : '',
+    province: '',
+    image: '',
+    status: '',
+    time: '',
+    name: '',
+    registeredDate: '',
   };
 
-  userCredential : UserCredential = {
-    email : '',
-    password : '',
-    userID : '',
+  userCredential: UserCredential = {
+    email: '',
+    password: '',
+    userID: '',
   };
 
-  message : Message = {
-    title : '',
-    showMessage : '',
+  message: Message = {
+    title: '',
+    showMessage: '',
   }
-  
-  users : Array<any> = [];
+
+  users: Array<any> = [];
   plainPassword = "";
   submitted = true;
 
-  constructor(private formBuilder : FormBuilder, private dialog : DialogService, private userService : UserService, private router : Router, private authenticationService : AuthenticationService) { }
+  constructor(private formBuilder: FormBuilder, private dialog: DialogService, private userService: UserService, private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group(
       {
         email: ['', [Validators.email, Validators.required]],
-        firstName : ['',[Validators.required]],
-        lastName : ['',[Validators.required]],
-        nic : ['',[Validators.required]],
-        userRole : ['',[Validators.required]],
-        phoneNumber : ['',[Validators.required]],
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
+        nic: ['', [Validators.required]],
+        userRole: ['', [Validators.required]],
+        phoneNumber: ['', [Validators.required]],
       }
     )
   }
 
-  logInClicked(){
+  logInClicked() {
     this.submitted = true;
-    if(this.userCredential.email == "" || this.userCredential.password == ""){
+    if (this.userCredential.email == "" || this.userCredential.password == "") {
       this.message.title = "Error";
       this.message.showMessage = "You have to enter relevant fields to login !";
       this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
         this.clearFields();
       })
-    }else{
+    } else {
       this.authenticationService.logIn(this.userCredential)
       .then(res =>{
         // console.log("This is the user id in login : " + this.userCredential.userID);
@@ -106,9 +106,10 @@ export class LoginComponent implements OnInit {
           this.clearFields();
       });
     })}
+
   }
 
-  encryptPassword(password : string){
+  encryptPassword(password: string) {
     var originalPassword = password;
 
     const md5 = new Md5();
@@ -132,7 +133,7 @@ export class LoginComponent implements OnInit {
     sessionStorage.setItem('userID',this.userCredential.userID);
   }
 
-  clearFields(){
+  clearFields() {
     this.userCredential.email = "";
     this.userCredential.password = "";
   }
