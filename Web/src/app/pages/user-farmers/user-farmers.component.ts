@@ -138,7 +138,6 @@ export class UserFarmersComponent implements OnInit {
   }
 
   getCounts() {
-
     this.users.forEach(data => {
       if (data.status == 'pending') {
         this.pending++;
@@ -153,10 +152,10 @@ export class UserFarmersComponent implements OnInit {
 
   onClick(row){
     console.log(row);
-    this.message.showMessage = "You have entered invalid password !";
-    this.message.title = 'success';
-    console.log(this.message);
-    this.dialog.openDetailsDialog(row).afterClosed();
+    // this.message.showMessage = "You have entered invalid password !";
+    // this.message.title = 'success';
+    // console.log(this.message);
+    this.dialog.openDetailsDialog(row,"farmerDetails").afterClosed();
   }
 
 }

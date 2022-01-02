@@ -1,15 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Message } from 'app/models/message.model';
 import { User, UserCredential } from 'app/models/user.model';
 import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
-import { LccService } from 'app/services/lcc.service';
 import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
+import { Field } from 'app/models/field.model';
+import { FieldService } from 'app/services/field.service';
 
 const NO_OF_WEEKS = 8;
 
@@ -56,15 +55,19 @@ export class UserFeildsComponent implements OnInit {
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
 
+  fields : Field[];
+  displayedColumns: string[] = ['address', 'registrationNumber'];
+  dataSource : MatTableDataSource<Field>;
+  approved = 0;
+  declined = 0;
+  pending = 0;
+  all = 0;
 
-  displayedColumns: string[] = ['week', 'levelOne', 'levelTwo', 'levelThree'];
-  dataSource : MatTableDataSource<LCCWeekDetails>;
-
-  constructor(private lccService : LccService, private dialog : DialogService, private router : Router) { }
+  constructor(private fieldService : FieldService, private dialog : DialogService, private router : Router) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
-    this.getLCCDetails();
+    this.getFieldsDetails();
     // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
     // setTimeout(() => this.dataSource.paginator = this.paginator);
     // setTimeout(() => this.dataSource.sort = this.sort);
@@ -80,42 +83,6 @@ export class UserFeildsComponent implements OnInit {
     var weekNo = row.week;
     var rowDetails = row;
     this.changedWeekDetails[weekNo - 1] = rowDetails;
-  }
-
-  onSaveClick(){
-    console.log("in the onsave" + this.changedWeekDetails);
-    console.log(sessionStorage.getItem('userID'));
-    this.lccMainDetails = {
-      userID : '',
-      division : '',
-      weekDetails : this.changedWeekDetails
-    };
-    this.lccMainDetails.userID = sessionStorage.getItem('userID');
-    this.lccMainDetails.division = sessionStorage.getItem('division');
-    this.updateWeekDetails();
-    this.lccMainDetails.weekDetails = this.changedWeekDetails;
-    this.lccService.saveLccDetails(this.lccMainDetails, this.havePreviousRecords)
-          .then(res =>{
-              this.message.title = "success";
-              this.message.showMessage = "You have successfully update the LCC details !";
-              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-              this.router.navigate(['/profile']);
-              });
-            }, err => {
-              this.message.title = "error";
-              this.message.showMessage = err;
-              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-            });
-          }
-        )
-  }
-
-  onCancelClick(){
-    this.message.title = "warning";
-    this.message.showMessage = "The changes you have done not be applied to the LCC details !";
-    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-      this.router.navigate(['/profile']);
-      });
   }
 
   loadSessionDetails(){
@@ -150,40 +117,41 @@ export class UserFeildsComponent implements OnInit {
     }
   }
 
-  getLCCDetails(){
+  getFieldsDetails(){
     this.user.division = sessionStorage.getItem('division');
-    this.lccService.getLccDetailsByDivision(this.user).subscribe(
+    this.fieldService.getFieldsByDivision(this.user).subscribe(
       data => {
-        if(data.docs.length > 0){
-          this.havePreviousRecords = true;
-          this.lccMainDetails = data.docs[0].data() as LCCMainDetails;
-          this.changedWeekDetails = this.lccMainDetails.weekDetails;
-          sessionStorage.setItem('LCCID', data.docs[0].id);
-          console.log(this.changedWeekDetails);
-          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
-          setTimeout(() => this.dataSource.paginator = this.paginator);
-          setTimeout(() => this.dataSource.sort = this.sort);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-        }else{
-          this.changedWeekDetails = [
-            {week: 1, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 2, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 3, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 4, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 7, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 8, levelOne: 0, levelTwo: 0, levelThree: 0}
-          ];
-          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
-          setTimeout(() => this.dataSource.paginator = this.paginator);
-          setTimeout(() => this.dataSource.sort = this.sort);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-        }
+        this.fields = data.map(e => {
+          return {
+            id: e.payload.doc.id,
+            ...e.payload.doc.data() as {}
+          } as Field;
+        })
+        this.dataSource = new MatTableDataSource(this.fields);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        // this.getCounts();
       }
     )
+  }
+
+  // getCounts() {
+  //   this.fields.forEach(data => {
+  //     if (data.status == 'pending') {
+  //       this.pending++;
+  //     }else if (data.status == 'declined') {
+  //       this.declined++;
+  //     } else {
+  //       this.approved++;
+  //     }
+  //   });
+  //   this.all = this.declined + this.pending + this.approved;
+  // }
+
+  onClick(row){
+    // console.log(this.message);
+    console.log(row);
+    this.dialog.openDetailsDialog(row,"fieldDetails").afterClosed();
   }
 
 }

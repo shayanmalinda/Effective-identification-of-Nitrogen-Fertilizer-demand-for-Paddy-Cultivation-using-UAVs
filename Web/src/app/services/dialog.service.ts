@@ -22,13 +22,60 @@ export class DialogService {
     });
   }
 
-  openDetailsDialog(user : User){
-    console.log("the message is here :" + user.userRole);
+  openDetailsDialog(passeDetails , detailsType : string){
+    console.log("the message is here :" + passeDetails.email);
     return this.dialog.open(DetailsFormComponent, {
       width : '550px',
       disableClose : false,
       panelClass: 'confirm-dialog-container',
-      data : user
+      data : {
+        type : detailsType,
+        details : passeDetails
+      }
+      // data : user
     });
   }
+
+  // openDetailsDialog(user : User, detailsType : string){
+  //   console.log("the message is here :" + user.userRole);
+  //   return this.dialog.open(DetailsFormComponent, {
+  //     width : '550px',
+  //     disableClose : false,
+  //     panelClass: 'confirm-dialog-container',
+  //     data : {
+  //       type : detailsType,
+  //       details : user
+  //     }
+  //     // data : user
+  //   });
+  // }
+
+  openFarmerDetailsDialog(detailsType : string){
+    console.log("in here" + detailsType);
+    return this.dialog.open(DetailsFormComponent, {
+      width : '550px',
+      disableClose : false,
+      panelClass: 'confirm-dialog-container',
+      data : {
+        type : detailsType,
+        details : {
+          name : "Heshan"
+        }
+      }
+      // data : user
+    });
+  }
+
+  // openFieldDetailsDialog(user : User){
+  //   console.log("the message is here :" + user.userRole);
+  //   return this.dialog.open(DetailsFormComponent, {
+  //     width : '550px',
+  //     disableClose : false,
+  //     panelClass: 'confirm-dialog-container',
+  //     data : {
+  //       passedData : user,
+  //       type : "fieldDetails"
+  //     }
+  //   });
+  // }
 }
