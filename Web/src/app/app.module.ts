@@ -73,8 +73,8 @@ import { AgmCoreModule } from '@agm/core';
     AngularFireAuthModule, // Only required for auth features,
     AngularFireStorageModule, NoopAnimationsModule, // Only required for storage features
     AgmCoreModule.forRoot({
-      apiKey : 'AIzaSyAkGlhRjMfmotb0UBMf8EAcmkTB6v3WEVM',
-      libraries: ['places']
+      apiKey : 'AIzaSyBQz_TZCNa04wVSBLTggZ-G8XWR3A2bFbc',
+      // libraries: ['places']
     })
   ],
   providers: [DatePipe],

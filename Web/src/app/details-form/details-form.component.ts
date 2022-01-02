@@ -35,10 +35,13 @@ export class DetailsFormComponent implements OnInit {
   title: string = 'AGM project';
   latitude!: number;
   longitude!: number;
+  zoom: number;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader) { 
-    this.mapsAPILoader.load().then(() =>{
-    });
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) { 
+    
+    this.latitude = 6.927079;
+    this.longitude = 79.861244;
+    this.zoom = 25;
     
     if(data.type == "farmerDetails"){
       this.formTitle = "Farmer Details"
@@ -57,7 +60,6 @@ export class DetailsFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
   }
 
   onViewFarmerClick(){
@@ -76,7 +78,7 @@ export class DetailsFormComponent implements OnInit {
 
   onMapClicked(event : any){
     console.table(event.coords);
-    this.latitude = event.coords.lat;
-    this.longitude = event.coords.lng;
+    this.latitude = 6.927079;
+    this.longitude = 79.861244;
   }
 }
