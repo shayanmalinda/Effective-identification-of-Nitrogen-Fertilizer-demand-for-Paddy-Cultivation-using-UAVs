@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Message } from 'app/models/message.model';
 import { User, UserCredential } from 'app/models/user.model';
 import { DialogService } from 'app/services/dialog.service';
 import { UserService } from 'app/services/user.service';
-import { collapseTextChangeRangesAcrossMultipleVersions, ResolvedTypeReferenceDirectiveWithFailedLookupLocations } from 'typescript';
+import { MapsAPILoader } from '@agm/core';
 
 
 @Component({
@@ -32,8 +32,14 @@ export class DetailsFormComponent implements OnInit {
     status : "",
   }
   user : User;
+  title: string = 'AGM project';
+  latitude!: number;
+  longitude!: number;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader) { 
+    this.mapsAPILoader.load().then(() =>{
+    });
+    
     if(data.type == "farmerDetails"){
       this.formTitle = "Farmer Details"
     }
@@ -66,5 +72,11 @@ export class DetailsFormComponent implements OnInit {
       console.log(this.testing.division);
       this.dialog.openDetailsDialog(this.testing, "farmerDetails").afterClosed();
   })
+  }
+
+  onMapClicked(event : any){
+    console.table(event.coords);
+    this.latitude = event.coords.lat;
+    this.longitude = event.coords.lng;
   }
 }
