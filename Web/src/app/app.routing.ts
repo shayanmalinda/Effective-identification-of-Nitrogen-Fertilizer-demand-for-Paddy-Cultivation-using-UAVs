@@ -48,7 +48,7 @@ const routes: Routes =[
     { path: 'lcc-details',      component: LccDetailsComponent, canActivate : [AuthGuard] },
     { path: 'field-visits',      component: FieldVisitsComponent },
     { path: 'field-visit-details',      component: FieldVisitDetailsComponent },
-    { path: 'user-dashboard',     component: UserDashboardComponent, canActivate : [AuthGuard] },
+    { path: 'user-dashboard',     component: UserDashboardComponent },
     { path: 'user-farmers',     component: UserFarmersComponent},
     { path: 'user-farmerRequests',     component: UserFarmerRequestsComponent},
     { path: 'user-fields',     component: UserFeildsComponent},

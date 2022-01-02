@@ -130,4 +130,26 @@ export class NavbarComponent implements OnInit {
               return false;
           }
       };
+
+      isRelevantDashPages(){
+        var titlee = this.location.prepareExternalUrl(this.location.path());
+        if(titlee.charAt(0) === '#'){
+            titlee = titlee.slice( 1 );
+        }
+          if( titlee === '/user-farmers' ) {
+              return true;
+          }
+          if( titlee === '/user-farmerRequests' ) {
+            return true;
+          }
+          if( titlee === '/user-fields' ) {
+            return true;
+          }
+          if( titlee === '/user-fieldVisits' ) {
+            return true;
+          }
+          else {
+              return false;
+          }
+      };
 }

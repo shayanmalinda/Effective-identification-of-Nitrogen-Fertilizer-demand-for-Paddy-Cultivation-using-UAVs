@@ -51,6 +51,12 @@ export class UserService {
     return this.fireStore.collection('Users', ref => ref.where('email', '==', userCredential.email)).get();
   }
 
+  getFarmerById(userCredential : UserCredential){
+    console.log(userCredential.userID);
+    // return this.fireStore.collection('Users').doc(userCredential.userID).get();
+    return this.fireStore.collection('Users').doc(userCredential.userID).snapshotChanges()
+  }
+
   // saveUserDetails(userCredential : UserCredential, user : User){
   //   this.fireStore.collection('Users').doc(''+ userCredential.userID +'').update(user);
   // }

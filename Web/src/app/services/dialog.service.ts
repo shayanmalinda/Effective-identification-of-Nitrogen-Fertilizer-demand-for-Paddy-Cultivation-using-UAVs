@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowMessageComponent } from 'app/show-message/show-message.component';
 import { Message } from 'app/models/message.model';
+import { User } from 'app/models/user.model';
+import { DetailsFormComponent } from 'app/details-form/details-form.component';
 
 @Injectable({
   providedIn: 'root'
@@ -19,4 +21,61 @@ export class DialogService {
       data : message
     });
   }
+
+  openDetailsDialog(passeDetails , detailsType : string){
+    console.log("the message is here :" + passeDetails.email);
+    return this.dialog.open(DetailsFormComponent, {
+      width : '550px',
+      disableClose : false,
+      panelClass: 'confirm-dialog-container',
+      data : {
+        type : detailsType,
+        details : passeDetails
+      }
+      // data : user
+    });
+  }
+
+  // openDetailsDialog(user : User, detailsType : string){
+  //   console.log("the message is here :" + user.userRole);
+  //   return this.dialog.open(DetailsFormComponent, {
+  //     width : '550px',
+  //     disableClose : false,
+  //     panelClass: 'confirm-dialog-container',
+  //     data : {
+  //       type : detailsType,
+  //       details : user
+  //     }
+  //     // data : user
+  //   });
+  // }
+
+  openFarmerDetailsDialog(detailsType : string){
+    console.log("in here" + detailsType);
+    return this.dialog.open(DetailsFormComponent, {
+      width : '550px',
+      disableClose : false,
+      panelClass: 'confirm-dialog-container',
+      data : {
+        type : detailsType,
+        details : {
+          name : "Heshan"
+        }
+      }
+      // data : user
+    });
+  }
+
+  // openFieldDetailsDialog(user : User){
+  //   console.log("the message is here :" + user.userRole);
+  //   return this.dialog.open(DetailsFormComponent, {
+  //     width : '550px',
+  //     disableClose : false,
+  //     panelClass: 'confirm-dialog-container',
+  //     data : {
+  //       passedData : user,
+  //       type : "fieldDetails"
+  //     }
+  //   });
+  // }
 }

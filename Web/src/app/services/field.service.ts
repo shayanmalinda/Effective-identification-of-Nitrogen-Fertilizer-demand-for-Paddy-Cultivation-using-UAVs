@@ -22,8 +22,15 @@ export class FieldService {
   getField(id: string) {
     return this.fireStore.collection('FieldDetails').doc(id).snapshotChanges()
   }
+
   deleteField(fieldId: String) {
     this.fireStore.doc('FieldDetails/' + fieldId).delete();
+  }
+
+  getFieldsByDivision(user : User) {
+    // console.log("incoming division : " + user.division);
+    // user.division = "Galle";
+    return this.fireStore.collection('FieldDetails',ref => ref.where('division', '==', user.division)).snapshotChanges();
   }
 
 }

@@ -27,13 +27,13 @@
             <div class="motto left col-sm-11 col-lg-4" style="text-align: center; margin-top: 50px;">
                 <!-- <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/profile']" routerLinkActive="router-link-active" >Profile</button>
                 <br /> -->
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" (click)="viewUsers()">Farmers</button>
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/user-farmers']" routerLinkActive="router-link-active" >Farmers</button>
                 <br />
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" (click)="viewRequests()">Farmer Requests</button>
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/user-farmerRequests']" routerLinkActive="router-link-active" >Farmer Requests</button>
                 <br />
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard"(click)="viewFields()">Fields</button>
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/user-fields']" routerLinkActive="router-link-active" >Fields</button>
                 <br />
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" (click)="viewFieldVisits()">Field Visits</button>
+                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/user-fieldsVisits']" routerLinkActive="router-link-active" >Field Visits</button>
                 <br />
                 <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" (click)="viewFields()">Reports</button>
                 <br />
