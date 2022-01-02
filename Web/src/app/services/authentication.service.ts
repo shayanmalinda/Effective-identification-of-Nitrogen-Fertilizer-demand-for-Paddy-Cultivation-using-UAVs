@@ -98,14 +98,15 @@ export class AuthenticationService {
               userCredential.userID = data.docs[0].id;
               this.updateSessionDetails(userCredential,this.user);
               this.isLoggedIn = true;
-              resolve("Success")
+              resolve("success")
+            }if(data.docs.length == 0){
+              resolve("error")
             }
           })
         // userCredential.userID = res.user.uid;
         // sessionStorage.setItem("userID", res.user.uid);
         // this.userService.addUser(userCredential,user);
         // this.updateSessionDetails(userCredential, user);
-        
         }
         ,err => {
           reject(err.code)
