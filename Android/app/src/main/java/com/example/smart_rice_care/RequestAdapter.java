@@ -27,7 +27,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        private TextView tvDate, tvFarmerName, tvPhone, tvRequestNote, tvAddress;
+        private TextView tvDate, tvFarmerName, tvPhone, tvRequestNote, tvAddress, tvStatus, tvPlantAge;
         private Button btViewLocation, btStartExamine;
 
         // We also create a constructor that accepts the entire item row
@@ -41,6 +41,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             tvFarmerName = (TextView) itemView.findViewById(R.id.tvFarmerName);
             tvPhone = (TextView) itemView.findViewById(R.id.tvPhone);
             tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
+            tvStatus = (TextView) itemView.findViewById(R.id.tvStatus);
+            tvPlantAge = (TextView) itemView.findViewById(R.id.tvPlantAge);
             tvRequestNote = (TextView) itemView.findViewById(R.id.tvRequestNote);
             btViewLocation = (Button) itemView.findViewById(R.id.btViewLocation);
             btStartExamine = (Button) itemView.findViewById(R.id.btStartExamine);
@@ -85,6 +87,10 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         tvAddress.setText(request.getAddress());
         TextView tvRequestNote = holder.tvRequestNote;
         tvRequestNote.setText(request.getRequestNote());
+        TextView tvStatus = holder.tvStatus;
+        tvStatus.setText(request.getStatus());
+        TextView tvPlantAge = holder.tvPlantAge;
+        tvPlantAge.setText(String.valueOf(request.getPlantAge()));
 
         Button btViewLocation = holder.btViewLocation;
         btViewLocation.setOnClickListener(new View.OnClickListener() {

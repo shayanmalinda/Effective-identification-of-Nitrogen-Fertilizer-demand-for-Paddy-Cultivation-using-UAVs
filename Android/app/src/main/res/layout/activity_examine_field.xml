@@ -5,7 +5,141 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ExamineFieldActivity"
+    android:layout_weight="1"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="5dp">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:indeterminateTint="@color/orange_900"
+            android:progressTint="@color/orange_900"
+            android:progressBackgroundTint="@color/orange_200"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Examine Field"
+            android:textColor="@color/green_800"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:text="How to Examine?"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_marginTop="10dp">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="If you want to clear previous field visit data, click on Clear Data button"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="You need to enter a delay time (in seconds), which might need to fly the drone into the start position."
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="Then press the start button and fly the drone into start position with a height around 8-10 feet within the selected delay time."
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="You will hear a music within the delay time. The drone should be at the start position when the music stops."
+                    android:textSize="16sp" />
+
+
+            </TableLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1.9"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:gravity="bottom"
+        android:paddingBottom="15dp">
+
+        <EditText
+            android:id="@+id/etDelayTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Delay Time (in seconds)"
+            android:inputType="number"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btStart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Start"
+                android:backgroundTint="@color/green_500"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:layout_marginRight="10dp"
+                />
+
+
+            <Button
+                android:id="@+id/btClearData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Clear Data"
+                android:backgroundTint="@color/orange_900"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:layout_marginLeft="10dp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

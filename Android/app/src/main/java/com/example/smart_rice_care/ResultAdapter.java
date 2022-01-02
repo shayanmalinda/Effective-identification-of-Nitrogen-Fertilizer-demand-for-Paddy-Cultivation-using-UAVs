@@ -27,7 +27,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        private TextView tvDate, tvRequestNote, tvStatus;
+        private TextView tvDate, tvRequestNote, tvStatus, tvPlantAge;
         private Button btViewResults;
 
         // We also create a constructor that accepts the entire item row
@@ -40,6 +40,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             tvDate = (TextView) itemView.findViewById(R.id.tvDate);
             tvRequestNote = (TextView) itemView.findViewById(R.id.tvRequestNote);
             tvStatus = (TextView) itemView.findViewById(R.id.tvStatus);
+            tvPlantAge = (TextView) itemView.findViewById(R.id.tvPlantAge);
 
             btViewResults = (Button) itemView.findViewById(R.id.btViewResults);
 
@@ -79,6 +80,8 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         tvRequestNote.setText(result.requestNote);
         TextView tvStatus = holder.tvStatus;
         tvStatus.setText(result.status);
+        TextView tvPlantAge = holder.tvPlantAge;
+        tvPlantAge.setText(result.plantAge.toString());
 
         Button btViewLocation = holder.btViewResults;
         btViewLocation.setOnClickListener(new View.OnClickListener() {

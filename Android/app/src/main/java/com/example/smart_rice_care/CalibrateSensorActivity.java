@@ -3,7 +3,6 @@ package com.example.smart_rice_care;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,7 +65,7 @@ public class CalibrateSensorActivity extends AppCompatActivity implements Sensor
         tvCalibrationState.setText("Calibration Not Yet Started");
         tvCalibrationState.setTextColor(getResources().getColor(R.color.orange_900));
 
-        mp = MediaPlayer.create(CalibrateSensorActivity.this, R.raw.beep);
+        mp = MediaPlayer.create(CalibrateSensorActivity.this, R.raw.music);
         etDelayTime = findViewById(R.id.etDelayTime);
         etFlyingTime = findViewById(R.id.etFlyingTime);
         btStart = findViewById(R.id.btStart);
