@@ -30,6 +30,8 @@ export class ProfileComponent implements OnInit {
         name : '',
         registeredDate : '',
       };
+
+      
     cardImageBase64: string;
     fullName : string;
     location : string;
@@ -64,13 +66,23 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['/login']);
     }
 
+    onLccDetailsClick(){
+        this.updateSessionDetails();
+        this.router.navigate(['/lcc-details']);
+    }
+
+    onDashboardClick(){
+        this.updateSessionDetails();
+        this.router.navigate(['/user-dashboard']);
+    }
+
     loadSessionDetails(){
         // this.user.docId = (sessionStorage.getItem("docId") != "" ? sessionStorage.getItem("docId") : "");
         this.user.firstName = (sessionStorage.getItem("firstName") != "" ? sessionStorage.getItem("firstName") : "");
         this.user.lastName = (sessionStorage.getItem("lastName") != "" ? sessionStorage.getItem("lastName") : "");
         this.user.nic = (sessionStorage.getItem("nic") != "" ? sessionStorage.getItem("nic") : "");
         this.user.email = (sessionStorage.getItem("email") != "" ? sessionStorage.getItem("email") : "");
-        this.user.userRole = (sessionStorage.getItem("userRole") != "" ? sessionStorage.getItem("userRole") : "");
+        this.user.userRole = (sessionStorage.getItem("userRole") != "" ? (sessionStorage.getItem("userRole").replace(/\s/g, "").toLowerCase() == "agriculturalofficer" ? "Agricultural Officer" : sessionStorage.getItem("userRole")) : "");
         this.user.phone = (sessionStorage.getItem("phone") != "" ? sessionStorage.getItem("phone") : "");
         this.user.division = (sessionStorage.getItem("division") != "" ? sessionStorage.getItem("division") : "");
         this.user.district = (sessionStorage.getItem("district") != "" ? sessionStorage.getItem("district") : "");

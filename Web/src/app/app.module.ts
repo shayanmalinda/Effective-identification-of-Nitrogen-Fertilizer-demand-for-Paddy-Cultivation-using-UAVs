@@ -15,6 +15,14 @@ import { ExamplesModule } from './pages/examples.module';
 import { LoginComponent } from './pages/login/login.component';
 // import { UsersComponent } from './pages/users/users.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
+import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
+import { ShowMessageComponent } from './show-message/show-message.component';
+import { UserFarmersComponent } from './pages/user-farmers/user-farmers.component';
+import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-farmer-requests.component';
+import { UserFeildsComponent } from './pages/user-feilds/user-feilds.component';
+import { UserFieldVisitsComponent } from './pages/user-field-visits/user-field-visits.component';
+import { DetailsFormComponent } from './details-form/details-form.component';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -24,11 +32,12 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { UpdateProfileComponent } from './pages/update-profile/update-profile.component';
-import { ShowMessageComponent } from './show-message/show-message.component';
 
 //material
 import { MaterialModule } from './material/material.module';
-import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
+
+//route authentication
+import { AuthGuard } from './services/auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -40,6 +49,12 @@ import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
     UpdateProfileComponent,
     ShowMessageComponent,
     LccDetailsComponent,
+    UserDashboardComponent,
+    UserFarmersComponent,
+    UserFarmerRequestsComponent,
+    UserFeildsComponent,
+    UserFieldVisitsComponent,
+    DetailsFormComponent,
     
   ],
   imports: [

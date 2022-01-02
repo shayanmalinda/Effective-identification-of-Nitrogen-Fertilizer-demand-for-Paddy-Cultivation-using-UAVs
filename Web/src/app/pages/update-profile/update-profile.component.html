@@ -8,6 +8,9 @@
                 <div class="avatar">
                     <img [(src)]="this.user.image" alt="Circle Image" class="img-circle img-no-padding img-responsive">
                 </div>
+                <div style="align-content: center;">
+                    <h2 class="title" aria-disabled style="font-size: x-large;">{{fullName}}<br></h2>
+                </div>
                 <div>
                     <label class="btn btn-outline-default btn-round image-upload-container">
                         <i class="fa fa-cog"></i> Edit Image
@@ -19,18 +22,16 @@
                     </label>
                     <!-- <button class="btn btn-outline-default btn-round" (click)="addClicked()"><i class="fa fa-cog"></i> Edit Image</button> -->
                 </div>
-                <br>
                 <!-- <div class="name">
                     <h4 class="title">Jane Faker<br /></h4> -->
                     <!-- <h6 class="description">Music Producer</h6> -->
                 <!-- </div> -->
-                <div style="align-content: center;">
-                    <h2 class="title" aria-disabled style="font-size: x-large;">{{fullName}}<br></h2>
-                </div>
+                <br>
+                <br>
             </div>
             <div class="row">
                 <div class="col-lg-1 col-sm-1"></div>
-                <div class="col-lg-8 col-sm-8 mr-auto ml-auto" style="padding-bottom: 0px; height: 550px;">
+                <div class="col-lg-6 col-sm-6" style="padding-bottom: 0px; height: 550px;">
                   <div class="card-register" style="margin-top: 0px; padding-top: 0px; align-items: center; padding-bottom: 0px;">
                       <form class="register-form" style="width: 800px;">
                         <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
@@ -84,7 +85,7 @@
                               <a href="#">Link 1</a>
                               <a href="#">Link 2</a>
                               <a href="#">Link 3</a> -->
-                              <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)">
+                              <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding-top: 10px;">
                                 <!-- <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
@@ -105,7 +106,7 @@
                               <a href="#">Link 1</a>
                               <a href="#">Link 2</a>
                               <a href="#">Link 3</a> -->
-                              <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none">
+                              <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding-top: 0px;">
                                 <!-- <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
@@ -126,7 +127,7 @@
                               <a href="#">Link 1</a>
                               <a href="#">Link 2</a>
                               <a href="#">Link 3</a> -->
-                              <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" >
+                              <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding-top: 0px;">
                                 <!-- <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
                                 <option style="color: black;">hello</option>
@@ -145,14 +146,14 @@
                             </div>
                               <input type="text" class="form-control" placeholder="NIC" (focus)="focus=true" (blur)="focus=false" id="nic" name="nic" [(ngModel)]="user.nic" style="font-size: large;">
                           </div>
-                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                          <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                             <div class="input-group-prepend">
                               <span class="input-group-text">
                                   <i class="nc-icon nc-circle-10"></i>
                               </span>
                             </div>
                               <input type="text" class="form-control" placeholder="Role" (focus)="focus=true" (blur)="focus=false" id="userRole" name="userRole" [(ngModel)]="user.userRole" style="font-size: large;">
-                          </div>
+                          </div> -->
                           <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                             <div class="input-group-prepend">
                               <span class="input-group-text">
@@ -167,7 +168,7 @@
                                   <i class="nc-icon nc-email-85"></i>
                               </span>
                             </div>
-                              <input type="text" class="form-control" placeholder="E-mail" (focus)="focus1=true" (blur)="focus1=false" name="email" id="email" [(ngModel)]="user.email" style="font-size: large;">
+                              <input type="text" class="form-control" placeholder="E-mail" (focus)="focus1=true" (blur)="focus1=false" name="email" id="email" [(ngModel)]="user.email" style="font-size: large;" disabled>
                           </div>
                           <div class="row" style="margin-left: 20px;">
                             <button class="btn btn-signin btn-block btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
@@ -179,7 +180,16 @@
                       </div> -->
                   </div>
                 </div>
-                <div class="col-lg-3 col-sm-3"></div>
+                <div class="col-lg-4 col-sm-4">
+                  <div class="row" style="margin-left: 20px;">
+                    <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" (click)="onDashboardClick()">Dashboard</button>
+                    <!-- <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" (click)="onProfileClick()">Profile</button> -->
+                    <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" >change credentials</button>
+                    <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" (click)="onLccDetailsClick()">Change LCC details</button>
+                    <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" (click)="onLogoutClick()">log out</button>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-sm-1"></div>
             </div>
             <!-- <br/>
             <div class="nav-tabs-navigation">

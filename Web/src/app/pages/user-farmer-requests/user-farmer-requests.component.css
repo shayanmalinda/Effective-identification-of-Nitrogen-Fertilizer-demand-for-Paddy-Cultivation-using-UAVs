@@ -38,3 +38,8 @@ table {
   td{
     text-align: center;
   }
+
+  .label-styles{
+    padding:10px;
+    margin-right: 5px;
+  }

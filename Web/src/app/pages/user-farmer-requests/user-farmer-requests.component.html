@@ -4,10 +4,11 @@
         <div class="content-center">
             <div class="container">
                 <div>
-                    <div class="title-brand">
-                        <h1>LCC Details</h1>
-                    </div>
                     <br>
+                    <br>
+                    <div class="title-brand">
+                        <h1>Farmer Requests Details</h1>
+                    </div>
                     <div class="row">
                         <div class="col-sm-4">
                             <label style="color:white">Province : </label>
@@ -22,15 +23,25 @@
                             <input type="text" id="division" value="Division" [(ngModel)]="this.user.division" class="form-control form-control-danger" style="text-align: center;" disabled>
                         </div>
                     </div>
-                    <br>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <!-- <mat-form-field id="fieldInput" >
+                        <div class="col-sm-3">
+                            <mat-form-field id="fieldInput" >
                                 <input class="form-control" (keyup)="applyFilter($event.target.value)" matInput placeholder="Filter" >
                             </mat-form-field>
-                            <br> -->
+                            <br>
+                        </div>
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-8" style="padding-top: 25px; padding-bottom: 25px; padding-right: 0px; text-align: right; ">
+                            <label class="label label-default right label-styles">all : {{all}}</label>&nbsp;
+                            <label class="label label-success right label-styles">pending : {{pending}}</label>&nbsp;
+                            <label class="label label-warning right label-styles" style="margin-right: 10px;">declined : {{declined}}</label>&nbsp;
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
                             <div class="mat-elevation-z8">
-                                <table mat-table [dataSource]="dataSource" >
+                                <table mat-table [dataSource]="dataSource" matSort>
                                 <!-- <table mat-table [dataSource]="dataSource" matSort > -->
 
                                     <!--- Note that these columns can be defined in any order.
@@ -38,26 +49,26 @@
                                   
                                     <!-- Position Column -->
                                     <ng-container matColumnDef="week">
-                                      <!-- <th mat-header-cell *matHeaderCellDef mat-sort-header> Week </th> -->
-                                      <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 19%;"> Week </th>
+                                      <!-- <th mat-header-cell *matHeaderCellDef > Week </th> -->
+                                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 19%;"> Week </th>
                                       <td mat-cell *matCellDef="let element"> {{element.week}} </td>
                                     </ng-container>
                                   
                                     <!-- Name Column -->
                                     <ng-container matColumnDef="levelOne">
-                                      <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 27%;"> Level One </th>
+                                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 27%; ">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Level One </th>
                                       <td mat-cell *matCellDef="let element"> <input type="text" id="levelOne" name="levelOne" [(ngModel)]="element.levelOne" id="levelOne" style="text-align: center; margin-right: 5px; margin-left: 5px;"> </td>
                                     </ng-container>
                                   
                                     <!-- Weight Column -->
                                     <ng-container matColumnDef="levelTwo">
-                                      <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 27%;"> Level Two </th>
+                                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 27%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Level Two </th>
                                       <td mat-cell *matCellDef="let element"> <input type="text" id="levelTwo" name="levelTwo" [(ngModel)]="element.levelTwo" id="levelTwo" style="text-align: center; margin-right: 5px; margin-left: 5px;"> </td>
                                     </ng-container>
                                   
                                     <!-- Symbol Column -->
                                     <ng-container matColumnDef="levelThree">
-                                      <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 27%;"> Level Three </th>
+                                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 27%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Level Three </th>
                                       <td mat-cell *matCellDef="let element"> <input type="text" id="levelThree" name="levelThree" [(ngModel)]="element.levelThree" id="levelThree" style="text-align: center; margin-right: 5px; margin-left: 5px;"> </td>
                                     </ng-container>
                                   
@@ -65,15 +76,15 @@
                                     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
                                     <tr mat-row (change)="onChange(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
                                   </table>
-                                  <mat-paginator [pageSizeOptions]="[4]" aria-label="Select page of Fields" ></mat-paginator>
+                                  <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons></mat-paginator>
                             </div>
                         </div>
                     </div>
-                    <br>
+                    <!-- <br>
                     <div class="row" style="padding-left: 480px;">
                         <button class="btn btn-outline-success btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
                         <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onCancelClick()">cancel</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

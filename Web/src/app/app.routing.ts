@@ -16,6 +16,13 @@ import { UpdateProfileComponent } from './pages/update-profile/update-profile.co
 import { FieldsComponent } from './pages/fields/fields.component';
 import { FieldDetailsComponent } from './pages/field-details/field-details.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
+import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
+import { AuthGuard } from './services/auth/auth.guard';
+import { UserFarmersComponent } from './pages/user-farmers/user-farmers.component';
+import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-farmer-requests.component';
+import { UserFeildsComponent } from './pages/user-feilds/user-feilds.component';
+import { UserFieldVisitsComponent } from './pages/user-field-visits/user-field-visits.component';
 
 
 
@@ -23,13 +30,13 @@ const routes: Routes =[
     // { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home',             component: ComponentsComponent },
     { path: 'farmer-profile',     component: UserProfileComponent },
-    { path: 'profile',          component: ProfileComponent },
+    { path: 'profile',          component: ProfileComponent, canActivate : [AuthGuard] },
     { path: 'signup',           component: SignupComponent },
     { path: 'login',            component: LoginComponent },
     { path: 'landing',          component: LandingComponent },
     { path: 'nucleoicons',      component: NucleoiconsComponent },
     { path: 'farmers',      component: UsersComponent },
-    { path: 'updateuser',       component: UpdateProfileComponent },
+    { path: 'updateuser',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
     { path: 'fields',      component: FieldsComponent },
     { path: 'field-details',      component: FieldDetailsComponent },
     { path: 'agricultural-officers',      component: UsersComponent },
@@ -38,8 +45,14 @@ const routes: Routes =[
     { path: 'farmer-request',     component: UserProfileComponent },
     { path: 'officer-requests',     component: UsersComponent },
     { path: 'officers',     component: UsersComponent },
+    { path: 'lcc-details',      component: LccDetailsComponent, canActivate : [AuthGuard] },
     { path: 'field-visits',      component: FieldVisitsComponent },
     { path: 'field-visit-details',      component: FieldVisitDetailsComponent },
+    { path: 'user-dashboard',     component: UserDashboardComponent },
+    { path: 'user-farmers',     component: UserFarmersComponent},
+    { path: 'user-farmerRequests',     component: UserFarmerRequestsComponent},
+    { path: 'user-fields',     component: UserFeildsComponent},
+    { path: 'user-fieldVisits',     component: UserFieldVisitsComponent},
 
 
 

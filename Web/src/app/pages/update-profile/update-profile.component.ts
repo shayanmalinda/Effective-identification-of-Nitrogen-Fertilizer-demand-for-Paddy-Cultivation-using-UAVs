@@ -118,11 +118,7 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   onSaveClick(){
-    // console.log(this.user.image);
-    // this.userService.logInUser(this.user);
-    // this.userService.saveUserDetails(this.userCredential, this.user);
-    console.log(this.userCredential);
-    console.log(this.user)
+    this.user.userRole = this.user.userRole.toLowerCase();
     this.userService.saveUserDetails(this.userCredential, this.user)
     .then(res => {
       this.message.title = "success";
@@ -229,5 +225,26 @@ export class UpdateProfileComponent implements OnInit {
     this.user.nic = "";
     this.user.userRole = "";
     this.user.phone = "";
+  }
+
+  // onProfileClick(){
+  //     // console.log("profile clicked");
+  //     this.updateSessionDetails();
+  //     this.router.navigate(['/updateuser']);
+  // }
+
+  // onLogoutClick(){
+  //     this.authentication.logOut();
+  //     this.router.navigate(['/login']);
+  // }
+
+  onLccDetailsClick(){
+      this.updateSessionDetails();
+      this.router.navigate(['/lcc-details']);
+  }
+
+  onDashboardClick(){
+      this.updateSessionDetails();
+      this.router.navigate(['/user-dashboard']);
   }
 }

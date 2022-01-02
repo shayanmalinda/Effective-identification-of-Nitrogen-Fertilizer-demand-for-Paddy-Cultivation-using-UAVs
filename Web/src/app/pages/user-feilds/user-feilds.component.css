@@ -14,15 +14,11 @@ table {
   
   ::ng-deep.mat-form-field-ripple {
    /*change color of underline when focused*/
-   background-color: white !important;;
+   background-color: white !important;
   }
 
   #fieldInput{
     width: 200px;
-  }
-
-  .mat-table {
-    /* outline-bott: 2px solid purple; */
   }
 
   .mat-paginator {
@@ -37,4 +33,13 @@ table {
 
   td{
     text-align: center;
+  }
+
+  .label-styles{
+    padding:10px;
+    margin-right: 5px;
+  }
+
+  .mat-icon {
+    font-size: 15px;
   }

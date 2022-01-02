@@ -50,6 +50,14 @@
                           <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                             <div class="input-group-prepend">
                               <span class="input-group-text">
+                                  <i class="nc-icon nc-circle-10"></i>
+                              </span>
+                            </div>
+                              <input type="text" class="form-control" placeholder="Role" (focus)="focus=true" (blur)="focus=false" id="userRole" name="userRole" [(ngModel)]="user.userRole" style="font-size: medium;" disabled>
+                          </div>
+                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
                                   <i class="nc-icon nc-pin-3"></i>
                               </span>
                             </div>
@@ -82,14 +90,6 @@
                           <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                             <div class="input-group-prepend">
                               <span class="input-group-text">
-                                  <i class="nc-icon nc-circle-10"></i>
-                              </span>
-                            </div>
-                              <input type="text" class="form-control" placeholder="Role" (focus)="focus=true" (blur)="focus=false" id="userRole" name="userRole" [(ngModel)]="user.userRole" style="font-size: medium;" disabled>
-                          </div>
-                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text">
                                   <i class="nc-icon nc-mobile"></i>
                               </span>
                             </div>
@@ -115,9 +115,10 @@
                 </div>
                 <div class="col-lg-4 col-sm-4">
                     <div class="row" style="margin-left: 20px;">
-                        <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" >home</button>
+                        <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" (click)="onDashboardClick()">Dashboard</button>
                         <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" (click)="onUpdateClick()">Update Profile</button>
                         <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" >change credentials</button>
+                        <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" (click)="onLccDetailsClick()">Change LCC details</button>
                         <button class="btn btn-outline-default btn-block btn-round" style="width: 400px;" (click)="onLogoutClick()">log out</button>
                       </div>
                 </div>

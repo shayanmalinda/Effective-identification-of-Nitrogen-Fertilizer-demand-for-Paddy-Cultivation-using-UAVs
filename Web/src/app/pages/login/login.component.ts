@@ -78,27 +78,35 @@ export class LoginComponent implements OnInit {
       })
     } else {
       this.authenticationService.logIn(this.userCredential)
-        .then(res => {
-          let userRole = (sessionStorage.getItem("userRole") != "" ? sessionStorage.getItem("userRole") : "");
-          if (userRole == "admin")
-            this.router.navigate(['/admin-dashboard']);
-          else this.router.navigate(['/profile']);
+      .then(res =>{
+        // console.log("This is the user id in login : " + this.userCredential.userID);
+        // this.router.navigate(['/user-dashboard']);
 
-        }, err => {
-          this.message.title = "error";
-          console.log(err);
-          if (err == "auth/wrong-password") {
-            this.message.showMessage = "You have entered invalid password !";
-          } else if (err == "auth/user-not-found") {
-            this.message.showMessage = "The Email you have entered do not have an account here !";
-          } else {
-            this.message.showMessage = "Invalid Email and password !"
-          }
-          this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-            this.clearFields();
-          });
-        })
-    }
+        //testing region 
+        console.log("is logged in : " + this.authenticationService.isLoggedIn);
+        if(this.authenticationService.isLoggedIn){
+          console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
+          const redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
+          this.router.navigateByUrl(redirect);
+        }
+
+        //end of the testing region
+
+      }, err => {
+        this.message.title = "error";
+        console.log(err);
+        if(err == "auth/wrong-password"){
+          this.message.showMessage = "You have entered invalid password !";
+        }else if(err == "auth/user-not-found"){
+          this.message.showMessage = "The Email you have entered do not have an account here !";
+        }else{
+          this.message.showMessage = "Invalid Email and password !"
+        }
+        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
+          this.clearFields();
+      });
+    })}
+
   }
 
   encryptPassword(password: string) {
@@ -110,19 +118,19 @@ export class LoginComponent implements OnInit {
     return finalPassword;
   }
 
-  updateSessionDetails() {
-    sessionStorage.setItem('email', this.user.email);
-    sessionStorage.setItem('firstName', this.user.firstName);
-    sessionStorage.setItem('lastName', this.user.lastName);
-    sessionStorage.setItem('nic', this.user.nic);
-    sessionStorage.setItem('phone', this.user.phone);
-    sessionStorage.setItem('userRole', this.user.userRole);
-    sessionStorage.setItem('district', this.user.district);
-    sessionStorage.setItem('division', this.user.division);
-    sessionStorage.setItem('province', this.user.province);
-    sessionStorage.setItem('image', this.user.image);
-    sessionStorage.setItem('status', this.user.status);
-    sessionStorage.setItem('useID', this.userCredential.userID);
+  updateSessionDetails(){
+    sessionStorage.setItem('email',this.user.email);
+    sessionStorage.setItem('firstName',this.user.firstName);
+    sessionStorage.setItem('lastName',this.user.lastName);
+    sessionStorage.setItem('nic',this.user.nic);
+    sessionStorage.setItem('phone',this.user.phone);
+    sessionStorage.setItem('userRole',this.user.userRole);
+    sessionStorage.setItem('district',this.user.district);
+    sessionStorage.setItem('division',this.user.division);
+    sessionStorage.setItem('province',this.user.province);
+    sessionStorage.setItem('image',this.user.image);
+    sessionStorage.setItem('status',this.user.status);
+    sessionStorage.setItem('userID',this.userCredential.userID);
   }
 
   clearFields() {
