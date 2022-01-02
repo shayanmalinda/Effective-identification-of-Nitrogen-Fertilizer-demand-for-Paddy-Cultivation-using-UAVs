@@ -47,7 +47,7 @@ export class UserService {
 
   getUserByEmail(userCredential: UserCredential) {
     // console.log(user.email + " " + user.password );
-    return this.fireStore.collection('Users', ref => ref.where('email', '==', userCredential.email)).get();
+    return this.fireStore.collection('Users', ref => ref.where('email', '==', userCredential.email).where('userRole','==','agricultural officer')).get();
   }
 
   getFarmerById(userCredential : UserCredential){

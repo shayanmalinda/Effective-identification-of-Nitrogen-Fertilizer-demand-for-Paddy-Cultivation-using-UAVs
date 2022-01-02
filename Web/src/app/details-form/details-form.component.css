@@ -152,4 +152,12 @@ border-radius: 0px;
     width: 75%; 
 }
 
+agm-map{
+    height: 370px;
+}
+
+:disabled {
+    background-color: white;
+}
+
 

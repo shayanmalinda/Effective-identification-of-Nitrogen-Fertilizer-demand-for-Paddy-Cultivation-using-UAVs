@@ -38,6 +38,7 @@ import { MaterialModule } from './material/material.module';
 
 //route authentication
 import { AuthGuard } from './services/auth/auth.guard';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -68,10 +69,13 @@ import { AuthGuard } from './services/auth/auth.guard';
     ExamplesModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, 'smart-rice-care'),
-AngularFirestoreModule, // Only required for database features
-AngularFireAuthModule, // Only required for auth features,
-AngularFireStorageModule, NoopAnimationsModule, // Only required for storage features
-
+    AngularFirestoreModule, // Only required for database features
+    AngularFireAuthModule, // Only required for auth features,
+    AngularFireStorageModule, NoopAnimationsModule, // Only required for storage features
+    AgmCoreModule.forRoot({
+      apiKey : 'AIzaSyBQz_TZCNa04wVSBLTggZ-G8XWR3A2bFbc',
+      // libraries: ['places']
+    })
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
