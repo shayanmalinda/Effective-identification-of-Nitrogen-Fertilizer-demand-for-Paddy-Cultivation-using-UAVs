@@ -51,16 +51,18 @@ export class UsersComponent implements OnInit, AfterViewInit {
   constructor(private renderer: Renderer2, private userService: UserService, private router: Router) {
     this.type = this.router.getCurrentNavigation().extras.state.type;
     this.role = this.router.getCurrentNavigation().extras.state.role;
-
     this.title = this.role;
     if (this.type != 'request') {
       this.title += "s";
+
       this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'view', 'delete'];
     } else {
       this.title += " requests";
-      if (this.role = 'farmer')
+
+      if (this.role == 'farmer') {
+
         this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'delete'];
-      else
+      } else
         this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'accept', 'decline', 'delete'];
     }
 
@@ -80,6 +82,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
   getRecord(row) {
     this.selectedRowIndex = row.id;
+    console.log(this.selectedRowIndex)
     this.user = row;
   }
   viewUser() {
@@ -152,14 +155,16 @@ export class UsersComponent implements OnInit, AfterViewInit {
     } else {
       this.status = "approved"
     }
-
+    console.log(this.role)
     this.userService.getUsers(this.role, this.status).subscribe(data => {
       this.users = data.map(e => {
+        console.log(e.payload.doc.id+"IIIIIIDDDDD");
         return {
+          ...e.payload.doc.data() as {},
           id: e.payload.doc.id,
-          ...e.payload.doc.data() as {}
         } as User;
       })
+      console.log(this.users)
       this.dataSource = new MatTableDataSource(this.users);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

@@ -32,5 +32,9 @@ export class AdminDashboardComponent implements OnInit {
   viewFieldVisits() {
     this.router.navigate(['/field-visits']);
   }
+
+  viewProfile() {
+    this.router.navigate(['/updateuser']);
+  }
 }
 
