@@ -13,8 +13,6 @@ import { Router } from '@angular/router';
 
 const NO_OF_WEEKS = 8;
 
-// var changedWeekDetails = Array<LCCWeekDetails>(NO_OF_WEEKS);
-
 @Component({
   selector: 'app-lcc-details',
   templateUrl: './lcc-details.component.html',
@@ -67,23 +65,21 @@ export class LccDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.loadSessionDetails();
     this.getLCCDetails();
-    // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
-    // setTimeout(() => this.dataSource.paginator = this.paginator);
-    // setTimeout(() => this.dataSource.sort = this.sort);
-    // this.dataSource.sort = this.sort;
-    // this.dataSource.paginator = this.paginator;
   }
 
+  //filter the rows
   applyFilter(filterValue : string){
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  //onChange event
   onChange(row){
     var weekNo = row.week;
     var rowDetails = row;
     this.changedWeekDetails[weekNo - 1] = rowDetails;
   }
 
+  //onSaveClick click event
   onSaveClick(){
     console.log("in the onsave" + this.changedWeekDetails);
     console.log(sessionStorage.getItem('userID'));
@@ -112,6 +108,7 @@ export class LccDetailsComponent implements OnInit {
         )
   }
 
+  //onCancel button click event
   onCancelClick(){
     this.message.title = "warning";
     this.message.showMessage = "The changes you have done not be applied to the LCC details !";
@@ -120,6 +117,7 @@ export class LccDetailsComponent implements OnInit {
       });
   }
 
+  //load the session details
   loadSessionDetails(){
     this.userCredential.userID = sessionStorage.getItem('userID');
     this.user.status = sessionStorage.getItem('status');
@@ -135,6 +133,7 @@ export class LccDetailsComponent implements OnInit {
     this.user.image = (sessionStorage.getItem("image") != "" ? sessionStorage.getItem("image") : "./assets/img/faces/user_profile_default.jpg");
   }
 
+  //to update the week details
   updateWeekDetails(){
     for(var i = 0; i < NO_OF_WEEKS; i++ ){
       var j = i;
@@ -152,6 +151,7 @@ export class LccDetailsComponent implements OnInit {
     }
   }
 
+  //to get the LCC details
   getLCCDetails(){
     this.user.division = sessionStorage.getItem('division');
     this.lccService.getLccDetailsByDivision(this.user).subscribe(
