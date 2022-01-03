@@ -187,4 +187,9 @@ export class LccDetailsComponent implements OnInit {
       }
     )
   }
+
+  //to get user details
+  getUserDetails(){
+    console.log("this is the user details section");
+  }
 }
