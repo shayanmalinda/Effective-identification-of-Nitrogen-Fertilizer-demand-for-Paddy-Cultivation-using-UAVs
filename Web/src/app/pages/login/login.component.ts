@@ -86,15 +86,22 @@ export class LoginComponent implements OnInit {
         // console.log("is logged in : " + this.authenticationService.isLoggedIn);
         if(this.authenticationService.isLoggedIn){
           console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
-          const redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
-          this.router.navigateByUrl(redirect);
-        }else if(res == "error"){
-          this.message.title = "error";
-          this.message.showMessage = "Invalid login !";
-          this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
+          var redirect;
+          if(res == "agricultural officer"){
+            redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
+            this.router.navigateByUrl(redirect);
+          }else if(res == "admin"){
+            // the redirect url should come here edit follow code and set the url
+            redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'admin-dashboard'
+            this.router.navigateByUrl(redirect);
+          }else{
+            this.message.title = "error";
+            this.message.showMessage = "Invalid login !!"
+            this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
             this.clearFields();
-        });
-      }
+            })
+          }
+        }
         //end of the testing region
 
       }, err => {
