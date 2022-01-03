@@ -78,41 +78,12 @@ export class UpdateProfileComponent implements OnInit {
       image.src = event.target.result;
 
       if ((file.type == 'image/png') || (file.type == 'image/jpeg') || (file.type == 'image/jpg')) {
-        // console.log("This is the relevant type");
         const imgBase64Path = event.target.result;
-        // this.cardImageBase64 = imgBase64Path;
         this.user.image = imgBase64Path;
-        // return this.cardImageBase64;
-        //success msg
       }else{
         // console.log("This is not the relevant type");
         //error msg
       }
-
-      // this.isImageSaved = true;
-      // console.log(imgBase64Path);
-
-      // image.onload = rs => {
-
-      //   const img_height = rs.currentTarget['height'];
-      //   const img_width = rs.currentTarget['width'];
-      //   console.log(img_height, img_width);
-      //   // this.previewImagePath = imgBase64Path;
-
-      // }
-
-      // this.selectedFile = new ImageSnippet(event.target.result, file);
-
-      // this.selectedFile.pending = true;
-      // this.imageService.uploadImage(this.selectedFile.file).subscribe(
-      //   (res) => {
-      //     this.onSuccess();
-      //   },
-      //   (err) => {
-      //     this.onError();
-      //   })
-      // console.log(file.type);
-
     });
     reader.readAsDataURL(file);
   }
@@ -226,17 +197,6 @@ export class UpdateProfileComponent implements OnInit {
     this.user.userRole = "";
     this.user.phone = "";
   }
-
-  // onProfileClick(){
-  //     // console.log("profile clicked");
-  //     this.updateSessionDetails();
-  //     this.router.navigate(['/updateuser']);
-  // }
-
-  // onLogoutClick(){
-  //     this.authentication.logOut();
-  //     this.router.navigate(['/login']);
-  // }
 
   onLccDetailsClick(){
       this.updateSessionDetails();
