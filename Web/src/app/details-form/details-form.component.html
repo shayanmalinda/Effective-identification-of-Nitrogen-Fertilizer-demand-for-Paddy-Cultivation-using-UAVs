@@ -126,7 +126,9 @@
                 <tr>
                   <td colspan="2">
                     <div class="container" style="width: 420px; height: 420px;">
-                      <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom"></agm-map>
+                      <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                        <agm-marker [latitude]="latitude" [longitude]="longitude" ></agm-marker>
+                      </agm-map>
                         <div>Latitude: {{latitude}}</div>
                         <div>Longitude: {{longitude}}</div>
                     </div>
