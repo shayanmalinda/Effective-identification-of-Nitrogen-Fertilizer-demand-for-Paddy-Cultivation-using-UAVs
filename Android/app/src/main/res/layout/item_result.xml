@@ -83,6 +83,35 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:textStyle="bold"
+            android:text="Plant Age"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text=":"/>
+
+        <TextView
+            android:id="@+id/tvPlantAge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:textStyle="bold"
             android:text="Status"/>
 
         <TextView
