@@ -6,6 +6,7 @@ import { User, UserCredential } from 'app/models/user.model';
 import { DialogService } from 'app/services/dialog.service';
 import { UserService } from 'app/services/user.service';
 import { MapsAPILoader } from '@agm/core';
+import { UserFarmersService } from 'app/services/user-farmers.service';
 
 
 @Component({
@@ -36,11 +37,12 @@ export class DetailsFormComponent implements OnInit {
   latitude!: number;
   longitude!: number;
   zoom: number;
+  repeat : boolean = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private userFarmersService : UserFarmersService) { 
     
-    this.latitude = 6.927079;
-    this.longitude = 79.861244;
+    this.latitude = 7.2906;
+    this.longitude = 80.6337;
     this.zoom = 25;
     
     if(data.type == "farmerDetails"){
@@ -63,17 +65,20 @@ export class DetailsFormComponent implements OnInit {
   }
 
   onViewFarmerClick(){
-    this.userService.getFarmerById(this.userCredential).subscribe(data => {
-      this.user = data.payload.data() as User;
-      // this.testing.userRole = this.user.userRole
-      // this.testing.nic = this.user.nic
-      // this.testing.email = this.user.email
-      this.testing.status = this.user.userRole;
-      this.testing.division = this.user.firstName;
-      this.testing.email = this.user.email;
-      console.log(this.testing.division);
-      this.dialog.openDetailsDialog(this.testing, "farmerDetails").afterClosed();
-  })
+    this.userFarmersService.getFarmerById(this.userCredential).subscribe(data => {
+      if(this.repeat == false){
+        this.repeat = true;
+        this.user = data.payload.data() as User;
+        // this.testing.userRole = this.user.userRole
+        // this.testing.nic = this.user.nic
+        // this.testing.email = this.user.email
+        this.testing.status = this.user.userRole;
+        this.testing.division = this.user.firstName;
+        this.testing.email = this.user.email;
+        console.log(this.testing.division);
+        this.dialog.openDetailsDialog(this.testing, "farmerDetails").afterClosed();
+      }
+    })
   }
 
   onMapClicked(event : any){

@@ -64,6 +64,7 @@ export class ProfileComponent implements OnInit {
     onLogoutClick(){
         this.authentication.logOut();
         this.router.navigate(['/login']);
+        console.log(" finaly logs out !! ");
     }
 
     onLccDetailsClick(){
