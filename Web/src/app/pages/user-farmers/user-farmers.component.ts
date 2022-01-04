@@ -133,10 +133,6 @@ export class UserFarmersComponent implements OnInit {
       data => {
         this.users = data.map(e => {
           return {
-<<<<<<< HEAD
-=======
-            // id: e.payload.doc.id, //ide removed @heshan
->>>>>>> 5b01d65594d2b5bdded9bb1ddf096d49abe44d36
             ...e.payload.doc.data() as {}
           } as User;
         })
@@ -196,10 +192,6 @@ export class UserFarmersComponent implements OnInit {
     this.userFarmersService.getAllFarmers().subscribe(data =>{
       farmers = data.map(e =>{
         return {
-<<<<<<< HEAD
-=======
-          // id : e.payload.doc.id, // id removed @heshan
->>>>>>> 5b01d65594d2b5bdded9bb1ddf096d49abe44d36
           ...e.payload.doc.data() as {}
         } as User;
       })
