@@ -64,7 +64,7 @@ public class ViewRequests extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 for(QueryDocumentSnapshot document: task.getResult()){
                                     String requestId = document.getId();
-                                    String date = document.getString("date");
+                                    String date = document.getString("createdDate");
                                     Log.d("printing date", date.toString());
                                     String division = document.getString("division");
                                     String fieldId = document.getString("fieldId");
@@ -73,7 +73,7 @@ public class ViewRequests extends AppCompatActivity {
                                     String requestNote = document.getString("requestNote");
                                     String status = document.getString("status");
                                     int plantAge = document.getDouble("plantAge").intValue();
-                                    Long timestamp = document.getLong("timestamp");
+                                    Long timestamp = document.getLong("createdTimestamp");
 //                                    if(status.equals("request pending")) {
                                     if(true) {
                                         DocumentReference docRef = db.collection("FieldDetails").document(fieldId);

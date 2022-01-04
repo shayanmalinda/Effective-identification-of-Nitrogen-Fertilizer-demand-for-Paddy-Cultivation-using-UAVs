@@ -104,6 +104,9 @@ public class SendRequestActivity extends AppCompatActivity {
                                             String fieldId = document.getId();
                                             String division = document.getData().get("division").toString();
 
+                                            String date = DateFormat.getDateTimeInstance().format(new Date());
+                                            Long timestamp = System.currentTimeMillis();
+
                                             Map<String, Object> fieldRequestData = new HashMap<>();
                                             fieldRequestData.put("fieldId",fieldId);
                                             fieldRequestData.put("division",division);
@@ -112,8 +115,10 @@ public class SendRequestActivity extends AppCompatActivity {
                                             fieldRequestData.put("longitude",longitude);
                                             fieldRequestData.put("plantAge",plantAge);
                                             fieldRequestData.put("status","pending");
-                                            fieldRequestData.put("date", DateFormat.getDateTimeInstance().format(new Date()));
-                                            fieldRequestData.put("timestamp", System.currentTimeMillis());
+                                            fieldRequestData.put("createdDate", date);
+                                            fieldRequestData.put("createdTimestamp", timestamp);
+                                            fieldRequestData.put("modifiedDate", date);
+                                            fieldRequestData.put("modifiedTimestamp", timestamp);
 
                                             db.collection("FieldRequests")
                                                 .add(fieldRequestData)
