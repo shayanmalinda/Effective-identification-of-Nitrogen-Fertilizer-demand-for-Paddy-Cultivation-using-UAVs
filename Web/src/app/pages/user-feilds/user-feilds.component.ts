@@ -128,7 +128,7 @@ export class UserFeildsComponent implements OnInit {
       data => {
         this.fields = data.map(e => {
           return {
-            id: e.payload.doc.id,
+            // id: e.payload.doc.id,
             ...e.payload.doc.data() as {}
           } as Field;
         })
@@ -146,7 +146,7 @@ export class UserFeildsComponent implements OnInit {
       // console.log("this is the lenght of the divisions : " + data.length);
       this.fields = data.map(e => {
         return {
-          id: e.payload.doc.id,
+          // id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
         } as Field;
       })
@@ -180,7 +180,7 @@ export class UserFeildsComponent implements OnInit {
       // console.log("this is the lenght of the divisions : " + data.length);
       this.fields = data.map(e => {
         return {
-          id: e.payload.doc.id,
+          // id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
         } as Field;
       })

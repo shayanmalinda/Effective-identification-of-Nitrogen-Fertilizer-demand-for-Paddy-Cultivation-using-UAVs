@@ -1,3 +1,4 @@
+import { FieldTemp } from './../../models/field.model';
 import { FieldVisitService } from './../../services/field-visit.service';
 import { FieldVisit } from '../../models/field-visit.model';
 import { Component, OnInit } from '@angular/core';
@@ -12,7 +13,7 @@ import { reduce } from 'rxjs-compat/operator/reduce';
 })
 export class FieldDetailsComponent implements OnInit {
 
-  field: Field;
+  field: FieldTemp;
   title = 'My first AGM project';
   lat = 51.678418;
   lng = 7.809007;
@@ -22,6 +23,7 @@ export class FieldDetailsComponent implements OnInit {
 
   constructor(private router: Router,private fieldVisitService:FieldVisitService) {
     this.field = this.router.getCurrentNavigation().extras.state.field;
+    console.log(this.field)
 
   }
   getColor(status) {

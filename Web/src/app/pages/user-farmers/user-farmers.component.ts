@@ -133,6 +133,10 @@ export class UserFarmersComponent implements OnInit {
       data => {
         this.users = data.map(e => {
           return {
+<<<<<<< HEAD
+=======
+            // id: e.payload.doc.id, //ide removed @heshan
+>>>>>>> 5b01d65594d2b5bdded9bb1ddf096d49abe44d36
             ...e.payload.doc.data() as {}
           } as User;
         })
@@ -151,7 +155,7 @@ export class UserFarmersComponent implements OnInit {
     this.fieldService.getFieldsByDivision(this.user).subscribe(data => {
       fields = data.map(e => {
         return {
-          id: e.payload.doc.id,
+          // id: e.payload.doc.id, 
           ...e.payload.doc.data() as {}
         } as Field;
       })
@@ -192,6 +196,10 @@ export class UserFarmersComponent implements OnInit {
     this.userFarmersService.getAllFarmers().subscribe(data =>{
       farmers = data.map(e =>{
         return {
+<<<<<<< HEAD
+=======
+          // id : e.payload.doc.id, // id removed @heshan
+>>>>>>> 5b01d65594d2b5bdded9bb1ddf096d49abe44d36
           ...e.payload.doc.data() as {}
         } as User;
       })
@@ -203,7 +211,7 @@ export class UserFarmersComponent implements OnInit {
           field = data.map(e =>{
             // console.log(e.payload.doc.data())
             return {
-              id : e.payload.doc.id,
+              // id : e.payload.doc.id, //
               ...e.payload.doc.data() as {}
             } as Field
           })

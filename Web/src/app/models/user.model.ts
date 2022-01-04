@@ -22,3 +22,8 @@ export class UserCredential {
     email : string;
     password : string;
 }
+
+export class UserTemp{
+    user:User;
+    id:string
+}

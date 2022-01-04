@@ -1,3 +1,4 @@
+import { FieldVisitTemp } from './../../models/field-visit.model';
 import { FieldVisitService } from '../../services/field-visit.service';
 import { FieldVisit } from '../../models/field-visit.model';
 import { Component, OnInit } from '@angular/core';
@@ -19,9 +20,12 @@ export class FieldVisitDetailsComponent implements OnInit {
   fieldRequests: FieldVisit[];
   counts: any[];
   valueChanged;
+  id:string;
 
   constructor(private router: Router,private fieldVisitService:FieldVisitService) {
     this.fieldVisit = this.router.getCurrentNavigation().extras.state.fieldVisit;
+    
+    this.id = this.router.getCurrentNavigation().extras.state.fieldVisit.id;
 
   }
   getColor(status) {
@@ -29,7 +33,7 @@ export class FieldVisitDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.counts = this.fieldVisitService.getFieldVisitCountsByStatus(this.fieldVisit.id);
+    this.counts = this.fieldVisitService.getFieldVisitCountsByStatus(this.id);
 
   }
 

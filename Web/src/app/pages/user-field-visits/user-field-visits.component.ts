@@ -206,7 +206,7 @@ export class UserFieldVisitsComponent implements OnInit {
     this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
       fieldVisits = data.map(e => {
         return {
-          id: e.payload.doc.id,
+          // id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
         } as FieldVisit;
       })

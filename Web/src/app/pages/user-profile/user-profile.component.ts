@@ -1,3 +1,4 @@
+import { UserTemp } from './../../models/user.model';
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user.model';
 import { UserService } from 'app/services/user.service';
@@ -11,10 +12,10 @@ import { Router } from '@angular/router';
 export class UserProfileComponent implements OnInit {
 
   users: User[];
-  user: User;
+  user: UserTemp;
 
   constructor(private router: Router,private userService: UserService) {
-    this.user = this.router.getCurrentNavigation().extras.state.user;
+    this.user = this.router.getCurrentNavigation().extras.state.user.user;
   }
 
 
