@@ -1,3 +1,4 @@
+import { UserTemp } from './../../models/user.model';
 import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,6 +15,7 @@ export interface UserData {
   fruit: string;
 }
 
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -21,8 +23,9 @@ export interface UserData {
 })
 
 export class UsersComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name', 'email', 'phone', 'nic', 'division','view','delete'];
-  dataSource: MatTableDataSource<User>;
+  displayedColumns: string[];
+  // = ['name', 'email', 'phone', 'nic', 'province','district','division','view','delete'];
+  dataSource: MatTableDataSource<UserTemp>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -35,12 +38,37 @@ export class UsersComponent implements OnInit, AfterViewInit {
   focus2;
   date: { year: number, month: number };
   model: NgbDateStruct;
-  users: User[];
+  users: UserTemp[];
   data: any[];
   selectedRowIndex;
-  user:User;
+  user: UserTemp;
+  type;
+  title;
+  role;
+  status;
+  selectedType: String;
+  all = 0;
+  pending = 0;
+  declined = 0;
 
-  constructor(private renderer: Renderer2, private userService: UserService,private router: Router) {
+  constructor(private renderer: Renderer2, private userService: UserService, private router: Router) {
+    this.type = this.router.getCurrentNavigation().extras.state.type;
+    this.role = this.router.getCurrentNavigation().extras.state.role;
+    this.title = this.role;
+    if (this.type != 'request') {
+      this.title += "s";
+
+      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'view', 'delete'];
+    } else {
+      this.title += " requests";
+
+      if (this.role == 'farmer') {
+
+        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'delete'];
+      } else
+        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'accept', 'decline', 'delete'];
+    }
+
   }
 
   isWeekend(date: NgbDateStruct) {
@@ -52,22 +80,59 @@ export class UsersComponent implements OnInit, AfterViewInit {
     return date.month !== current.month;
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    //   this.dataSource.paginator = this.paginator;
+    //   this.dataSource.sort = this.sort;
   }
   getRecord(row) {
     this.selectedRowIndex = row.id;
-    this.user=row;
+    console.log(this.selectedRowIndex)
+    this.user = row;
   }
   viewUser() {
-    this.router.navigate(['/user-profile'],{ state: { user: this.user }});
+    if (this.type == 'request')
+      this.router.navigate(['/farmer-request'], { state: { user: this.user } });
+    else
+      this.router.navigate(['/farmer-profile'], { state: { user: this.user } });// should be changed to profile with updates
+
   }
   deleteUser() {
     this.userService.deleteUser(this.user.id);
   }
+  accept() {
+    this.userService.acceptUser(this.user.id);
+  }
+  decline() {
+    this.userService.declineUser(this.user.id);
+  }
+  selectReqType() {
+    let filterValue;
+    if (this.selectedType == "all") {
+      filterValue = '';
+    } else {
+      filterValue = this.selectedType;
+    }
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+  getCounts() {
+
+    this.users.forEach(data => {
+      if (data.user.status == 'pending') {
+        this.pending++;
+      } else {
+        this.declined++;
+      }
+    });
+    this.all = this.declined + this.pending;
+  }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    console.log(filterValue)
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
@@ -88,15 +153,24 @@ export class UsersComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.userService.getUsers().subscribe(data => {
+    if (this.type == "request") {
+      this.status = "pending"
+    } else {
+      this.status = "approved"
+    }
+    console.log(this.role)
+    this.userService.getUsers(this.role, this.status).subscribe(data => {
       this.users = data.map(e => {
         return {
+          user:e.payload.doc.data() as User,
           id: e.payload.doc.id,
-          ...e.payload.doc.data() as {}
-        } as User;
+        } as UserTemp;
       })
+      console.log(this.users)
       this.dataSource = new MatTableDataSource(this.users);
-
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.getCounts();
     });
 
   }

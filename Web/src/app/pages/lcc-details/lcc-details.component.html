@@ -1,0 +1,67 @@
+<div class="wrapper">
+    <div class="page-header section-dark" style="background-image: url('assets/img/paddy one.jpg')">
+        <div class="filter"></div>
+        <div class="content-center">
+            <div class="container">
+                <div>
+                    <div class="title-brand">
+                        <h1>LCC Details</h1>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label style="color:white">Province : </label>
+                            <input type="text" id="province" value="Province" [(ngModel)]="this.user.province" class="form-control form-control-danger" style="text-align: center;" disabled>
+                        </div>
+                        <div class="col-sm-4">
+                            <label style="color:white">District : </label>
+                            <input type="text" id="district" value="District" [(ngModel)]="this.user.district" class="form-control form-control-danger" style="text-align: center;" disabled>
+                        </div>
+                        <div class="col-sm-4">
+                            <label style="color:white">Division : </label>
+                            <input type="text" id="division" value="Division" [(ngModel)]="this.user.division" class="form-control form-control-danger" style="text-align: center;" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mat-elevation-z8">
+                                <table mat-table [dataSource]="dataSource" >
+                                    <!-- Position Column -->
+                                    <ng-container matColumnDef="week">
+                                      <!-- <th mat-header-cell *matHeaderCellDef mat-sort-header> Week </th> -->
+                                      <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 19%;"> Week </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.week}} </td>
+                                    </ng-container>
+                                    <!-- Name Column -->
+                                    <ng-container matColumnDef="levelOne">
+                                      <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 27%;"> Level One </th>
+                                      <td mat-cell *matCellDef="let element"> <input type="text" id="levelOne" name="levelOne" [(ngModel)]="element.levelOne" id="levelOne" style="text-align: center; margin-right: 5px; margin-left: 5px;"> </td>
+                                    </ng-container>
+                                    <!-- Weight Column -->
+                                    <ng-container matColumnDef="levelTwo">
+                                      <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 27%;"> Level Two </th>
+                                      <td mat-cell *matCellDef="let element"> <input type="text" id="levelTwo" name="levelTwo" [(ngModel)]="element.levelTwo" id="levelTwo" style="text-align: center; margin-right: 5px; margin-left: 5px;"> </td>
+                                    </ng-container>
+                                    <!-- Symbol Column -->
+                                    <ng-container matColumnDef="levelThree">
+                                      <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 27%;"> Level Three </th>
+                                      <td mat-cell *matCellDef="let element"> <input type="text" id="levelThree" name="levelThree" [(ngModel)]="element.levelThree" id="levelThree" style="text-align: center; margin-right: 5px; margin-left: 5px;"> </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row (change)="onChange(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+                                  </table>
+                                  <mat-paginator [pageSizeOptions]="[4]" aria-label="Select page of Fields" ></mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" style="padding-left: 480px;">
+                        <button class="btn btn-outline-success btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
+                        <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onCancelClick()">cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -52,7 +52,7 @@ export class NavbarComponent implements OnInit {
       if(titlee.charAt(0) === '#'){
           titlee = titlee.slice( 1 );
       }
-        if( titlee === '/home' ) {
+        if( titlee === '/home') {
             return true;
         }
         else {
@@ -106,6 +106,47 @@ export class NavbarComponent implements OnInit {
         }
           if( titlee === '/signup' ) {
               return true;
+          }
+          else {
+              return false;
+          }
+      };
+
+      isRelevantPages(){
+        var titlee = this.location.prepareExternalUrl(this.location.path());
+        if(titlee.charAt(0) === '#'){
+            titlee = titlee.slice( 1 );
+        }
+          if( titlee === '/user-dashboard' ) {
+              return true;
+          }
+          if( titlee === '/lcc-details' ) {
+            return true;
+          }
+          if( titlee === '/updateuser' ) {
+            return true;
+          }
+          else {
+              return false;
+          }
+      };
+
+      isRelevantDashPages(){
+        var titlee = this.location.prepareExternalUrl(this.location.path());
+        if(titlee.charAt(0) === '#'){
+            titlee = titlee.slice( 1 );
+        }
+          if( titlee === '/user-farmers' ) {
+              return true;
+          }
+          if( titlee === '/user-farmerRequests' ) {
+            return true;
+          }
+          if( titlee === '/user-fields' ) {
+            return true;
+          }
+          if( titlee === '/user-fieldVisits' ) {
+            return true;
           }
           else {
               return false;

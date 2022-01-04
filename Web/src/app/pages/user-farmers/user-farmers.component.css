@@ -1,0 +1,45 @@
+table {
+    width: 100%;
+  }
+
+  ::ng-deep  .mat-form-field-label {
+    /*change color of label*/
+    color: white !important;
+   }
+  
+   ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: white !important;
+  } 
+  
+  ::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color: white !important;;
+  }
+
+  #fieldInput{
+    width: 200px;
+  }
+
+  .mat-paginator {
+    background-color: #CEDCC3;
+  }
+
+  th{
+    font-size: 15px;
+    background-color: #CEDCC3;
+    /* width: 25%; */
+  }
+
+  /* td{
+    text-align: center;
+  } */
+
+  .label-styles{
+    padding:10px;
+    margin-right: 5px;
+  }
+
+  .mat-icon {
+    font-size: 15px;
+  }

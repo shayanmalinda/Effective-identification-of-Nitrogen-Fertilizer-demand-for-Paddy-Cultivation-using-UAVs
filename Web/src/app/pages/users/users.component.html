@@ -4,7 +4,45 @@
         <div class="content-center">
             <div class="container">
                 <div>
-                    <div class="title-brand"><label>Users</label></div>
+                    <div class="title-brand"><label>{{title}}</label></div>
+                    <div class="toggle label-bar" *ngIf="type=='request'">
+
+                        <div class="left">
+                            <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()
+                                aria-label="Font Style">
+                                <mat-button-toggle value="all">All</mat-button-toggle>
+                                <mat-button-toggle value="pending">Pending</mat-button-toggle>
+                                <mat-button-toggle value="declined">Declined</mat-button-toggle>
+                            </mat-button-toggle-group>
+                            <!-- <p>Chosen value is {{fontStyle}}</p> -->
+                        </div>
+                        <div class="labels">
+                            <label class="label label-default right">all : {{all}}</label>&nbsp;
+                            <label class="label label-primary right">pending : {{pending}}</label>&nbsp;
+                            <label class="label label-warning right">declined : {{declined}}</label>&nbsp;
+
+                            <!-- <div>Pending : <label class="label label-primary">all</label></div>
+                            <div>Declined: <label class="label label-warning">all</label></div> -->
+                        </div>
+                    </div>
+                    <div class="toggle label-bar" *ngIf="type!='request'">
+                        <div class="left">
+                            filters
+                            <!-- <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()
+                                aria-label="Font Style">
+                                <mat-button-toggle value="all">All</mat-button-toggle>
+                                <mat-button-toggle value="pending">Pending</mat-button-toggle>
+                                <mat-button-toggle value="declined">Declined</mat-button-toggle>
+                            </mat-button-toggle-group> -->
+                            <!-- <p>Chosen value is {{fontStyle}}</p> -->
+                        </div>
+                        <div class="labels">
+                            <label class="label label-info right">{{role}}s : {{users.length}}</label>&nbsp;
+
+                        </div>
+                    </div>
+
+
 
                     <!-- <div class="title-brand-left"> -->
                     <mat-form-field appearance="standard">
@@ -18,63 +56,104 @@
                         <table mat-table [dataSource]="dataSource" matSort>
 
                             <!-- ID Column -->
-                            <ng-container matColumnDef="name">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                                <td mat-cell *matCellDef="let row"> {{row.firstName}}&nbsp;{{row.lastName}}&nbsp;&nbsp;
+                            <ng-container matColumnDef="firstName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+                                <td mat-cell *matCellDef="let row"> {{row.user.firstName}}&nbsp;&nbsp;
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="lastName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+                                <td mat-cell *matCellDef="let row"> {{row.user.lastName}}&nbsp;&nbsp;
                                 </td>
                             </ng-container>
 
                             <!-- Progress Column -->
                             <ng-container matColumnDef="email">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-                                <td mat-cell *matCellDef="let row"> {{row.email}}&nbsp;&nbsp; </td>
+                                <td mat-cell *matCellDef="let row"> {{row.user.email}}&nbsp;&nbsp; </td>
                             </ng-container>
                             <!-- Progress Column -->
                             <ng-container matColumnDef="phone">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
-                                <td mat-cell *matCellDef="let row"> {{row.phone}}&nbsp;&nbsp; </td>
+                                <td mat-cell *matCellDef="let row"> {{row.user.phone}}&nbsp;&nbsp; </td>
                             </ng-container>
                             <!-- Progress Column -->
                             <ng-container matColumnDef="nic">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> NIC </th>
-                                <td mat-cell *matCellDef="let row"> {{row.nic}}&nbsp;&nbsp; </td>
+                                <td mat-cell *matCellDef="let row"> {{row.user.nic}}&nbsp;&nbsp; </td>
+                            </ng-container>
+                            <!-- Progress Column -->
+                            <ng-container matColumnDef="province">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Province </th>
+                                <td mat-cell *matCellDef="let row"> {{row.user.province}}&nbsp;&nbsp; </td>
+                            </ng-container>
+                            <!-- Progress Column -->
+                            <ng-container matColumnDef="district">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> District </th>
+                                <td mat-cell *matCellDef="let row"> {{row.user.district}}&nbsp;&nbsp; </td>
                             </ng-container>
 
                             <!-- Fruit Column -->
                             <ng-container matColumnDef="division">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Division </th>
-                                <td mat-cell *matCellDef="let row"> {{row.division}} </td>
+                                <td mat-cell *matCellDef="let row"> {{row.user.division}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="time">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Time </th>
+                                <td mat-cell *matCellDef="let row"> {{row.user.time}} </td>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="action">
-                            <tr><th mat-header-cell *matHeaderCellDef> Action </th></tr>
-                            <tr>
-                              <td mat-cell *matCellDef="let row" style="width:20%">
-                                <button mat-icon-button color="primary" (click)="viewContact(row)" title="View Contact"><mat-icon>preview</mat-icon></button>
-=                              </td>
-                            <tr>
-                          </ng-container> -->
-                            <!-- action -->
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <label *ngIf="row.status=='pending'"
+                                        class="label label-primary">{{row.user.status}}</label>
+                                    <label *ngIf="row.status=='declined'"
+                                        class="label label-warning">{{row.user.status}}</label>
+
+                                </td>
+                            </ng-container>
                             <ng-container matColumnDef="view">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
-                                    
+
                                     <button mat-icon-button color="primary" (click)="viewUser()"
                                         aria-label="Example icon button with a home icon">
-                                        <mat-icon  [ngStyle]="{'color':'gray'}">visibility</mat-icon>
+                                        <mat-icon [ngStyle]="{'color':'blue'}">visibility</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="accept">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                                <td mat-cell *matCellDef="let element">
+
+                                    <button mat-icon-button color="primary" (click)="accept()"
+                                        aria-label="Example icon button with a home icon">
+                                        <mat-icon [ngStyle]="{'color':'green'}">check</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="decline">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                                <td mat-cell *matCellDef="let element">
+
+                                    <button mat-icon-button color="primary" (click)="decline()"
+                                        aria-label="Example icon button with a home icon">
+                                        <mat-icon [ngStyle]="{'color':'orange'}">close</mat-icon>
                                     </button>
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="delete">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
-                                    
+
                                     <button mat-icon-button color="primary" (click)="deleteUser()"
                                         aria-label="Example icon button with a home icon">
-                                        <mat-icon  [ngStyle]="{'color':'gray'}">delete</mat-icon>
+                                        <mat-icon [ngStyle]="{'color':'red'}">delete</mat-icon>
                                     </button>
                                 </td>
                             </ng-container>
+
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"

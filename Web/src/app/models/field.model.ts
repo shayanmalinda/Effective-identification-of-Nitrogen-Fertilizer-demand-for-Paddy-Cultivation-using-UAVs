@@ -1,5 +1,4 @@
 export class Field {
-    id:string;
     registrationNumber:string;
     address:string;
     farmerId:string;
@@ -7,4 +6,9 @@ export class Field {
     district: string;
     division: string;
     province: string;
+}
+
+export class FieldTemp {
+    id:string;
+    field:Field
 }

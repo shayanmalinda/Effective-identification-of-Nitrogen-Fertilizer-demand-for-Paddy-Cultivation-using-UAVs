@@ -18,7 +18,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { FieldsComponent } from './fields/fields.component';
 import { FieldDetailsComponent } from './field-details/field-details.component';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component'
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { MatSortModule } from '@angular/material/sort';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { FieldVisitsComponent } from './field-visits/field-visits.component';
+import { FieldVisitDetailsComponent } from './field-visit-details/field-visit-details.component';
 
 @NgModule({
     imports: [
@@ -26,10 +30,12 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
         FormsModule,
         NgbModule,
         MatButtonModule,
+        MatButtonToggleModule,
         MatFormFieldModule,
         MatInputModule,
         MatRippleModule,
         MatTableModule,
+        MatSortModule,
         MatPaginatorModule,
         MatIconModule
     ],
@@ -40,7 +46,9 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
         UsersComponent,
         FieldsComponent,
         FieldDetailsComponent,
-        AdminDashboardComponent
+        AdminDashboardComponent,
+        FieldVisitsComponent,
+        FieldVisitDetailsComponent,
     ]
 })
 export class ExamplesModule { }

@@ -20,3 +20,23 @@ table {
   .mat-icon {
     font-size: 15px;
   }
+
+  .labels{
+    display: inline-flex;
+    align-items: center;
+  float: right;}
+  
+  .label-bar{
+    width: 100%;
+    display: flex;
+  }
+  .left{
+    flex:1;
+  }
+  .right{
+    font-weight: bold;
+  }
+  .title-brand{
+    text-transform:uppercase;
+    font-weight: bold;
+  }

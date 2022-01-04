@@ -36,7 +36,6 @@ def process():
     #preprocess & predict from saved image
     preprocessed_image=preprocess(img);
     arr_rgb=rgb_mean(preprocessed_image);
-    df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
     df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]  
     print(str(df))

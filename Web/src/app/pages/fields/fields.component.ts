@@ -1,3 +1,4 @@
+import { FieldTemp } from './../../models/field.model';
 import { User } from './../../models/user.model';
 import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -18,8 +19,8 @@ import { Router } from '@angular/router';
 })
 
 export class FieldsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['registrationNumber','address', 'division', 'farmer', 'view', 'delete'];
-  dataSource: MatTableDataSource<Field>;
+  displayedColumns: string[] = ['registrationNumber', 'address', 'division', 'farmer', 'view', 'delete'];
+  dataSource: MatTableDataSource<FieldTemp>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -32,11 +33,11 @@ export class FieldsComponent implements OnInit, AfterViewInit {
   focus2;
   date: { year: number, month: number };
   model: NgbDateStruct;
-  fields: Field[];
+  fields: FieldTemp[];
   data: any[];
   selectedRowIndex;
-  field: Field;
-  farmer:User;
+  field: FieldTemp;
+  farmer: User;
   farmerName: any;
 
   constructor(private renderer: Renderer2, private fieldService: FieldService, private userService: UserService, private router: Router) {
@@ -46,8 +47,8 @@ export class FieldsComponent implements OnInit, AfterViewInit {
     return date.month !== current.month;
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
   }
   getRecord(row) {
     this.selectedRowIndex = row.id;
@@ -86,17 +87,18 @@ export class FieldsComponent implements OnInit, AfterViewInit {
       this.fields = data.map(e => {
         return {
           id: e.payload.doc.id,
-          ...e.payload.doc.data() as {}
-        } as Field;
+          field:e.payload.doc.data() as Field
+        } as FieldTemp;
       })
       this.fields.forEach(f => {
-        this.userService.getUser(f.farmerId).subscribe(data=>
-          {
-            this.farmer=data.payload.data() as User;
-            f.farmer=this.farmer.firstName+" "+this.farmer.lastName;
-
-            this.dataSource = new MatTableDataSource(this.fields);
-          });
+        this.userService.getUser(f.field.farmerId).subscribe(data => {
+          this.farmer = data.payload.data() as User;
+          f.field.farmer = this.farmer.firstName + " " + this.farmer.lastName;
+          console.log(this.fields)
+          this.dataSource = new MatTableDataSource(this.fields);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        });
 
       })
 

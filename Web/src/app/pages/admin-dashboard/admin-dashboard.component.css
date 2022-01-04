@@ -3,6 +3,11 @@
     margin-left: 10px;
     margin-right: 10px;
 }
+.btn-round{
+    min-width:160px;
+    text-align: left;
+    margin-top: 20px;
+}
 .page-header{
     justify-content: flex-start;
     align-items: flex-start;
@@ -26,7 +31,6 @@
     right:0;
     z-index: 3;
     padding: 10px;
-
 }
 
 .content{
@@ -34,14 +38,12 @@
 }
 
 .left {
-    width: 180px;
     min-height: 100%;
 
 
 }
 .right {
     flex-grow: 1;
-    min-width:100%;
     background-color:rgba(152, 231, 193, 0.5);
     min-height:600px;
 
