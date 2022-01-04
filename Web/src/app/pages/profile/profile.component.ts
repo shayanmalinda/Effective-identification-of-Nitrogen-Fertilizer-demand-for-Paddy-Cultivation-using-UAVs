@@ -14,7 +14,7 @@ import { AuthenticationService } from 'app/services/authentication.service';
 export class ProfileComponent implements OnInit {
 
     user : User = {
-        id : '',
+        // id : '',
         email: '',
         firstName: '',
         lastName: '',
@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
         image : '',      
         status : '',      
         time : '',        
-        name : '',
+        // name : '',
         registeredDate : '',
       };
 

@@ -1,5 +1,4 @@
 export class User {
-    id:any;
     email: string;
     firstName: string;
     lastName: string;
@@ -10,7 +9,6 @@ export class User {
     division: string;
     province: string;
     time:String;
-    name:String;
     status:string;
     image : string;             //to store the image of the user as base64 string
     registeredDate : string;
@@ -20,4 +18,9 @@ export class UserCredential {
     userID : string;
     email : string;
     password : string;
+}
+
+export class UserTemp{
+    user:User;
+    id:string
 }

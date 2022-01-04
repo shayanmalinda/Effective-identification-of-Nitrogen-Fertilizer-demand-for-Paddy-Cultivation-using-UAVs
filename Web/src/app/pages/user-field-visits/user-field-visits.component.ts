@@ -29,7 +29,7 @@ export class UserFieldVisitsComponent implements OnInit {
   @ViewChild(MatSort) sort : MatSort;
 
   user : User = {
-    id : '',
+    // id : '',
     email: '',
     firstName: '',
     lastName: '',
@@ -42,7 +42,7 @@ export class UserFieldVisitsComponent implements OnInit {
     image : '',      
     status : '',      
     time : '',        
-    name : '',
+    // name : '',
     registeredDate : '',
   };
 
@@ -205,7 +205,7 @@ export class UserFieldVisitsComponent implements OnInit {
     this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
       fieldVisits = data.map(e => {
         return {
-          id: e.payload.doc.id,
+          // id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
         } as FieldVisit;
       })

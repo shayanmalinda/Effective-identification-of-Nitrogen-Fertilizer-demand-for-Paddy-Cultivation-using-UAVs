@@ -24,7 +24,7 @@ export class LccDetailsComponent implements OnInit {
   @ViewChild(MatSort) sort : MatSort;
 
   user : User = {
-    id : '',
+    // id : '',
     email: '',
     firstName: '',
     lastName: '',
@@ -37,7 +37,7 @@ export class LccDetailsComponent implements OnInit {
     image : '',      
     status : '',      
     time : '',        
-    name : '',
+    // name : '',
     registeredDate : '',
   };
 
