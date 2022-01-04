@@ -83,18 +83,30 @@ export class LoginComponent implements OnInit {
         // this.router.navigate(['/user-dashboard']);
 
         //testing region 
-        console.log("is logged in : " + this.authenticationService.isLoggedIn);
+        // console.log("is logged in : " + this.authenticationService.isLoggedIn);
         if(this.authenticationService.isLoggedIn){
           console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
-          const redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
-          this.router.navigateByUrl(redirect);
+          var redirect;
+          if(res == "agricultural officer"){
+            redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
+            this.router.navigateByUrl(redirect);
+          }else if(res == "admin"){
+            // the redirect url should come here edit follow code and set the url
+            redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'admin-dashboard'
+            this.router.navigateByUrl(redirect);
+          }else{
+            this.message.title = "error";
+            this.message.showMessage = "Invalid login !!"
+            this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+            this.clearFields();
+            })
+          }
         }
-
         //end of the testing region
 
       }, err => {
         this.message.title = "error";
-        console.log(err);
+        // console.log(err);
         if(err == "auth/wrong-password"){
           this.message.showMessage = "You have entered invalid password !";
         }else if(err == "auth/user-not-found"){

@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class SendRequestActivity extends AppCompatActivity {
 
     Button btAddLocation, btSendRequest;
     TextView tvLatitude, tvLongitude;
-    EditText etNotes;
+    EditText etNotes, etPlantAge;
     LatLng currentMarker = null;
     Double latitude, longitude;
     ProgressBar progressBar;
@@ -49,6 +50,7 @@ public class SendRequestActivity extends AppCompatActivity {
         tvLatitude = findViewById(R.id.tvLatitude);
         tvLongitude = findViewById(R.id.tvLongitude);
         etNotes = findViewById(R.id.etNotes);
+        etPlantAge = findViewById(R.id.etPlantAge);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
@@ -78,6 +80,8 @@ public class SendRequestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String notes = etNotes.getText().toString();
+                String plantAgeString= etPlantAge.getText().toString();
+                int plantAge=Integer.parseInt(plantAgeString);
                 if(latitude==null || longitude==null){
                     Toast.makeText(SendRequestActivity.this, "Please add the location of your field", Toast.LENGTH_SHORT).show();
                 }
@@ -106,8 +110,10 @@ public class SendRequestActivity extends AppCompatActivity {
                                             fieldRequestData.put("requestNote",notes);
                                             fieldRequestData.put("latitude",latitude);
                                             fieldRequestData.put("longitude",longitude);
+                                            fieldRequestData.put("plantAge",plantAge);
                                             fieldRequestData.put("status","pending");
                                             fieldRequestData.put("date", DateFormat.getDateTimeInstance().format(new Date()));
+                                            fieldRequestData.put("timestamp", System.currentTimeMillis());
 
                                             db.collection("FieldRequests")
                                                 .add(fieldRequestData)

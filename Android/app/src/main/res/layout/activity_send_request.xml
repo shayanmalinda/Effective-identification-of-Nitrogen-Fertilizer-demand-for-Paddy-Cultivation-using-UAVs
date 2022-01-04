@@ -27,22 +27,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="1.4"
             android:orientation="vertical">
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/btAddLocation"
+                android:layout_marginBottom="20dp"
                 android:text="@string/add_location"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -109,9 +103,35 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/plant_age"
+                android:paddingBottom="10dp"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/etPlantAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_border"
+                android:gravity="top|left"
+                android:padding="10dp"
+                android:inputType="number"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="5">
+            android:layout_weight="1.8">
 
             <TextView
                 android:layout_width="match_parent"
@@ -135,7 +155,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.7"
             android:orientation="vertical"
             android:gravity="bottom">
 
