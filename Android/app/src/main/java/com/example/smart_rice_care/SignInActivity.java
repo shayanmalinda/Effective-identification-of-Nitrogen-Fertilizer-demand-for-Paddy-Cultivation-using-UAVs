@@ -111,22 +111,32 @@ public class SignInActivity extends AppCompatActivity {
                             if(document.exists()){
                                 Map<String, Object> user = document.getData();
                                 String userRole = (String) user.get("userRole");
-                                switch (userRole) {
-                                    case "farmer":
-                                        progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
-                                        Intent farmerIntent = new Intent(SignInActivity.this, FarmerHomeActivity.class);
-                                        startActivity(farmerIntent);
-                                        break;
-                                    case "agricultural officer":
-                                        progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
-                                        Intent agriculturalOfficerIntent = new Intent(SignInActivity.this, AgriculturalOfficerHomeActivity.class);
-                                        startActivity(agriculturalOfficerIntent);
-                                        break;
-                                    default:
-                                        progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(getApplicationContext(), "User role Error", Toast.LENGTH_LONG).show();
+                                if(user.get("status").equals("active")){
+                                    switch (userRole) {
+                                        case "farmer":
+                                            progressBar.setVisibility(View.GONE);
+                                            Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
+                                            Intent farmerIntent = new Intent(SignInActivity.this, FarmerHomeActivity.class);
+                                            startActivity(farmerIntent);
+                                            break;
+                                        case "agricultural officer":
+                                            progressBar.setVisibility(View.GONE);
+                                            Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
+                                            Intent agriculturalOfficerIntent = new Intent(SignInActivity.this, AgriculturalOfficerHomeActivity.class);
+                                            startActivity(agriculturalOfficerIntent);
+                                            break;
+                                        default:
+                                            progressBar.setVisibility(View.GONE);
+                                            Toast.makeText(getApplicationContext(), "User role Error", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                else if(user.get("status").equals("pending")){
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(getApplicationContext(), "Your account is still pending", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(getApplicationContext(), "Your account is disabled", Toast.LENGTH_LONG).show();
                                 }
                             }
                             else{

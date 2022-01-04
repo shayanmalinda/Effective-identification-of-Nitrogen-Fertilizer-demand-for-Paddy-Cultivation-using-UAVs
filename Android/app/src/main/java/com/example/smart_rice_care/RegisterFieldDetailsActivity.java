@@ -31,8 +31,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -173,6 +175,11 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+
+
+                            String date = DateFormat.getDateTimeInstance().format(new Date());
+                            Long timestamp = System.currentTimeMillis();
+
                             String userId = task.getResult().getUser().getUid();
                             Map<String, Object> user = new HashMap<>();
                             user.put("userRole", "farmer");
@@ -181,6 +188,12 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
                             user.put("email", email);
                             user.put("phone", phone);
                             user.put("nic", nic);
+                            user.put("createdDate", date);
+                            user.put("createdTimestamp", timestamp);
+                            user.put("modifiedDate", date);
+                            user.put("modifiedTimestamp", timestamp);
+                            user.put("status", "active");
+
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -196,6 +209,11 @@ public class RegisterFieldDetailsActivity extends AppCompatActivity {
                                             field.put("province", selectedProvince);
                                             field.put("district", selectedDistrict);
                                             field.put("division", selectedDivision);
+                                            field.put("createdDate", date);
+                                            field.put("createdTimestamp", timestamp);
+                                            field.put("modifiedDate", date);
+                                            field.put("modifiedTimestamp", timestamp);
+                                            field.put("status", "active");
 
                                             db.collection("FieldDetails")
                                                     .add(field)
