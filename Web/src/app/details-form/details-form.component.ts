@@ -37,12 +37,12 @@ export class DetailsFormComponent implements OnInit {
   latitude!: number;
   longitude!: number;
   zoom: number;
-  repeat : boolean = false;
+  repeat : string = "default";
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private userFarmersService : UserFarmersService) { 
     
-    this.latitude = 7.2906;
-    this.longitude = 80.6337;
+    this.latitude = 6.9271;
+    this.longitude = 79.8612;
     this.zoom = 25;
     
     if(data.type == "farmerDetails"){
@@ -50,11 +50,19 @@ export class DetailsFormComponent implements OnInit {
     }
     if(data.type == "fieldDetails"){
       this.formTitle = "Field Details"
+      console.log(data.details)
       this.userCredential.userID = data.details.farmerId;
-      console.log("this is the farmer ID needed :" + data.details.farmerId);
+      console.log("this is the farmer ID needed in field:" + data.details.farmerId);
     }
     if(data.type == "farmers"){
       this.formTitle = "Farmers"
+    }
+    if(data.type == "visitDetails"){
+      this.formTitle = "Field Visits Details";
+      console.log("the farmer id is : " + data.details.field.farmerId);
+      this.userCredential.userID = data.details.field.farmerId;
+      this.latitude = parseFloat(data.details.latitude);
+      this.longitude = parseFloat(data.details.longitude);
     }
     this.btnStyleOne = "btn btn-success btn-round margin-left : 500px";
     this.btnStyleTwo = "btn btn-default btn-round margin-left : 500px";
@@ -65,18 +73,25 @@ export class DetailsFormComponent implements OnInit {
   }
 
   onViewFarmerClick(){
+    this.repeat = "set";
+    // console.log("comes here : ")
     this.userFarmersService.getFarmerById(this.userCredential).subscribe(data => {
-      if(this.repeat == false){
-        this.repeat = true;
+      if(this.repeat == "set"){
+        // console.log("comes here too")
+        this.repeat = "unset";
         this.user = data.payload.data() as User;
         // this.testing.userRole = this.user.userRole
         // this.testing.nic = this.user.nic
         // this.testing.email = this.user.email
-        this.testing.status = this.user.userRole;
-        this.testing.division = this.user.firstName;
-        this.testing.email = this.user.email;
-        console.log(this.testing.division);
-        this.dialog.openDetailsDialog(this.testing, "farmerDetails").afterClosed();
+        // this.testing.status = this.user.userRole;
+        // this.testing.division = this.user.firstName;
+        // // this.testing.email = this.user.email;
+        // console.log(this.user);
+        // this.testing.status = sessionStorage.getItem("status");
+        // this.testing.division = sessionStorage.getItem("division");
+        // this.testing.email = sessionStorage.getItem("email");
+        // console.log(this.testing.division);
+        this.dialog.openDetailsDialog(this.user, "farmerDetails").afterClosed();
       }
     })
   }

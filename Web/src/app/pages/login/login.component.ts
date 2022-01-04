@@ -87,10 +87,18 @@ export class LoginComponent implements OnInit {
         if(this.authenticationService.isLoggedIn){
           console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
           var redirect;
-          if(res == "agricultural officer"){
-            redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
-            this.router.navigateByUrl(redirect);
-          }else if(res == "admin"){
+          if(res.userRole == "agricultural officer"){
+            if(res.status == "approved"){
+              redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
+              this.router.navigateByUrl(redirect);
+            }else{
+              this.message.title = "warning";
+              this.message.showMessage = "You still haven't recieve the admin approval to interact with the system !!";
+              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+              this.clearFields();
+              })
+            }
+          }else if(res.userRole == "admin"){
             // the redirect url should come here edit follow code and set the url
             redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'admin-dashboard'
             this.router.navigateByUrl(redirect);

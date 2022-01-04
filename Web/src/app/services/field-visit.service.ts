@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { User } from 'app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,10 @@ export class FieldVisitService {
   getFieldVisits() {
     return this.fireStore.collection('FieldRequests').snapshotChanges();
   }
- 
+
+  getFieldVisitsByDivision(user : User) {
+    return this.fireStore.collection('FieldRequests', ref => ref.where('division', '==', user.division)).snapshotChanges();
+  }
 
   deleteFieldVisit(fieldVisitId: String) {
     this.fireStore.doc('FieldRequests/' + fieldVisitId).delete();

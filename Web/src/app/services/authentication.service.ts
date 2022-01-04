@@ -98,7 +98,10 @@ export class AuthenticationService {
               userCredential.userID = data.docs[0].id;
               this.updateSessionDetails(userCredential,this.user);
               this.isLoggedIn = true;
-              resolve(this.user.userRole);
+              resolve({
+                "userRole" : this.user.userRole,
+                "status" : this.user.status
+              });
             }
             // if(data.docs.length == 0){
             //   resolve("error")

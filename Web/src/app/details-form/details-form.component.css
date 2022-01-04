@@ -139,6 +139,15 @@ border-radius: 0px;
     size: 10000px;
 }
 
+.td-cell-fieldName-more{
+    width: 27%; 
+    color: black; 
+    font-weight: 40px; 
+    font-size: medium; 
+    text-align: left; 
+    padding-left: 20px;
+}
+
 .td-cell-fieldName{
     width: 25%; 
     color: black; 
@@ -148,12 +157,16 @@ border-radius: 0px;
     padding-left: 20px;
 }
 
+.td-cell-input-more{
+    width: 73%; 
+}
+
 .td-cell-input{
     width: 75%; 
 }
 
 agm-map{
-    height: 370px;
+    height: 240px;
 }
 
 :disabled {

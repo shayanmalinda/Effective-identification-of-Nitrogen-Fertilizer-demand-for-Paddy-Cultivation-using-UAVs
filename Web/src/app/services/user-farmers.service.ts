@@ -18,8 +18,12 @@ export class UserFarmersService {
 
   //get farmer by ID
   getFarmerById(userCredential : UserCredential){
-    console.log(userCredential.userID);
+    // console.log(userCredential.userID);
     // return this.fireStore.collection('Users').doc(userCredential.userID).get();
     return this.fireStore.collection('Users').doc(userCredential.userID).snapshotChanges()
+  }
+
+  getAllFarmers(){
+    return this.fireStore.collection('Users', ref => ref.where('userRole', '==', 'farmer')).snapshotChanges();
   }
 }

@@ -10,6 +10,11 @@ import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
 import { LccService } from 'app/services/lcc.service';
 import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
+import { FieldService } from 'app/services/field.service';
+import { FieldVisitService } from 'app/services/field-visit.service';
+import { FieldVisit } from 'app/models/field-visit.model';
+import { Field } from 'app/models/field.model';
+import { UserService } from 'app/services/user.service';
 
 const NO_OF_WEEKS = 8;
 
@@ -57,14 +62,15 @@ export class UserFieldVisitsComponent implements OnInit {
   havePreviousRecords : boolean = false;
 
 
-  displayedColumns: string[] = ['week', 'levelOne', 'levelTwo', 'levelThree'];
+  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
 
-  constructor(private lccService : LccService, private dialog : DialogService, private router : Router) { }
+  constructor(private lccService : LccService, private dialog : DialogService, private userService : UserService, private fieldService : FieldService, private fieldVisitService : FieldVisitService, private router : Router) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
-    this.getLCCDetails();
+    this.getVisitDetailsWithFields();
+    // this.getLCCDetails();
     // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
     // setTimeout(() => this.dataSource.paginator = this.paginator);
     // setTimeout(() => this.dataSource.sort = this.sort);
@@ -184,6 +190,63 @@ export class UserFieldVisitsComponent implements OnInit {
         }
       }
     )
+  }
+
+  getVisitDetailsWithFields(){
+    var fieldVisits;
+    var relevantFields = [];
+    var fieldVisit;
+    var requestPending;
+    var visitPending;
+    var processing;
+    var completed;
+    var field;
+    var farmer;
+    this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
+      fieldVisits = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          ...e.payload.doc.data() as {}
+        } as FieldVisit;
+      })
+
+      fieldVisits.forEach(f => {
+        if (f.status == 'request pending') requestPending += 1;
+        else if (f.status == 'visit pending') visitPending += 1;
+        else if (f.status == 'processing') processing += 1;
+        else if (f.status == 'completed') completed += 1;
+
+        this.fieldService.getField(f.fieldId).subscribe(data => {
+          field = data.payload.data() as Field;
+          f.field = field;
+          f.address = field.address;
+          f.registrationNumber = field.registrationNumber;
+          this.userService.getUser(field.farmerId).subscribe(data => {
+            farmer = data.payload.data() as User;
+            f.farmer = farmer;
+            f.farmerName = farmer.firstName + " " + farmer.lastName;
+            this.dataSource = new MatTableDataSource(fieldVisits);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          });
+
+          // this.dataSource = new MatTableDataSource(this.fieldVisits);
+          // this.dataSource.paginator = this.paginator;
+          // this.dataSource.sort = this.sort;
+
+        });
+
+      })
+
+    });
+  }
+
+  onViewVisitsClick(row){
+    console.log(row);
+    // this.message.showMessage = "You have entered invalid password !";
+    // this.message.title = 'success';
+    // console.log(this.message);
+    this.dialog.openDetailsDialog(row,"visitDetails").afterClosed();
   }
 
 }
