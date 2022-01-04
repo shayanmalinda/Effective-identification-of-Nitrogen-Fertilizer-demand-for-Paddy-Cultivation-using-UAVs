@@ -10,6 +10,9 @@ import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
 import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
 import { UserFarmersService } from 'app/services/user-farmers.service';
+import { FieldService } from 'app/services/field.service';
+import { Field } from 'app/models/field.model';
+import { UserService } from 'app/services/user.service';
 
 const NO_OF_WEEKS = 8;
 
@@ -61,15 +64,19 @@ export class UserFarmersComponent implements OnInit {
   declined = 0;
   pending = 0;
   all = 0;
+  fields : Field [];
+  passedUser : User;
 
-  displayedColumns: string[] = ['email', 'division', 'status'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'address', 'phone' ];
   dataSource : MatTableDataSource<User>;
 
-  constructor(private userFarmersService : UserFarmersService, private dialog : DialogService, private router : Router) { }
+  constructor(private userFarmersService : UserFarmersService, private dialog : DialogService, private fieldService : FieldService, private userService : UserService, private router : Router) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
-    this.getFarmerDetails();
+    // this.getFarmerDetails();
+    // this.getFarmerDetailsWithFields();
+    this.getFarmerDetailsWithFieldsNew();
     // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
     // setTimeout(() => this.dataSource.paginator = this.paginator);
     // setTimeout(() => this.dataSource.sort = this.sort);
@@ -136,6 +143,137 @@ export class UserFarmersComponent implements OnInit {
       }
     )
   }
+
+  getFarmerDetailsWithFields(){
+    var fieldsWithFarmer = [];
+    var fields;
+    var farmer;
+    this.fieldService.getFieldsByDivision(this.user).subscribe(data => {
+      fields = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          ...e.payload.doc.data() as {}
+        } as Field;
+      })
+      fields.forEach(f => {
+        this.userService.getUser(f.farmerId).subscribe(data => {
+          farmer = data.payload.data() as User;
+          // f.farmer = farmer.firstName + " " + farmer.lastName;
+          fieldsWithFarmer.push({
+            address : f.address, 
+            registrationNumber : f.registrationNumber,
+            firstName : farmer.firstName,
+            lastName : farmer.lastName,
+            phone : farmer.phone,
+            email : farmer.email,
+            nic : farmer.nic,
+            fullName : farmer.firstName + " " + farmer.lastName
+          });
+          console.log(fieldsWithFarmer);
+          this.dataSource = new MatTableDataSource(fieldsWithFarmer);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        });
+      })
+      // console.log(fieldWithFarmer)
+    });
+  }
+
+  getFarmerDetailsWithFieldsNew(){
+    var fieldsWithFarmer = [];
+    var field = [];
+    var farmers;
+    var values;
+    var credentials : UserCredential = {
+      userID : '',
+      email : '',
+      password : ''
+    }
+    this.userFarmersService.getAllFarmers().subscribe(data =>{
+      farmers = data.map(e =>{
+        return {
+          id : e.payload.doc.id,
+          ...e.payload.doc.data() as {}
+        } as User;
+      })
+      farmers.forEach(element => {
+        credentials.userID = element.id;
+        this.fieldService.getFieldsByFarmerId(credentials).subscribe(data =>{
+          // console.log(data.length);
+          field = data.map(e =>{
+            // console.log(e.payload.doc.data())
+            return {
+              id : e.payload.doc.id,
+              ...e.payload.doc.data() as {}
+            } as Field
+          })
+          // console.log("number records : " + field.length)
+          for(var i = 0; i < field.length; i++){
+            if(field[i].division == this.user.division){
+              fieldsWithFarmer.push({
+                details : field[i].id,
+                address : field[i].address,
+                registrationNumber : field[i].registrationNumber,
+                firstName : element.firstName,
+                lastName : element.lastName,
+                phone : element.phone,
+                email : element.email,
+                nic : element.nic,
+                fullName : element.firstName + " " + element.lastName
+              });
+            }
+          }
+          // console.log(fieldsWithFarmer)
+          this.dataSource = new MatTableDataSource(fieldsWithFarmer);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        })
+      });
+    })
+  }
+
+  // getFarmerDetailsWithFieldsNew(){
+  //   var fieldsWithFarmer = [];
+  //   var field;
+  //   var farmers;
+  //   console.log("this is the division : " + this.user.division);
+  //   this.userFarmersService.getAllFarmersByDivion(this.user).subscribe(data => {
+  //     farmers = data.map(e => {
+  //       return {
+  //         id: e.payload.doc.id,
+  //         ...e.payload.doc.data() as {}
+  //       } as User;
+  //     })
+  //     farmers.forEach(f => {
+  //       console.log(f.firstName);
+  //       this.fieldService.getFieldsByFarmerId(this.userCredential).subscribe(data => {
+  //         field = data.map(e => {
+  //           return {
+  //             id: e.payload.doc.id,
+  //             ...e.payload.doc.data() as {}
+  //           } as Field;
+  //         // f.farmer = farmer.firstName + " " + farmer.lastName;
+          
+  //         });
+  //         fieldsWithFarmer.push({
+  //           address : f.address, 
+  //           registrationNumber : f.registrationNumber,
+  //           firstName : farmers.firstName,
+  //           lastName : farmers.lastName,
+  //           phone : farmers.phone,
+  //           email : farmers.email,
+  //           nic : farmers.nic,
+  //           fullName : farmers.firstName + " " + farmers.lastName
+  //         });
+  //         console.log(fieldsWithFarmer);
+  //         this.dataSource = new MatTableDataSource(fieldsWithFarmer);
+  //         this.dataSource.paginator = this.paginator;
+  //         this.dataSource.sort = this.sort;
+  //       });
+  //     })
+  //     // console.log(fieldWithFarmer)
+  //   });
+  // }
 
   getCounts() {
     this.users.forEach(data => {
