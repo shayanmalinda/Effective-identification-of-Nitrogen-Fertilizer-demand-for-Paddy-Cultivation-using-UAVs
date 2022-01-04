@@ -25,7 +25,6 @@ export class UserFeildsComponent implements OnInit {
   @ViewChild(MatSort) sort : MatSort;
 
   user : User = {
-    id : '',
     email: '',
     firstName: '',
     lastName: '',
@@ -36,10 +35,12 @@ export class UserFeildsComponent implements OnInit {
     division: '',
     province: '',          
     image : '',      
-    status : '',      
-    time : '',        
-    name : '',
+    status : '',    
     registeredDate : '',
+    createdDate: '',
+    createdTimestamp: 0,
+    modifiedDate: '',
+    modifiedTimestamp : 0,
   };
 
   userCredential : UserCredential = {

@@ -15,7 +15,6 @@ import { Observable, of } from 'rxjs';
 export class AuthenticationService {
 
   user : User = {
-    id : '',
     email: '',
     firstName: '',
     lastName: '',
@@ -26,10 +25,12 @@ export class AuthenticationService {
     division: '',
     province: '',          
     image : '',        
-    status : '',      
-    time : '',        
-    name : '',
+    status : '',  
     registeredDate : '',
+    createdDate: '',
+    createdTimestamp: 0,
+    modifiedDate: '',
+    modifiedTimestamp : 0,
   };
 
   message : Message;

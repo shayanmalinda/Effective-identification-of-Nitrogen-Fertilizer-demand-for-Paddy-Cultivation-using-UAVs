@@ -1,5 +1,4 @@
 export class User {
-    id:any;
     email: string;
     firstName: string;
     lastName: string;
@@ -9,11 +8,13 @@ export class User {
     district: string;
     division: string;
     province: string;
-    time:String;
-    name:String;
     status:string;
     image : string;             //to store the image of the user as base64 string
     registeredDate : string;
+    createdDate : string;
+    createdTimestamp : number;
+    modifiedDate : string;
+    modifiedTimestamp : number;
 }
 
 export class UserCredential {
