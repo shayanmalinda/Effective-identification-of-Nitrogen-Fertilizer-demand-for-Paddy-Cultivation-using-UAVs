@@ -42,7 +42,7 @@ export class UserFieldVisitsComponent implements OnInit {
     image : '',      
     status : '',      
     time : '',        
-    name : '',
+    // name : '',
     registeredDate : '',
   };
 

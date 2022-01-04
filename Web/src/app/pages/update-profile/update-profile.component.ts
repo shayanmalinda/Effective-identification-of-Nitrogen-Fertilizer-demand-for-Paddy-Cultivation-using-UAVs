@@ -29,7 +29,7 @@ export class UpdateProfileComponent implements OnInit {
     image : '',      
     status : '',      
     time : '',        
-    name : '',
+    // name : '',
     registeredDate : '',
   };
 

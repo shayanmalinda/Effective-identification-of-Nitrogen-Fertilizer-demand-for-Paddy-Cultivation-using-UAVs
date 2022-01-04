@@ -158,7 +158,6 @@ export class UsersComponent implements OnInit, AfterViewInit {
     console.log(this.role)
     this.userService.getUsers(this.role, this.status).subscribe(data => {
       this.users = data.map(e => {
-        console.log(e.payload.doc.id+"IIIIIIDDDDD");
         return {
           ...e.payload.doc.data() as {},
           id: e.payload.doc.id,

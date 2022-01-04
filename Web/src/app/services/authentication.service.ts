@@ -28,7 +28,7 @@ export class AuthenticationService {
     image : '',        
     status : '',      
     time : '',        
-    name : '',
+    // name : '',
     registeredDate : '',
   };
 

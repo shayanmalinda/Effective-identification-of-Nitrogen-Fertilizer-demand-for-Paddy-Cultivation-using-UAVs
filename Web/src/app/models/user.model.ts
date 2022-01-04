@@ -10,7 +10,6 @@ export class User {
     division: string;
     province: string;
     time:String;
-    name:String;
     status:string;
     image : string;             //to store the image of the user as base64 string
     registeredDate : string;

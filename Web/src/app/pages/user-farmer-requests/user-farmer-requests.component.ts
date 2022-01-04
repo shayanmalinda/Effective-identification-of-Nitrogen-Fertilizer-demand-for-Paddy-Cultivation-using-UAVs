@@ -37,7 +37,7 @@ export class UserFarmerRequestsComponent implements OnInit {
     image : '',      
     status : '',      
     time : '',        
-    name : '',
+    // name : '',
     registeredDate : '',
   };
 

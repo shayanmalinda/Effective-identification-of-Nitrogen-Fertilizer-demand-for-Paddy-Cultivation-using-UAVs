@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     image: '',
     status: '',
     time: '',
-    name: '',
+    // name: '',
     registeredDate: '',
   };
 
