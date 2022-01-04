@@ -27,7 +27,6 @@ export class UserFarmersComponent implements OnInit {
   @ViewChild(MatSort) sort : MatSort;
 
   user : User  = {
-    // id : '',
     email: '',
     firstName: '',
     lastName: '',
@@ -38,10 +37,12 @@ export class UserFarmersComponent implements OnInit {
     division: '',
     province: '',          
     image : '',      
-    status : '',      
-    time : '',        
-    // name : '',
+    status : '',  
     registeredDate : '',
+    createdDate: '',
+    createdTimestamp: 0,
+    modifiedDate: '',
+    modifiedTimestamp : 0,
   };
 
   userCredential : UserCredential = {
@@ -132,7 +133,10 @@ export class UserFarmersComponent implements OnInit {
       data => {
         this.users = data.map(e => {
           return {
+<<<<<<< HEAD
+=======
             // id: e.payload.doc.id, //ide removed @heshan
+>>>>>>> 5b01d65594d2b5bdded9bb1ddf096d49abe44d36
             ...e.payload.doc.data() as {}
           } as User;
         })
@@ -192,12 +196,16 @@ export class UserFarmersComponent implements OnInit {
     this.userFarmersService.getAllFarmers().subscribe(data =>{
       farmers = data.map(e =>{
         return {
+<<<<<<< HEAD
+=======
           // id : e.payload.doc.id, // id removed @heshan
+>>>>>>> 5b01d65594d2b5bdded9bb1ddf096d49abe44d36
           ...e.payload.doc.data() as {}
         } as User;
       })
       farmers.forEach(element => {
         credentials.userID = element.id;
+        console.log(element.id);
         this.fieldService.getFieldsByFarmerId(credentials).subscribe(data =>{
           // console.log(data.length);
           field = data.map(e =>{
