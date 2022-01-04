@@ -58,7 +58,7 @@
                             </div>
                               <input type="text" class="form-control" placeholder="Last Name" (focus)="focus=true" (blur)="focus=false" id="lastName" name="lastName" [(ngModel)]="user.lastName" (change)="nameChanged()" style="font-size: large;">
                           </div>
-                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}" *ngIf="user.userRole!='admin'" >
                             <div class="input-group-prepend">
                               <span class="input-group-text">
                                   <i class="nc-icon nc-pin-3"></i>
@@ -75,7 +75,7 @@
                             </div>
                               <input type="text" class="form-control" placeholder="District" (focus)="focus=true" (blur)="focus=false" id="district" name="district" [(ngModel)]="user.district" style="font-size: large;" >
                           </div> -->
-                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 45px; font-size: large;">
+                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 45px; font-size: large;" *ngIf="user.userRole!='admin'">
                             <div class="dropdown">
                               <!-- <button class="dropbtn">District</button>
                               <div class="dropdown-content dropdown-scrollbar">
@@ -96,7 +96,7 @@
                               <!-- </div> -->
                           </div>
                           </div>
-                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 45px; font-size: large;">
+                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 45px; font-size: large;" *ngIf="user.userRole!='admin'">
                             <div class="dropdown">
                               <!-- <button class="dropbtn">District</button>
                               <div class="dropdown-content dropdown-scrollbar">
@@ -117,7 +117,7 @@
                               <!-- </div> -->
                           </div>
                           </div>
-                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 45px; font-size: large;">
+                          <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 45px; font-size: large;" *ngIf="user.userRole!='admin'">
                             <div class="dropdown">
                               <!-- <button class="dropbtn">District</button>
                               <div class="dropdown-content dropdown-scrollbar">
