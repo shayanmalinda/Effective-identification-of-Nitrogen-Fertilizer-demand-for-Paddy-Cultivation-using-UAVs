@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   user: User = {
-    id: '',
+    // id: '',
     email: '',
     firstName: '',
     lastName: '',

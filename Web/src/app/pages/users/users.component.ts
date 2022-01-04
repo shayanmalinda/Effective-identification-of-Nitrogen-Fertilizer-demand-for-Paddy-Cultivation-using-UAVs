@@ -1,3 +1,4 @@
+import { UserTemp } from './../../models/user.model';
 import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,6 +15,7 @@ export interface UserData {
   fruit: string;
 }
 
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -23,7 +25,7 @@ export interface UserData {
 export class UsersComponent implements OnInit, AfterViewInit {
   displayedColumns: string[];
   // = ['name', 'email', 'phone', 'nic', 'province','district','division','view','delete'];
-  dataSource: MatTableDataSource<User>;
+  dataSource: MatTableDataSource<UserTemp>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -36,10 +38,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
   focus2;
   date: { year: number, month: number };
   model: NgbDateStruct;
-  users: User[];
+  users: UserTemp[];
   data: any[];
   selectedRowIndex;
-  user: User;
+  user: UserTemp;
   type;
   title;
   role;
@@ -48,6 +50,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   all = 0;
   pending = 0;
   declined = 0;
+
   constructor(private renderer: Renderer2, private userService: UserService, private router: Router) {
     this.type = this.router.getCurrentNavigation().extras.state.type;
     this.role = this.router.getCurrentNavigation().extras.state.role;
@@ -117,7 +120,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   getCounts() {
 
     this.users.forEach(data => {
-      if (data.status == 'pending') {
+      if (data.user.status == 'pending') {
         this.pending++;
       } else {
         this.declined++;
@@ -159,9 +162,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.userService.getUsers(this.role, this.status).subscribe(data => {
       this.users = data.map(e => {
         return {
-          ...e.payload.doc.data() as {},
+          user:e.payload.doc.data() as User,
           id: e.payload.doc.id,
-        } as User;
+        } as UserTemp;
       })
       console.log(this.users)
       this.dataSource = new MatTableDataSource(this.users);

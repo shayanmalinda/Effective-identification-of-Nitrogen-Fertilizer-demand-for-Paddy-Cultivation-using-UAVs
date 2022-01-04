@@ -27,7 +27,7 @@ export class UserFarmersComponent implements OnInit {
   @ViewChild(MatSort) sort : MatSort;
 
   user : User  = {
-    id : '',
+    // id : '',
     email: '',
     firstName: '',
     lastName: '',
@@ -132,7 +132,7 @@ export class UserFarmersComponent implements OnInit {
       data => {
         this.users = data.map(e => {
           return {
-            id: e.payload.doc.id,
+            // id: e.payload.doc.id, //ide removed @heshan
             ...e.payload.doc.data() as {}
           } as User;
         })
@@ -192,7 +192,7 @@ export class UserFarmersComponent implements OnInit {
     this.userFarmersService.getAllFarmers().subscribe(data =>{
       farmers = data.map(e =>{
         return {
-          id : e.payload.doc.id,
+          // id : e.payload.doc.id, // id removed @heshan
           ...e.payload.doc.data() as {}
         } as User;
       })

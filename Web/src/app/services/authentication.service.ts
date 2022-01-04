@@ -15,7 +15,7 @@ import { Observable, of } from 'rxjs';
 export class AuthenticationService {
 
   user : User = {
-    id : '',
+    // id : '',
     email: '',
     firstName: '',
     lastName: '',

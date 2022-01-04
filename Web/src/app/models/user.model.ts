@@ -1,5 +1,4 @@
 export class User {
-    id:any;
     email: string;
     firstName: string;
     lastName: string;
@@ -19,4 +18,9 @@ export class UserCredential {
     userID : string;
     email : string;
     password : string;
+}
+
+export class UserTemp{
+    user:User;
+    id:string
 }
