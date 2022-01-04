@@ -49,10 +49,10 @@ const routes: Routes =[
     { path: 'field-visits',      component: FieldVisitsComponent},
     { path: 'field-visit-details',      component: FieldVisitDetailsComponent},
     { path: 'user-dashboard',     component: UserDashboardComponent, canActivate : [AuthGuard]  },
-    { path: 'user-farmers',     component: UserFarmersComponent, canActivate : [AuthGuard] },
+    { path: 'user-farmers',     component: UserFarmersComponent, canActivate : [AuthGuard]  },
     { path: 'user-farmerRequests',     component: UserFarmerRequestsComponent, canActivate : [AuthGuard] },
-    { path: 'user-fields',     component: UserFeildsComponent, canActivate : [AuthGuard] },
-    { path: 'user-fieldVisits',     component: UserFieldVisitsComponent, canActivate : [AuthGuard] },
+    { path: 'user-fields',     component: UserFeildsComponent, canActivate : [AuthGuard]  },
+    { path: 'user-fieldVisits',     component: UserFieldVisitsComponent, canActivate : [AuthGuard]  },
 
 
 

@@ -9,6 +9,8 @@ import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
 import { Field } from 'app/models/field.model';
 import { FieldService } from 'app/services/field.service';
+import { UserService } from 'app/services/user.service';
+import { sample } from 'rxjs-compat/operator/sample';
 
 const NO_OF_WEEKS = 8;
 
@@ -54,20 +56,22 @@ export class UserFeildsComponent implements OnInit {
   changedWeekDetails: LCCWeekDetails[];
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
-
+  farmer: User;
   fields : Field[];
-  displayedColumns: string[] = ['address', 'registrationNumber'];
+  displayedColumns: string[] = ['registrationNumber', 'address', 'fullName', 'phone'];
   dataSource : MatTableDataSource<Field>;
   approved = 0;
   declined = 0;
   pending = 0;
   all = 0;
 
-  constructor(private fieldService : FieldService, private dialog : DialogService, private router : Router) { }
+  constructor(private fieldService : FieldService, private dialog : DialogService, private router : Router, private userService : UserService) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
-    this.getFieldsDetails();
+    // this.getFieldsDetails();
+    this.getFieldsDetailsWithFarmerNew();
+    // this.getFieldsDetailsWithFarmer();
     // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
     // setTimeout(() => this.dataSource.paginator = this.paginator);
     // setTimeout(() => this.dataSource.sort = this.sort);
@@ -133,6 +137,74 @@ export class UserFeildsComponent implements OnInit {
         // this.getCounts();
       }
     )
+  }
+
+  getFieldsDetailsWithFarmer(){
+    var fieldWithFarmer = [];
+    this.fieldService.getFieldsByDivision(this.user).subscribe(data => {
+      // console.log("this is the lenght of the divisions : " + data.length);
+      this.fields = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          ...e.payload.doc.data() as {}
+        } as Field;
+      })
+      // console.log(this.fields.length);
+      // console.log(this.fields[1])
+      this.fields.forEach(f => {
+        this.userService.getUser(f.farmerId).subscribe(data => {
+          this.farmer = data.payload.data() as User;
+          f.farmer = this.farmer.firstName + " " + this.farmer.lastName;
+          fieldWithFarmer.push({
+            address : f.address, 
+            registrationNumber : f.registrationNumber,
+            firstName : this.farmer.firstName,
+            lastName : this.farmer.lastName,
+            phone : this.farmer.phone,
+            email : this.farmer.email,
+            fullName : this.farmer.firstName + " " + this.farmer.lastName
+          });
+          this.dataSource = new MatTableDataSource(fieldWithFarmer);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        });
+      })
+      // console.log(fieldWithFarmer)
+    });
+  }
+
+  getFieldsDetailsWithFarmerNew(){
+    var fieldWithFarmer = [];
+    this.fieldService.getFieldsByDivision(this.user).subscribe(data => {
+      // console.log("this is the lenght of the divisions : " + data.length);
+      this.fields = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          ...e.payload.doc.data() as {}
+        } as Field;
+      })
+      // console.log(this.fields.length);
+      // console.log(this.fields[1])
+      this.fields.forEach(f => {
+        this.userService.getUser(f.farmerId).subscribe(data => {
+          this.farmer = data.payload.data() as User;
+          f.farmer = this.farmer.firstName + " " + this.farmer.lastName;
+          fieldWithFarmer.push({
+            address : f.address, 
+            registrationNumber : f.registrationNumber,
+            firstName : this.farmer.firstName,
+            lastName : this.farmer.lastName,
+            phone : this.farmer.phone,
+            email : this.farmer.email,
+            fullName : this.farmer.firstName + " " + this.farmer.lastName
+          });
+          this.dataSource = new MatTableDataSource(fieldWithFarmer);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        });
+      })
+      // console.log(fieldWithFarmer)
+    });
   }
 
   // getCounts() {
