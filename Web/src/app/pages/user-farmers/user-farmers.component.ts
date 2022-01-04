@@ -151,7 +151,7 @@ export class UserFarmersComponent implements OnInit {
     this.fieldService.getFieldsByDivision(this.user).subscribe(data => {
       fields = data.map(e => {
         return {
-          id: e.payload.doc.id,
+          // id: e.payload.doc.id, 
           ...e.payload.doc.data() as {}
         } as Field;
       })
@@ -203,7 +203,7 @@ export class UserFarmersComponent implements OnInit {
           field = data.map(e =>{
             // console.log(e.payload.doc.data())
             return {
-              id : e.payload.doc.id,
+              // id : e.payload.doc.id, //
               ...e.payload.doc.data() as {}
             } as Field
           })
