@@ -55,6 +55,7 @@ export class FieldsComponent implements OnInit, AfterViewInit {
     this.field = row;
   }
   viewField() {
+    console.log(this.field);
     this.router.navigate(['/field-details'], { state: { field: this.field } });
   }
   deleteField() {

@@ -13,18 +13,18 @@ import { reduce } from 'rxjs-compat/operator/reduce';
 })
 export class FieldVisitDetailsComponent implements OnInit {
 
-  fieldVisit: FieldVisit;
+  fieldVisit: FieldVisitTemp;
   title = 'My first AGM project';
   lat = 51.678418;
   lng = 7.809007;
-  fieldRequests: FieldVisit[];
-  counts: any[];
+  fieldRequests: FieldVisitTemp[];
+  counts;
   valueChanged;
-  id:string;
+  id: string;
 
-  constructor(private router: Router,private fieldVisitService:FieldVisitService) {
+  constructor(private router: Router, private fieldVisitService: FieldVisitService) {
     this.fieldVisit = this.router.getCurrentNavigation().extras.state.fieldVisit;
-    
+
     this.id = this.router.getCurrentNavigation().extras.state.fieldVisit.id;
 
   }
@@ -33,7 +33,7 @@ export class FieldVisitDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.counts = this.fieldVisitService.getFieldVisitCountsByStatus(this.id);
+    // this.counts = this.fieldVisitService.getFieldVisitCountsByStatus(this.id);//changes
 
   }
 
