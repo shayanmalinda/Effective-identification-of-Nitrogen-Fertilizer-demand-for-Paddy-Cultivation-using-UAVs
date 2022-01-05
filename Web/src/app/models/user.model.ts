@@ -8,10 +8,13 @@ export class User {
     district: string;
     division: string;
     province: string;
-    time:String;
     status:string;
     image : string;             //to store the image of the user as base64 string
     registeredDate : string;
+    createdDate : string;
+    createdTimestamp : number;
+    modifiedDate : string;
+    modifiedTimestamp : number;
 }
 
 export class UserCredential {
