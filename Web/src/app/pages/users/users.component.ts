@@ -120,7 +120,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   getCounts() {
 
     this.users.forEach(data => {
-      if (data.user.status == 'pending') {
+      if (data.status == 'pending') {
         this.pending++;
       } else {
         this.declined++;
@@ -162,7 +162,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.userService.getUsers(this.role, this.status).subscribe(data => {
       this.users = data.map(e => {
         return {
-          user:e.payload.doc.data() as User,
+          ...e.payload.doc.data() as User,
           id: e.payload.doc.id,
         } as UserTemp;
       })

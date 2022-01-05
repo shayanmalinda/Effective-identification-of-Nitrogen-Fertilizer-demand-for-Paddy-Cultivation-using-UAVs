@@ -15,7 +15,7 @@ export class UserProfileComponent implements OnInit {
   user: UserTemp;
 
   constructor(private router: Router,private userService: UserService) {
-    this.user = this.router.getCurrentNavigation().extras.state.user.user;
+    this.user = this.router.getCurrentNavigation().extras.state.user;
   }
 
 

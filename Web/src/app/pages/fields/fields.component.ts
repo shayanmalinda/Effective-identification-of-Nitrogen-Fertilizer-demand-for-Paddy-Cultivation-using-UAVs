@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 })
 
 export class FieldsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['registrationNumber', 'address', 'division', 'farmer', 'view', 'delete'];
+  displayedColumns: string[] = ['registrationNumber', 'field.address', 'division', 'farmer', 'view', 'delete'];
   dataSource: MatTableDataSource<FieldTemp>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -87,13 +87,13 @@ export class FieldsComponent implements OnInit, AfterViewInit {
       this.fields = data.map(e => {
         return {
           id: e.payload.doc.id,
-          field:e.payload.doc.data() as Field
+          ...e.payload.doc.data() as Field
         } as FieldTemp;
       })
       this.fields.forEach(f => {
-        this.userService.getUser(f.field.farmerId).subscribe(data => {
+        this.userService.getUser(f.farmerId).subscribe(data => {
           this.farmer = data.payload.data() as User;
-          f.field.farmer = this.farmer.firstName + " " + this.farmer.lastName;
+          f.farmer = this.farmer.firstName + " " + this.farmer.lastName;
           console.log(this.fields)
           this.dataSource = new MatTableDataSource(this.fields);
           this.dataSource.paginator = this.paginator;
