@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -67,9 +68,10 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private UiSettings mUiSettings;
-    private ImageView ivFocus, ivSettings, ivClose;
+    private ImageView ivFocus, ivSettings, ivClose, ivInfo;
     private CheckBox cbLevel2, cbLevel3, cbLevel4, cbLevel5;
-    private SeekBar sbRadius;
+    private TextView tvPercentage2, tvFertilizer2, tvPercentage3, tvFertilizer3, tvPercentage4, tvFertilizer4, tvPercentage5, tvFertilizer5;
+    private View settingsPopupView, infoPopupView;
     private Boolean filterLevel2 = true, filterLevel3 = true, filterLevel4 = true, filterLevel5 = true;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     FirebaseAuth mAuth;
@@ -127,6 +129,7 @@ public class MapsActivity extends FragmentActivity implements
 
         ivFocus = findViewById(R.id.ivFocus);
         ivSettings = findViewById(R.id.ivSettings);
+        ivInfo = findViewById(R.id.ivInfo);
 
         ivFocus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,19 +145,19 @@ public class MapsActivity extends FragmentActivity implements
                 // inflate the layout of the popup window
                 LayoutInflater inflater = (LayoutInflater)
                         getSystemService(LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.map_settings_popup, null);
+                settingsPopupView = inflater.inflate(R.layout.map_settings_popup, null);
 
                 // create the popup window
                 int width = LinearLayout.LayoutParams.WRAP_CONTENT;
                 int height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
-                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                final PopupWindow popupWindow = new PopupWindow(settingsPopupView, width, height, focusable);
 
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
-                popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+                popupWindow.showAtLocation(settingsPopupView, Gravity.CENTER, 0, 0);
 
-                popupView.setOnTouchListener(new View.OnTouchListener() {
+                settingsPopupView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
 //                        popupWindow.dismiss();
@@ -162,7 +165,7 @@ public class MapsActivity extends FragmentActivity implements
                     }
                 });
 
-                ivClose = popupView.findViewById(R.id.ivClose);
+                ivClose = settingsPopupView.findViewById(R.id.ivClose);
                 ivClose.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -170,10 +173,10 @@ public class MapsActivity extends FragmentActivity implements
                     }
                 });
 
-                cbLevel2 = popupView.findViewById(R.id.cbLevel2);
-                cbLevel3 = popupView.findViewById(R.id.cbLevel3);
-                cbLevel4 = popupView.findViewById(R.id.cbLevel4);
-                cbLevel5 = popupView.findViewById(R.id.cbLevel5);
+                cbLevel2 = settingsPopupView.findViewById(R.id.cbLevel2);
+                cbLevel3 = settingsPopupView.findViewById(R.id.cbLevel3);
+                cbLevel4 = settingsPopupView.findViewById(R.id.cbLevel4);
+                cbLevel5 = settingsPopupView.findViewById(R.id.cbLevel5);
 
                 cbLevel2.setChecked(filterLevel2);
                 cbLevel3.setChecked(filterLevel3);
@@ -185,7 +188,6 @@ public class MapsActivity extends FragmentActivity implements
                     public void onClick(View v) {
                         filterLevel2 = !filterLevel2;
                         filterHeatMap();
-                        popupWindow.dismiss();
                     }
                 });
 
@@ -194,7 +196,6 @@ public class MapsActivity extends FragmentActivity implements
                     public void onClick(View v) {
                         filterLevel3 = !filterLevel3;
                         filterHeatMap();
-                        popupWindow.dismiss();
                     }
                 });
 
@@ -203,7 +204,6 @@ public class MapsActivity extends FragmentActivity implements
                     public void onClick(View v) {
                         filterLevel4 = !filterLevel4;
                         filterHeatMap();
-                        popupWindow.dismiss();
                     }
                 });
 
@@ -212,12 +212,11 @@ public class MapsActivity extends FragmentActivity implements
                     public void onClick(View v) {
                         filterLevel5 = !filterLevel5;
                         filterHeatMap();
-                        popupWindow.dismiss();
                     }
                 });
 
 
-                SeekBar seekBar = popupView.findViewById(R.id.sbRadius);
+                SeekBar seekBar = settingsPopupView.findViewById(R.id.sbRadius);
                 seekBar.setProgress(radius);
                 seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
@@ -235,6 +234,65 @@ public class MapsActivity extends FragmentActivity implements
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         filterHeatMap();
+                    }
+                });
+
+            }
+        });
+
+        ivInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // inflate the layout of the popup window
+                LayoutInflater inflater = (LayoutInflater)
+                        getSystemService(LAYOUT_INFLATER_SERVICE);
+                infoPopupView = inflater.inflate(R.layout.map_info_popup, null);
+
+                // create the popup window
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = 660;
+                boolean focusable = true; // lets taps outside the popup also dismiss it
+                final PopupWindow popupWindow = new PopupWindow(infoPopupView, width, height, focusable);
+
+                tvPercentage2 = infoPopupView.findViewById(R.id.tvPercentage2);
+                tvPercentage3 = infoPopupView.findViewById(R.id.tvPercentage3);
+                tvPercentage4 = infoPopupView.findViewById(R.id.tvPercentage4);
+                tvPercentage5 = infoPopupView.findViewById(R.id.tvPercentage5);
+
+                tvFertilizer2 = infoPopupView.findViewById(R.id.tvFertilizer2);
+                tvFertilizer3 = infoPopupView.findViewById(R.id.tvFertilizer3);
+                tvFertilizer4 = infoPopupView.findViewById(R.id.tvFertilizer4);
+                tvFertilizer5 = infoPopupView.findViewById(R.id.tvFertilizer5);
+
+                Integer totalSize = level2List.size()+ level3List.size() + level4List.size() + level5List.size();
+
+                System.out.println("testing==="+totalSize);
+                System.out.println("testing==="+level2List.size());
+                System.out.println("testing==="+level2List.size()/(float) totalSize);
+
+                tvPercentage2.setText((Math.round(((level2List.size()*100)/(float) totalSize) * 100.0) / 100.0)+" %");
+                tvPercentage3.setText((Math.round(((level3List.size()*100)/(float) totalSize) * 100.0) / 100.0)+" %");
+                tvPercentage4.setText((Math.round(((level4List.size()*100)/(float) totalSize) * 100.0) / 100.0)+" %");
+                tvPercentage5.setText((Math.round(((level5List.size()*100)/(float) totalSize) * 100.0) / 100.0)+" %");
+
+                // show the popup window
+                // which view you pass in doesn't matter, it is only used for the window tolken
+                popupWindow.showAtLocation(infoPopupView, Gravity.CENTER, 0, 0);
+
+                infoPopupView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
+
+
+                ivClose = infoPopupView.findViewById(R.id.ivClose);
+                ivClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
                     }
                 });
 

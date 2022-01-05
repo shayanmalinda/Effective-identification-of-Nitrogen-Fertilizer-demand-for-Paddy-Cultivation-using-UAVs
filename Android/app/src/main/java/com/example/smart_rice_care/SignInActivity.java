@@ -111,7 +111,7 @@ public class SignInActivity extends AppCompatActivity {
                             if(document.exists()){
                                 Map<String, Object> user = document.getData();
                                 String userRole = (String) user.get("userRole");
-                                if(user.get("status").equals("active")){
+                                if(user.get("status").equals("active") || user.get("status").equals("approved") ){
                                     switch (userRole) {
                                         case "farmer":
                                             progressBar.setVisibility(View.GONE);
