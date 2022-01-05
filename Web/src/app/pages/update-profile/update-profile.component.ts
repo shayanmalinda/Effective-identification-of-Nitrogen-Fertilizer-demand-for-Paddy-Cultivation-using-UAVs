@@ -15,7 +15,7 @@ import { DialogService } from 'app/services/dialog.service';
 })
 export class UpdateProfileComponent implements OnInit {
 
-  user : User = {
+  user: User = {
     email: '',
     firstName: '',
     lastName: '',
@@ -24,48 +24,51 @@ export class UpdateProfileComponent implements OnInit {
     userRole: '',
     district: '',
     division: '',
-    province: '',          
-    image : '',      
-    status : '',  
-    registeredDate : '',
+    province: '',
+    image: '',
+    status: '',
+    registeredDate: '',
     createdDate: '',
     createdTimestamp: 0,
     modifiedDate: '',
-    modifiedTimestamp : 0,
+    modifiedTimestamp: 0,
   };
 
-  userCredential : UserCredential = {
-    email : '',
-    password : '',
-    userID : '',
+  userCredential: UserCredential = {
+    email: '',
+    password: '',
+    userID: '',
   };
 
-  message : Message = {
-    title : '',
-    showMessage : ''
+  message: Message = {
+    title: '',
+    showMessage: ''
   }
 
   cardImageBase64: string;
-  fullName : string;
-  location : string;
+  fullName: string;
+  location: string;
   divisionalData = divisionalDataFile;
   provinces = this.divisionalData.provinces;
-  districts : any;
-  divisions : any;
-  provinceSelected : string;
-  districtSelected : string;
-  divisionSelected : string;
+  districts: any;
+  divisions: any;
+  provinceSelected: string;
+  districtSelected: string;
+  divisionSelected: string;
 
-  constructor(private userService : UserService, private router : Router, private dialog : DialogService) { }
+  constructor(private userService: UserService, private router: Router, private dialog: DialogService) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
     console.log(this.user.firstName + " " + this.user.lastName);
-    if(this.user.firstName == "" && this.user.lastName == ""){
+    if (this.user.firstName == "" && this.user.lastName == "") {
       this.fullName = "Full name";
-    }else{
-      this.fullName = this.user.firstName + " " + this.user.lastName; 
+    } else {
+      this.fullName = this.user.firstName + " " + this.user.lastName;
     }
+
+
+
   }
 
   processFile(imageInput: any) {
@@ -81,7 +84,7 @@ export class UpdateProfileComponent implements OnInit {
       if ((file.type == 'image/png') || (file.type == 'image/jpeg') || (file.type == 'image/jpg')) {
         const imgBase64Path = event.target.result;
         this.user.image = imgBase64Path;
-      }else{
+      } else {
         // console.log("This is not the relevant type");
         //error msg
       }
@@ -89,33 +92,35 @@ export class UpdateProfileComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  onSaveClick(){
+  onSaveClick() {
     this.user.userRole = this.user.userRole.toLowerCase();
     this.userService.saveUserDetails(this.userCredential, this.user)
-    .then(res => {
-      this.message.title = "success";
-      this.message.showMessage = "You have successfully updated the user details !";
-      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-      this.updateSessionDetails();
-      this.router.navigate(['/profile']);
+      .then(res => {
+        this.message.title = "success";
+        this.message.showMessage = "You have successfully updated the user details !";
+        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+          this.updateSessionDetails();
+          if (this.user.userRole != "admin")
+            this.router.navigate(['/profile']);
+        });
+      }, err => {
+        this.message.title = "error";
+        this.message.showMessage = err;
+        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+          this.clearFields();
+        })
       });
-    }, err => {
-      this.message.title = "error";
-      this.message.showMessage = err;
-      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-      this.clearFields();
-    })});
   }
 
-  onSkipClick(){
+  onSkipClick() {
     this.message.title = "warning";
     this.message.showMessage = "The changes you have done not be applied to the profile !";
-    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
+    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
       this.router.navigate(['/profile']);
-      });
+    });
   }
 
-  loadSessionDetails(){
+  loadSessionDetails() {
     this.userCredential.userID = sessionStorage.getItem('userID');
     this.user.status = sessionStorage.getItem('status');
     this.user.firstName = (sessionStorage.getItem("firstName") != "" ? sessionStorage.getItem("firstName") : "");
@@ -135,34 +140,34 @@ export class UpdateProfileComponent implements OnInit {
     this.divisionSelected = sessionStorage.getItem('division');
   }
 
-  updateSessionDetails(){
-    sessionStorage.setItem('email',this.user.email);
-    sessionStorage.setItem('firstName',this.user.firstName);
-    sessionStorage.setItem('lastName',this.user.lastName);
-    sessionStorage.setItem('nic',this.user.nic);
-    sessionStorage.setItem('phone',this.user.phone);
-    sessionStorage.setItem('userRole',this.user.userRole);
-    sessionStorage.setItem('district',this.user.district);
-    sessionStorage.setItem('division',this.user.division);
-    sessionStorage.setItem('province',this.user.province);
-    sessionStorage.setItem('image',this.user.image);
+  updateSessionDetails() {
+    sessionStorage.setItem('email', this.user.email);
+    sessionStorage.setItem('firstName', this.user.firstName);
+    sessionStorage.setItem('lastName', this.user.lastName);
+    sessionStorage.setItem('nic', this.user.nic);
+    sessionStorage.setItem('phone', this.user.phone);
+    sessionStorage.setItem('userRole', this.user.userRole);
+    sessionStorage.setItem('district', this.user.district);
+    sessionStorage.setItem('division', this.user.division);
+    sessionStorage.setItem('province', this.user.province);
+    sessionStorage.setItem('image', this.user.image);
   }
 
-  nameChanged(){
+  nameChanged() {
     this.fullName = this.user.firstName + " " + this.user.lastName;
   }
 
-  loadDistrictSelected(value : any){
+  loadDistrictSelected(value: any) {
     var province = value.toString();
-    this.districts = this.divisionalData[""+ province +""]
+    this.districts = this.divisionalData["" + province + ""]
   }
 
-  loadDivisionSelected(value : any){
+  loadDivisionSelected(value: any) {
     var district = value.toString();
-    this.divisions = this.divisionalData[""+ district +""]
+    this.divisions = this.divisionalData["" + district + ""]
   }
 
-  onProvinceSelected(value : any){
+  onProvinceSelected(value: any) {
     var province = value.toString();
     this.user.province = province;
     this.districts = this.divisionalData["" + province + ""];
@@ -173,7 +178,7 @@ export class UpdateProfileComponent implements OnInit {
     this.user.division = this.divisionSelected;
   }
 
-  onDistrictSelected(value : any){
+  onDistrictSelected(value: any) {
     var district = value.toString();
     this.user.district = district;
     this.divisions = this.divisionalData["" + district + ""];
@@ -181,12 +186,12 @@ export class UpdateProfileComponent implements OnInit {
     this.user.division = this.divisionSelected;
   }
 
-  onDivisionSelected(value : any){
+  onDivisionSelected(value: any) {
     var division = value.toString();
     this.user.division = division;
   }
 
-  clearFields(){
+  clearFields() {
     this.userCredential.email = "";
     this.userCredential.password = "";
     this.user.firstName = "";
@@ -199,13 +204,13 @@ export class UpdateProfileComponent implements OnInit {
     this.user.phone = "";
   }
 
-  onLccDetailsClick(){
-      this.updateSessionDetails();
-      this.router.navigate(['/lcc-details']);
+  onLccDetailsClick() {
+    this.updateSessionDetails();
+    this.router.navigate(['/lcc-details']);
   }
 
-  onDashboardClick(){
-      this.updateSessionDetails();
-      this.router.navigate(['/user-dashboard']);
+  onDashboardClick() {
+    this.updateSessionDetails();
+    this.router.navigate(['/user-dashboard']);
   }
 }

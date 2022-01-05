@@ -77,7 +77,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     if (this.type == 'request')
       this.router.navigate(['/farmer-request'], { state: { user: this.user } });
     else
-      this.router.navigate(['/farmer-profile'], { state: { user: this.user } });// should be changed to profile with updates
+      this.router.navigate(['/farmer-profile'], { state: { type: 'own' } });// should be changed to profile with updates
 
   }
   deleteUser() {

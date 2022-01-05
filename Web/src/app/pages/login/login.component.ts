@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     createdDate: '',
     createdTimestamp: 0,
     modifiedDate: '',
-    modifiedTimestamp : 0,
+    modifiedTimestamp: 0,
   };
 
   userCredential: UserCredential = {
@@ -79,54 +79,57 @@ export class LoginComponent implements OnInit {
       })
     } else {
       this.authenticationService.logIn(this.userCredential)
-      .then(res =>{
-        // console.log("This is the user id in login : " + this.userCredential.userID);
-        // this.router.navigate(['/user-dashboard']);
+        .then(res => {
+          console.log(this.authenticationService.isLoggedIn)
+          // console.log("This is the user id in login : " + this.userCredential.userID);
+          // this.router.navigate(['/user-dashboard']);
 
-        //testing region 
-        // console.log("is logged in : " + this.authenticationService.isLoggedIn);
-        if(this.authenticationService.isLoggedIn){
-          console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
-          var redirect;
-          if(res.userRole == "agricultural officer"){
-            if(res.status == "approved"){
-              redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
+          //testing region 
+          // console.log("is logged in : " + this.authenticationService.isLoggedIn);
+          if (this.authenticationService.isLoggedIn) {
+            console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
+            var redirect;
+            if (res.userRole == "agricultural officer") {
+              if (res.status == "approved") {
+                redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
+                this.router.navigateByUrl(redirect);
+              } else {
+                this.message.title = "warning";
+                this.message.showMessage = "You still haven't recieve the admin approval to interact with the system !!";
+                this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+                  this.clearFields();
+                })
+              }
+            } else if (res.userRole == "admin") {
+              console.log(this.authenticationService.isLoggedIn)
+              // the redirect url should come here edit follow code and set the url
+              redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'admin-dashboard'
               this.router.navigateByUrl(redirect);
-            }else{
-              this.message.title = "warning";
-              this.message.showMessage = "You still haven't recieve the admin approval to interact with the system !!";
+            } else {
+              this.message.title = "error";
+              this.message.showMessage = "Invalid login !!"
               this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-              this.clearFields();
+                this.clearFields();
               })
             }
-          }else if(res.userRole == "admin"){
-            // the redirect url should come here edit follow code and set the url
-            redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'admin-dashboard'
-            this.router.navigateByUrl(redirect);
-          }else{
-            this.message.title = "error";
-            this.message.showMessage = "Invalid login !!"
-            this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-            this.clearFields();
-            })
           }
-        }
-        //end of the testing region
+          //end of the testing region
 
-      }, err => {
-        this.message.title = "error";
-        // console.log(err);
-        if(err == "auth/wrong-password"){
-          this.message.showMessage = "You have entered invalid password !";
-        }else if(err == "auth/user-not-found"){
-          this.message.showMessage = "The Email you have entered do not have an account here !";
-        }else{
-          this.message.showMessage = "Invalid Email and password !"
-        }
-        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-          this.clearFields();
-      });
-    })}
+        }, err => {
+          this.message.title = "error";
+          // console.log(err);
+          if (err == "auth/wrong-password") {
+            this.message.showMessage = "You have entered invalid password !";
+          } else if (err == "auth/user-not-found") {
+            this.message.showMessage = "The Email you have entered do not have an account here !";
+          } else {
+            this.message.showMessage = "Invalid Email and password !"
+          }
+          this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+            this.clearFields();
+          });
+        })
+    }
 
   }
 
@@ -139,19 +142,19 @@ export class LoginComponent implements OnInit {
     return finalPassword;
   }
 
-  updateSessionDetails(){
-    sessionStorage.setItem('email',this.user.email);
-    sessionStorage.setItem('firstName',this.user.firstName);
-    sessionStorage.setItem('lastName',this.user.lastName);
-    sessionStorage.setItem('nic',this.user.nic);
-    sessionStorage.setItem('phone',this.user.phone);
-    sessionStorage.setItem('userRole',this.user.userRole);
-    sessionStorage.setItem('district',this.user.district);
-    sessionStorage.setItem('division',this.user.division);
-    sessionStorage.setItem('province',this.user.province);
-    sessionStorage.setItem('image',this.user.image);
-    sessionStorage.setItem('status',this.user.status);
-    sessionStorage.setItem('userID',this.userCredential.userID);
+  updateSessionDetails() {
+    sessionStorage.setItem('email', this.user.email);
+    sessionStorage.setItem('firstName', this.user.firstName);
+    sessionStorage.setItem('lastName', this.user.lastName);
+    sessionStorage.setItem('nic', this.user.nic);
+    sessionStorage.setItem('phone', this.user.phone);
+    sessionStorage.setItem('userRole', this.user.userRole);
+    sessionStorage.setItem('district', this.user.district);
+    sessionStorage.setItem('division', this.user.division);
+    sessionStorage.setItem('province', this.user.province);
+    sessionStorage.setItem('image', this.user.image);
+    sessionStorage.setItem('status', this.user.status);
+    sessionStorage.setItem('userID', this.userCredential.userID);
   }
 
   clearFields() {

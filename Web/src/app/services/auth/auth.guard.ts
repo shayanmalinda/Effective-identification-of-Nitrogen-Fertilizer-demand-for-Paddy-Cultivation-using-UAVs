@@ -11,10 +11,11 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
+    console.log(state.url)
     return this.checkLogin(state.url);
   }
 
-  constructor(private authService : AuthenticationService, private router : Router){}
+  constructor(private authService: AuthenticationService, private router: Router) { }
 
   // canActivate(
   //   next: ActivatedRouteSnapshot,
@@ -25,7 +26,7 @@ export class AuthGuard implements CanActivate {
   checkLogin(url: string): boolean {
     if (this.authService.isLoggedIn) { return true; }
     this.authService.redirectUrl = url;
-    console.log("this is the url which recieved : " +  this.authService.redirectUrl);
+    console.log("this is the url which recievedmmmm : " + this.authService.redirectUrl);
     this.router.navigate(['/login']);
     return false;
   }
