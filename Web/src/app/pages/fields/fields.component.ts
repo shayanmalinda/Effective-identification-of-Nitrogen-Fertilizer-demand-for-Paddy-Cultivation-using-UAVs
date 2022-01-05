@@ -87,7 +87,7 @@ export class FieldsComponent implements OnInit, AfterViewInit {
       this.fields = data.map(e => {
         return {
           id: e.payload.doc.id,
-          ...e.payload.doc.data() as Field
+          ...e.payload.doc.data() as {}
         } as FieldTemp;
       })
       this.fields.forEach(f => {
