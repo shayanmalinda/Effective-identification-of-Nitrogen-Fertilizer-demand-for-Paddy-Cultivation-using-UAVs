@@ -12,15 +12,14 @@ export class UserService {
 
   constructor(private fireStore: AngularFirestore) { }
 
-  getUsers(userRole, status) {
+  getUsers(userRole, type) {
     if (userRole == 'officer')
-      userRole = 'agricultural officer'
-    console.log(userRole + "maSEmm" + status);
+      userRole = 'agricultural officer';
 
-    if (status == 'approved')
-      return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', '==', status)).snapshotChanges();
-    else return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', 'in', ['pending', 'declined'])).snapshotChanges();
-
+    if (type == 'request')
+      return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', 'in', ['pending', 'declined'])).snapshotChanges();
+    else
+      return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', 'in', ['active', 'inactive'])).snapshotChanges();
   }
 
   getUser(id: string) {
@@ -50,7 +49,7 @@ export class UserService {
     return this.fireStore.collection('Users', ref => ref.where('email', '==', userCredential.email)).get();
   }
 
-  getFarmerById(userCredential : UserCredential){
+  getFarmerById(userCredential: UserCredential) {
     console.log(userCredential.userID);
     // return this.fireStore.collection('Users').doc(userCredential.userID).get();
     return this.fireStore.collection('Users').doc(userCredential.userID).snapshotChanges()

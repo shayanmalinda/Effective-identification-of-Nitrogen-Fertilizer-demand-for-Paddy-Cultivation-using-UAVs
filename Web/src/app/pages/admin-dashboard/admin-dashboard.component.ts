@@ -34,7 +34,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   viewProfile() {
-    this.router.navigate(['/updateuser']);
+    this.router.navigate(['/admin-profile'],{ state: { type: 'admin'} });
   }
 }
 

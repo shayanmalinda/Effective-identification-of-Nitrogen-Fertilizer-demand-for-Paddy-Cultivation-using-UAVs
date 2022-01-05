@@ -55,6 +55,7 @@ const routes: Routes =[
     { path: 'user-fields',     component: UserFeildsComponent, canActivate : [AuthGuard]  },
     { path: 'user-fieldVisits',     component: UserFieldVisitsComponent, canActivate : [AuthGuard]  },
     { path: 'user-reports',     component: UserReportsComponent},
+    { path: 'admin-profile',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
 
 
 

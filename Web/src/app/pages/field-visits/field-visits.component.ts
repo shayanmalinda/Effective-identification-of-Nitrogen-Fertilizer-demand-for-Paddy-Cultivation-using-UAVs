@@ -106,25 +106,25 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
         console.log(this.fieldVisit)
         return {
           id: e.payload.doc.id,
-          fieldVisit:e.payload.doc.data() as FieldVisit
+          ...e.payload.doc.data() as {}
         } as FieldVisitTemp;
       })
 
       this.fieldVisits.forEach(f => {
-        if (f.fieldVisit.status == 'request pending') this.requestPending += 1;
-        else if (f.fieldVisit.status == 'visit pending') this.visitPending += 1;
-        else if (f.fieldVisit.status == 'processing') this.processing += 1;
-        else if (f.fieldVisit.status == 'completed') this.completed += 1;
+        if (f.status == 'request pending') this.requestPending += 1;
+        else if (f.status == 'visit pending') this.visitPending += 1;
+        else if (f.status == 'processing') this.processing += 1;
+        else if (f.status == 'completed') this.completed += 1;
 
-        this.fieldService.getField(f.fieldVisit.fieldId).subscribe(data => {
+        this.fieldService.getField(f.fieldId).subscribe(data => {
           this.field = data.payload.data() as Field;
-          f.fieldVisit.field = this.field;
-          f.fieldVisit.address = this.field.address;
-          f.fieldVisit.registrationNo = this.field.registrationNumber;
+          f.field = this.field;
+          f.address = this.field.address;
+          f.registrationNo = this.field.registrationNumber;
           this.userService.getUser(this.field.farmerId).subscribe(data => {
             this.farmer = data.payload.data() as User;
-            f.fieldVisit.farmer = this.farmer;
-            f.fieldVisit.farmerName = this.farmer.firstName + " " + this.farmer.lastName;
+            f.farmer = this.farmer;
+            f.farmerName = this.farmer.firstName + " " + this.farmer.lastName;
             this.dataSource = new MatTableDataSource(this.fieldVisits);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;

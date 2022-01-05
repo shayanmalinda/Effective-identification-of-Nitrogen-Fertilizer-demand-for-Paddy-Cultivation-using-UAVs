@@ -8,14 +8,6 @@ import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { Router } from '@angular/router';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
-
-
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -45,40 +37,33 @@ export class UsersComponent implements OnInit, AfterViewInit {
   type;
   title;
   role;
-  status;
+  // status;
   selectedType: String;
   all = 0;
   pending = 0;
   declined = 0;
+  active = 0;
+  inactive = 0;
 
   constructor(private renderer: Renderer2, private userService: UserService, private router: Router) {
     this.type = this.router.getCurrentNavigation().extras.state.type;
     this.role = this.router.getCurrentNavigation().extras.state.role;
     this.title = this.role;
+
     if (this.type != 'request') {
       this.title += "s";
-
-      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'view', 'delete'];
+      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division','status', 'view', 'delete'];
     } else {
       this.title += " requests";
-
-      if (this.role == 'farmer') {
-
-        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'delete'];
-      } else
-        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'accept', 'decline', 'delete'];
+      // if (this.role == 'farmer') {
+      //   this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'delete'];
+      // } else
+      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'time', 'status', 'view', 'accept', 'decline', 'delete'];
     }
 
   }
 
-  isWeekend(date: NgbDateStruct) {
-    const d = new Date(date.year, date.month - 1, date.day);
-    return d.getDay() === 0 || d.getDay() === 6;
-  }
 
-  isDisabled(date: NgbDateStruct, current: { month: number }) {
-    return date.month !== current.month;
-  }
   ngAfterViewInit() {
     //   this.dataSource.paginator = this.paginator;
     //   this.dataSource.sort = this.sort;
@@ -92,7 +77,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     if (this.type == 'request')
       this.router.navigate(['/farmer-request'], { state: { user: this.user } });
     else
-      this.router.navigate(['/farmer-profile'], { state: { user: this.user } });// should be changed to profile with updates
+      this.router.navigate(['/farmer-profile'], { state: { type: 'own' } });// should be changed to profile with updates
 
   }
   deleteUser() {
@@ -111,6 +96,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     } else {
       filterValue = this.selectedType;
     }
+    
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
@@ -118,15 +104,25 @@ export class UsersComponent implements OnInit, AfterViewInit {
     }
   }
   getCounts() {
-
-    this.users.forEach(data => {
-      if (data.user.status == 'pending') {
-        this.pending++;
-      } else {
-        this.declined++;
-      }
-    });
-    this.all = this.declined + this.pending;
+    if (this.type == 'request') {
+      this.users.forEach(data => {
+        if (data.status == 'pending') {
+          this.pending++;
+        } else {
+          this.declined++;
+        }
+      });
+      this.all = this.declined + this.pending;
+    } else {
+      this.users.forEach(data => {
+        if (data.status == 'active') {
+          this.active++;
+        } else {
+          this.inactive++;
+        }
+      });
+      this.all = this.declined + this.pending;
+    }
   }
 
 
@@ -153,16 +149,16 @@ export class UsersComponent implements OnInit, AfterViewInit {
       });
     }
 
-    if (this.type == "request") {
-      this.status = "pending"
-    } else {
-      this.status = "approved"
-    }
+    // if (this.type == "request") {// pending declined
+    //   this.status = "pending"
+    // } else {// active inactive
+    //   this.status = "approved"
+    // }
     console.log(this.role)
-    this.userService.getUsers(this.role, this.status).subscribe(data => {
+    this.userService.getUsers(this.role, this.type).subscribe(data => {
       this.users = data.map(e => {
         return {
-          user:e.payload.doc.data() as User,
+          ...e.payload.doc.data() as {},
           id: e.payload.doc.id,
         } as UserTemp;
       })

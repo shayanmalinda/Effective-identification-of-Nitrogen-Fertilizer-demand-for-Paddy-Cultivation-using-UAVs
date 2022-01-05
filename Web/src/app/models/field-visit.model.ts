@@ -1,7 +1,20 @@
-import { Field } from "./field.model";
 
 export class FieldVisit {
-    // id: string;
+    division: string;  
+    fieldId: string;  
+    latitude: string;  
+    longitude: string;  
+    requestNote: string;  
+    status: string;  
+    createdDate: string;    
+    plantAge: string;
+    createdTimestamp: number;
+    modifiedDate: string;
+    modifiedTimestamp: number;
+
+}
+export class FieldVisitTemp {
+    id: string;
     date: string;
     division: string;
     fieldId: string;
@@ -16,8 +29,4 @@ export class FieldVisit {
     farmerTel: string;
     registrationNo: string;
 
-}
-export class FieldVisitTemp {
-    id: string;
-    fieldVisit: FieldVisit;
 }
