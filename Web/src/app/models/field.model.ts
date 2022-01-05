@@ -10,5 +10,11 @@ export class Field {
 
 export class FieldTemp {
     id:string;
-    field:Field
+    registrationNumber:string;
+    address:string;
+    farmerId:string;
+    farmer:any;
+    district: string;
+    division: string;
+    province: string;
 }
