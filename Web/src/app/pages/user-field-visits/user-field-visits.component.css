@@ -2,6 +2,23 @@ table {
     width: 100%;
   }
 
+  .full-width-table{
+    background-color: #0b1011;
+    background-position: center center;
+    background-size: cover;
+    min-height: 100vh;
+    max-height: 999px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    display: flow-root;
+    align-items: center;
+    justify-content: center;
+    padding-top: 100px;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('assets/img/paddy one.jpg');
+  }
+
   ::ng-deep  .mat-form-field-label {
     /*change color of label*/
     color: white !important;
