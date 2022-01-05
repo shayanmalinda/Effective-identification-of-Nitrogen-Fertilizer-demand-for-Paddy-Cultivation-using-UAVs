@@ -29,7 +29,7 @@ import { UserFieldVisitsComponent } from './pages/user-field-visits/user-field-v
 const routes: Routes =[
     // { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home',             component: ComponentsComponent },
-    { path: 'farmer-profile',     component: UpdateProfileComponent , canActivate : [AuthGuard] },
+    { path: 'farmer-profile',     component: UserProfileComponent },
     { path: 'profile',          component: ProfileComponent, canActivate : [AuthGuard] },
     { path: 'signup',           component: SignupComponent },
     { path: 'login',            component: LoginComponent },
