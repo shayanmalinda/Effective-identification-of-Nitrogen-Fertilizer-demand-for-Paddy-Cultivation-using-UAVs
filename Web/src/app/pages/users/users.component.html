@@ -27,18 +27,21 @@
                     </div>
                     <div class="toggle label-bar" *ngIf="type!='request'">
                         <div class="left">
-                            filters
-                            <!-- <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()
+                            <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()
                                 aria-label="Font Style">
                                 <mat-button-toggle value="all">All</mat-button-toggle>
-                                <mat-button-toggle value="pending">Pending</mat-button-toggle>
-                                <mat-button-toggle value="declined">Declined</mat-button-toggle>
-                            </mat-button-toggle-group> -->
+                                <mat-button-toggle value="active">Active</mat-button-toggle>
+                                <mat-button-toggle value="inactive">Inactive</mat-button-toggle>
+                            </mat-button-toggle-group>
                             <!-- <p>Chosen value is {{fontStyle}}</p> -->
                         </div>
                         <div class="labels">
-                            <label class="label label-info right">{{role}}s : {{users.length}}</label>&nbsp;
+                            <label class="label label-default right">all : {{all}}</label>&nbsp;
+                            <label class="label label-primary right">active : {{active}}</label>&nbsp;
+                            <label class="label label-warning right">inactive : {{inactive}}</label>&nbsp;
 
+                            <!-- <div>Pending : <label class="label label-primary">all</label></div>
+                            <div>Declined: <label class="label label-warning">all</label></div> -->
                         </div>
                     </div>
 
@@ -109,6 +112,10 @@
                                     <label *ngIf="row.status=='pending'"
                                         class="label label-primary">{{row.status}}</label>
                                     <label *ngIf="row.status=='declined'"
+                                        class="label label-warning">{{row.status}}</label>
+                                    <label *ngIf="row.status=='active'"
+                                        class="label label-primary">{{row.status}}</label>
+                                    <label *ngIf="row.status=='inactive'"
                                         class="label label-warning">{{row.status}}</label>
 
                                 </td>
