@@ -43,7 +43,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -56,6 +61,7 @@ import com.google.maps.android.heatmaps.WeightedLatLng;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements
@@ -65,6 +71,8 @@ public class MapsActivity extends FragmentActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private String requestId;
+    private Integer plantAge;
+    private Long fertilizer2, fertilizer3, fertilizer4;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private UiSettings mUiSettings;
@@ -78,6 +86,7 @@ public class MapsActivity extends FragmentActivity implements
     FirebaseFirestore db;
     String uId;
     List<FieldData> fieldData = new ArrayList<>();
+    Float[] fertilizerAmount = new Float[4];
     private Integer fetchCount=0;
 
     List<WeightedLatLng> level2List = new ArrayList<>();
@@ -113,6 +122,7 @@ public class MapsActivity extends FragmentActivity implements
 
         Intent intent = getIntent();
         requestId = intent.getStringExtra("requestId");
+        plantAge = intent.getIntExtra("plantAge",0);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -250,7 +260,7 @@ public class MapsActivity extends FragmentActivity implements
                 infoPopupView = inflater.inflate(R.layout.map_info_popup, null);
 
                 // create the popup window
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int width = 1000;
                 int height = 660;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(infoPopupView, width, height, focusable);
@@ -267,14 +277,15 @@ public class MapsActivity extends FragmentActivity implements
 
                 Integer totalSize = level2List.size()+ level3List.size() + level4List.size() + level5List.size();
 
-                System.out.println("testing==="+totalSize);
-                System.out.println("testing==="+level2List.size());
-                System.out.println("testing==="+level2List.size()/(float) totalSize);
-
                 tvPercentage2.setText((Math.round(((level2List.size()*100)/(float) totalSize) * 100.0) / 100.0)+" %");
                 tvPercentage3.setText((Math.round(((level3List.size()*100)/(float) totalSize) * 100.0) / 100.0)+" %");
                 tvPercentage4.setText((Math.round(((level4List.size()*100)/(float) totalSize) * 100.0) / 100.0)+" %");
                 tvPercentage5.setText((Math.round(((level5List.size()*100)/(float) totalSize) * 100.0) / 100.0)+" %");
+
+                tvFertilizer2.setText(fertilizer2+" kg/ha");
+                tvFertilizer3.setText(fertilizer3+" kg/ha");
+                tvFertilizer4.setText(fertilizer4+" kg/ha");
+                tvFertilizer5.setText("-");
 
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
@@ -299,9 +310,82 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
 
+        getLCCTable();
+
     }
 
+    private void getLCCTable() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        System.out.println("testing===0 "+requestId);
+        DocumentReference docRef = db.collection("FieldRequests").document(requestId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String division = document.get("division").toString();
+                        System.out.println("testing===0 "+division);
+                        db.collection("LCCDetails")
+                                .whereEqualTo("division", division)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            if(task.getResult().size()==0){
+                                                // Get general LCC details, if specific data not available
+                                                db.collection("LCCDetails")
+                                                        .whereEqualTo("division", "ALL")
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                                                if(task.isSuccessful()){
+
+                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                        ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
+                                                                        HashMap<String, Long> weekData = data.get(plantAge-1);
+                                                                        fertilizer2 = weekData.get("levelOne");
+                                                                        fertilizer3 = weekData.get("levelTwo");
+                                                                        fertilizer4 = weekData.get("levelThree");
+                                                                    }
+                                                                }
+                                                                else{
+                                                                    Log.d("LCCDetails error:", task.getException().toString());
+                                                                    Toast.makeText(MapsActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            }
+                                                        });
+                                            }
+                                            else{
+                                                // Get specific LCC details
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
+                                                    HashMap<String, Long> weekData = data.get(plantAge-1);
+                                                    fertilizer2 = weekData.get("levelOne");
+                                                    fertilizer3 = weekData.get("levelTwo");
+                                                    fertilizer4 = weekData.get("levelThree");
+                                                }
+                                            }
+                                        }
+                                        else{
+                                            Log.d("LCCDetails error:", task.getException().toString());
+                                            Toast.makeText(MapsActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                    } else {
+                        Log.d("FieldRequests fetch: ", "No such document");
+                    }
+                } else {
+                    Log.d("FieldRequests fetch: ", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

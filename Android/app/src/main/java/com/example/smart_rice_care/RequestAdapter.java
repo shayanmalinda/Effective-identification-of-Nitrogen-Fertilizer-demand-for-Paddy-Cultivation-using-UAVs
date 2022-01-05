@@ -115,6 +115,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ExamineFieldActivity.class);
                 intent.putExtra("requestId", request.getRequestId());
+                intent.putExtra("plantAge", request.getPlantAge());
                 intent.putExtra("fieldId", request.getFieldId());
                 intent.putExtra("farmerId", request.getFarmerId());
                 v.getContext().startActivity(intent);
