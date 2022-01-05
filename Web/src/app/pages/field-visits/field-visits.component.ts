@@ -106,7 +106,7 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
         console.log(this.fieldVisit)
         return {
           id: e.payload.doc.id,
-          ...e.payload.doc.data() as FieldVisit
+          ...e.payload.doc.data() as {}
         } as FieldVisitTemp;
       })
 
