@@ -90,12 +90,18 @@ export class LoginComponent implements OnInit {
             console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
             var redirect;
             if (res.userRole == "agricultural officer") {
-              if (res.status == "approved") {
+              if (res.status == "active") {
                 redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
                 this.router.navigateByUrl(redirect);
-              } else {
+              } else if (res.status == "pending") {
                 this.message.title = "warning";
                 this.message.showMessage = "You still haven't recieve the admin approval to interact with the system !!";
+                this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+                  this.clearFields();
+                })
+              }else if (res.status == "inactive") {
+                this.message.title = "error";
+                this.message.showMessage = "Please contact system admin to interact with the system !!";
                 this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
                   this.clearFields();
                 })

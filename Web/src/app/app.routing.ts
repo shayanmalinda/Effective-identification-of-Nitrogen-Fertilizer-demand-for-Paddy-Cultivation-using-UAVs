@@ -53,7 +53,7 @@ const routes: Routes =[
     { path: 'user-farmers',     component: UserFarmersComponent, canActivate : [AuthGuard]  },
     { path: 'user-farmerRequests',     component: UserFarmerRequestsComponent, canActivate : [AuthGuard] },
     { path: 'user-fields',     component: UserFeildsComponent, canActivate : [AuthGuard]  },
-    { path: 'user-fieldVisits',     component: UserFieldVisitsComponent, canActivate : [AuthGuard]  },
+    { path: 'user-field-visits',     component: UserFieldVisitsComponent, canActivate : [AuthGuard]  },
     { path: 'user-reports',     component: UserReportsComponent},
     { path: 'admin-profile',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
 

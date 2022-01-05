@@ -5,7 +5,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Message } from 'app/models/message.model';
-import { User, UserCredential } from 'app/models/user.model';
+import { User, UserCredential, UserTemp } from 'app/models/user.model';
 import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
 import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
@@ -43,6 +43,23 @@ export class UserFarmersComponent implements OnInit {
     createdTimestamp: 0,
     modifiedDate: '',
     modifiedTimestamp : 0,
+  };
+
+  userTemp : UserTemp  = {
+    id : '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    nic: '',
+    phone: '',
+    userRole: '',
+    district: '',
+    division: '',
+    province: '',          
+    image : '',      
+    time : '',
+    status : '',  
+    registeredDate : '',
   };
 
   userCredential : UserCredential = {
@@ -192,12 +209,13 @@ export class UserFarmersComponent implements OnInit {
     this.userFarmersService.getAllFarmers().subscribe(data =>{
       farmers = data.map(e =>{
         return {
+          id : e.payload.doc.id,
           ...e.payload.doc.data() as {}
-        } as User;
+        } as UserTemp;
       })
       farmers.forEach(element => {
         credentials.userID = element.id;
-        console.log(element.id);
+        console.log("the id is here : " + element.id);
         this.fieldService.getFieldsByFarmerId(credentials).subscribe(data =>{
           // console.log(data.length);
           field = data.map(e =>{
