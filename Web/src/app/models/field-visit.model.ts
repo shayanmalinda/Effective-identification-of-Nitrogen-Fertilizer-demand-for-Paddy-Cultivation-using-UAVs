@@ -1,19 +1,16 @@
-import { Field } from "./field.model";
 
 export class FieldVisit {
-    date: string;
-    division: string;
-    fieldId: string;
-    field: any;
-    latitude: string;
-    longitude: string;
-    requestNote: string;
-    status: string;
-    address: string;
-    farmer: any;
-    farmerName: string;
-    farmerTel: string;
-    registrationNo: string;
+    division: string;  
+    fieldId: string;  
+    latitude: string;  
+    longitude: string;  
+    requestNote: string;  
+    status: string;  
+    createdDate: string;    
+    plantAge: string;
+    createdTimestamp: number;
+    modifiedDate: string;
+    modifiedTimestamp: number;
 
 }
 export class FieldVisitTemp {

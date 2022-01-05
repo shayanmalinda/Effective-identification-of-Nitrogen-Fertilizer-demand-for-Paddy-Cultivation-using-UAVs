@@ -155,7 +155,7 @@ export class UserFeildsComponent implements OnInit {
       this.fields.forEach(f => {
         this.userService.getUser(f.farmerId).subscribe(data => {
           this.farmer = data.payload.data() as User;
-          f.farmer = this.farmer.firstName + " " + this.farmer.lastName;
+          // f.farmer = this.farmer.firstName + " " + this.farmer.lastName; $heshan
           fieldWithFarmer.push({
             address : f.address, 
             registrationNumber : f.registrationNumber,
@@ -189,7 +189,7 @@ export class UserFeildsComponent implements OnInit {
       this.fields.forEach(f => {
         this.userService.getUser(f.farmerId).subscribe(data => {
           this.farmer = data.payload.data() as User;
-          f.farmer = this.farmer.firstName + " " + this.farmer.lastName;
+          // f.farmer = this.farmer.firstName + " " + this.farmer.lastName; @heshan
           fieldWithFarmer.push({
             address : f.address, 
             registrationNumber : f.registrationNumber,
