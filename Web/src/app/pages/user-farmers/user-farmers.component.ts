@@ -131,10 +131,10 @@ export class UserFarmersComponent implements OnInit {
     for(var i = 0; i < NO_OF_WEEKS; i++ ){
       var j = i;
       if(this.changedWeekDetails[i] == undefined){
-        this.changedWeekDetails[i] = {week: j+1, levelOne: 0, levelTwo: 0, levelThree: 0}
+        this.changedWeekDetails[i] = {week: j+1, levelFour: 0, levelTwo: 0, levelThree: 0}
       }else{
-        if(this.changedWeekDetails[i].levelOne == 0){
-          this.changedWeekDetails[i].levelOne = 0;
+        if(this.changedWeekDetails[i].levelFour == 0){
+          this.changedWeekDetails[i].levelFour = 0;
         }if(this.changedWeekDetails[i].levelTwo == 0){
           this.changedWeekDetails[i].levelTwo = 0;
         }if(this.changedWeekDetails[i].levelThree == 0){
