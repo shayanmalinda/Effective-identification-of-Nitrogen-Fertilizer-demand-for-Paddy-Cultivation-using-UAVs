@@ -160,7 +160,11 @@ export class LoginComponent implements OnInit {
     sessionStorage.setItem('province', this.user.province);
     sessionStorage.setItem('image', this.user.image);
     sessionStorage.setItem('status', this.user.status);
-    sessionStorage.setItem('userID', this.userCredential.userID);
+    sessionStorage.setItem('createdTimestamp', this.user.createdTimestamp.toString());
+    sessionStorage.setItem('createdDate', this.user.createdDate);
+    sessionStorage.setItem('modifiedDate', this.user.modifiedTimestamp.toString());
+    sessionStorage.setItem('modifiedTimestamp', this.user.modifiedDate);
+    sessionStorage.setItem('registeredDate', this.user.registeredDate);
   }
 
   clearFields() {

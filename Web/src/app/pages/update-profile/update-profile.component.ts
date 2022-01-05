@@ -7,6 +7,7 @@ import divisionalDataFile from '../../../assets/jsonfiles/divisions.json';
 import { SelectorListContext } from '@angular/compiler';
 import { Message } from 'app/models/message.model';
 import { DialogService } from 'app/services/dialog.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-update-profile',
@@ -56,7 +57,7 @@ export class UpdateProfileComponent implements OnInit {
   districtSelected: string;
   divisionSelected: string;
 
-  constructor(private userService: UserService, private router: Router, private dialog: DialogService) { }
+  constructor(private datepipe : DatePipe, private userService: UserService, private router: Router, private dialog: DialogService) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
@@ -93,7 +94,10 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   onSaveClick() {
+    const currentTime = new Date;
     this.user.userRole = this.user.userRole.toLowerCase();
+    this.user.modifiedTimestamp = currentTime.getTime();
+    this.user.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
     this.userService.saveUserDetails(this.userCredential, this.user)
       .then(res => {
         this.message.title = "success";
@@ -132,6 +136,11 @@ export class UpdateProfileComponent implements OnInit {
     this.user.division = (sessionStorage.getItem("division") != "" ? sessionStorage.getItem("division") : "");
     this.user.district = (sessionStorage.getItem("district") != "" ? sessionStorage.getItem("district") : "");
     this.user.province = (sessionStorage.getItem("province") != "" ? sessionStorage.getItem("province") : "");
+    this.user.createdDate = (sessionStorage.getItem("createdDate") != "" ? sessionStorage.getItem("createdDate") : "");
+    this.user.createdTimestamp = parseInt((sessionStorage.getItem("createdTimestamp") != "" ? sessionStorage.getItem("createdTimestamp") : ""));
+    this.user.modifiedDate = (sessionStorage.getItem("modifiedDate") != "" ? sessionStorage.getItem("modifiedDate") : "");
+    this.user.modifiedTimestamp = parseInt((sessionStorage.getItem("modifiedTimestamp") != "" ? sessionStorage.getItem("modifiedTimestamp") : ""));
+    this.user.registeredDate = (sessionStorage.getItem("registeredDate") != "" ? sessionStorage.getItem("registeredDate") : "");
     this.user.image = (sessionStorage.getItem("image") != "" ? sessionStorage.getItem("image") : "./assets/img/faces/user_profile_default.jpg");
     this.provinceSelected = sessionStorage.getItem('province');
     this.loadDistrictSelected(this.provinceSelected);
@@ -151,6 +160,11 @@ export class UpdateProfileComponent implements OnInit {
     sessionStorage.setItem('division', this.user.division);
     sessionStorage.setItem('province', this.user.province);
     sessionStorage.setItem('image', this.user.image);
+    sessionStorage.setItem('createdTimestamp', this.user.createdTimestamp.toString());
+    sessionStorage.setItem('createdDate', this.user.createdDate);
+    sessionStorage.setItem('modifiedDate', this.user.modifiedTimestamp.toString());
+    sessionStorage.setItem('modifiedTimestamp', this.user.modifiedDate);
+    sessionStorage.setItem('registeredDate', this.user.registeredDate);
   }
 
   nameChanged() {
