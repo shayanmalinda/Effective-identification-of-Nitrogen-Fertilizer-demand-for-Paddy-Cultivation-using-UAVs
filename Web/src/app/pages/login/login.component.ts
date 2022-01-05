@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   user: User = {
-    // id: '',
     email: '',
     firstName: '',
     lastName: '',
@@ -33,9 +32,11 @@ export class LoginComponent implements OnInit {
     province: '',
     image: '',
     status: '',
-    time: '',
-    // name: '',
     registeredDate: '',
+    createdDate: '',
+    createdTimestamp: 0,
+    modifiedDate: '',
+    modifiedTimestamp : 0,
   };
 
   userCredential: UserCredential = {

@@ -71,12 +71,12 @@ public class FarmerViewResultsActivity extends AppCompatActivity {
                                             if(task.isSuccessful()){
                                                 for(QueryDocumentSnapshot document: task.getResult()){
                                                     String requestId = document.getId();
-                                                    String date = document.getString("date");
+                                                    String date = document.getString("createdDate");
                                                     Double latitude = document.getDouble("latitude");
                                                     Double longitude = document.getDouble("longitude");
                                                     String requestNote = document.getString("requestNote");
                                                     int plantAge = document.getDouble("plantAge").intValue();
-                                                    Long timestamp = document.getLong("timestamp");
+                                                    Long timestamp = document.getLong("createdTimestamp");
                                                     String status = document.getString("status");
 
                                                     Result result = new Result();
