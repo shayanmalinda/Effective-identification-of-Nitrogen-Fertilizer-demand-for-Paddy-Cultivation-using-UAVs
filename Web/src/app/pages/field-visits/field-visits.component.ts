@@ -39,8 +39,9 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
   farmer: User;
   field: Field;
   farmerName: any;
-  requestPending = 0;
-  visitPending = 0;
+  pending = 0;
+  declined = 0;
+  confirmed = 0;
   processing = 0;
   completed = 0;
   selectedType: String;
@@ -111,10 +112,12 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
       })
 
       this.fieldVisits.forEach(f => {
-        if (f.status == 'request pending') this.requestPending += 1;
-        else if (f.status == 'visit pending') this.visitPending += 1;
+        if (f.status == 'pending') this.pending += 1;
+        else if (f.status == 'confirmed') this.confirmed += 1;
         else if (f.status == 'processing') this.processing += 1;
         else if (f.status == 'completed') this.completed += 1;
+        else if (f.status == 'declined') this.declined += 1;
+
 
         this.fieldService.getField(f.fieldId).subscribe(data => {
           this.field = data.payload.data() as Field;

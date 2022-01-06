@@ -14,9 +14,11 @@
 
 
                 <div class="row">
-                    <div> <label *ngIf="fieldVisit.status=='request pending'"
+                    <div> <label *ngIf="fieldVisit.status=='pending'"
                             class="label label-warning">{{fieldVisit.status}}</label>
-                        <label *ngIf="fieldVisit.status=='visit pending'"
+                        <label *ngIf="fieldVisit.status=='confirmed'"
+                            class="label label-warning">{{fieldVisit.status}}</label>
+                        <label *ngIf="fieldVisit.status=='declined'"
                             class="label label-warning">{{fieldVisit.status}}</label>
                         <label *ngIf="fieldVisit.status=='processing'"
                             class="label label-info">{{fieldVisit.status}}</label>
