@@ -52,7 +52,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
     if (this.type != 'request') {
       this.title += "s";
-      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division','status', 'view', 'delete'];
+      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'status', 'view', 'delete'];
     } else {
       this.title += " requests";
       // if (this.role == 'farmer') {
@@ -74,10 +74,12 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.user = row;
   }
   viewUser() {
+    console.log(this.user)
+
     if (this.type == 'request')
-      this.router.navigate(['/farmer-request'], { state: { user: this.user } });
+      this.router.navigate(['/farmer-request'], { state: { user: this.user, id: this.user.id } });
     else
-      this.router.navigate(['/farmer-profile'], { state: { type: 'own' } });// should be changed to profile with updates
+      this.router.navigate(['/farmer-profile'], { state: { user: this.user, id: this.user.id } });
 
   }
   deleteUser() {
@@ -96,7 +98,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     } else {
       filterValue = this.selectedType;
     }
-    
+
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {

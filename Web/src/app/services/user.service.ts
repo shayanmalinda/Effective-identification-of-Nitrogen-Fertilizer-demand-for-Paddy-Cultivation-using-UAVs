@@ -71,6 +71,18 @@ export class UserService {
 
   }
 
+  updateUserDetails(id: String, user: User) {
+    return new Promise<any>((resolve, reject) => {
+      this.fireStore.collection('Users').doc('' + id+ '').update(user)
+        .then(
+          res => {
+            resolve("Success");
+          }
+          , err => reject(err.message))
+    })
+
+  }
+
 }
 
 
