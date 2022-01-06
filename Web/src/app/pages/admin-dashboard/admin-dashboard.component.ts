@@ -30,7 +30,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   viewFieldVisits() {
-    this.router.navigate(['/field-visits']);
+    this.router.navigate(['/field-visits'],{ state: { fieldId: 'all'}});
   }
 
   viewProfile() {

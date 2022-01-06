@@ -18,7 +18,8 @@ import { Field } from 'app/models/field.model';
   styleUrls: ['./field-visits.component.css']
 })
 export class FieldVisitsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['registrationNo', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status', 'view', 'delete'];
+  displayedColumns: string[];
+  // displayedColumns: string[] = ['registrationNo', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status', 'view', 'delete'];
   dataSource: MatTableDataSource<FieldVisitTemp>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -45,8 +46,16 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
   processing = 0;
   completed = 0;
   selectedType: String;
+  fieldId
 
   constructor(private renderer: Renderer2, private fieldVisitService: FieldVisitService, private fieldService: FieldService, private userService: UserService, private router: Router) {
+    this.fieldId = this.router.getCurrentNavigation().extras.state.fieldId;
+    if (this.fieldId == 'all')
+      this.displayedColumns = ['registrationNo', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status', 'view', 'delete'];
+    else
+      this.displayedColumns = ['date', 'requestNote', 'status', 'delete'];
+
+
   }
 
   isDisabled(date: NgbDateStruct, current: { month: number }) {
@@ -102,7 +111,7 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.fieldVisitService.getFieldVisits().subscribe(data => {
+    this.fieldVisitService.getFieldVisits(this.fieldId).subscribe(data => {
       this.fieldVisits = data.map(e => {
         console.log(this.fieldVisit)
         return {

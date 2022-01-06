@@ -52,8 +52,12 @@ export class FieldVisitService {
 
   // }
 
-  getFieldVisits() {
-    return this.fireStore.collection('FieldRequests').snapshotChanges();
+  getFieldVisits(fieldId) {
+    if (fieldId == "all")
+      return this.fireStore.collection('FieldRequests').snapshotChanges();
+    else
+      return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)).snapshotChanges();
+
   }
 
   getFieldVisitsByDivision(user: User) {
