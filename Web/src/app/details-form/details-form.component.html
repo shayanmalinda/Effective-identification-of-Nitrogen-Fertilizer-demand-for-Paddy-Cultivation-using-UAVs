@@ -13,8 +13,8 @@
                   </div> -->
                 <table style="width: 100%;">
                   <tr >
-                    <td class="td-cell-fieldName">First Name : </td>
-                    <td class="td-cell-input"> <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="firstName" id="firstName" [(ngModel)]="data.details.firstName" style="font-size: medium;"  disabled></td>
+                    <td class="td-cell-fieldName-more">First Name : </td>
+                    <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="firstName" id="firstName" [(ngModel)]="data.details.firstName" style="font-size: medium;"  disabled></td>
                   </tr>
                   <tr >
                     <td class="td-cell-fieldName">Last Name : </td>
@@ -31,6 +31,10 @@
                   <tr >
                     <td class="td-cell-fieldName">Email : </td>
                     <td class="td-cell-input"> <input type="text" class="form-control" placeholder="Email" (focus)="focus1=true" (blur)="focus1=false" name="email" id="email" [(ngModel)]="data.details.email" style="font-size: medium;"  disabled></td>
+                  </tr>
+                  <tr >
+                    <td class="td-cell-fieldName">Field Reg No : </td>
+                    <td class="td-cell-input"> <input type="text" class="form-control" placeholder="Field Registration No" (focus)="focus1=true" (blur)="focus1=false" name="regNo" id="regNo" [(ngModel)]="data.details.registrationNumber" style="font-size: medium;"  disabled></td>
                   </tr>
                 </table>
                   <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
