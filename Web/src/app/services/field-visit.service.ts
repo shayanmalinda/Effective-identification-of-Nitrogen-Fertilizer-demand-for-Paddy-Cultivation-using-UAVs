@@ -1,49 +1,68 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { FieldVisit } from 'app/models/field-visit.model';
+import { User } from 'app/models/user.model';
+import { skip } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FieldVisitService {
-  
+
   constructor(private fireStore: AngularFirestore) { }
 
   getFieldVisitRequests(fieldId: String) {
     return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)).valueChanges();
   }
-  getFieldVisitCountsByStatus(fieldId: String) {
-    let counts:any[]=[];
-    this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)
-      .where('status', '==', 'pending')).valueChanges().subscribe(data => {
-        if (data.length != 0)
-          counts.push({
-            status: "Pending",
-            count: data.length,
-          });
-      });
-    this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)
-      .where('status', '==', 'processing')).valueChanges().subscribe(data => {
-        if (data.length != 0)
-          counts.push({
-            status: "Processing",
-            count: data.length,
-          });
-      });
-    this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)
-      .where('status', '==', 'completed')).valueChanges().subscribe(data => {
-        if (data.length != 0)
-          counts.push({
-            status: "Completed",
-            count: data.length,
-          });
-      });
-    return counts;
+  // getFieldVisitCountsByStatus(fieldId: String) {
+  //   let countsTemp: any[] = [];
+  //   let counts: { [key: string]: number } = {
+  //     pending: 0,
+  //     confirmed: 0,
+  //     declined: 0,
+  //     processing: 0,
+  //     completed: 0,
+  //   }
+  //   let fieldvisits: FieldVisit[];
+  //   this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)
+  //   ).valueChanges().subscribe(data => {
+  //     fieldvisits = data.map(a => {
+  //       return {
+  //         ...a as FieldVisit
+  //       }
+  //     })
+  //     // console.log(fieldvisits)
+  //     fieldvisits.forEach(visit => {
+  //       counts[visit.status]++;
+  //     })
+  //     // console.log(counts)
+  //     Object.keys(counts).forEach(key => {
+  //       if (counts[key] != 0)
+  //         countsTemp.push({
+  //           status: key,
+  //           counts: counts[key]
+  //         })
+  //       console.log("serv")
+  //     });
+  //     return countsTemp;
+
+
+  //   });
+
+
+  // }
+
+  getFieldVisits(fieldId) {
+    if (fieldId == "all")
+      return this.fireStore.collection('FieldRequests').snapshotChanges();
+    else
+      return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)).snapshotChanges();
+
   }
 
-  getFieldVisits() {
-    return this.fireStore.collection('FieldRequests').snapshotChanges();
+  getFieldVisitsByDivision(user: User) {
+    return this.fireStore.collection('FieldRequests', ref => ref.where('division', '==', user.division)).snapshotChanges();
   }
- 
 
   deleteFieldVisit(fieldVisitId: String) {
     this.fireStore.doc('FieldRequests/' + fieldVisitId).delete();

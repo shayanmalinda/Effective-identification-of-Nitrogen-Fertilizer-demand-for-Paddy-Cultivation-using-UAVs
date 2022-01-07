@@ -83,11 +83,15 @@
                 <div class="row">
                     <ul>
                         <li *ngFor="let index of this.counts">
-                            <label *ngIf="index.status=='Pending'" class="label label-warning">{{ index.status }} -
+                            <label *ngIf="index.status=='pending'" class="label label-warning">{{ index.status }} -
                                 {{index.count}}</label>
-                            <label *ngIf="index.status=='Processing'" class="label label-primary">{{ index.status }} -
+                            <label *ngIf="index.status=='confirmed'" class="label label-primary">{{ index.status }} -
                                 {{index.count}}</label>
-                            <label *ngIf="index.status=='Completed'" class="label label-success">{{ index.status }} -
+                            <label *ngIf="index.status=='declined'" class="label label-success">{{ index.status }} -
+                                {{index.count}}</label>
+                            <label *ngIf="index.status=='processing'" class="label label-success">{{ index.status }} -
+                                {{index.count}}</label>
+                            <label *ngIf="index.status=='completed'" class="label label-success">{{ index.status }} -
                                 {{index.count}}</label>
                         </li>
                     </ul>
@@ -95,7 +99,11 @@
                 <div class="left">
                     <!-- <button class="btn btn-outline-default btn-round update"> Update</button>
                     <button class="btn btn-outline-default btn-round cancel"> Cancel</button> -->
-                    <button class="btn btn-outline-default btn-round request"> View Field Requests</button>
+                    <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Field
+                        Requests</button>
+                    <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View N 
+                        Concentrations</button>
+
                 </div>
             </div>
         </div>

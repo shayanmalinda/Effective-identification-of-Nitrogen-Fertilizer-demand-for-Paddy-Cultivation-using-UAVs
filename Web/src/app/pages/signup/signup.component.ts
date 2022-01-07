@@ -25,7 +25,6 @@ export class SignupComponent implements OnInit {
     loginForm : FormGroup;
 
     user : User = {
-        id : '',
         email: '',
         firstName: '',
         lastName: '',
@@ -36,10 +35,12 @@ export class SignupComponent implements OnInit {
         division: '',
         province: '',          
         image : '',        
-        status : '',      
-        time : '',        
-        name : '',
+        status : '',  
         registeredDate : '',
+        createdDate: '',
+        createdTimestamp: 0,
+        modifiedDate: '',
+        modifiedTimestamp : 0,
     };
 
     userCredential : UserCredential = {
@@ -196,11 +197,17 @@ export class SignupComponent implements OnInit {
     // }
 
     signUpClicked(){
+      let currentTime = new Date();
       this.submitted = true;
       this.user.email = this.userCredential.email;
       this.user.registeredDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
       this.user.status = "pending";
-      this.user.userRole = "agricultural officer"
+      this.user.userRole = "agricultural officer";
+      this.user.createdDate  = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
+      this.user.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
+      this.user.createdTimestamp = currentTime.getTime();
+      this.user.modifiedTimestamp = currentTime.getTime();
+      console.log(this.user.createdTimestamp +  '  ' + this.user.createdDate)
         if(this.provinceSelected == undefined || this.user.firstName == '' || 
           this.user.lastName == '' || this.user.nic == '' || this.user.phone == '' || 
           this.user.userRole == '')
@@ -214,7 +221,7 @@ export class SignupComponent implements OnInit {
               this.message.title = "success";
               this.message.showMessage = "You have successfully registered within the system and wait until the system administor's approval !";
               this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-                this.router.navigate(['/user-dashboard']);
+                this.router.navigate(['/login']);
               });
             }, err => {
               this.message.title = "error";

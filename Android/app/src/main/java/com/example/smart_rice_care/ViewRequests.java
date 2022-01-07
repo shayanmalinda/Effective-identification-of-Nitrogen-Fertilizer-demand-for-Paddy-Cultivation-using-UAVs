@@ -26,6 +26,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ViewRequests extends AppCompatActivity {
 
@@ -54,7 +56,6 @@ public class ViewRequests extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 division = documentSnapshot.getString("division");
                 db.collection("FieldRequests")
-                    .orderBy(FieldPath.documentId(), Query.Direction.DESCENDING)
                     .whereEqualTo("division",division)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -63,7 +64,7 @@ public class ViewRequests extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 for(QueryDocumentSnapshot document: task.getResult()){
                                     String requestId = document.getId();
-                                    String date = document.getString("date");
+                                    String date = document.getString("createdDate");
                                     Log.d("printing date", date.toString());
                                     String division = document.getString("division");
                                     String fieldId = document.getString("fieldId");
@@ -71,7 +72,10 @@ public class ViewRequests extends AppCompatActivity {
                                     Double longitude = document.getDouble("longitude");
                                     String requestNote = document.getString("requestNote");
                                     String status = document.getString("status");
-                                    if(status.equals("request pending")) {
+                                    int plantAge = document.getDouble("plantAge").intValue();
+                                    Long timestamp = document.getLong("createdTimestamp");
+//                                    if(status.equals("request pending")) {
+                                    if(true) {
                                         DocumentReference docRef = db.collection("FieldDetails").document(fieldId);
                                         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
@@ -96,8 +100,15 @@ public class ViewRequests extends AppCompatActivity {
                                                                         String nic = document.getString("nic");
                                                                         String phone = document.getString("phone");
 
-                                                                        requests.add(new Request(farmerId, fieldId, requestId, date, address, registrationNumber, firstName, lastName, division,  email, nic, phone,longitude, latitude, requestNote));
+                                                                        requests.add(new Request(farmerId, fieldId, requestId, date, address, registrationNumber, firstName, lastName, division,  email, nic, phone,longitude, latitude, requestNote, plantAge, timestamp, status));
                                                                         RecyclerView rvRequests = (RecyclerView) findViewById(R.id.rvRequests);
+                                                                        Collections.sort(requests,new Comparator<Request>(){
+                                                                            public int compare(Request r1, Request r2){
+                                                                                if(r1.getTimestamp() == r2.getTimestamp())
+                                                                                    return 0;
+                                                                                return r1.getTimestamp() > r2.getTimestamp() ? -1 : 1;
+                                                                            }
+                                                                        });
                                                                         RequestAdapter adapter = new RequestAdapter(requests);
                                                                         rvRequests.setAdapter(adapter);
                                                                         rvRequests.setLayoutManager(new LinearLayoutManager(ViewRequests.this));

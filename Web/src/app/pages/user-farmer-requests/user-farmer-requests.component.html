@@ -1,0 +1,128 @@
+<div class="wrapper">
+    <div class="full-width-table">
+        <div class="filter"></div>
+        <div class="content-center">
+            <div class="container">
+                <div>
+                    <br>
+                    <br>
+                    <div class="title-brand">
+                        <h1>Farmer Requests Details</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label style="color:white">Province : </label>
+                            <input type="text" id="province" value="Province" [(ngModel)]="this.user.province" class="form-control form-control-danger" style="text-align: center;" disabled>
+                        </div>
+                        <div class="col-sm-4">
+                            <label style="color:white">District : </label>
+                            <input type="text" id="district" value="District" [(ngModel)]="this.user.district" class="form-control form-control-danger" style="text-align: center;" disabled>
+                        </div>
+                        <div class="col-sm-4">
+                            <label style="color:white">Division : </label>
+                            <input type="text" id="division" value="Division" [(ngModel)]="this.user.division" class="form-control form-control-danger" style="text-align: center;" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <mat-form-field id="fieldInput" >
+                                <input class="form-control" (keyup)="applyFilter($event.target.value)" matInput placeholder="Filter" >
+                            </mat-form-field>
+                            <br>
+                        </div>
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-8" style="padding-top: 25px; padding-bottom: 25px; padding-right: 0px; text-align: right; ">
+                            <label class="label label-default-our-dark right label-styles">all : {{all}}</label>&nbsp;
+                            <label class="label label-warning-our-dark right label-styles">pending : {{pendingRequests}}</label>&nbsp;
+                            <label class="label label-success-our-dark right label-styles">completed : {{completedRequests}}</label>&nbsp;
+                            <label class="label label-danger-our-dark right label-styles" style="margin-right: 10px;">declined : {{declinedRequests}}</label>&nbsp;
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mat-elevation-z8">
+                                <table mat-table [dataSource]="dataSource" matSort>
+                                <!-- <table mat-table [dataSource]="dataSource" matSort > -->
+
+                                    <!--- Note that these columns can be defined in any order.
+                                          The actual rendered columns are set as a property on the row definition" -->
+                                  
+                                    <!-- Position Column -->'', '', '', '', 'division', '', 'status'
+                                    <ng-container matColumnDef="registrationNumber">
+                                      <!-- <th mat-header-cell *matHeaderCellDef > Week </th> -->
+                                      <th mat-header-cell *matHeaderCellDef mat-sort-header > Field Reg No </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.registrationNumber}} </td>
+                                    </ng-container>
+                                  
+                                    <!-- Name Column -->
+                                    <ng-container matColumnDef="address">
+                                      <th mat-header-cell *matHeaderCellDef mat-sort-header > Field Address </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.address}}</td>
+                                    </ng-container>
+                                  
+                                    <!-- Weight Column -->
+                                    <ng-container matColumnDef="farmerName">
+                                      <th mat-header-cell *matHeaderCellDef mat-sort-header > Farmer Name </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.farmerName}}</td>
+                                    </ng-container>
+                                  
+                                    <!-- Symbol Column -->
+                                    <ng-container matColumnDef="createdDate">
+                                      <th mat-header-cell *matHeaderCellDef mat-sort-header > Date </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.createdDate | date:'MMM d, y'}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="division">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Division </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.division}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="requestNote">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Request Note </th>
+                                        <td mat-cell *matCellDef="let element">{{element.requestNote}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="status">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Status </th>
+                                        <td mat-cell *matCellDef="let element">  
+                                            <label *ngIf="element.status=='pending'"
+                                                class="label label-warning-our-dark right label-styles">{{element.status}}
+                                            </label>
+                                            <label *ngIf="element.status=='declined'"
+                                                class="label label-danger-our-dark right label-styles">{{element.status}}
+                                            </label>
+                                            <label *ngIf="element.status=='completed'"
+                                                class="label label-success-our-dark right label-styles">{{element.status}}
+                                            </label>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="action">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Action </th>
+                                        <td mat-cell *matCellDef="let element" style="text-align: center;">
+                                            <!-- <button mat-icon-button color="primary" style="background-color: white; border: none;" (click)="accept()"
+                                            aria-label="Example icon button with a home icon">
+                                                <mat-icon [ngStyle]="{'color':'blue'}">visibility</mat-icon>
+                                            </button> -->
+                                            <mat-icon role="img" class="mat-icon notranslate material-icons mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font" (click)="onEditClick()">edit</mat-icon>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+                                    <!-- <tr mat-row (change)="onChange(row)" *matRowDef="let row; columns: displayedColumns;"></tr> -->
+                                    <tr mat-row (change)="onChange(row)" (click)="onViewVisitsClick(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+                                  </table>
+                                  <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons></mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <br>
+                    <div class="row" style="padding-left: 480px;">
+                        <button class="btn btn-outline-success btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
+                        <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onCancelClick()">cancel</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

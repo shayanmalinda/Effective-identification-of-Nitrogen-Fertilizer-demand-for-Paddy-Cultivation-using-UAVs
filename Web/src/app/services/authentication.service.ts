@@ -15,7 +15,6 @@ import { Observable, of } from 'rxjs';
 export class AuthenticationService {
 
   user : User = {
-    id : '',
     email: '',
     firstName: '',
     lastName: '',
@@ -26,10 +25,12 @@ export class AuthenticationService {
     division: '',
     province: '',          
     image : '',        
-    status : '',      
-    time : '',        
-    name : '',
+    status : '',  
     registeredDate : '',
+    createdDate: '',
+    createdTimestamp: 0,
+    modifiedDate: '',
+    modifiedTimestamp : 0,
   };
 
   message : Message;
@@ -98,14 +99,19 @@ export class AuthenticationService {
               userCredential.userID = data.docs[0].id;
               this.updateSessionDetails(userCredential,this.user);
               this.isLoggedIn = true;
-              resolve("Success")
+              resolve({
+                "userRole" : this.user.userRole,
+                "status" : this.user.status
+              });
             }
+            // if(data.docs.length == 0){
+            //   resolve("error")
+            // }
           })
         // userCredential.userID = res.user.uid;
         // sessionStorage.setItem("userID", res.user.uid);
         // this.userService.addUser(userCredential,user);
         // this.updateSessionDetails(userCredential, user);
-        
         }
         ,err => {
           reject(err.code)
@@ -133,6 +139,11 @@ export class AuthenticationService {
     sessionStorage.setItem('province',user.province);
     sessionStorage.setItem('image',user.image);
     sessionStorage.setItem('status',user.status);
+    sessionStorage.setItem('createdTimestamp', this.user.createdTimestamp.toString());
+    sessionStorage.setItem('createdDate', this.user.createdDate);
+    sessionStorage.setItem('modifiedDate', this.user.modifiedTimestamp.toString());
+    sessionStorage.setItem('modifiedTimestamp', this.user.modifiedDate);
+    sessionStorage.setItem('registeredDate', this.user.registeredDate);
   }
 
   removeSessionDetails(){
@@ -150,6 +161,10 @@ export class AuthenticationService {
     sessionStorage.removeItem('image');
     sessionStorage.removeItem('userID');
     sessionStorage.removeItem('status');
+    sessionStorage.removeItem('createdTimestamp');
+    sessionStorage.removeItem('createdDate');
+    sessionStorage.removeItem('modifiedDate');
+    sessionStorage.removeItem('modifiedTimestamp');
   }
 
   //to secure the routes

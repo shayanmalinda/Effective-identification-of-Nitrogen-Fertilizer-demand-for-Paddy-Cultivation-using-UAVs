@@ -27,6 +27,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class FarmerViewResultsActivity extends AppCompatActivity {
 
@@ -61,7 +63,6 @@ public class FarmerViewResultsActivity extends AppCompatActivity {
                             }
                             String finalFieldId = fieldId;
                             db.collection("FieldRequests")
-                                    .orderBy(FieldPath.documentId(), Query.Direction.DESCENDING)
                                     .whereEqualTo("fieldId",fieldId)
                                     .get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -70,10 +71,12 @@ public class FarmerViewResultsActivity extends AppCompatActivity {
                                             if(task.isSuccessful()){
                                                 for(QueryDocumentSnapshot document: task.getResult()){
                                                     String requestId = document.getId();
-                                                    String date = document.getString("date");
+                                                    String date = document.getString("createdDate");
                                                     Double latitude = document.getDouble("latitude");
                                                     Double longitude = document.getDouble("longitude");
                                                     String requestNote = document.getString("requestNote");
+                                                    int plantAge = document.getDouble("plantAge").intValue();
+                                                    Long timestamp = document.getLong("createdTimestamp");
                                                     String status = document.getString("status");
 
                                                     Result result = new Result();
@@ -84,8 +87,17 @@ public class FarmerViewResultsActivity extends AppCompatActivity {
                                                     result.requestNote = requestNote;
                                                     result.status = status;
                                                     result.fieldId = finalFieldId;
+                                                    result.plantAge = plantAge;
+                                                    result.timestamp = timestamp;
 
                                                     results.add(result);
+                                                    Collections.sort(results,new Comparator<Result>(){
+                                                        public int compare(Result r1, Result r2){
+                                                            if(r1.timestamp == r2.timestamp)
+                                                                return 0;
+                                                            return r1.timestamp > r2.timestamp ? -1 : 1;
+                                                        }
+                                                    });
                                                     RecyclerView rvRequests = (RecyclerView) findViewById(R.id.rvResults);
                                                     ResultAdapter adapter = new ResultAdapter(results);
                                                     rvRequests.setAdapter(adapter);

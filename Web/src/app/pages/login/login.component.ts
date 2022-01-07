@@ -18,10 +18,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm : FormGroup;
+  loginForm: FormGroup;
 
-  user : User = {
-    id : '',
+  user: User = {
     email: '',
     firstName: '',
     lastName: '',
@@ -30,85 +29,117 @@ export class LoginComponent implements OnInit {
     userRole: '',
     district: '',
     division: '',
-    province: '',         
-    image : '',        
-    status : '',        
-    time : '',        
-    name : '',
-    registeredDate : '',
+    province: '',
+    image: '',
+    status: '',
+    registeredDate: '',
+    createdDate: '',
+    createdTimestamp: 0,
+    modifiedDate: '',
+    modifiedTimestamp: 0,
   };
 
-  userCredential : UserCredential = {
-    email : '',
-    password : '',
-    userID : '',
+  userCredential: UserCredential = {
+    email: '',
+    password: '',
+    userID: '',
   };
 
-  message : Message = {
-    title : '',
-    showMessage : '',
+  message: Message = {
+    title: '',
+    showMessage: '',
   }
-  
-  users : Array<any> = [];
+
+  users: Array<any> = [];
   plainPassword = "";
   submitted = true;
 
-  constructor(private formBuilder : FormBuilder, private dialog : DialogService, private userService : UserService, private router : Router, private authenticationService : AuthenticationService) { }
+  constructor(private formBuilder: FormBuilder, private dialog: DialogService, private userService: UserService, private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group(
       {
         email: ['', [Validators.email, Validators.required]],
-        firstName : ['',[Validators.required]],
-        lastName : ['',[Validators.required]],
-        nic : ['',[Validators.required]],
-        userRole : ['',[Validators.required]],
-        phoneNumber : ['',[Validators.required]],
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
+        nic: ['', [Validators.required]],
+        userRole: ['', [Validators.required]],
+        phoneNumber: ['', [Validators.required]],
       }
     )
   }
 
-  logInClicked(){
+  logInClicked() {
     this.submitted = true;
-    if(this.userCredential.email == "" || this.userCredential.password == ""){
+    if (this.userCredential.email == "" || this.userCredential.password == "") {
       this.message.title = "Error";
       this.message.showMessage = "You have to enter relevant fields to login !";
       this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
         this.clearFields();
       })
-    }else{
+    } else {
       this.authenticationService.logIn(this.userCredential)
-      .then(res =>{
-        // console.log("This is the user id in login : " + this.userCredential.userID);
-        // this.router.navigate(['/user-dashboard']);
+        .then(res => {
+          console.log(this.authenticationService.isLoggedIn)
+          // console.log("This is the user id in login : " + this.userCredential.userID);
+          // this.router.navigate(['/user-dashboard']);
 
-        //testing region 
-        console.log("is logged in : " + this.authenticationService.isLoggedIn);
-        if(this.authenticationService.isLoggedIn){
-          console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
-          const redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
-          this.router.navigateByUrl(redirect);
-        }
+          //testing region 
+          // console.log("is logged in : " + this.authenticationService.isLoggedIn);
+          if (this.authenticationService.isLoggedIn) {
+            console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
+            var redirect;
+            if (res.userRole == "agricultural officer") {
+              if (res.status == "active") {
+                redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
+                this.router.navigateByUrl(redirect);
+              } else if (res.status == "pending") {
+                this.message.title = "warning";
+                this.message.showMessage = "You still haven't recieve the admin approval to interact with the system !!";
+                this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+                  this.clearFields();
+                })
+              }else if (res.status == "inactive") {
+                this.message.title = "error";
+                this.message.showMessage = "Please contact system admin to interact with the system !!";
+                this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+                  this.clearFields();
+                })
+              }
+            } else if (res.userRole == "admin") {
+              console.log(this.authenticationService.isLoggedIn)
+              // the redirect url should come here edit follow code and set the url
+              redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'admin-dashboard'
+              this.router.navigateByUrl(redirect);
+            } else {
+              this.message.title = "error";
+              this.message.showMessage = "Invalid login !!"
+              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+                this.clearFields();
+              })
+            }
+          }
+          //end of the testing region
 
-        //end of the testing region
+        }, err => {
+          this.message.title = "error";
+          // console.log(err);
+          if (err == "auth/wrong-password") {
+            this.message.showMessage = "You have entered invalid password !";
+          } else if (err == "auth/user-not-found") {
+            this.message.showMessage = "The Email you have entered do not have an account here !";
+          } else {
+            this.message.showMessage = "Invalid Email and password !"
+          }
+          this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+            this.clearFields();
+          });
+        })
+    }
 
-      }, err => {
-        this.message.title = "error";
-        console.log(err);
-        if(err == "auth/wrong-password"){
-          this.message.showMessage = "You have entered invalid password !";
-        }else if(err == "auth/user-not-found"){
-          this.message.showMessage = "The Email you have entered do not have an account here !";
-        }else{
-          this.message.showMessage = "Invalid Email and password !"
-        }
-        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-          this.clearFields();
-      });
-    })}
   }
 
-  encryptPassword(password : string){
+  encryptPassword(password: string) {
     var originalPassword = password;
 
     const md5 = new Md5();
@@ -117,22 +148,26 @@ export class LoginComponent implements OnInit {
     return finalPassword;
   }
 
-  updateSessionDetails(){
-    sessionStorage.setItem('email',this.user.email);
-    sessionStorage.setItem('firstName',this.user.firstName);
-    sessionStorage.setItem('lastName',this.user.lastName);
-    sessionStorage.setItem('nic',this.user.nic);
-    sessionStorage.setItem('phone',this.user.phone);
-    sessionStorage.setItem('userRole',this.user.userRole);
-    sessionStorage.setItem('district',this.user.district);
-    sessionStorage.setItem('division',this.user.division);
-    sessionStorage.setItem('province',this.user.province);
-    sessionStorage.setItem('image',this.user.image);
-    sessionStorage.setItem('status',this.user.status);
-    sessionStorage.setItem('userID',this.userCredential.userID);
+  updateSessionDetails() {
+    sessionStorage.setItem('email', this.user.email);
+    sessionStorage.setItem('firstName', this.user.firstName);
+    sessionStorage.setItem('lastName', this.user.lastName);
+    sessionStorage.setItem('nic', this.user.nic);
+    sessionStorage.setItem('phone', this.user.phone);
+    sessionStorage.setItem('userRole', this.user.userRole);
+    sessionStorage.setItem('district', this.user.district);
+    sessionStorage.setItem('division', this.user.division);
+    sessionStorage.setItem('province', this.user.province);
+    sessionStorage.setItem('image', this.user.image);
+    sessionStorage.setItem('status', this.user.status);
+    sessionStorage.setItem('createdTimestamp', this.user.createdTimestamp.toString());
+    sessionStorage.setItem('createdDate', this.user.createdDate);
+    sessionStorage.setItem('modifiedDate', this.user.modifiedTimestamp.toString());
+    sessionStorage.setItem('modifiedTimestamp', this.user.modifiedDate);
+    sessionStorage.setItem('registeredDate', this.user.registeredDate);
   }
 
-  clearFields(){
+  clearFields() {
     this.userCredential.email = "";
     this.userCredential.password = "";
   }

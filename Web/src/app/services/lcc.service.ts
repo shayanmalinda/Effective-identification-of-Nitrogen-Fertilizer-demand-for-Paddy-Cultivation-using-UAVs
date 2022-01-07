@@ -36,4 +36,8 @@ export class LccService {
   getLccDetailsByDivision(user : User) {
     return this.fireStore.collection('LCCDetails', ref => ref.where('division', '==', user.division)).get();
   }
+
+  getLccWithoutDivision(){
+    return this.fireStore.collection('LCCDetails', ref => ref.where('division', '==', "ALL")).get();
+  }
 }

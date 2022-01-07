@@ -12,16 +12,14 @@ export class UserService {
 
   constructor(private fireStore: AngularFirestore) { }
 
-  getUsers(userRole, status) {
-    // console.log(userRole+"mmm"+status);
-    if (userRole == 'user')
-      userRole = 'farmer'
-    else
-      userRole = 'agricultural officer'
-    if (status == 'approved')
-      return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', '==', status)).snapshotChanges();
-    else return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', 'in', ['pending','declined'])).snapshotChanges();
+  getUsers(userRole, type) {
+    if (userRole == 'officer')
+      userRole = 'agricultural officer';
 
+    if (type == 'request')
+      return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', 'in', ['pending', 'declined'])).snapshotChanges();
+    else
+      return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', 'in', ['active', 'inactive'])).snapshotChanges();
   }
 
   getUser(id: string) {
@@ -38,33 +36,51 @@ export class UserService {
     this.fireStore.doc('Users/' + userId).update({ status: 'declined' });
   }
 
-  getallUsers(){
+  getallUsers() {
     return this.fireStore.collection('Users').get();
   }
 
-  addUser(userCredential : UserCredential, user : User){
-    this.fireStore.collection('Users').doc(''+ userCredential.userID +'').set(user);
+  addUser(userCredential: UserCredential, user: User) {
+    this.fireStore.collection('Users').doc('' + userCredential.userID + '').set(user);
   }
 
-  getUserByEmail(userCredential : UserCredential){
+  getUserByEmail(userCredential: UserCredential) {
     // console.log(user.email + " " + user.password );
     return this.fireStore.collection('Users', ref => ref.where('email', '==', userCredential.email)).get();
+  }
+
+  getFarmerById(userCredential: UserCredential) {
+    console.log(userCredential.userID);
+    // return this.fireStore.collection('Users').doc(userCredential.userID).get();
+    return this.fireStore.collection('Users').doc(userCredential.userID).snapshotChanges()
   }
 
   // saveUserDetails(userCredential : UserCredential, user : User){
   //   this.fireStore.collection('Users').doc(''+ userCredential.userID +'').update(user);
   // }
 
-  saveUserDetails(userCredential : UserCredential, user : User){
+  saveUserDetails(userCredential: UserCredential, user: User) {
     return new Promise<any>((resolve, reject) => {
-      this.fireStore.collection('Users').doc(''+ userCredential.userID +'').update(user)
-    .then(
-      res => {
-      resolve("Success");
-    }
-      ,err => reject(err.message))
+      this.fireStore.collection('Users').doc('' + userCredential.userID + '').update(user)
+        .then(
+          res => {
+            resolve("Success");
+          }
+          , err => reject(err.message))
     })
-    
+
+  }
+
+  updateUserDetails(id: String, user: User) {
+    return new Promise<any>((resolve, reject) => {
+      this.fireStore.collection('Users').doc('' + id+ '').update(user)
+        .then(
+          res => {
+            resolve("Success");
+          }
+          , err => reject(err.message))
+    })
+
   }
 
 }

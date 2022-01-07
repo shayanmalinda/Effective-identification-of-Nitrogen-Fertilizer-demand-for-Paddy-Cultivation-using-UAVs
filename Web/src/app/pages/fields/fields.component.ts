@@ -1,3 +1,4 @@
+import { FieldTemp } from './../../models/field.model';
 import { User } from './../../models/user.model';
 import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -18,8 +19,8 @@ import { Router } from '@angular/router';
 })
 
 export class FieldsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['registrationNumber', 'address', 'division', 'farmer', 'view', 'delete'];
-  dataSource: MatTableDataSource<Field>;
+  displayedColumns: string[] = ['registrationNumber', 'field.address', 'division', 'farmer', 'view', 'delete'];
+  dataSource: MatTableDataSource<FieldTemp>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -32,10 +33,10 @@ export class FieldsComponent implements OnInit, AfterViewInit {
   focus2;
   date: { year: number, month: number };
   model: NgbDateStruct;
-  fields: Field[];
+  fields: FieldTemp[];
   data: any[];
   selectedRowIndex;
-  field: Field;
+  field: FieldTemp;
   farmer: User;
   farmerName: any;
 
@@ -54,6 +55,7 @@ export class FieldsComponent implements OnInit, AfterViewInit {
     this.field = row;
   }
   viewField() {
+    console.log(this.field);
     this.router.navigate(['/field-details'], { state: { field: this.field } });
   }
   deleteField() {
@@ -87,13 +89,13 @@ export class FieldsComponent implements OnInit, AfterViewInit {
         return {
           id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
-        } as Field;
+        } as FieldTemp;
       })
       this.fields.forEach(f => {
         this.userService.getUser(f.farmerId).subscribe(data => {
           this.farmer = data.payload.data() as User;
           f.farmer = this.farmer.firstName + " " + this.farmer.lastName;
-
+          console.log(this.fields)
           this.dataSource = new MatTableDataSource(this.fields);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;

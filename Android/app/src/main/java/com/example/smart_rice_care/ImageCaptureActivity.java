@@ -1,7 +1,5 @@
 package com.example.smart_rice_care;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -24,7 +22,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -49,8 +46,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,15 +64,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class ImageCaptureActivity extends AppCompatActivity implements SensorEventListener, LocationListener {
 
     private int REQUEST_CODE_PERMISSIONS = 101;
     private String[] REQUIRED_PERMISSSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
     String requestId, fieldId, farmerId;
+    Integer delayTime;
     TextureView txvCamera;
-    TextView tvColorLevel;
+    TextView tvColorLevel, tvLongitude, tvLatitude;
     ImageButton btCaptureImage;
     FrameLayout frameLayout;
 
@@ -101,9 +96,13 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     ImageCapture imgCap;
 
     MediaPlayer shutterSound;
+    MediaPlayer music;
+    MediaPlayer success;
+    MediaPlayer error;
 
     private boolean captured = false;
-    private boolean waiting = false;
+    private boolean cameraWaiting = true;
+    private boolean responseWaiting = false;
 
     private FusedLocationProviderClient fusedLocationClient;
     protected LocationManager locationManager;
@@ -120,6 +119,17 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_capture);
 
+        music = MediaPlayer.create(ImageCaptureActivity.this, R.raw.music);
+        success = MediaPlayer.create(ImageCaptureActivity.this, R.raw.success);
+        error = MediaPlayer.create(ImageCaptureActivity.this, R.raw.error);
+        music.start();
+
+
+        Intent getIntent = getIntent();
+        requestId = getIntent.getStringExtra("requestId");
+        fieldId = getIntent.getStringExtra("fieldId");
+        farmerId = getIntent.getStringExtra("farmerId");
+        delayTime = getIntent.getIntExtra("delayTime", 0);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -129,10 +139,6 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ImageCaptureActivity.this);
 
-        Intent getIntent = getIntent();
-        requestId = getIntent.getStringExtra("requestId");
-        fieldId = getIntent.getStringExtra("fieldId");
-        farmerId = getIntent.getStringExtra("farmerId");
 
         shutterSound = MediaPlayer.create(ImageCaptureActivity.this, R.raw.shutter);
 
@@ -156,7 +162,19 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         txvCamera = (TextureView) findViewById(R.id.txvCamera);
         btCaptureImage = findViewById(R.id.btCaptureImage);
         tvColorLevel = findViewById(R.id.tvColorLevel);
+        tvLongitude = findViewById(R.id.tvLongitude);
+        tvLatitude = findViewById(R.id.tvLatitude);
 
+        tvColorLevel.setText("Delaying...");
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                tvColorLevel.setText("Starting...");
+                music.stop();
+                cameraWaiting = false;
+            }
+        }, delayTime*1000);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 //        frameLayout.addView(btCaptureImage);
@@ -205,6 +223,8 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     }
 
     private File captureImage(ImageCapture imgCap) {
+        shutterSound.start();
+        responseWaiting = true;
         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + requestId);
         try {
             if (dir.mkdir()) {
@@ -232,7 +252,6 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                 exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,  GPS.convert(currentLocation.getLongitude()));
                 try {
                     exif.saveAttributes();
-                    shutterSound.start();
                     String msg = "Pic captured at " + file.getAbsolutePath();
                     processImage(file, currentLocation);
                 } catch (IOException e) {
@@ -301,7 +320,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     public void processImage(File file, Location location) {
         tvColorLevel.setText("Processing...");
-        String url = "http://192.168.8.104:5000/process";
+        String url = "http://192.168.8.103:5000/process";
 
         Thread thread = new Thread(new Runnable() {
 
@@ -320,12 +339,15 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         System.out.println("Response===Failed "+ responseString);
+                        Log.d("Response===Failed ", responseString);
+                        error.start();
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         String level = responseString;
                         System.out.println("Response===Success =  "+ level);
+                        Log.d("Response===Success ", responseString);
                         tvColorLevel.setText("Level "+level);
 
                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -344,13 +366,22 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
+                                        success.start();
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            public void run() {
+                                                responseWaiting = false;
+                                            }
+                                        }, 2000);
                                         Toast.makeText(ImageCaptureActivity.this, "ALL SUCCESS", Toast.LENGTH_SHORT).show();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull @NotNull Exception e) {
+                                        responseWaiting = false;
                                         Toast.makeText(ImageCaptureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        error.start();
                                     }
                                 });
 
@@ -391,20 +422,17 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                 if (hitResult > THRESHOLD) {
 //                    Moving
                     captured = false;
-                } else {
-//                    Not Moving
                 }
 
-                if(hitResult <= THRESHOLD && !captured && !waiting){
+                if(hitResult <= THRESHOLD && !captured && !cameraWaiting && !responseWaiting){
                     captured = true;
-                    waiting = true;
-
-//                    captureImage(imgCap);
+                    cameraWaiting = true;
+                    captureImage(imgCap);
 
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
-                            waiting = false;
+                            cameraWaiting = false;
                         }
                     }, 3000);
                 }
@@ -424,11 +452,12 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     @Override
     protected void onPause() {
         super.onPause();
-        shutterSound.stop();
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
         currentLocation = location;
+        tvLatitude.setText("Latitude: "+location.getLatitude());
+        tvLongitude.setText("Longitude: "+location.getLongitude());
     }
 }

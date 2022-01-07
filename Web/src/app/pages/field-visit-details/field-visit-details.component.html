@@ -14,9 +14,11 @@
 
 
                 <div class="row">
-                    <div> <label *ngIf="fieldVisit.status=='request pending'"
+                    <div> <label *ngIf="fieldVisit.status=='pending'"
                             class="label label-warning">{{fieldVisit.status}}</label>
-                        <label *ngIf="fieldVisit.status=='visit pending'"
+                        <label *ngIf="fieldVisit.status=='confirmed'"
+                            class="label label-warning">{{fieldVisit.status}}</label>
+                        <label *ngIf="fieldVisit.status=='declined'"
                             class="label label-warning">{{fieldVisit.status}}</label>
                         <label *ngIf="fieldVisit.status=='processing'"
                             class="label label-info">{{fieldVisit.status}}</label>
@@ -93,7 +95,7 @@
 
                 <div class="left">
                     <button *ngIf="this.fieldVisit.status=='completed'"
-                        class="btn btn-outline-default btn-round result"> View Results</button>
+                        class="btn btn-outline-default btn-round result" on> View Results</button>
                     <button class="btn btn-outline-default btn-round update"> View All Visits</button>
                     <button class="btn btn-outline-default btn-round request"> View All Requests</button>
                 </div>

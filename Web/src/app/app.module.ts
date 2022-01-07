@@ -18,6 +18,11 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { LccDetailsComponent } from './pages/lcc-details/lcc-details.component';
 import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
 import { ShowMessageComponent } from './show-message/show-message.component';
+import { UserFarmersComponent } from './pages/user-farmers/user-farmers.component';
+import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-farmer-requests.component';
+import { UserFeildsComponent } from './pages/user-feilds/user-feilds.component';
+import { UserFieldVisitsComponent } from './pages/user-field-visits/user-field-visits.component';
+import { DetailsFormComponent } from './details-form/details-form.component';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -33,6 +38,8 @@ import { MaterialModule } from './material/material.module';
 
 //route authentication
 import { AuthGuard } from './services/auth/auth.guard';
+import { AgmCoreModule } from '@agm/core';
+import { UserReportsComponent } from './pages/user-reports/user-reports.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +52,12 @@ import { AuthGuard } from './services/auth/auth.guard';
     ShowMessageComponent,
     LccDetailsComponent,
     UserDashboardComponent,
+    UserFarmersComponent,
+    UserFarmerRequestsComponent,
+    UserFeildsComponent,
+    UserFieldVisitsComponent,
+    DetailsFormComponent,
+    UserReportsComponent,
     
   ],
   imports: [
@@ -58,10 +71,13 @@ import { AuthGuard } from './services/auth/auth.guard';
     ExamplesModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, 'smart-rice-care'),
-AngularFirestoreModule, // Only required for database features
-AngularFireAuthModule, // Only required for auth features,
-AngularFireStorageModule, NoopAnimationsModule, // Only required for storage features
-
+    AngularFirestoreModule, // Only required for database features
+    AngularFireAuthModule, // Only required for auth features,
+    AngularFireStorageModule, NoopAnimationsModule, // Only required for storage features
+    AgmCoreModule.forRoot({
+      apiKey : environment.googleMapApiKey,
+      // libraries: ['places']
+    })
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
