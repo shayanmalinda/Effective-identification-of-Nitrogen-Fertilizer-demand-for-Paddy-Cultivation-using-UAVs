@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { FieldVisit } from 'app/models/field-visit.model';
+import { FieldVisit, FieldVisitTemp } from 'app/models/field-visit.model';
 import { User } from 'app/models/user.model';
 import { skip } from 'rxjs/operators';
 
@@ -66,6 +66,18 @@ export class FieldVisitService {
 
   deleteFieldVisit(fieldVisitId: String) {
     this.fireStore.doc('FieldRequests/' + fieldVisitId).delete();
+  }
+
+  updateFieldVisitStatus(fieldVisitTemp: FieldVisitTemp) {
+    return new Promise<any>((resolve, reject) => {
+      this.fireStore.collection('FieldRequests').doc('' + fieldVisitTemp.id + '').update({'status' : fieldVisitTemp.status, 'modifiedDate' : fieldVisitTemp.modifiedDate, 'modifiedTimestamp' : fieldVisitTemp.modifiedTimestamp, 'note' : fieldVisitTemp.note})
+        .then(
+          res => {
+            resolve("Success");
+          }
+          , err => reject(err.message))
+    })
+
   }
 
 }

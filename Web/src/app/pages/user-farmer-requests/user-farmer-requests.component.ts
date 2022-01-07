@@ -12,7 +12,7 @@ import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
 import { FieldService } from 'app/services/field.service';
 import { FieldVisitService } from 'app/services/field-visit.service';
-import { FieldVisit } from 'app/models/field-visit.model';
+import { FieldVisit, FieldVisitTemp } from 'app/models/field-visit.model';
 import { Field } from 'app/models/field.model';
 import { UserService } from 'app/services/user.service';
 
@@ -211,9 +211,9 @@ export class UserFarmerRequestsComponent implements OnInit {
     this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
       fieldVisits = data.map(e => {
         return {
-          // id: e.payload.doc.id,
+          id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
-        } as FieldVisit;
+        } as FieldVisitTemp;
       })
 
       fieldVisits.forEach(f => {
@@ -264,11 +264,12 @@ export class UserFarmerRequestsComponent implements OnInit {
     }
   }
 
-  onEditClick(){
+  onEditClick(value){
     this.actionButtonClicked = true;
-    console.log("This is the row returned by the button click event ");
-    this.dialog.openEditDialog("addDetails").subscribe(data =>{
+    // console.log("This is the row returned by the button click event " + value);
+    this.dialog.openEditDialog({requestId : value.id}, "addDetails").subscribe(data =>{
       this.actionButtonClicked = !data;
     })
+    this.loadSessionDetails();
   }
 }

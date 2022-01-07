@@ -37,14 +37,15 @@ export class DialogService {
     });
   }
 
-  openEditDialog(detailsType : string) : Observable<any>{
-    console.log("the message is here :" + detailsType);
+  openEditDialog(passedDetails, detailsType : string) : Observable<any>{
+    // console.log("the message is here :" + passedDetails.requestId);
     const dialogRef =  this.dialog.open(DetailsFormComponent, {
       width : '550px',
       disableClose : false,
       panelClass: 'confirm-dialog-container',
       data : {
-        type : detailsType
+        type : detailsType,
+        details : passedDetails
       }
       // data : use
     });

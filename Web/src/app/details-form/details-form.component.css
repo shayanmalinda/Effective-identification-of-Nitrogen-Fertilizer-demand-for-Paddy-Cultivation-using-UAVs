@@ -173,9 +173,20 @@ agm-map{
     background-color: white;
 }
 
-.mat-radio-button ~ .mat-radio-button {
+  .mat-radio-button ~ .mat-radio-button {
     margin-left: 16px;
   }
+
+  .form-check-radio input[type=radio]:checked + .form-check-sign::after {
+    color: #2E7D32;
+
+}
+
+
+
+
+
+
 
 
 
