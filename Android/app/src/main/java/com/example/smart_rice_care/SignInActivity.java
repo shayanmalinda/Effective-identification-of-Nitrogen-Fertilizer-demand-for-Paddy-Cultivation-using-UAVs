@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +39,9 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+
+
+
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
@@ -56,11 +60,24 @@ public class SignInActivity extends AppCompatActivity {
         btRegister = findViewById(R.id.btRegister);
         btSignIn = findViewById(R.id.btSignIn);
 
+        String manufacturer = Build.MANUFACTURER;
+        if(manufacturer.equals("OnePlus")){
+            btRegister.setText("Examine (Offline)");
+            btSignIn.setText("Signin (Online)");
+            btRegister.setTextSize(15);
+            btSignIn.setTextSize(15);
+        }
 
         btRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignInActivity.this, RegisterUserDetailsActivity.class);
+                Intent intent;
+                if(manufacturer.equals("OnePlus")){
+                    intent = new Intent(SignInActivity.this, AgriculturalOfficerHomeOfflineActivity.class);
+                }
+                else{
+                    intent = new Intent(SignInActivity.this, RegisterUserDetailsActivity.class);
+                }
                 startActivity(intent);
             }
         });
@@ -115,13 +132,11 @@ public class SignInActivity extends AppCompatActivity {
                                     switch (userRole) {
                                         case "farmer":
                                             progressBar.setVisibility(View.GONE);
-                                            Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
                                             Intent farmerIntent = new Intent(SignInActivity.this, FarmerHomeActivity.class);
                                             startActivity(farmerIntent);
                                             break;
                                         case "agricultural officer":
                                             progressBar.setVisibility(View.GONE);
-                                            Toast.makeText(getApplicationContext(), "Signin Success", Toast.LENGTH_LONG).show();
                                             Intent agriculturalOfficerIntent = new Intent(SignInActivity.this, AgriculturalOfficerHomeActivity.class);
                                             startActivity(agriculturalOfficerIntent);
                                             break;
