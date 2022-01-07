@@ -28,7 +28,7 @@ def image():
     os.remove("image.jpg")
     return str(image_bytes);
 
-@app.route("/process", methods=['POST','GET'])
+@app.route("/process", methods=['POST'])
 def process():
     #capture the image from request
     img = request.files["image"].read()
