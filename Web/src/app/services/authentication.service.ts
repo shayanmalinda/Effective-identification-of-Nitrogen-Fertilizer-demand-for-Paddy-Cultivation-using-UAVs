@@ -139,6 +139,11 @@ export class AuthenticationService {
     sessionStorage.setItem('province',user.province);
     sessionStorage.setItem('image',user.image);
     sessionStorage.setItem('status',user.status);
+    sessionStorage.setItem('createdTimestamp', this.user.createdTimestamp.toString());
+    sessionStorage.setItem('createdDate', this.user.createdDate);
+    sessionStorage.setItem('modifiedDate', this.user.modifiedTimestamp.toString());
+    sessionStorage.setItem('modifiedTimestamp', this.user.modifiedDate);
+    sessionStorage.setItem('registeredDate', this.user.registeredDate);
   }
 
   removeSessionDetails(){
@@ -156,6 +161,10 @@ export class AuthenticationService {
     sessionStorage.removeItem('image');
     sessionStorage.removeItem('userID');
     sessionStorage.removeItem('status');
+    sessionStorage.removeItem('createdTimestamp');
+    sessionStorage.removeItem('createdDate');
+    sessionStorage.removeItem('modifiedDate');
+    sessionStorage.removeItem('modifiedTimestamp');
   }
 
   //to secure the routes

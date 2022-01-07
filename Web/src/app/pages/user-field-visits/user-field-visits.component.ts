@@ -61,7 +61,9 @@ export class UserFieldVisitsComponent implements OnInit {
   changedWeekDetails: LCCWeekDetails[];
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
-
+  confirmedRequests : number = 0;
+  processingRequests : number = 0;
+  all : number  = 0;
 
   displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
@@ -144,10 +146,10 @@ export class UserFieldVisitsComponent implements OnInit {
     for(var i = 0; i < NO_OF_WEEKS; i++ ){
       var j = i;
       if(this.changedWeekDetails[i] == undefined){
-        this.changedWeekDetails[i] = {week: j+1, levelOne: 0, levelTwo: 0, levelThree: 0}
+        this.changedWeekDetails[i] = {week: j+1, levelFour: 0, levelTwo: 0, levelThree: 0}
       }else{
-        if(this.changedWeekDetails[i].levelOne == 0){
-          this.changedWeekDetails[i].levelOne = 0;
+        if(this.changedWeekDetails[i].levelFour == 0){
+          this.changedWeekDetails[i].levelFour = 0;
         }if(this.changedWeekDetails[i].levelTwo == 0){
           this.changedWeekDetails[i].levelTwo = 0;
         }if(this.changedWeekDetails[i].levelThree == 0){
@@ -174,14 +176,14 @@ export class UserFieldVisitsComponent implements OnInit {
           this.dataSource.paginator = this.paginator;
         }else{
           this.changedWeekDetails = [
-            {week: 1, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 2, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 3, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 4, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 7, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 8, levelOne: 0, levelTwo: 0, levelThree: 0}
+            {week: 1, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 2, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 3, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 4, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 5, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 6, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 7, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 8, levelFour: 0, levelTwo: 0, levelThree: 0}
           ];
           this.dataSource = new MatTableDataSource(this.changedWeekDetails);
           setTimeout(() => this.dataSource.paginator = this.paginator);
@@ -212,30 +214,35 @@ export class UserFieldVisitsComponent implements OnInit {
       })
 
       fieldVisits.forEach(f => {
-        if (f.status == 'request pending') requestPending += 1;
-        else if (f.status == 'visit pending') visitPending += 1;
-        else if (f.status == 'processing') processing += 1;
-        else if (f.status == 'completed') completed += 1;
+        // if (f.status == 'request pending') requestPending += 1;
+        // else if (f.status == 'visit pending') visitPending += 1;
+        // else if (f.status == 'processing') processing += 1;
+        // else if (f.status == 'completed') completed += 1;
 
-        this.fieldService.getField(f.fieldId).subscribe(data => {
-          field = data.payload.data() as Field;
-          f.field = field;
-          f.address = field.address;
-          f.registrationNumber = field.registrationNumber;
-          this.userService.getUser(field.farmerId).subscribe(data => {
-            farmer = data.payload.data() as User;
-            f.farmer = farmer;
-            f.farmerName = farmer.firstName + " " + farmer.lastName;
-            this.dataSource = new MatTableDataSource(fieldVisits);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
+        if(f.status == "processing" || f.status == "confirmed"){
+          if(f.status == "processing"){ this.processingRequests++; }
+          else{ this.confirmedRequests++ ;}
+          this.all = this.confirmedRequests + this.processingRequests;
+          this.fieldService.getField(f.fieldId).subscribe(data => {
+            field = data.payload.data() as Field;
+            f.field = field;
+            f.address = field.address;
+            f.registrationNumber = field.registrationNumber;
+            this.userService.getUser(field.farmerId).subscribe(data => {
+              farmer = data.payload.data() as User;
+              f.farmer = farmer;
+              f.farmerName = farmer.firstName + " " + farmer.lastName;
+              this.dataSource = new MatTableDataSource(fieldVisits);
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+            });
+  
+            // this.dataSource = new MatTableDataSource(this.fieldVisits);
+            // this.dataSource.paginator = this.paginator;
+            // this.dataSource.sort = this.sort;
+  
           });
-
-          // this.dataSource = new MatTableDataSource(this.fieldVisits);
-          // this.dataSource.paginator = this.paginator;
-          // this.dataSource.sort = this.sort;
-
-        });
+        }
 
       })
 

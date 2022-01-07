@@ -43,3 +43,29 @@ table {
   .mat-icon {
     font-size: 15px;
   }
+
+  .td-cell-fieldName-more{
+    width: 27%; 
+    color: black; 
+    font-weight: 40px; 
+    font-size: medium; 
+    text-align: left; 
+    padding-left: 20px;
+}
+
+.td-cell-fieldName{
+    width: 25%; 
+    color: black; 
+    font-weight: 40px; 
+    font-size: medium; 
+    text-align: left; 
+    padding-left: 20px;
+}
+
+.td-cell-input-more{
+    width: 73%; 
+}
+
+.td-cell-input{
+    width: 75%; 
+}

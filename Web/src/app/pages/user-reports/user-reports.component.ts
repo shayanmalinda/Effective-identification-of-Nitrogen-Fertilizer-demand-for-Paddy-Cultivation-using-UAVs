@@ -138,10 +138,10 @@ export class UserReportsComponent implements OnInit {
     for(var i = 0; i < NO_OF_WEEKS; i++ ){
       var j = i;
       if(this.changedWeekDetails[i] == undefined){
-        this.changedWeekDetails[i] = {week: j+1, levelOne: 0, levelTwo: 0, levelThree: 0}
+        this.changedWeekDetails[i] = {week: j+1, levelFour: 0, levelTwo: 0, levelThree: 0}
       }else{
-        if(this.changedWeekDetails[i].levelOne == 0){
-          this.changedWeekDetails[i].levelOne = 0;
+        if(this.changedWeekDetails[i].levelFour == 0){
+          this.changedWeekDetails[i].levelFour = 0;
         }if(this.changedWeekDetails[i].levelTwo == 0){
           this.changedWeekDetails[i].levelTwo = 0;
         }if(this.changedWeekDetails[i].levelThree == 0){
@@ -162,28 +162,39 @@ export class UserReportsComponent implements OnInit {
           this.changedWeekDetails = this.lccMainDetails.weekDetails;
           sessionStorage.setItem('LCCID', data.docs[0].id);
           console.log(this.changedWeekDetails);
-          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
-          setTimeout(() => this.dataSource.paginator = this.paginator);
-          setTimeout(() => this.dataSource.sort = this.sort);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
+          // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
+          // setTimeout(() => this.dataSource.paginator = this.paginator);
+          // setTimeout(() => this.dataSource.sort = this.sort);
+          // this.dataSource.sort = this.sort;
+          // this.dataSource.paginator = this.paginator;
         }else{
-          this.changedWeekDetails = [
-            {week: 1, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 2, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 3, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 4, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 7, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 8, levelOne: 0, levelTwo: 0, levelThree: 0}
-          ];
-          this.dataSource = new MatTableDataSource(this.changedWeekDetails);
-          setTimeout(() => this.dataSource.paginator = this.paginator);
-          setTimeout(() => this.dataSource.sort = this.sort);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
+          this.lccService.getLccWithoutDivision().subscribe(
+            data => {
+              this.lccMainDetails = data.docs[0].data() as LCCMainDetails;
+              this.changedWeekDetails = this.lccMainDetails.weekDetails;
+            }
+          )
+          // this.changedWeekDetails = [
+          //   {week: 1, levelFour: 0, levelTwo: 0, levelThree: 0},
+          //   {week: 2, levelFour: 0, levelTwo: 0, levelThree: 0},
+          //   {week: 3, levelFour: 0, levelTwo: 0, levelThree: 0},
+          //   {week: 4, levelFour: 0, levelTwo: 0, levelThree: 0},
+          //   {week: 5, levelFour: 0, levelTwo: 0, levelThree: 0},
+          //   {week: 6, levelFour: 0, levelTwo: 0, levelThree: 0},
+          //   {week: 7, levelFour: 0, levelTwo: 0, levelThree: 0},
+          //   {week: 8, levelFour: 0, levelTwo: 0, levelThree: 0}
+          // ];
+          // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
+          // setTimeout(() => this.dataSource.paginator = this.paginator);
+          // setTimeout(() => this.dataSource.sort = this.sort);
+          // this.dataSource.sort = this.sort;
+          // this.dataSource.paginator = this.paginator;
         }
+        this.dataSource = new MatTableDataSource(this.changedWeekDetails);
+        setTimeout(() => this.dataSource.paginator = this.paginator);
+        setTimeout(() => this.dataSource.sort = this.sort);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       }
     )
   }
