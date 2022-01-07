@@ -6,8 +6,7 @@ import { User, UserCredential } from 'app/models/user.model';
 import { DialogService } from 'app/services/dialog.service';
 import { UserService } from 'app/services/user.service';
 import { MapsAPILoader } from '@agm/core';
-import { UserFarmersService } from 'app/services/user-farmers.service';
-
+import { UserFarmersService } from 'app/services/user-farmers.service'; 
 
 @Component({
   selector: 'app-details-form',
@@ -101,4 +100,11 @@ export class DetailsFormComponent implements OnInit {
     this.latitude = 6.927079;
     this.longitude = 79.861244;
   }
+
+  onAfterConfirmedClick(){
+    console.log("comes here : ");
+    // this.userFieldVisitComponent.actionButtonClicked = false;
+  }
+  
 }
+

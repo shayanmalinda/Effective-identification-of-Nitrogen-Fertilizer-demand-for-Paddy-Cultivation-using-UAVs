@@ -14,12 +14,11 @@ import { Router } from '@angular/router';
 const NO_OF_WEEKS = 8;
 
 @Component({
-  selector: 'app-lcc-details',
-  templateUrl: './lcc-details.component.html',
-  styleUrls: ['./lcc-details.component.css']
+  selector: 'app-user-reports',
+  templateUrl: './user-reports.component.html',
+  styleUrls: ['./user-reports.component.css']
 })
-export class LccDetailsComponent implements OnInit {
-
+export class UserReportsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort : MatSort;
 
@@ -93,7 +92,6 @@ export class LccDetailsComponent implements OnInit {
     this.lccMainDetails.division = sessionStorage.getItem('division');
     this.updateWeekDetails();
     this.lccMainDetails.weekDetails = this.changedWeekDetails;
-    console.log("these are the details :" + this.lccMainDetails.weekDetails.entries)
     this.lccService.saveLccDetails(this.lccMainDetails, this.havePreviousRecords)
           .then(res =>{
               this.message.title = "success";
@@ -172,16 +170,8 @@ export class LccDetailsComponent implements OnInit {
         }else{
           this.lccService.getLccWithoutDivision().subscribe(
             data => {
-              console.log("no records : ");
               this.lccMainDetails = data.docs[0].data() as LCCMainDetails;
               this.changedWeekDetails = this.lccMainDetails.weekDetails;
-              sessionStorage.setItem('LCCID', data.docs[0].id);
-              console.log(this.changedWeekDetails);
-              this.dataSource = new MatTableDataSource(this.changedWeekDetails);
-              setTimeout(() => this.dataSource.paginator = this.paginator);
-              setTimeout(() => this.dataSource.sort = this.sort);
-              this.dataSource.sort = this.sort;
-              this.dataSource.paginator = this.paginator;
             }
           )
           // this.changedWeekDetails = [

@@ -10,6 +10,11 @@ import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
 import { LccService } from 'app/services/lcc.service';
 import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
+import { FieldService } from 'app/services/field.service';
+import { FieldVisitService } from 'app/services/field-visit.service';
+import { FieldVisit } from 'app/models/field-visit.model';
+import { Field } from 'app/models/field.model';
+import { UserService } from 'app/services/user.service';
 
 const NO_OF_WEEKS = 8;
 
@@ -34,7 +39,7 @@ export class UserFarmerRequestsComponent implements OnInit {
     division: '',
     province: '',          
     image : '',      
-    status : '',  
+    status : '',    
     registeredDate : '',
     createdDate: '',
     createdTimestamp: 0,
@@ -56,16 +61,22 @@ export class UserFarmerRequestsComponent implements OnInit {
   changedWeekDetails: LCCWeekDetails[];
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
+  actionButtonClicked : boolean = false;
+  onlyRowClicked : boolean = false;
+  all : number = 0;
+  pendingRequests : number = 0;
+  declinedRequests : number = 0;
+  completedRequests : number = 0;
 
-
-  displayedColumns: string[] = ['week', 'levelOne', 'levelTwo', 'levelThree'];
+  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'division', 'requestNote', 'status', 'action'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
 
-  constructor(private lccService : LccService, private dialog : DialogService, private router : Router) { }
+  constructor(private lccService : LccService, private dialog : DialogService, private userService : UserService, private fieldService : FieldService, private fieldVisitService : FieldVisitService, private router : Router) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
-    this.getLCCDetails();
+    this.getVisitDetailsWithFields();
+    // this.getLCCDetails();
     // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
     // setTimeout(() => this.dataSource.paginator = this.paginator);
     // setTimeout(() => this.dataSource.sort = this.sort);
@@ -138,10 +149,10 @@ export class UserFarmerRequestsComponent implements OnInit {
     for(var i = 0; i < NO_OF_WEEKS; i++ ){
       var j = i;
       if(this.changedWeekDetails[i] == undefined){
-        this.changedWeekDetails[i] = {week: j+1, levelOne: 0, levelTwo: 0, levelThree: 0}
+        this.changedWeekDetails[i] = {week: j+1, levelFour: 0, levelTwo: 0, levelThree: 0}
       }else{
-        if(this.changedWeekDetails[i].levelOne == 0){
-          this.changedWeekDetails[i].levelOne = 0;
+        if(this.changedWeekDetails[i].levelFour == 0){
+          this.changedWeekDetails[i].levelFour = 0;
         }if(this.changedWeekDetails[i].levelTwo == 0){
           this.changedWeekDetails[i].levelTwo = 0;
         }if(this.changedWeekDetails[i].levelThree == 0){
@@ -168,14 +179,14 @@ export class UserFarmerRequestsComponent implements OnInit {
           this.dataSource.paginator = this.paginator;
         }else{
           this.changedWeekDetails = [
-            {week: 1, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 2, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 3, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 4, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 5, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 6, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 7, levelOne: 0, levelTwo: 0, levelThree: 0},
-            {week: 8, levelOne: 0, levelTwo: 0, levelThree: 0}
+            {week: 1, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 2, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 3, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 4, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 5, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 6, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 7, levelFour: 0, levelTwo: 0, levelThree: 0},
+            {week: 8, levelFour: 0, levelTwo: 0, levelThree: 0}
           ];
           this.dataSource = new MatTableDataSource(this.changedWeekDetails);
           setTimeout(() => this.dataSource.paginator = this.paginator);
@@ -187,4 +198,77 @@ export class UserFarmerRequestsComponent implements OnInit {
     )
   }
 
+  getVisitDetailsWithFields(){
+    var fieldVisits;
+    var relevantFields = [];
+    var fieldVisit;
+    var requestPending;
+    var visitPending;
+    var processing;
+    var completed;
+    var field;
+    var farmer;
+    this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
+      fieldVisits = data.map(e => {
+        return {
+          // id: e.payload.doc.id,
+          ...e.payload.doc.data() as {}
+        } as FieldVisit;
+      })
+
+      fieldVisits.forEach(f => {
+        // if (f.status == 'request pending') requestPending += 1;
+        // else if (f.status == 'visit pending') visitPending += 1;
+        // else if (f.status == 'processing') processing += 1;
+        // else if (f.status == 'completed') completed += 1;
+
+        if(f.status == "pending" || f.status == "completed" || f.status == "declined"){
+          if(f.status == "pending"){ this.pendingRequests++; }
+          else if(f.status == "completed"){ this.completedRequests++; }
+          else{ this.declinedRequests++ ;}
+          this.all = this.pendingRequests + this.declinedRequests + this.completedRequests;
+          this.fieldService.getField(f.fieldId).subscribe(data => {
+            field = data.payload.data() as Field;
+            f.field = field;
+            f.address = field.address;
+            f.registrationNumber = field.registrationNumber;
+            this.userService.getUser(field.farmerId).subscribe(data => {
+              farmer = data.payload.data() as User;
+              f.farmer = farmer;
+              f.farmerName = farmer.firstName + " " + farmer.lastName;
+              console.log(fieldVisits)
+              this.dataSource = new MatTableDataSource(fieldVisits);
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+            });
+  
+            // this.dataSource = new MatTableDataSource(this.fieldVisits);
+            // this.dataSource.paginator = this.paginator;
+            // this.dataSource.sort = this.sort;
+  
+          });
+        }
+
+      })
+
+    });
+  }
+
+  onViewVisitsClick(row){
+    if(this.actionButtonClicked == false){
+      console.log(row);
+      // this.message.showMessage = "You have entered invalid password !";
+      // this.message.title = 'success';
+      // console.log(this.message);
+      this.dialog.openDetailsDialog(row,"visitDetails").afterClosed();
+    }
+  }
+
+  onEditClick(){
+    this.actionButtonClicked = true;
+    console.log("This is the row returned by the button click event ");
+    this.dialog.openEditDialog("addDetails").subscribe(data =>{
+      this.actionButtonClicked = !data;
+    })
+  }
 }
