@@ -39,6 +39,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -46,11 +47,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -62,6 +68,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,12 +78,14 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     private int REQUEST_CODE_PERMISSIONS = 101;
     private String[] REQUIRED_PERMISSSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
-    String requestId, fieldId, farmerId;
-    Integer delayTime;
-    TextureView txvCamera;
-    TextView tvColorLevel, tvLongitude, tvLatitude;
-    ImageButton btCaptureImage;
-    FrameLayout frameLayout;
+    private String requestId, fieldId, farmerId;
+    private Integer delayTime;
+    private TextureView txvCamera;
+    private TextView tvColorLevel, tvLongitude, tvLatitude;
+    private ImageButton btCaptureImage;
+    private FrameLayout frameLayout;
+    private Button btStop;
+
 
     private SensorManager sensorMan;
     private Sensor accelerometer;
@@ -181,11 +190,172 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 //        frameLayout.addView(btCaptureImage);
 
+
         if (allPermissionGranted()) {
             startCamera();
         } else {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSSIONS, REQUEST_CODE_PERMISSIONS);
         }
+
+        btStop = findViewById(R.id.btStop);
+        btStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateCurrentFertilizerAmount();
+            }
+        });
+    }
+
+    private void updateCurrentFertilizerAmount() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = db.collection("FieldRequests").document(requestId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String division = document.get("division").toString();
+                        Long plantAge = (Long) document.get("plantAge");
+                        db.collection("LCCDetails")
+                                .whereEqualTo("division", division)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task2) {
+                                        if(task2.isSuccessful()){
+                                            if(task2.getResult().size()==0){
+                                                // Get general LCC details, if specific data not available
+                                                db.collection("LCCDetails")
+                                                        .whereEqualTo("division", "ALL")
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task3) {
+                                                                if(task3.isSuccessful()){
+                                                                    Long fertilizer2=0L, fertilizer3=0L, fertilizer4=0L;
+                                                                    for (QueryDocumentSnapshot document : task3.getResult()) {
+                                                                        ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
+                                                                        HashMap<String, Long> weekData = data.get(plantAge.intValue()-1);
+                                                                        fertilizer2 = weekData.get("levelOne");
+                                                                        fertilizer3 = weekData.get("levelTwo");
+                                                                        fertilizer4 = weekData.get("levelThree");
+                                                                    }
+
+                                                                    Map<String, Object> fertilizerAmount = new HashMap<>();
+                                                                    fertilizerAmount.put("requestId", requestId);
+                                                                    fertilizerAmount.put("level2", fertilizer2);
+                                                                    fertilizerAmount.put("level3", fertilizer3);
+                                                                    fertilizerAmount.put("level4", fertilizer4);
+                                                                    db.collection("Fertilizer")
+                                                                            .document(requestId)
+                                                                            .set(fertilizerAmount)
+                                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void unused) {
+                                                                                    Toast.makeText(ImageCaptureActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
+
+                                                                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                                                    DocumentReference docRef = db.collection("FieldRequests").document(requestId);
+                                                                                    docRef.update("status", "completed")
+                                                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onSuccess(Void unused) {
+                                                                                                    Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
+                                                                                                }
+                                                                                            })
+                                                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                                                @Override
+                                                                                                public void onFailure(@NonNull @NotNull Exception e) {
+                                                                                                    Log.w("Status Update: ", "Error updating document", e);
+                                                                                                }
+                                                                                            });
+
+                                                                                    finish();
+                                                                                }
+                                                                            })
+                                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                                @Override
+                                                                                public void onFailure(@NonNull @NotNull Exception e) {
+                                                                                    Toast.makeText(ImageCaptureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            });
+                                                                }
+
+                                                                else{
+                                                                    Log.d("LCCDetails error:", task3.getException().toString());
+                                                                    Toast.makeText(ImageCaptureActivity.this, ""+task3.getException(), Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            }
+                                                        });
+                                            }
+                                            else{
+//                                                 Get specific LCC details
+                                                Long fertilizer2=0L, fertilizer3=0L, fertilizer4=0L;
+                                                for (QueryDocumentSnapshot document : task2.getResult()) {
+                                                    ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
+                                                    HashMap<String, Long> weekData = data.get(plantAge.intValue()-1);
+                                                    fertilizer2 = weekData.get("levelOne");
+                                                    fertilizer3 = weekData.get("levelTwo");
+                                                    fertilizer4 = weekData.get("levelThree");
+                                                }
+
+                                                Map<String, Object> fertilizerAmount = new HashMap<>();
+                                                fertilizerAmount.put("requestId", requestId);
+                                                fertilizerAmount.put("level2", fertilizer2);
+                                                fertilizerAmount.put("level3", fertilizer3);
+                                                fertilizerAmount.put("level4", fertilizer4);
+                                                db.collection("Fertilizer")
+                                                        .document(requestId)
+                                                        .set(fertilizerAmount)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void unused) {
+                                                                Toast.makeText(ImageCaptureActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
+
+                                                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                                DocumentReference docRef = db.collection("FieldRequests").document(requestId);
+                                                                docRef.update("status", "completed")
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void unused) {
+                                                                                Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
+                                                                            }
+                                                                        })
+                                                                        .addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull @NotNull Exception e) {
+                                                                                Log.w("Status Update: ", "Error updating document", e);
+                                                                            }
+                                                                        });
+
+                                                                finish();
+
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull @NotNull Exception e) {
+                                                                Toast.makeText(ImageCaptureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                            }
+                                        }
+                                        else{
+                                            Log.d("LCCDetails error:", task.getException().toString());
+                                            Toast.makeText(ImageCaptureActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                    } else {
+                        Log.d("FieldRequests fetch: ", "No such document");
+                    }
+                } else {
+                    Log.d("FieldRequests fetch: ", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     private void startCamera() {
@@ -323,7 +493,6 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     public void processImage(File file, Location location) throws IOException {
         tvColorLevel.setText("Processing...");
         String url = "http://192.168.8.103:5000/process";
-
 
         Thread thread = new Thread(new Runnable() {
 

@@ -317,7 +317,6 @@ public class MapsActivity extends FragmentActivity implements
     private void getLCCTable() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        System.out.println("testing===0 "+requestId);
         DocumentReference docRef = db.collection("FieldRequests").document(requestId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -327,25 +326,26 @@ public class MapsActivity extends FragmentActivity implements
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         String division = document.get("division").toString();
-                        System.out.println("testing===0 "+division);
                         db.collection("LCCDetails")
                                 .whereEqualTo("division", division)
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
-                                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            if(task.getResult().size()==0){
+                                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task2) {
+                                        if(task2.isSuccessful()){
+                                            System.out.println("testing==="+task2.getResult());
+                                            System.out.println("testing==="+task2.getResult().size());
+                                            if(task2.getResult().size()==0){
                                                 // Get general LCC details, if specific data not available
                                                 db.collection("LCCDetails")
                                                         .whereEqualTo("division", "ALL")
                                                         .get()
                                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                             @Override
-                                                            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                                                                if(task.isSuccessful()){
+                                                            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task3) {
+                                                                if(task3.isSuccessful()){
 
-                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                    for (QueryDocumentSnapshot document : task3.getResult()) {
                                                                         ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
                                                                         HashMap<String, Long> weekData = data.get(plantAge-1);
                                                                         fertilizer2 = weekData.get("levelOne");
@@ -354,15 +354,15 @@ public class MapsActivity extends FragmentActivity implements
                                                                     }
                                                                 }
                                                                 else{
-                                                                    Log.d("LCCDetails error:", task.getException().toString());
-                                                                    Toast.makeText(MapsActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                                                                    Log.d("LCCDetails error:", task3.getException().toString());
+                                                                    Toast.makeText(MapsActivity.this, ""+task3.getException(), Toast.LENGTH_SHORT).show();
                                                                 }
                                                             }
                                                         });
                                             }
                                             else{
                                                 // Get specific LCC details
-                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                for (QueryDocumentSnapshot document : task2.getResult()) {
                                                     ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
                                                     HashMap<String, Long> weekData = data.get(plantAge-1);
                                                     fertilizer2 = weekData.get("levelOne");

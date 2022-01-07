@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -71,6 +72,24 @@ public class ExamineFieldActivity extends AppCompatActivity {
                             Toast.makeText(ExamineFieldActivity.this, "Delay Time should be at least 5 seconds", Toast.LENGTH_SHORT).show();
                         }
                         else{
+
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            System.out.println("test==="+requestId);
+                            DocumentReference docRef = db.collection("FieldRequests").document(requestId);
+                            docRef.update("status", "processing")
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull @NotNull Exception e) {
+                                            Log.w("Status Update: ", "Error updating document", e);
+                                        }
+                                    });
+
                             Intent intent = new Intent(ExamineFieldActivity.this, ImageCaptureActivity.class);
                             intent.putExtra("requestId", requestId);
                             intent.putExtra("fieldId", fieldId);
