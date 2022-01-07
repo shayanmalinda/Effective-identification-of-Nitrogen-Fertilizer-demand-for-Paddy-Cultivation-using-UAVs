@@ -21,13 +21,15 @@ export class FieldDetailsComponent implements OnInit {
 
   constructor(private router: Router, private fieldVisitService: FieldVisitService) {
     this.field = this.router.getCurrentNavigation().extras.state.field;
-    console.log("mmmmmm" + this.field)
 
   }
   getColor(status) {
     if (status == 'pending') return '[bg-pending]'
   }
-
+  viewFieldVisits() {
+    // this.router.navigate(['/field-visits']);
+    this.router.navigate(['/field-visits'], { state: { fieldId: this.field.id} });
+  }
   ngOnInit() {
     this.counts = [];
     let countsTemp: { [key: string]: number } = {

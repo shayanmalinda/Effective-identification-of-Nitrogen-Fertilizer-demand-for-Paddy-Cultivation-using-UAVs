@@ -18,7 +18,8 @@ import { Field } from 'app/models/field.model';
   styleUrls: ['./field-visits.component.css']
 })
 export class FieldVisitsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['registrationNo', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status', 'view', 'delete'];
+  displayedColumns: string[];
+  // displayedColumns: string[] = ['registrationNo', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status', 'view', 'delete'];
   dataSource: MatTableDataSource<FieldVisitTemp>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -39,13 +40,22 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
   farmer: User;
   field: Field;
   farmerName: any;
-  requestPending = 0;
-  visitPending = 0;
+  pending = 0;
+  declined = 0;
+  confirmed = 0;
   processing = 0;
   completed = 0;
   selectedType: String;
+  fieldId
 
   constructor(private renderer: Renderer2, private fieldVisitService: FieldVisitService, private fieldService: FieldService, private userService: UserService, private router: Router) {
+    this.fieldId = this.router.getCurrentNavigation().extras.state.fieldId;
+    if (this.fieldId == 'all')
+      this.displayedColumns = ['registrationNo', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status', 'view', 'delete'];
+    else
+      this.displayedColumns = ['date', 'requestNote', 'status', 'delete'];
+
+
   }
 
   isDisabled(date: NgbDateStruct, current: { month: number }) {
@@ -101,7 +111,7 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.fieldVisitService.getFieldVisits().subscribe(data => {
+    this.fieldVisitService.getFieldVisits(this.fieldId).subscribe(data => {
       this.fieldVisits = data.map(e => {
         console.log(this.fieldVisit)
         return {
@@ -111,10 +121,12 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
       })
 
       this.fieldVisits.forEach(f => {
-        if (f.status == 'request pending') this.requestPending += 1;
-        else if (f.status == 'visit pending') this.visitPending += 1;
+        if (f.status == 'pending') this.pending += 1;
+        else if (f.status == 'confirmed') this.confirmed += 1;
         else if (f.status == 'processing') this.processing += 1;
         else if (f.status == 'completed') this.completed += 1;
+        else if (f.status == 'declined') this.declined += 1;
+
 
         this.fieldService.getField(f.fieldId).subscribe(data => {
           this.field = data.payload.data() as Field;
