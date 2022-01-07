@@ -238,14 +238,9 @@
                 </div> -->
               <table style="width: 100%;">
                 <tr >
-                  <td class="td-cell-fieldName-more">Status : </td>
-                  <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="Status" (focus)="focus1=true" (blur)="focus1=false" name="status" id="status" [(ngModel)]="data.details.status" style="font-size: medium;"  disabled></td>
+                  <td class="td-cell-fieldName-more">Address : </td>
+                  <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="address" id="address" [(ngModel)]="data.details.address" style="font-size: medium;"  disabled></td>
                 </tr>
-                <tr >
-                  <td class="td-cell-fieldName-more">Request Note : </td>
-                  <td class="td-cell-input-more"> <input type="text" class="form-control" (focus)="focus1=true" (blur)="focus1=false" name="requestNote" id="requestNote" [(ngModel)]="data.details.requestNote" style="font-size: medium;"  disabled></td>
-                </tr>
-                <tr>
                 <tr >
                   <td class="td-cell-fieldName-more">Date : </td>
                   <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="date" id="date" [(ngModel)]="data.details.date" style="font-size: medium;"  disabled></td>
@@ -254,11 +249,138 @@
                   <td class="td-cell-fieldName-more">Plant Age : </td>
                   <td class="td-cell-input-more"> <input type="text" class="form-control" (focus)="focus1=true" (blur)="focus1=false" name="plantAge" id="plantAge" [(ngModel)]="data.details.plantAge" style="font-size: medium;"  disabled></td>
                 </tr>
+                <tr >
+                  <td class="td-cell-fieldName-more">Status : </td>
+                  <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="Status" (focus)="focus1=true" (blur)="focus1=false" name="status" id="status" [(ngModel)]="data.details.status" style="font-size: medium;"  disabled></td>
+                </tr>
+                <tr >
+                  <td class="td-cell-fieldName-more">Request Note : </td>
+                  <td class="td-cell-input-more"> <input type="text" class="form-control" (focus)="focus1=true" (blur)="focus1=false" name="requestNote" id="requestNote" [(ngModel)]="data.details.requestNote" style="font-size: medium;"  disabled></td>
+                </tr>
                 <tr>
+                <tr>
+                <tr>
+                  <td colspan="2">
+                    <div class="container" style="width: 500px; height: 260px; align-items: center; margin: 0px;">
+                      <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                        <agm-marker [latitude]="latitude" [longitude]="longitude" ></agm-marker>
+                      </agm-map>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+                <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        First Name : 
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="firstName" id="firstName" [(ngModel)]="data.userRole" style="font-size: medium;"  disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        NIC : 
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Last Name" (focus)="focus=true" (blur)="focus=false" id="lastName" name="lastName" [(ngModel)]="data.division" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-circle-10"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Role" (focus)="focus=true" (blur)="focus=false" id="userRole" name="userRole" [(ngModel)]="data.email" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-pin-3"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Province" (focus)="focus=true" (blur)="focus=false" id="province" name="province" [(ngModel)]="data.status" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-pin-3"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="District" (focus)="focus=true" (blur)="focus=false" id="district" name="district" [(ngModel)]="data.userRole" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-pin-3"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Division" (focus)="focus=true" (blur)="focus=false" id="division" name="division" [(ngModel)]="data.userRole" style="font-size: medium;" disabled>
+                </div>
+               <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-badge"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="NIC" (focus)="focus=true" (blur)="focus=false" id="nic" name="nic" [(ngModel)]="data.userRole" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-mobile"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Phone" (focus)="focus=true" (blur)="focus=false" id="phone" name="phone" [(ngModel)]="data.userRole" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-email-85"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="E-mail" (focus)="focus1=true" (blur)="focus1=false" name="email" id="email" [value]="data.userRole" style="font-size: medium;" disabled>
+                </div> -->
+
+
+                <!-- <div class="row" style="margin-left: 20px;">
+                  <button class="btn btn-signin btn-block btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
+                  <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onSkipClick()">Skip</button>
+                </div> -->
+            </form>
+            <form class="register-form" style="width: 500px;" *ngIf="data.type == 'addDetails'">
+              <h2>Add details</h2>
+              <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="nc-icon nc-circle-10"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" (focus)="focus=true" (blur)="focus=false" id="fullName" name="fullName" [(ngModel)]="fullName" disabled style="font-size: medium;">
+                </div> -->
+              <table style="width: 100%;">
                 <tr >
                   <td class="td-cell-fieldName-more">Address : </td>
-                  <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="address" id="address" [(ngModel)]="data.details.address" style="font-size: medium;"  disabled></td>
+                  <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="address" id="address"  style="font-size: medium;"  disabled></td>
                 </tr>
+                <tr >
+                  <td class="td-cell-fieldName-more">Date : </td>
+                  <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="date" id="date"  style="font-size: medium;"  disabled></td>
+                </tr>
+                <tr >
+                  <td class="td-cell-fieldName-more">Plant Age : </td>
+                  <td class="td-cell-input-more"> <input type="text" class="form-control" (focus)="focus1=true" (blur)="focus1=false" name="plantAge" id="plantAge"  style="font-size: medium;"  disabled></td>
+                </tr>
+                <tr >
+                  <td class="td-cell-fieldName-more">Status : </td>
+                  <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="Status" (focus)="focus1=true" (blur)="focus1=false" name="status" id="status" style="font-size: medium;"  disabled></td>
+                </tr>
+                <tr >
+                  <td class="td-cell-fieldName-more">Request Note : </td>
+                  <td class="td-cell-input-more"> <input type="text" class="form-control" (focus)="focus1=true" (blur)="focus1=false" name="requestNote" id="requestNote" style="font-size: medium;"  disabled></td>
+                </tr>
+                <tr>
+                <tr>
                 <tr>
                   <td colspan="2">
                     <div class="container" style="width: 500px; height: 260px; align-items: center; margin: 0px;">
@@ -355,6 +477,10 @@
                 <!-- <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button> -->
                 <button type="button" [class]="btnStyleOne" [mat-dialog-close]="true">ok</button>
             </div>
+            <div class="row" style="margin-left: 420px; align-items: right;" *ngIf="data.type == 'addDetails'">
+              <!-- <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button> -->
+              <button type="button" [class]="btnStyleOne" [mat-dialog-close]="true" (click)="onAfterConfirmedClick()">ok</button>
+          </div>
             <div class="row" style="margin-left: 300px; align-items: right;" *ngIf="data.type == 'visitDetails'">
               <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button>
               <button type="button" [class]="btnStyleOne" [mat-dialog-close]="true">ok</button>

@@ -145,7 +145,7 @@ export class NavbarComponent implements OnInit {
           if( titlee === '/user-fields' ) {
             return true;
           }
-          if( titlee === '/user-fieldVisits' ) {
+          if( titlee === '/user-field-visits' ) {
             return true;
           }
           else {

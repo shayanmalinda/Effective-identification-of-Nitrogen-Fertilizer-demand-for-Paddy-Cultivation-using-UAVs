@@ -61,7 +61,9 @@ export class UserFieldVisitsComponent implements OnInit {
   changedWeekDetails: LCCWeekDetails[];
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
-
+  confirmedRequests : number = 0;
+  processingRequests : number = 0;
+  all : number  = 0;
 
   displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
@@ -212,30 +214,35 @@ export class UserFieldVisitsComponent implements OnInit {
       })
 
       fieldVisits.forEach(f => {
-        if (f.status == 'request pending') requestPending += 1;
-        else if (f.status == 'visit pending') visitPending += 1;
-        else if (f.status == 'processing') processing += 1;
-        else if (f.status == 'completed') completed += 1;
+        // if (f.status == 'request pending') requestPending += 1;
+        // else if (f.status == 'visit pending') visitPending += 1;
+        // else if (f.status == 'processing') processing += 1;
+        // else if (f.status == 'completed') completed += 1;
 
-        this.fieldService.getField(f.fieldId).subscribe(data => {
-          field = data.payload.data() as Field;
-          f.field = field;
-          f.address = field.address;
-          f.registrationNumber = field.registrationNumber;
-          this.userService.getUser(field.farmerId).subscribe(data => {
-            farmer = data.payload.data() as User;
-            f.farmer = farmer;
-            f.farmerName = farmer.firstName + " " + farmer.lastName;
-            this.dataSource = new MatTableDataSource(fieldVisits);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
+        if(f.status == "processing" || f.status == "confirmed"){
+          if(f.status == "processing"){ this.processingRequests++; }
+          else{ this.confirmedRequests++ ;}
+          this.all = this.confirmedRequests + this.processingRequests;
+          this.fieldService.getField(f.fieldId).subscribe(data => {
+            field = data.payload.data() as Field;
+            f.field = field;
+            f.address = field.address;
+            f.registrationNumber = field.registrationNumber;
+            this.userService.getUser(field.farmerId).subscribe(data => {
+              farmer = data.payload.data() as User;
+              f.farmer = farmer;
+              f.farmerName = farmer.firstName + " " + farmer.lastName;
+              this.dataSource = new MatTableDataSource(fieldVisits);
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+            });
+  
+            // this.dataSource = new MatTableDataSource(this.fieldVisits);
+            // this.dataSource.paginator = this.paginator;
+            // this.dataSource.sort = this.sort;
+  
           });
-
-          // this.dataSource = new MatTableDataSource(this.fieldVisits);
-          // this.dataSource.paginator = this.paginator;
-          // this.dataSource.sort = this.sort;
-
-        });
+        }
 
       })
 

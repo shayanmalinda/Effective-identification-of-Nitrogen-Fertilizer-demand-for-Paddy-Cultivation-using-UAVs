@@ -140,12 +140,12 @@ border-radius: 0px;
 }
 
 .td-cell-fieldName-more{
-    width: 27%; 
+    width: 35%; 
     color: black; 
     font-weight: 40px; 
     font-size: medium; 
     text-align: left; 
-    padding-left: 20px;
+    padding-left: 40px;
 }
 
 .td-cell-fieldName{
@@ -154,11 +154,11 @@ border-radius: 0px;
     font-weight: 40px; 
     font-size: medium; 
     text-align: left; 
-    padding-left: 20px;
+    padding-left: 40px;
 }
 
 .td-cell-input-more{
-    width: 73%; 
+    width: 65%; 
 }
 
 .td-cell-input{
@@ -172,5 +172,11 @@ agm-map{
 :disabled {
     background-color: white;
 }
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }
+
+
 
 
