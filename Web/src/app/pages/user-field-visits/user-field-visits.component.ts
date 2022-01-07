@@ -12,7 +12,7 @@ import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
 import { FieldService } from 'app/services/field.service';
 import { FieldVisitService } from 'app/services/field-visit.service';
-import { FieldVisit } from 'app/models/field-visit.model';
+import { FieldVisit, FieldVisitTemp } from 'app/models/field-visit.model';
 import { Field } from 'app/models/field.model';
 import { UserService } from 'app/services/user.service';
 
@@ -61,11 +61,13 @@ export class UserFieldVisitsComponent implements OnInit {
   changedWeekDetails: LCCWeekDetails[];
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
+  actionButtonClicked : boolean = false;
   confirmedRequests : number = 0;
   processingRequests : number = 0;
   all : number  = 0;
 
-  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
+  // displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
+  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'division', 'status', 'action'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
 
   constructor(private lccService : LccService, private dialog : DialogService, private userService : UserService, private fieldService : FieldService, private fieldVisitService : FieldVisitService, private router : Router) { }
@@ -208,9 +210,9 @@ export class UserFieldVisitsComponent implements OnInit {
     this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
       fieldVisits = data.map(e => {
         return {
-          // id: e.payload.doc.id,
+          id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
-        } as FieldVisit;
+        } as FieldVisitTemp;
       })
 
       fieldVisits.forEach(f => {
@@ -250,11 +252,21 @@ export class UserFieldVisitsComponent implements OnInit {
   }
 
   onViewVisitsClick(row){
-    console.log(row);
-    // this.message.showMessage = "You have entered invalid password !";
-    // this.message.title = 'success';
-    // console.log(this.message);
-    this.dialog.openDetailsDialog(row,"visitDetails").afterClosed();
+    if(this.actionButtonClicked == false){
+      // console.log(row);
+      // this.message.showMessage = "You have entered invalid password !";
+      // this.message.title = 'success';
+      // console.log(this.message);
+      this.dialog.openDetailsDialog(row,"visitDetails").afterClosed();
+    }
+  }
+
+  onEditClick(value){
+    this.actionButtonClicked = true;
+    console.log("This is the row returned by the button click event " + value);
+    this.dialog.openEditDialog({requestId : value.id}, "changeDetails").subscribe(data =>{
+      this.actionButtonClicked = !data;
+    })
   }
 
 }

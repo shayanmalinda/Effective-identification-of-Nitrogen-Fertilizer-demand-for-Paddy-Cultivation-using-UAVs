@@ -266,9 +266,10 @@ export class UserFarmerRequestsComponent implements OnInit {
 
   onEditClick(value){
     this.actionButtonClicked = true;
-    console.log("This is the row returned by the button click event " + value.id);
+    // console.log("This is the row returned by the button click event " + value);
     this.dialog.openEditDialog({requestId : value.id}, "addDetails").subscribe(data =>{
       this.actionButtonClicked = !data;
     })
+    this.loadSessionDetails();
   }
 }

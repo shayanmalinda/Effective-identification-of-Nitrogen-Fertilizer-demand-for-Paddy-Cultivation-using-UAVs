@@ -98,7 +98,12 @@ export class DetailsFormComponent implements OnInit {
       this.longitude = parseFloat(data.details.longitude);
     }
     if(data.type == "addDetails"){
-      this.formTitle = "Field Visits Details";
+      this.formTitle = "Farmer Visit Details";
+      // console.log(data.details);
+      this.fieldVisitTemp.id = data.details.requestId;
+    }
+    if(data.type == "changeDetails"){
+      this.formTitle = "Field Visit Details";
       // console.log(data.details.requestId);
       this.fieldVisitTemp.id = data.details.requestId;
     }
@@ -163,6 +168,9 @@ export class DetailsFormComponent implements OnInit {
     if(this.selectedDate == ""){
       this.message.title = "Error";
       this.message.showMessage = "You have to select a suitable date to confirm the field visit !!";
+      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+        this.clearFields();
+      })
     }else{
       // console.log(this.noteInput);
       // console.log(this.dateSelected);
@@ -171,14 +179,15 @@ export class DetailsFormComponent implements OnInit {
       this.fieldVisitTemp.note = this.noteInput;
       this.fieldVisitTemp.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
       this.fieldVisitTemp.modifiedTimestamp = currentTime.getTime();
+      console.log(this.fieldVisitTemp)
       this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp);
       this.message.title = "success";
       this.message.showMessage = "You have successfully confirmed the field visit !!";
-      this.router.navigate(['/user-farmer-requests']);
+      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+        this.clearFields();
+        this.router.navigate(['/user-field-visits']);
+      })
     }
-    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-    this.clearFields();
-    })
   }
 
   onDeclineButtonClick(){
@@ -190,6 +199,22 @@ export class DetailsFormComponent implements OnInit {
     this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp);
     this.message.title = "success";
     this.message.showMessage = "You have declined the field request !!";
+    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+      this.clearFields();
+    })
+    this.router.navigate(['/user-field-visits']);
+  }
+
+  onCompletedButtonClick(){
+    let currentTime = new Date();
+    this.fieldVisitTemp.status = "completed";
+    this.fieldVisitTemp.note = this.noteInput;
+    this.fieldVisitTemp.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
+    this.fieldVisitTemp.modifiedTimestamp = currentTime.getTime();
+    console.log(this.fieldVisitTemp)
+    this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp);
+    this.message.title = "success";
+    this.message.showMessage = "You have completed the field visit !!";
     this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
       this.clearFields();
     })

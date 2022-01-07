@@ -139,7 +139,7 @@ export class NavbarComponent implements OnInit {
           if( titlee === '/user-farmers' ) {
               return true;
           }
-          if( titlee === '/user-farmerRequests' ) {
+          if( titlee === '/user-farmer-requests' ) {
             return true;
           }
           if( titlee === '/user-fields' ) {

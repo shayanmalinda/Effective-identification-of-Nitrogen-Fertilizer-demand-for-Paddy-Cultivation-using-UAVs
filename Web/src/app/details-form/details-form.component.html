@@ -251,7 +251,7 @@
                 </tr>
                 <tr >
                   <td class="td-cell-fieldName-more">Status : </td>
-                  <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="Status" (focus)="focus1=true" (blur)="focus1=false" name="status" id="status" [(ngModel)]="data.details.status" style="font-size: medium;"  disabled></td>
+                  <td class="td-cell-input-more"> <input type="text" class="form-control" placeholder="Status" (focus)="focus1=true" (blur)="focus1=false" name="status" id="status" [(ngModel)]="data.details.status" style="font-size: medium; text-transform: capitalize;"  disabled></td>
                 </tr>
                 <tr >
                   <td class="td-cell-fieldName-more">Request Note : </td>
@@ -374,7 +374,156 @@
                     <div class="form-check-radio">
                       <label>
                         <input type="radio" name="optionButtons" id="optionButtons" value="0" (change)="buttonChange($event)" class="rejectButton"> 
-                          Reject 
+                          Decline 
+                        <span class="form-check-sign"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-2"></div>
+                </div>
+              <table style="width: 100%;">
+               <tr *ngIf="acceptForm">
+                  <td class="td-cell-fieldName">Date : </td>
+                  <td class="td-cell-input" style="border: lime;">
+                    <!-- <mat-form-field class="example-full-width" appearance="fill">
+                      <mat-label>Choose a date</mat-label>
+                      <input matInput [matDatepicker]="picker">
+                      <mat-datepicker-toggle matSuffix [for]="picker">
+                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field> -->
+                    <!-- <div class="input-group date">
+                      <input type="date" id="birthday" name="birthday" style="border: none;">
+                    </div> -->
+                    <div class="input-group date" [ngClass]="{'input-group-focus':focus===true}">
+                      <input class="form-control" placeholder="yyyy-mm-dd" style="background-color: lightgrey;"
+                           name="dp" [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" (focus)="focus=true" (blur)="focus=false" />
+                      <div class="input-group-append">
+                          <span class="glyphicon glyphicon-calendar input-group-text" style="border: none; visibility: hidden;" >
+                            <!-- <i class="fa fa-calendar" aria-hidden="true"></i> -->
+                          </span>
+                      </div>
+                  </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td class="td-cell-fieldName" style="vertical-align:top; padding-top: 10px">Note : </td>
+                  <td class="td-cell-input" style="padding-right: 27px;"> 
+                    <!-- <input type="text" class="form-control" placeholder="Status" (focus)="focus1=true" (blur)="focus1=false" name="status" id="status" style="font-size: medium;"  disabled> -->
+                    <textarea id="w3review" [(ngModel)]="noteInput" name="w3review" rows="12" cols="48" style="border: none; background-color: lightgrey; outline: none; padding:7px">
+                    </textarea>
+                  </td>
+                </tr>
+                <tr>
+              </table>
+                <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        First Name : 
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true" (blur)="focus1=false" name="firstName" id="firstName" [(ngModel)]="data.userRole" style="font-size: medium;"  disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        NIC : 
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Last Name" (focus)="focus=true" (blur)="focus=false" id="lastName" name="lastName" [(ngModel)]="data.division" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-circle-10"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Role" (focus)="focus=true" (blur)="focus=false" id="userRole" name="userRole" [(ngModel)]="data.email" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-pin-3"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Province" (focus)="focus=true" (blur)="focus=false" id="province" name="province" [(ngModel)]="data.status" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-pin-3"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="District" (focus)="focus=true" (blur)="focus=false" id="district" name="district" [(ngModel)]="data.userRole" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-pin-3"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Division" (focus)="focus=true" (blur)="focus=false" id="division" name="division" [(ngModel)]="data.userRole" style="font-size: medium;" disabled>
+                </div>
+               <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-badge"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="NIC" (focus)="focus=true" (blur)="focus=false" id="nic" name="nic" [(ngModel)]="data.userRole" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-mobile"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="Phone" (focus)="focus=true" (blur)="focus=false" id="phone" name="phone" [(ngModel)]="data.userRole" style="font-size: medium;" disabled>
+                </div>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="nc-icon nc-email-85"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" placeholder="E-mail" (focus)="focus1=true" (blur)="focus1=false" name="email" id="email" [value]="data.userRole" style="font-size: medium;" disabled>
+                </div> -->
+
+
+                <!-- <div class="row" style="margin-left: 20px;">
+                  <button class="btn btn-signin btn-block btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
+                  <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onSkipClick()">Skip</button>
+                </div> -->
+                <br>
+            </form>
+            <form class="register-form" style="width: 500px; height: height" *ngIf="data.type == 'changeDetails'">
+              <h2>{{formTitle}}</h2>
+              <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="nc-icon nc-circle-10"></i>
+                    </span>
+                  </div>
+                    <input type="text" class="form-control" (focus)="focus=true" (blur)="focus=false" id="fullName" name="fullName" [(ngModel)]="fullName" disabled style="font-size: medium;">
+                </div> -->
+                <br>
+                <div class="row">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-4">
+                    <div class="form-check-radio">
+                      <label>
+                        <input type="radio" name="optionButtons" id="optionButtons" value="1" checked (change)="buttonChange($event)" class="acceptButton"> 
+                            Accept 
+                          <span class="form-check-sign"></span>
+                        </label>
+                      </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-check-radio">
+                      <label>
+                        <input type="radio" name="optionButtons" id="optionButtons" value="0" (change)="buttonChange($event)" class="rejectButton"> 
+                          Decline 
                         <span class="form-check-sign"></span>
                       </label>
                     </div>
@@ -513,6 +662,11 @@
             <!-- <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button> -->
             <button type="button" [class]="btnStyleTwo" [mat-dialog-close]="true">cancel</button>
             <button type="button" [class]="btnStyleOne" (click)="onDeclineButtonClick()" [mat-dialog-close]="true">decline</button>
+          </div>
+          <div class="row" style="margin-left: 280px; align-items: right;" *ngIf="(data.type == 'changeDetails')">
+            <!-- <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button> -->
+            <button type="button" [class]="btnStyleTwo" [mat-dialog-close]="true">cancel</button>
+            <button type="button" [class]="btnStyleOne" (click)="onCompletedButtonClick()" [mat-dialog-close]="true">Complete</button>
           </div>
           <div class="row" style="margin-left: 300px; align-items: right;" *ngIf="data.type == 'visitDetails'">
               <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button>
