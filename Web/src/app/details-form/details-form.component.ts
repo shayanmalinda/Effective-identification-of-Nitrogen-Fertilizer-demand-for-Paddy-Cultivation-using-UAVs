@@ -7,6 +7,8 @@ import { DialogService } from 'app/services/dialog.service';
 import { UserService } from 'app/services/user.service';
 import { MapsAPILoader } from '@agm/core';
 import { UserFarmersService } from 'app/services/user-farmers.service'; 
+import { ThrowStmt } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-details-form',
@@ -31,14 +33,23 @@ export class DetailsFormComponent implements OnInit {
     division : "",
     status : "",
   }
+  message : Message = {
+    title : '',
+    showMessage : '',
+  };
   user : User;
   title: string = 'AGM project';
   latitude!: number;
   longitude!: number;
   zoom: number;
   repeat : string = "default";
+  acceptForm : boolean = true;
+  height = 420;
+  selectedDate : string = "";
+  noteInput : string = "";
+  dateSelected : boolean = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private userFarmersService : UserFarmersService) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private router: Router, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private userFarmersService : UserFarmersService) { 
     
     this.latitude = 6.9271;
     this.longitude = 79.8612;
@@ -62,6 +73,9 @@ export class DetailsFormComponent implements OnInit {
       this.userCredential.userID = data.details.field.farmerId;
       this.latitude = parseFloat(data.details.latitude);
       this.longitude = parseFloat(data.details.longitude);
+    }
+    if(data.type == "addDetails"){
+      this.formTitle = "Field Visits Details";
     }
     this.btnStyleOne = "btn btn-success btn-round margin-left : 500px";
     this.btnStyleTwo = "btn btn-default btn-round margin-left : 500px";
@@ -104,6 +118,51 @@ export class DetailsFormComponent implements OnInit {
   onAfterConfirmedClick(){
     console.log("comes here : ");
     // this.userFieldVisitComponent.actionButtonClicked = false;
+  }
+
+  buttonChange(value){
+    console.log(value.target.value);
+    var returnedValue = value.target.value;
+    this.btnStyleTwo = "btn btn-default btn-round";
+    if(returnedValue == 1){
+      this.acceptForm = true;
+      this.btnStyleOne = "btn btn-success btn-round margin-left : 500px";
+    }else{
+      this.acceptForm = false;
+      this.btnStyleOne = "btn btn-danger btn-round margin-left : 500px";
+    }
+  }
+
+  onConfirmButtonClick(){
+
+    if(this.selectedDate == ""){
+      this.message.title = "Error";
+      this.message.showMessage = "You have to select a suitable date to confirm the field visit !!";
+    }else{
+      console.log(this.noteInput);
+      console.log(this.dateSelected);
+      this.message.title = "success";
+      this.message.showMessage = "You have successfully confirmed the field visit !!";
+      this.router.navigate(['/user-farmer-requests']);
+    }
+    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+    this.clearFields();
+    })
+  }
+
+  onDeclineButtonClick(){
+    console.log(this.noteInput);
+    this.message.title = "success";
+    this.message.showMessage = "You have declined the field request !!";
+    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+      this.clearFields();
+    })
+    this.router.navigate(['/user-farmer-requests']);
+  }
+
+  clearFields(){
+    this.selectedDate = "";
+    this.noteInput = "";
   }
   
 }
