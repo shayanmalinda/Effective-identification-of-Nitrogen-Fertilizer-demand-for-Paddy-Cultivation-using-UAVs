@@ -9,6 +9,9 @@ import { MapsAPILoader } from '@agm/core';
 import { UserFarmersService } from 'app/services/user-farmers.service'; 
 import { ThrowStmt } from '@angular/compiler';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { FieldVisit, FieldVisitTemp } from 'app/models/field-visit.model';
+import { FieldVisitService } from 'app/services/field-visit.service';
 
 @Component({
   selector: 'app-details-form',
@@ -37,6 +40,25 @@ export class DetailsFormComponent implements OnInit {
     title : '',
     showMessage : '',
   };
+  fieldVisitTemp : FieldVisitTemp = {
+    id: '',
+    date: '',
+    division: '',
+    fieldId: '',
+    field: '',
+    latitude: '',
+    longitude: '',
+    requestNote: '',
+    status: '',
+    address: '',
+    farmer: '',
+    farmerName: '',
+    farmerTel: '',
+    registrationNo: '',
+    modifiedDate: '',
+    modifiedTimestamp: 0,
+    note : '',
+  };
   user : User;
   title: string = 'AGM project';
   latitude!: number;
@@ -49,7 +71,7 @@ export class DetailsFormComponent implements OnInit {
   noteInput : string = "";
   dateSelected : boolean = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private router: Router, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private userFarmersService : UserFarmersService) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private datepipe : DatePipe, private fieldVisitService : FieldVisitService, private datePipe : DatePipe, private router: Router, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private userFarmersService : UserFarmersService) { 
     
     this.latitude = 6.9271;
     this.longitude = 79.8612;
@@ -70,12 +92,15 @@ export class DetailsFormComponent implements OnInit {
     if(data.type == "visitDetails"){
       this.formTitle = "Field Visits Details";
       console.log("the farmer id is : " + data.details.field.farmerId);
+      this.data.details.createdDate = datePipe.transform(data.details.createdDate, 'MMMM d, y');
       this.userCredential.userID = data.details.field.farmerId;
       this.latitude = parseFloat(data.details.latitude);
       this.longitude = parseFloat(data.details.longitude);
     }
     if(data.type == "addDetails"){
       this.formTitle = "Field Visits Details";
+      // console.log(data.details.requestId);
+      this.fieldVisitTemp.id = data.details.requestId;
     }
     this.btnStyleOne = "btn btn-success btn-round margin-left : 500px";
     this.btnStyleTwo = "btn btn-default btn-round margin-left : 500px";
@@ -134,13 +159,19 @@ export class DetailsFormComponent implements OnInit {
   }
 
   onConfirmButtonClick(){
-
+    let currentTime = new Date();
     if(this.selectedDate == ""){
       this.message.title = "Error";
       this.message.showMessage = "You have to select a suitable date to confirm the field visit !!";
     }else{
-      console.log(this.noteInput);
-      console.log(this.dateSelected);
+      // console.log(this.noteInput);
+      // console.log(this.dateSelected);
+      // console.log("hello  " + this.fieldVisitTemp.id);
+      this.fieldVisitTemp.status = "confirmed";
+      this.fieldVisitTemp.note = this.noteInput;
+      this.fieldVisitTemp.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
+      this.fieldVisitTemp.modifiedTimestamp = currentTime.getTime();
+      this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp);
       this.message.title = "success";
       this.message.showMessage = "You have successfully confirmed the field visit !!";
       this.router.navigate(['/user-farmer-requests']);
@@ -151,7 +182,12 @@ export class DetailsFormComponent implements OnInit {
   }
 
   onDeclineButtonClick(){
-    console.log(this.noteInput);
+    let currentTime = new Date();
+    this.fieldVisitTemp.status = "declined";
+    this.fieldVisitTemp.note = this.noteInput;
+    this.fieldVisitTemp.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
+    this.fieldVisitTemp.modifiedTimestamp = currentTime.getTime();
+    this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp);
     this.message.title = "success";
     this.message.showMessage = "You have declined the field request !!";
     this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
