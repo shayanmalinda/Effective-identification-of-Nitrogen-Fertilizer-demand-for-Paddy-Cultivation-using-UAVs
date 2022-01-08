@@ -1,7 +1,9 @@
+import { _isNumberValue } from '@angular/cdk/coercion';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FieldVisit, FieldVisitTemp } from 'app/models/field-visit.model';
 import { User } from 'app/models/user.model';
+import { distinctUntilChanged } from 'rxjs-compat/operator/distinctUntilChanged';
 import { skip } from 'rxjs/operators';
 
 @Injectable({
@@ -69,8 +71,9 @@ export class FieldVisitService {
   }
 
   updateFieldVisitStatus(fieldVisitTemp: FieldVisitTemp) {
+    console.log("the temp in the service file : " + fieldVisitTemp);
     return new Promise<any>((resolve, reject) => {
-      this.fireStore.collection('FieldRequests').doc('' + fieldVisitTemp.id + '').update({'status' : fieldVisitTemp.status, 'modifiedDate' : fieldVisitTemp.modifiedDate, 'modifiedTimestamp' : fieldVisitTemp.modifiedTimestamp, 'note' : fieldVisitTemp.note})
+      this.fireStore.collection('FieldRequests').doc('' + fieldVisitTemp.id + '').update({'status' : fieldVisitTemp.status, 'modifiedDate' : fieldVisitTemp.modifiedDate, 'modifiedTimestamp' : fieldVisitTemp.modifiedTimestamp, 'note' : fieldVisitTemp.note, 'visitDate' : fieldVisitTemp.visitDate})
         .then(
           res => {
             resolve("Success");
