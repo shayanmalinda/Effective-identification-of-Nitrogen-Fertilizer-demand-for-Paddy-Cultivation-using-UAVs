@@ -31,4 +31,5 @@ export class FieldVisitTemp {
     modifiedDate: string;
     modifiedTimestamp: number;
     note : string;
+    visitDate : string;
 }

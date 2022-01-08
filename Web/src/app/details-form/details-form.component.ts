@@ -58,6 +58,7 @@ export class DetailsFormComponent implements OnInit {
     modifiedDate: '',
     modifiedTimestamp: 0,
     note : '',
+    visitDate : ''
   };
   user : User;
   title: string = 'AGM project';
@@ -65,9 +66,14 @@ export class DetailsFormComponent implements OnInit {
   longitude!: number;
   zoom: number;
   repeat : string = "default";
-  acceptForm : boolean = true;
+  acceptForm : number = 0;
+  processingForm : boolean = false;
   height = 420;
-  selectedDate : string = "";
+  selectedDate = {
+    year : 0,
+    month : 0,
+    day : 0
+  };
   noteInput : string = "";
   dateSelected : boolean = false;
 
@@ -76,6 +82,8 @@ export class DetailsFormComponent implements OnInit {
     this.latitude = 6.9271;
     this.longitude = 79.8612;
     this.zoom = 25;
+    this.data = data;
+    console.log("Thi i s : " + this.data)
     
     if(data.type == "farmerDetails"){
       this.formTitle = "Farmer Details"
@@ -98,14 +106,22 @@ export class DetailsFormComponent implements OnInit {
       this.longitude = parseFloat(data.details.longitude);
     }
     if(data.type == "addDetails"){
-      this.formTitle = "Farmer Visit Details";
+      console.log("comes to add details section ");
+      this.formTitle = "Farmer Request Details";
       // console.log(data.details);
+      this.acceptForm = (data.details.status == "pending" ? 0 : (data.details.status == "decline" ? 1 : 2));
       this.fieldVisitTemp.id = data.details.requestId;
+      this.fieldVisitTemp.note = data.details.note;
+      this.fieldVisitTemp.visitDate = data.details.visitDate;
     }
     if(data.type == "changeDetails"){
       this.formTitle = "Field Visit Details";
-      // console.log(data.details.requestId);
+      // console.log(data.details);
+      this.processingForm = (data.details.status == "confirmed" ? true : false);
+      // console.log(" type : " + data.type + " status : " + this.processingForm);
       this.fieldVisitTemp.id = data.details.requestId;
+      this.fieldVisitTemp.note = data.details.note;
+      this.fieldVisitTemp.visitDate = data.details.visitDate;
     }
     this.btnStyleOne = "btn btn-success btn-round margin-left : 500px";
     this.btnStyleTwo = "btn btn-default btn-round margin-left : 500px";
@@ -155,76 +171,160 @@ export class DetailsFormComponent implements OnInit {
     var returnedValue = value.target.value;
     this.btnStyleTwo = "btn btn-default btn-round";
     if(returnedValue == 1){
-      this.acceptForm = true;
+      this.acceptForm = 0;
       this.btnStyleOne = "btn btn-success btn-round margin-left : 500px";
     }else{
-      this.acceptForm = false;
+      this.acceptForm = 1;
       this.btnStyleOne = "btn btn-danger btn-round margin-left : 500px";
     }
   }
 
   onConfirmButtonClick(){
     let currentTime = new Date();
-    if(this.selectedDate == ""){
+    if(this.selectedDate.year == 0){
       this.message.title = "Error";
       this.message.showMessage = "You have to select a suitable date to confirm the field visit !!";
       this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-        this.clearFields();
+        // this.clearFields();
       })
     }else{
       // console.log(this.noteInput);
-      // console.log(this.dateSelected);
-      // console.log("hello  " + this.fieldVisitTemp.id);
+      console.log(this.selectedDate);
+      // console.log("hello  " + this.fieldVisitTemp);
       this.fieldVisitTemp.status = "confirmed";
+      this.fieldVisitTemp.visitDate = "" + this.selectedDate.year + "-" + this.selectedDate.month + "-" + this.selectedDate.day + "";
       this.fieldVisitTemp.note = this.noteInput;
       this.fieldVisitTemp.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
       this.fieldVisitTemp.modifiedTimestamp = currentTime.getTime();
-      console.log(this.fieldVisitTemp)
-      this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp);
-      this.message.title = "success";
-      this.message.showMessage = "You have successfully confirmed the field visit !!";
-      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-        this.clearFields();
-        this.router.navigate(['/user-field-visits']);
-      })
+      // console.log(this.fieldVisitTemp);
+      this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp)
+      .then(res => {
+        this.message.title = "success";
+        this.message.showMessage = "You have successfully confirmed the visit on : " + this.fieldVisitTemp.visitDate + " !!";
+        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+          // this.updateSessionDetails();
+          // if (this.user.userRole != "admin")
+            // this.router.navigate(['/profile']);
+            this.router.navigate(['/user-dashboard']);
+        });
+      }, err => {
+        this.message.title = "error";
+        this.message.showMessage = err;
+        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+          this.clearFields();
+        })
+      });
+      
+      // console.log(this.fieldVisitTemp)
+      // this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp);
+      // this.message.title = "success";
+      // this.message.showMessage = "You have successfully confirmed the field visit !!";
+      // this.dialog.openConfirmDialog(this.message);
+      // console.log("completed from here ; ");
+      // this.router.navigate(['/user-field-visits']);
+      // this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+      //   // this.clearFields();
+      //   // this.router.navigate(['/user-field-visits']);
+      // })
+      // console.log("comes to the detalis forms");
+      
+      // this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp)
+      // .then(res => {
+      //   this.message.title = "success";
+      //   this.message.showMessage = "You have successfully confirmed the farmer request !";
+      //   this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+      //     console.log("finally")
+      //   });
+      // }, err => {
+      //   this.message.title = "error";
+      //   this.message.showMessage = err;
+      //   this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+      //     this.clearFields();
+      //   })
+      // });
     }
+    // this.router.navigate(['/user-farmer-requests']);
   }
 
   onDeclineButtonClick(){
     let currentTime = new Date();
+    // this.fieldVisitTemp.note = data.details.;
     this.fieldVisitTemp.status = "declined";
-    this.fieldVisitTemp.note = this.noteInput;
     this.fieldVisitTemp.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
     this.fieldVisitTemp.modifiedTimestamp = currentTime.getTime();
-    this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp);
-    this.message.title = "success";
-    this.message.showMessage = "You have declined the field request !!";
-    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-      this.clearFields();
-    })
-    this.router.navigate(['/user-field-visits']);
+    this.fieldVisitTemp.note = this.noteInput;
+    this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp)
+      .then(res => {
+        this.message.title = "success";
+        this.message.showMessage = "You have successfully declined the farmer request !!";
+        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+          // this.updateSessionDetails();
+          // if (this.user.userRole != "admin")
+            // this.router.navigate(['/profile']);
+            this.router.navigate(['/user-dashboard']);
+        });
+      }, err => {
+        this.message.title = "error";
+        this.message.showMessage = err;
+        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+          this.clearFields();
+        })
+      });
+    // this.router.navigate(['/user-field-visits']);
   }
 
   onCompletedButtonClick(){
     let currentTime = new Date();
     this.fieldVisitTemp.status = "completed";
-    this.fieldVisitTemp.note = this.noteInput;
     this.fieldVisitTemp.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
     this.fieldVisitTemp.modifiedTimestamp = currentTime.getTime();
     console.log(this.fieldVisitTemp)
-    this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp);
-    this.message.title = "success";
-    this.message.showMessage = "You have completed the field visit !!";
-    this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-      this.clearFields();
-    })
-    this.router.navigate(['/user-farmer-requests']);
+    this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp)
+    .then(res => {
+      this.message.title = "success";
+      this.message.showMessage = "You have completed the field visit !!";
+      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+        // this.updateSessionDetails();
+        // if (this.user.userRole != "admin")
+          // this.router.navigate(['/profile']);
+          this.router.navigate(['/user-dashboard']);
+      });
+    }, err => {
+      this.message.title = "error";
+      this.message.showMessage = err;
+      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+        this.clearFields();
+      })
+    });
   }
 
   clearFields(){
-    this.selectedDate = "";
+    this.selectedDate.year = 0;
     this.noteInput = "";
   }
   
+  onProcessingButtonClick(){
+    let currentTime = new Date();
+    this.fieldVisitTemp.status = "processing";
+    // this.fieldVisitTemp.note = this.noteInput;
+    this.fieldVisitTemp.modifiedDate = this.datepipe.transform((new Date), 'MMM d, y h:mm:ss a').toString();
+    this.fieldVisitTemp.modifiedTimestamp = currentTime.getTime();
+    console.log(this.fieldVisitTemp)
+    this.fieldVisitService.updateFieldVisitStatus(this.fieldVisitTemp)
+    .then(res => {
+      this.message.title = "success";
+      this.message.showMessage = "You have successfully started the process !!";
+      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+          this.router.navigate(['/user-dashboard']);
+      });
+    }, err => {
+      this.message.title = "error";
+      this.message.showMessage = err;
+      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+        this.clearFields();
+      })
+    });
+    // this.router.navigate(['/user-farmer-requests']);
+  }
 }
 

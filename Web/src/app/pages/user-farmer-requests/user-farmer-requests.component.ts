@@ -15,6 +15,7 @@ import { FieldVisitService } from 'app/services/field-visit.service';
 import { FieldVisit, FieldVisitTemp } from 'app/models/field-visit.model';
 import { Field } from 'app/models/field.model';
 import { UserService } from 'app/services/user.service';
+import { debounceTime } from 'rxjs-compat/operator/debounceTime';
 
 const NO_OF_WEEKS = 8;
 
@@ -208,7 +209,11 @@ export class UserFarmerRequestsComponent implements OnInit {
     var completed;
     var field;
     var farmer;
-    this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
+    this.pendingRequests = 0;
+    this.completedRequests = 0;
+    this.declinedRequests = 0;
+    this.fieldVisitService.getFieldVisitsByDivision(this.user)
+    .subscribe(data => {
       fieldVisits = data.map(e => {
         return {
           id: e.payload.doc.id,
@@ -221,7 +226,7 @@ export class UserFarmerRequestsComponent implements OnInit {
         // else if (f.status == 'visit pending') visitPending += 1;
         // else if (f.status == 'processing') processing += 1;
         // else if (f.status == 'completed') completed += 1;
-
+        // console.log("in here");
         if(f.status == "pending" || f.status == "completed" || f.status == "declined"){
           if(f.status == "pending"){ this.pendingRequests++; }
           else if(f.status == "completed"){ this.completedRequests++; }
@@ -236,7 +241,7 @@ export class UserFarmerRequestsComponent implements OnInit {
               farmer = data.payload.data() as User;
               f.farmer = farmer;
               f.farmerName = farmer.firstName + " " + farmer.lastName;
-              console.log(fieldVisits)
+              // console.log(fieldVisits)
               this.dataSource = new MatTableDataSource(fieldVisits);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
@@ -266,10 +271,19 @@ export class UserFarmerRequestsComponent implements OnInit {
 
   onEditClick(value){
     this.actionButtonClicked = true;
-    // console.log("This is the row returned by the button click event " + value);
-    this.dialog.openEditDialog({requestId : value.id}, "addDetails").subscribe(data =>{
+    console.log("This is the row returned by the button click event " + value.id);
+    this.dialog.openEditDialog({requestId : value.id, 
+      status : value.status, 
+      address : value.address, 
+      registrationNumber : value.registrationNumber, 
+      plantAge : value.plantAge, visitDate : 
+      value.visitDate, note : value.note},
+      "addDetails").subscribe(data =>{
       this.actionButtonClicked = !data;
+      // console.log("final")
     })
+    // console.log("comese here");
+    
     this.loadSessionDetails();
   }
 }

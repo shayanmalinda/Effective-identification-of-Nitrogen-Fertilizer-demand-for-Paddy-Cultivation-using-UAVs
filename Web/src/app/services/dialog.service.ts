@@ -49,6 +49,7 @@ export class DialogService {
       }
       // data : use
     });
+    // console.log("this is the ref : " + dialogRef);
     return dialogRef.afterClosed();
   }
 
