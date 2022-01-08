@@ -1,3 +1,4 @@
+import { FieldService } from 'app/services/field.service';
 import { UserTemp } from './../../models/user.model';
 import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./users.component.css']
 })
 
-export class UsersComponent implements OnInit, AfterViewInit {
+export class UsersComponent implements OnInit {
   displayedColumns: string[];
   // = ['name', 'email', 'phone', 'nic', 'province','district','division','view','delete'];
   dataSource: MatTableDataSource<UserTemp>;
@@ -44,15 +45,20 @@ export class UsersComponent implements OnInit, AfterViewInit {
   declined = 0;
   active = 0;
   inactive = 0;
+  field;
 
-  constructor(private renderer: Renderer2, private userService: UserService, private router: Router) {
+  constructor(private renderer: Renderer2, private userService: UserService, private fieldService: FieldService, private router: Router) {
     this.type = this.router.getCurrentNavigation().extras.state.type;
     this.role = this.router.getCurrentNavigation().extras.state.role;
     this.title = this.role;
 
     if (this.type != 'request') {
       this.title += "s";
-      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'status', 'view', 'delete'];
+      console.log(this.role)
+      if (this.role == 'farmer')
+        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'status', 'view', 'deactivate','reactivate',  'delete'];
+      else
+        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'status', 'view', 'delete'];
     } else {
       this.title += " requests";
       // if (this.role == 'farmer') {
@@ -72,6 +78,13 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.selectedRowIndex = row.id;
     console.log(this.selectedRowIndex)
     this.user = row;
+    this.fieldService.getFieldofFarmer(this.user.id).subscribe(data => {
+      data.forEach(e => {
+        // return {
+        this.field = e.payload.doc.id;//
+        // } 
+      })
+    })
   }
   viewUser() {
     console.log(this.user)
@@ -86,10 +99,17 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.userService.deleteUser(this.user.id);
   }
   accept() {
-    this.userService.acceptUser(this.user.id);
+    this.userService.changeUserStatus(this.user.id, 'active');
+  }
+  deactivate() {
+    // this.userService.changeUserStatus(this.user.id, 'inactive')
+    // this.fieldService.getFieldofFarmer(this.user.id).subscribe(data => {  
+    this.userService.changeuserActivation(this.user.id, this.field, 'inactive');
+
+    // })
   }
   decline() {
-    this.userService.declineUser(this.user.id);
+    this.userService.changeUserStatus(this.user.id, 'declined');
   }
   selectReqType() {
     let filterValue;
