@@ -9,7 +9,8 @@ import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
-import { MatRadioModule } from '@angular/material/radio'
+import { MatRadioModule } from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 // import * as Material from '@angular/material';
 
 
@@ -27,6 +28,7 @@ import { MatRadioModule } from '@angular/material/radio'
     MatSortModule,
     MatPaginatorModule,
     MatRadioModule,
+    MatDatepickerModule,
   ],
   exports: [
     MatSliderModule,
@@ -39,6 +41,7 @@ import { MatRadioModule } from '@angular/material/radio'
     MatSortModule,
     MatPaginatorModule,
     MatRadioModule,
+    MatDatepickerModule,
   ]
 })
 export class MaterialModule { }

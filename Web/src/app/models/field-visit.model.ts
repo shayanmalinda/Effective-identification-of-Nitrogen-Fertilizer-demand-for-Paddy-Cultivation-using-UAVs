@@ -11,7 +11,7 @@ export class FieldVisit {
     createdTimestamp: number;
     modifiedDate: string;
     modifiedTimestamp: number;
-
+    note : string;
 }
 export class FieldVisitTemp {
     id: string;
@@ -28,5 +28,7 @@ export class FieldVisitTemp {
     farmerName: string;
     farmerTel: string;
     registrationNo: string;
-
+    modifiedDate: string;
+    modifiedTimestamp: number;
+    note : string;
 }

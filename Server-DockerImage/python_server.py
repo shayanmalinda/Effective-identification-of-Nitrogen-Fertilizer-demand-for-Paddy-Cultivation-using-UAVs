@@ -28,7 +28,7 @@ def image():
     os.remove("image.jpg")
     return str(image_bytes);
 
-@app.route("/process", methods=['POST'])
+@app.route("/process", methods=['POST','GET'])
 def process():
     #capture the image from request
     img = request.files["image"].read()
@@ -36,8 +36,12 @@ def process():
     #preprocess & predict from saved image
     preprocessed_image=preprocess(img);
     arr_rgb=rgb_mean(preprocessed_image);
+    df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
-    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]  
+    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
+    df['brightness']=df_metadata['brightness']
+    df['shutter_speed']=df_metadata['shutter_speed']
+    df['exposure_time']=df_metadata['exposure_time']
     print(str(df))
     result=predict(df);
     #print(str(arr_rgb))
@@ -46,7 +50,7 @@ def process():
 def predict(df):
     print("predict")
     # Load the model from the file
-    model = joblib.load('./model_rgb.pkl')
+    model = joblib.load('./model.pkl')
     
     # Use the loaded model to make predictions
     prd=model.predict(df)
