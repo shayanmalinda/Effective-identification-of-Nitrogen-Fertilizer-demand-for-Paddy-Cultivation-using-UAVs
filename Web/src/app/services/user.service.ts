@@ -41,7 +41,7 @@ export class UserService {
     //     fieldId = f.payload.doc.id;
     //   })
     // })
-    
+
     // var batch = this.fireStore.firestore.batch();
     // var farmerRef = this.fireStore.firestore.collection("Users").doc(userId);
     // batch.update(farmerRef, { "status": status });
@@ -144,6 +144,11 @@ export class UserService {
     })
 
   }
+
+  getFarmersofDivision(division) {
+    return this.fireStore.collection('Users', ref => ref.where('userRole', '==','farmer' ).where('status', '==', 'active').where('division', '==', division)).snapshotChanges();
+  }
+
 
 }
 

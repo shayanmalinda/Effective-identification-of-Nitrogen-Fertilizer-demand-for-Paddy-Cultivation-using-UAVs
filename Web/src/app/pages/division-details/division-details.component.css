@@ -1,0 +1,59 @@
+ul {
+    list-style-type: none;
+}
+.container {
+    width: 500px;
+}
+.left {
+    text-align: right;
+}
+.row {
+    margin-left: 20px;
+}
+.name{
+    margin-top: 20px;
+}
+.bg-pending{
+    color: turquoise;
+}
+.btn{
+    color: #000;
+}
+.element{
+    display: flex;
+    flex-direction: row;
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+}
+.name{
+    width: 150px;
+}
+
+.value{
+    margin: 0;
+}
+.sub-title{
+    margin-top: 22px;
+}
+.request{
+    border-color: rgb(0, 119, 255);
+    color: rgb(0, 119, 255);
+}
+.request:hover, .btn:focus {
+    background-color: rgb(213, 231, 252);
+}
+.update{
+    border-color: green;
+    color: green;
+}
+.update:hover, .btn:focus {
+    background-color: rgb(213, 252, 225);
+}
+.cancel{
+    border-color: red;
+    color: red;
+}
+.cancel:hover, .btn:focus {
+    background-color: rgb(252, 213, 213);
+}

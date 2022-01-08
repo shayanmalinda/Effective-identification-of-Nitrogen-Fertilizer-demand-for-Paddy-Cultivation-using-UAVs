@@ -1,38 +1,47 @@
 <div class="wrapper">
+  <div class="page-header section-dark" style="background-image: url('assets/img/paddy one.jpg')">
+    <div class="filter"></div>
+    <div class="content-center">
+
+      <!-- <div class="wrapper">
   <div class="page-header page-header-xs" data-parallax="true"
     style="background-image: url('./assets/img/user profile.jpg');">
     <div class="filter"></div>
   </div>
-  <div class="section profile-content" style="padding-bottom: 0px;">
-    <div class="container" style="padding-bottom: 0px; margin-bottom: 0px;">
-      <div class="owner">
-        <div class="avatar">
-          <img [(src)]="this.user.image" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-        </div>
-        <div style="align-content: center;">
-          <h2 class="title" aria-disabled style="font-size: x-large;">{{fullName}}<br></h2>
-        </div>
-        <div>
-          <label class="btn btn-outline-default btn-round image-upload-container">
-            <i class="fa fa-cog"></i> Edit Image
-            <input #imageInput type="file" class="input-image" accept="image/*" (change)="processFile(imageInput)">
-          </label>
-          <!-- <button class="btn btn-outline-default btn-round" (click)="addClicked()"><i class="fa fa-cog"></i> Edit Image</button> -->
-        </div>
-        <!-- <div class="name">
+  <div class="section profile-content" style="padding-bottom: 0px;"> -->
+      <div class="container" style="padding-bottom: 0px; margin-bottom: 0px;">
+        <div class="owner" *ngIf=" type!='request'">
+
+          <div class="avatar">
+            <img [(src)]="this.user.image" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+          </div>
+          <div>
+            <label class="btn btn-outline-default btn-round image-upload-container">
+              <i class="fa fa-cog"></i> Edit Image
+              <input #imageInput type="file" class="input-image" accept="image/*" (change)="processFile(imageInput)">
+            </label>
+
+            <!-- <button class="btn btn-outline-default btn-round" (click)="addClicked()"><i class="fa fa-cog"></i> Edit Image</button> -->
+          </div>
+          <div style="align-content: center;">
+            <h2 class="title" aria-disabled style="font-size: x-large;">{{fullName}}<br></h2>
+          </div>
+          <!-- <div class="name">
                       <h4 class="title">Jane Faker<br /></h4> -->
-        <!-- <h6 class="description">Music Producer</h6> -->
-        <!-- </div> -->
-        <br>
-        <br>
-      </div>
-      <div class="row">
-        <div class="col-lg-1 col-sm-1"></div>
-        <div class="col-lg-6 col-sm-6" style="padding-bottom: 0px; height: 550px;">
-          <div class="card-register"
-            style="margin-top: 0px; padding-top: 0px; align-items: center; padding-bottom: 0px;">
-            <form class="register-form" style="width: 800px;">
-              <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+          <!-- <h6 class="description">Music Producer</h6> -->
+          <!-- </div> -->
+
+        </div>
+        <div class="container owner " style="align-content: center;" *ngIf=" type=='request'">
+          <h2 class="title" aria-disabled style="font-size: x-large;">Officer Request<br></h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-1 col-sm-1"></div>
+          <div class="col-lg-6 col-sm-6" style="padding-bottom: 0px; height: 550px;">
+            <div class="card-register"
+              style="margin-top: 0px; padding-top: 0px; align-items: center; padding-bottom: 0px;">
+              <form class="register-form" style="width: 300px;">
+                <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                               <div class="input-group-prepend">
                                 <span class="input-group-text">
                                   <i class="nc-icon nc-circle-10"></i>
@@ -40,37 +49,37 @@
                               </div>
                                 <input type="text" class="form-control" (focus)="focus=true" (blur)="focus=false" id="fullName" name="fullName" [(ngModel)]="fullName" disabled style="font-size: large;">
                             </div> -->
-              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="nc-icon nc-circle-10"></i>
-                  </span>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="nc-icon nc-circle-10"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true"
+                    (blur)="focus1=false" name="firstName" id="firstName" [(ngModel)]="user.firstName"
+                    (change)="nameChanged()" style="font-size: large;">
                 </div>
-                <input type="text" class="form-control" placeholder="First Name" (focus)="focus1=true"
-                  (blur)="focus1=false" name="firstName" id="firstName" [(ngModel)]="user.firstName"
-                  (change)="nameChanged()" style="font-size: large;">
-              </div>
-              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="nc-icon nc-circle-10"></i>
-                  </span>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="nc-icon nc-circle-10"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Last Name" (focus)="focus=true"
+                    (blur)="focus=false" id="lastName" name="lastName" [(ngModel)]="user.lastName"
+                    (change)="nameChanged()" style="font-size: large;">
                 </div>
-                <input type="text" class="form-control" placeholder="Last Name" (focus)="focus=true"
-                  (blur)="focus=false" id="lastName" name="lastName" [(ngModel)]="user.lastName"
-                  (change)="nameChanged()" style="font-size: large;">
-              </div>
-              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}"
-                *ngIf="user.userRole!='admin'">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="nc-icon nc-pin-3"></i>
-                  </span>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}"
+                  *ngIf="user.userRole!='admin'">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="nc-icon nc-pin-3"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" value="Location" style="font-size: large;">
+                  <!-- <input type="text" class="form-control" placeholder="Province" (focus)="focus=true" (blur)="focus=false" id="province" name="province" [(ngModel)]="user.province" style="font-size: large;" > -->
                 </div>
-                <input type="text" class="form-control" value="Location" style="font-size: large;">
-                <!-- <input type="text" class="form-control" placeholder="Province" (focus)="focus=true" (blur)="focus=false" id="province" name="province" [(ngModel)]="user.province" style="font-size: large;" > -->
-              </div>
-              <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                               <div class="input-group-prepend">
                                 <span class="input-group-text">
                                     <i class="nc-icon nc-pin-3"></i>
@@ -78,10 +87,10 @@
                               </div>
                                 <input type="text" class="form-control" placeholder="District" (focus)="focus=true" (blur)="focus=false" id="district" name="district" [(ngModel)]="user.district" style="font-size: large;" >
                             </div> -->
-              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}"
-                style="padding-left: 45px; font-size: large;" *ngIf="user.userRole!='admin'">
-                <div class="dropdown">
-                  <!-- <button class="dropbtn">District</button>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}"
+                  style="padding-left: 45px; font-size: large;" *ngIf="user.userRole!='admin'">
+                  <div class="dropdown">
+                    <!-- <button class="dropbtn">District</button>
                                 <div class="dropdown-content dropdown-scrollbar">
                                 <a class="dropdown-list">Link 1Link 1Link 1Link 1Link 1Link 1Link 1Link 1</a>
                                 <a >Link 2</a>
@@ -89,22 +98,22 @@
                                 <a href="#">Link 1</a>
                                 <a href="#">Link 2</a>
                                 <a href="#">Link 3</a> -->
-                  <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected"
-                    (ngModelChange)="onProvinceSelected($event)" style="padding-top: 10px;">
-                    <!-- <option style="color: black;">hello</option>
+                    <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected"
+                      (ngModelChange)="onProvinceSelected($event)" style="padding-top: 10px;">
+                      <!-- <option style="color: black;">hello</option>
                                   <option style="color: black;">hello</option>
                                   <option style="color: black;">hello</option>
                                   <option style="color: black;">Heshan</option> -->
-                    <option [value]="none" disabled selected hidden>Province</option>
-                    <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
-                  </select>
-                  <!-- </div> -->
+                      <option [value]="none" disabled selected hidden>Province</option>
+                      <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
+                    </select>
+                    <!-- </div> -->
+                  </div>
                 </div>
-              </div>
-              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}"
-                style="padding-left: 45px; font-size: large;" *ngIf="user.userRole!='admin'">
-                <div class="dropdown">
-                  <!-- <button class="dropbtn">District</button>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}"
+                  style="padding-left: 45px; font-size: large;" *ngIf="user.userRole!='admin'">
+                  <div class="dropdown">
+                    <!-- <button class="dropbtn">District</button>
                                 <div class="dropdown-content dropdown-scrollbar">
                                 <a class="dropdown-list">Link 1Link 1Link 1Link 1Link 1Link 1Link 1Link 1</a>
                                 <a >Link 2</a>
@@ -112,22 +121,22 @@
                                 <a href="#">Link 1</a>
                                 <a href="#">Link 2</a>
                                 <a href="#">Link 3</a> -->
-                  <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected"
-                    (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding-top: 0px;">
-                    <!-- <option style="color: black;">hello</option>
+                    <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected"
+                      (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding-top: 0px;">
+                      <!-- <option style="color: black;">hello</option>
                                   <option style="color: black;">hello</option>
                                   <option style="color: black;">hello</option>
                                   <option style="color: black;">Heshan</option> -->
-                    <option value="none" disabled selected hidden>District</option>
-                    <option *ngFor="let district of districts" [value]="district">{{district}}</option>
-                  </select>
-                  <!-- </div> -->
+                      <option value="none" disabled selected hidden>District</option>
+                      <option *ngFor="let district of districts" [value]="district">{{district}}</option>
+                    </select>
+                    <!-- </div> -->
+                  </div>
                 </div>
-              </div>
-              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}"
-                style="padding-left: 45px; font-size: large;" *ngIf="user.userRole!='admin'">
-                <div class="dropdown">
-                  <!-- <button class="dropbtn">District</button>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}"
+                  style="padding-left: 45px; font-size: large;" *ngIf="user.userRole!='admin'">
+                  <div class="dropdown">
+                    <!-- <button class="dropbtn">District</button>
                                 <div class="dropdown-content dropdown-scrollbar">
                                 <a class="dropdown-list">Link 1Link 1Link 1Link 1Link 1Link 1Link 1Link 1</a>
                                 <a >Link 2</a>
@@ -135,28 +144,28 @@
                                 <a href="#">Link 1</a>
                                 <a href="#">Link 2</a>
                                 <a href="#">Link 3</a> -->
-                  <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected"
-                    (ngModelChange)="onDivisionSelected($event)" style="padding-top: 0px;">
-                    <!-- <option style="color: black;">hello</option>
+                    <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected"
+                      (ngModelChange)="onDivisionSelected($event)" style="padding-top: 0px;">
+                      <!-- <option style="color: black;">hello</option>
                                   <option style="color: black;">hello</option>
                                   <option style="color: black;">hello</option>
                                   <option style="color: black;">Heshan</option> -->
-                    <option [value]="none" disabled selected hidden>Division</option>
-                    <option *ngFor="let division of divisions" [value]="division">{{division}}</option>
-                  </select>
-                  <!-- </div> -->
+                      <option [value]="none" disabled selected hidden>Division</option>
+                      <option *ngFor="let division of divisions" [value]="division">{{division}}</option>
+                    </select>
+                    <!-- </div> -->
+                  </div>
                 </div>
-              </div>
-              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="nc-icon nc-badge"></i>
-                  </span>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="nc-icon nc-badge"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="NIC" (focus)="focus=true" (blur)="focus=false"
+                    id="nic" name="nic" [(ngModel)]="user.nic" style="font-size: large;">
                 </div>
-                <input type="text" class="form-control" placeholder="NIC" (focus)="focus=true" (blur)="focus=false"
-                  id="nic" name="nic" [(ngModel)]="user.nic" style="font-size: large;">
-              </div>
-              <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                <!-- <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
                               <div class="input-group-prepend">
                                 <span class="input-group-text">
                                     <i class="nc-icon nc-circle-10"></i>
@@ -164,40 +173,44 @@
                               </div>
                                 <input type="text" class="form-control" placeholder="Role" (focus)="focus=true" (blur)="focus=false" id="userRole" name="userRole" [(ngModel)]="user.userRole" style="font-size: large;">
                             </div> -->
-              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="nc-icon nc-mobile"></i>
-                  </span>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="nc-icon nc-mobile"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Phone" (focus)="focus=true" (blur)="focus=false"
+                    id="phone" name="phone" [(ngModel)]="user.phone" style="font-size: large;">
                 </div>
-                <input type="text" class="form-control" placeholder="Phone" (focus)="focus=true" (blur)="focus=false"
-                  id="phone" name="phone" [(ngModel)]="user.phone" style="font-size: large;">
-              </div>
-              <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="nc-icon nc-email-85"></i>
-                  </span>
+                <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="nc-icon nc-email-85"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="E-mail" (focus)="focus1=true"
+                    (blur)="focus1=false" name="email" id="email" [(ngModel)]="user.email" style="font-size: large;"
+                    disabled>
                 </div>
-                <input type="text" class="form-control" placeholder="E-mail" (focus)="focus1=true" (blur)="focus1=false"
-                  name="email" id="email" [(ngModel)]="user.email" style="font-size: large;" disabled>
-              </div>
-              <div class="row" style="margin-left: 20px;">
-                <button class="btn btn-signin btn-block btn-round" style="width: 100px;"
-                  (click)="onSaveClick()">Save</button>
-                <button class="btn btn-outline-default btn-round" style="width: 100px;"
-                  (click)="onSkipClick()">cancel</button>
-              </div>
-            </form>
-            <!-- <div class="forgot">
+                <div class="row" style="margin-left: 20px; ">
+                  <!-- <button *ngIf=" type!='request' && user.userRole=='agricultural officer'" class="btn btn-signin btn-block btn-round" style="width: 100px;"
+                    (click)="onSaveClick()">View Field Visits</button> -->
+                  <button class="btn btn-signin btn-block btn-round" style="width: 100px;"
+                    (click)="onSaveClick()">Save</button>
+                  <button class="btn btn-outline-default btn-round" style="width: 100px;"
+                    (click)="onSkipClick()">cancel</button>
+                </div>
+                <br />
+              </form>
+              <!-- <div class="forgot">
                             <a href="/user-profile" class="btn btn-link btn-forget">Forgot password?</a>
                         </div> -->
+            </div>
           </div>
-        </div>
 
-        <div class="col-lg-1 col-sm-1"></div>
-      </div>
-      <!-- <br/>
+          <div class="col-lg-1 col-sm-1"></div>
+        </div>
+        <!-- <br/>
               <div class="nav-tabs-navigation">
                   <div class="nav-tabs-wrapper">
                       <ngb-tabset [justify]="'center'">
@@ -258,11 +271,14 @@
                       </ngb-tabset>
                   </div>
               </div> -->
+      </div>
     </div>
   </div>
 </div>
-<div>
+<!-- </div>
+</div> -->
+<!-- <div>
   <li *ngFor="let user of users">
     <p>{{user.email}}</p>
   </li>
-</div>
+</div> -->

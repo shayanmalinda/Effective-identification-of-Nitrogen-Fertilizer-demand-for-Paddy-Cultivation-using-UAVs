@@ -1,3 +1,4 @@
+import { DivisionsComponent } from './pages/divisions/divisions.component';
 import { FieldVisitsComponent } from './pages/field-visits/field-visits.component';
 import { FieldVisitDetailsComponent } from './pages/field-visit-details/field-visit-details.component';
 import { NgModule } from '@angular/core';
@@ -24,6 +25,7 @@ import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-f
 import { UserFeildsComponent } from './pages/user-feilds/user-feilds.component';
 import { UserFieldVisitsComponent } from './pages/user-field-visits/user-field-visits.component';
 import { UserReportsComponent } from './pages/user-reports/user-reports.component';
+import { DivisionsDetailsComponent } from './pages/division-details/division-details.component';
 
 
 
@@ -56,6 +58,8 @@ const routes: Routes =[
     { path: 'user-field-visits',     component: UserFieldVisitsComponent,},
     { path: 'user-reports',     component: UserReportsComponent},
     { path: 'admin-profile',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
+    { path: 'divisions',       component: DivisionsComponent},
+    { path: 'division-details',       component: DivisionsDetailsComponent},
 
 
 
