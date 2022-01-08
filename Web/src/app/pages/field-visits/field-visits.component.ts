@@ -34,6 +34,7 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
   date: { year: number, month: number };
   model: NgbDateStruct;
   fieldVisits: FieldVisitTemp[];
+  fieldVisitsTemp: FieldVisitTemp[];
   data: any[];
   selectedRowIndex;
   fieldVisit: FieldVisit;
@@ -112,15 +113,16 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
     }
 
     this.fieldVisitService.getFieldVisits(this.fieldId).subscribe(data => {
-      this.fieldVisits = data.map(e => {
+      this.fieldVisitsTemp = data.map(e => {
         console.log(this.fieldVisit)
         return {
           id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
         } as FieldVisitTemp;
       })
+      this.fieldVisits = [];
 
-      this.fieldVisits.forEach(f => {
+      this.fieldVisitsTemp.forEach(f => {
         if (f.status == 'pending') this.pending += 1;
         else if (f.status == 'confirmed') this.confirmed += 1;
         else if (f.status == 'processing') this.processing += 1;
@@ -130,17 +132,21 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
 
         this.fieldService.getField(f.fieldId).subscribe(data => {
           this.field = data.payload.data() as Field;
-          f.field = this.field;
-          f.address = this.field.address;
-          f.registrationNo = this.field.registrationNumber;
-          this.userService.getUser(this.field.farmerId).subscribe(data => {
-            this.farmer = data.payload.data() as User;
-            f.farmer = this.farmer;
-            f.farmerName = this.farmer.firstName + " " + this.farmer.lastName;
-            this.dataSource = new MatTableDataSource(this.fieldVisits);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-          });
+          if (this.field.status == 'active') {
+            f.field = this.field;
+            f.address = this.field.address;
+            f.registrationNo = this.field.registrationNumber;
+            this.userService.getUser(this.field.farmerId).subscribe(data => {
+              this.farmer = data.payload.data() as User;
+              f.farmer = this.farmer;
+              f.farmerName = this.farmer.firstName + " " + this.farmer.lastName;
+              this.fieldVisits.push(f);
+              this.dataSource = new MatTableDataSource(this.fieldVisits);
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+            });
+          }
+
 
           // this.dataSource = new MatTableDataSource(this.fieldVisits);
           // this.dataSource.paginator = this.paginator;
