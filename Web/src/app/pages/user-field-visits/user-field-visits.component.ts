@@ -15,6 +15,7 @@ import { FieldVisitService } from 'app/services/field-visit.service';
 import { FieldVisit, FieldVisitTemp } from 'app/models/field-visit.model';
 import { Field } from 'app/models/field.model';
 import { UserService } from 'app/services/user.service';
+import { PathLocationStrategy } from '@angular/common';
 
 const NO_OF_WEEKS = 8;
 
@@ -207,7 +208,10 @@ export class UserFieldVisitsComponent implements OnInit {
     var completed;
     var field;
     var farmer;
+    this.processingRequests = 0;
+    this.confirmedRequests = 0;
     this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
+      // console.log("fieldvisit details in user field : " + fieldVisits);
       fieldVisits = data.map(e => {
         return {
           id: e.payload.doc.id,
@@ -234,6 +238,8 @@ export class UserFieldVisitsComponent implements OnInit {
               farmer = data.payload.data() as User;
               f.farmer = farmer;
               f.farmerName = farmer.firstName + " " + farmer.lastName;
+              // console.log(f.field);
+              
               this.dataSource = new MatTableDataSource(fieldVisits);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
@@ -253,7 +259,7 @@ export class UserFieldVisitsComponent implements OnInit {
 
   onViewVisitsClick(row){
     if(this.actionButtonClicked == false){
-      // console.log(row);
+      console.log(row);
       // this.message.showMessage = "You have entered invalid password !";
       // this.message.title = 'success';
       // console.log(this.message);
@@ -263,8 +269,17 @@ export class UserFieldVisitsComponent implements OnInit {
 
   onEditClick(value){
     this.actionButtonClicked = true;
-    console.log("This is the row returned by the button click event " + value);
-    this.dialog.openEditDialog({requestId : value.id}, "changeDetails").subscribe(data =>{
+    // console.log("This is the row returned by the button click event " + value.status);
+    console.log(value)
+    this.dialog.openEditDialog({
+        requestId : value.id, 
+        status : value.status, 
+        address : value.address, 
+        registrationNumber : value.registrationNumber, 
+        plantAge : value.plantAge, visitDate : 
+        value.visitDate, note : value.note}, 
+        "changeDetails")
+      .subscribe(data =>{
       this.actionButtonClicked = !data;
     })
   }
