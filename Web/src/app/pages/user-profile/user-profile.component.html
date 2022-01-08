@@ -10,7 +10,7 @@
   </div>
   <div class="section profile-content" style="padding-bottom: 0px;"> -->
       <div class="container" style="padding-bottom: 0px; margin-bottom: 0px;">
-        <div class="owner">
+        <div class="owner" *ngIf=" type!='request'">
 
           <div class="avatar">
             <img [(src)]="this.user.image" alt="Circle Image" class="img-circle img-no-padding img-responsive">
@@ -20,16 +20,20 @@
               <i class="fa fa-cog"></i> Edit Image
               <input #imageInput type="file" class="input-image" accept="image/*" (change)="processFile(imageInput)">
             </label>
-            <div style="align-content: center;">
-              <h2 class="title" aria-disabled style="font-size: x-large;">{{fullName}}<br></h2>
-            </div>
+
             <!-- <button class="btn btn-outline-default btn-round" (click)="addClicked()"><i class="fa fa-cog"></i> Edit Image</button> -->
+          </div>
+          <div style="align-content: center;">
+            <h2 class="title" aria-disabled style="font-size: x-large;">{{fullName}}<br></h2>
           </div>
           <!-- <div class="name">
                       <h4 class="title">Jane Faker<br /></h4> -->
           <!-- <h6 class="description">Music Producer</h6> -->
           <!-- </div> -->
 
+        </div>
+        <div class="container owner " style="align-content: center;" *ngIf=" type=='request'">
+          <h2 class="title" aria-disabled style="font-size: x-large;">Officer Request<br></h2>
         </div>
         <div class="row">
           <div class="col-lg-1 col-sm-1"></div>
@@ -189,6 +193,8 @@
                     disabled>
                 </div>
                 <div class="row" style="margin-left: 20px; ">
+                  <!-- <button *ngIf=" type!='request' && user.userRole=='agricultural officer'" class="btn btn-signin btn-block btn-round" style="width: 100px;"
+                    (click)="onSaveClick()">View Field Visits</button> -->
                   <button class="btn btn-signin btn-block btn-round" style="width: 100px;"
                     (click)="onSaveClick()">Save</button>
                   <button class="btn btn-outline-default btn-round" style="width: 100px;"

@@ -56,7 +56,7 @@ export class UsersComponent implements OnInit {
       this.title += "s";
       console.log(this.role)
       if (this.role == 'farmer')
-        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'status', 'view', 'deactivate','reactivate',  'delete'];
+        this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'status', 'view', 'deactivate', 'reactivate', 'delete'];
       else
         this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'nic', 'province', 'district', 'division', 'status', 'view', 'delete'];
     } else {
@@ -90,9 +90,9 @@ export class UsersComponent implements OnInit {
     console.log(this.user)
 
     if (this.type == 'request')
-      this.router.navigate(['/farmer-request'], { state: { user: this.user, id: this.user.id } });
+      this.router.navigate(['/farmer-request'], { state: { user: this.user, id: this.user.id, type: this.type } });
     else
-      this.router.navigate(['/farmer-profile'], { state: { user: this.user, id: this.user.id } });
+      this.router.navigate(['/farmer-profile'], { state: { user: this.user, id: this.user.id, type: this.type } });
 
   }
   deleteUser() {

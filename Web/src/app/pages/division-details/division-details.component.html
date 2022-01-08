@@ -7,42 +7,53 @@
                 <div class="owner">
 
                     <div class="name">
-                        <h6>Field Details</h6><br />
+                        <h6>{{user.division}} Division</h6><br />
                     </div>
                 </div>
                 <div class="row">
 
                     <div class="form-group element">
-                        <label class="name">Reg no : </label>
-                        <input type="text" class="form-control" value={{field.registrationNumber}}>
-                    </div>
+                        <label class="name">Officer </label>
+                        <label class="name">{{user.firstName}} {{user.lastName}}</label>
 
-
-                    <div class="form-group element">
-                        <label class="name">Address : </label>
-                        <input type="text" class="form-control" value={{field.address}}>
-                    </div>
-
-
-                    <div class="form-group element">
-                        <label class="name">Farmer : </label>
-                        <input type="text" class="form-control" value={{field.farmer}}>
+                        <!-- <input type="text" class="form-control" value={{field.registrationNumber}}> -->
                     </div>
 
                     <div class="form-group element">
-                        <label class="name">Province : </label>
-                        <input type="text" class="form-control" value={{field.province}}>
+                        <label class="name">Contact No </label>
+                        <label class="name">{{user.phone}}</label>
+
+                    </div>
+                    
+                    <div class="form-group element">
+                        <label class="name">Province  </label>
+                        <label class="name">{{user.province}}</label>
                     </div>
 
                     <div class="form-group element">
-                        <label class="name">District : </label>
-                        <input type="text" class="form-control" value={{field.district}}>
+                        <label class="name">District  </label>
+                        <label class="name">{{user.district}}</label>
                     </div>
 
-                    <div class="form-group element">
+                    <!-- <div class="form-group element">
                         <label class="name">Division : </label>
-                        <input type="text" class="form-control" value={{field.division}}>
+                        <input type="text" class="form-control" value={{user.division}}>
+                    </div> -->
+                    <div class="form-group element">
+                        <label class="name">No of Farmers </label>
+                        <label class="name">{{farmerCount}}</label>
                     </div>
+
+
+                    <div class="form-group element">
+                        <label class="name">No of fields</label>
+                        <label class="name">{{fieldCount}}</label>
+                    </div>
+                    <div class="form-group element">
+                        <label class="name">No of field visits</label>
+                        <label class="name"></label>
+                    </div>
+
 
                     <!-- <div class="col-sm-3">
                         <div class="form-group has-success">
@@ -77,9 +88,9 @@
                     </div>
 
                 </div> -->
-                <div class="row sub-title">
+                <!-- <div class="row sub-title">
                     <h6>Field Requests</h6>
-                </div>
+                </div> -->
                 <div class="row">
                     <ul>
                         <li *ngFor="let index of this.counts">
@@ -99,8 +110,8 @@
                 <div class="left">
                     <!-- <button class="btn btn-outline-default btn-round update"> Update</button>
                     <button class="btn btn-outline-default btn-round cancel"> Cancel</button> -->
-                    <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Field
-                        Requests</button>
+                    <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Field
+                        Requests</button> -->
                     <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View N 
                         Concentrations</button> -->
 
