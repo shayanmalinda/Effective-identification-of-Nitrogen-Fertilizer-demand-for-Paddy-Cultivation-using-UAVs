@@ -23,3 +23,6 @@ This work is intended to automate the manual process of identifying Nitrogen fer
    
 5. Add this line before the application tag in manifest
     <uses-permission android:name="android.permission.INTERNET" />
+
+## Access the server with follownig URL
+https://docker-python3-opencv-uvbeppe6ea-el.a.run.app/process
