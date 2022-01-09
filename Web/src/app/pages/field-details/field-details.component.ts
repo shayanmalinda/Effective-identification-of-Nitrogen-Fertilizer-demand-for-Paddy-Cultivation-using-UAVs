@@ -28,7 +28,7 @@ export class FieldDetailsComponent implements OnInit {
   }
   viewFieldVisits() {
     // this.router.navigate(['/field-visits']);
-    this.router.navigate(['/field-visits'], { state: { fieldId: this.field.id} });
+    this.router.navigate(['/field-visits'], { state: { fieldId: this.field.id } });
   }
   ngOnInit() {
     this.counts = [];
@@ -49,6 +49,7 @@ export class FieldDetailsComponent implements OnInit {
       fieldvisits.forEach(visit => {
         countsTemp[visit.status]++;
       })
+      console.log('-----------------------------------------')
       Object.keys(countsTemp).forEach(key => {
 
         if (countsTemp[key] != 0)

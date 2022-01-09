@@ -36,12 +36,8 @@ def process():
     #preprocess & predict from saved image
     preprocessed_image=preprocess(img);
     arr_rgb=rgb_mean(preprocessed_image);
-    df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
-    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
-    df['brightness']=df_metadata['brightness']
-    df['shutter_speed']=df_metadata['shutter_speed']
-    df['exposure_time']=df_metadata['exposure_time']
+    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]  
     print(str(df))
     result=predict(df);
     #print(str(arr_rgb))
@@ -50,7 +46,7 @@ def process():
 def predict(df):
     print("predict")
     # Load the model from the file
-    model = joblib.load('./model.pkl')
+    model = joblib.load('./model_rgb.pkl')
     
     # Use the loaded model to make predictions
     prd=model.predict(df)
@@ -132,5 +128,5 @@ def extract_metadata(image):
 
 
 
-#if __name__ == '__main__':
-app.run(host="0.0.0.0", port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000, debug=True)

@@ -1,7 +1,9 @@
 .input-image{
     display: none;
 }
-
+.container{
+  margin-top: 100px;
+}
 .image-upload-container {
     cursor: pointer;
   }
@@ -23,7 +25,14 @@
     position: relative;
     display: inline-block;
   }
-  
+  .card-register{
+    background-color: white;
+    width: 400px;
+  }
+  /* .avtar{
+    margin-top: 10px;
+    background-color: darksalmon;
+  } */
   .dropdown-content {
     display: none;
     position: absolute;

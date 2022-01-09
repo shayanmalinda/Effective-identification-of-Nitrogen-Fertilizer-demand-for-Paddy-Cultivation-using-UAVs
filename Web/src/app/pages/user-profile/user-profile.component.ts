@@ -57,10 +57,12 @@ export class UserProfileComponent implements OnInit {
   none: any
   id: string;
   user: User;
+  type:string;
 
   constructor(private router: Router, private userService: UserService, private dialog: DialogService) {
     this.user = this.router.getCurrentNavigation().extras.state.user;
     this.id = this.router.getCurrentNavigation().extras.state.id;
+    this.type = this.router.getCurrentNavigation().extras.state.type;
 
     console.log(this.user)
     this.nameChanged();

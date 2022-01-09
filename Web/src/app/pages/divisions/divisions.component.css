@@ -1,0 +1,51 @@
+table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 25%;
+  }
+  ngb-progressbar {
+    margin-top: 5rem;
+}
+  
+.mat-row.highlighted {
+  background: lightgreen;
+  }
+  .mat-icon {
+    font-size: 15px;
+  }
+.title-brand{
+  text-transform:uppercase;
+  font-weight: bold;
+}
+.toggle{
+  text-transform:uppercase;
+  /* align-content: left; */
+}
+.mat-button-toggle-group {
+  height: 32px;
+  align-items: center;
+}
+.labels{
+  display: inline-flex;
+  align-items: center;
+float: right;}
+
+.label-bar{
+  width: 100%;
+  display: flex;
+}
+.left{
+  flex:1;
+}
+.right{
+  font-weight: bold;
+}
+
+

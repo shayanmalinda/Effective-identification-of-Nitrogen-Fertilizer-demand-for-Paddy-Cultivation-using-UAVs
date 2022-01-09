@@ -20,9 +20,11 @@ import { FieldsComponent } from './fields/fields.component';
 import { FieldDetailsComponent } from './field-details/field-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { MatSortModule } from '@angular/material/sort';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FieldVisitsComponent } from './field-visits/field-visits.component';
 import { FieldVisitDetailsComponent } from './field-visit-details/field-visit-details.component';
+import { DivisionsComponent } from './divisions/divisions.component';
+import { DivisionsDetailsComponent } from './division-details/division-details.component';
 
 @NgModule({
     imports: [
@@ -49,6 +51,9 @@ import { FieldVisitDetailsComponent } from './field-visit-details/field-visit-de
         AdminDashboardComponent,
         FieldVisitsComponent,
         FieldVisitDetailsComponent,
+        DivisionsComponent,
+        DivisionsDetailsComponent,
+
     ]
 })
 export class ExamplesModule { }

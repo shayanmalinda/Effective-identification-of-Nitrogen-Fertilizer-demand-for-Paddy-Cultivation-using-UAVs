@@ -16,9 +16,13 @@ export class FieldService {
   constructor(private fireStore: AngularFirestore) { }
 
   getFields() {
-    return this.fireStore.collection('FieldDetails').snapshotChanges();
+    return this.fireStore.collection('FieldDetails', ref => ref.where('status', '==', 'active')).snapshotChanges();
   }
- 
+
+  getFieldsOfDivision(division) {
+    return this.fireStore.collection('FieldDetails', ref => ref.where('status', '==', 'active').where('division', '==', division)).snapshotChanges();
+  }
+
   getField(id: string) {
     return this.fireStore.collection('FieldDetails').doc(id).snapshotChanges()
   }
@@ -27,15 +31,18 @@ export class FieldService {
     this.fireStore.doc('FieldDetails/' + fieldId).delete();
   }
 
-  getFieldsByDivision(user : User) {
+  getFieldsByDivision(user: User) {
     // console.log("incoming division : " + user.division);
     // user.division = "Galle";
-    return this.fireStore.collection('FieldDetails',ref => ref.where('division', '==', user.division)).snapshotChanges();
+    return this.fireStore.collection('FieldDetails', ref => ref.where('division', '==', user.division)).snapshotChanges();
   }
 
-  getFieldsByFarmerId(userCredential : UserCredential){
+  getFieldsByFarmerId(userCredential: UserCredential) {
     console.log(userCredential.userID);
-    return this.fireStore.collection('FieldDetails',ref => ref.where('farmerId', '==', userCredential.userID)).snapshotChanges();
+    return this.fireStore.collection('FieldDetails', ref => ref.where('farmerId', '==', userCredential.userID)).snapshotChanges()
+  }
+  getFieldofFarmer(farmerId: string) {
+    return this.fireStore.collection('FieldDetails', ref => ref.where('farmerId', '==', farmerId)).snapshotChanges()
   }
 
 }
