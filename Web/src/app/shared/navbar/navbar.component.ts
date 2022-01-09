@@ -148,6 +148,9 @@ export class NavbarComponent implements OnInit {
           if( titlee === '/user-field-visits' ) {
             return true;
           }
+          if( titlee === '/user-field-history' ) {
+            return true;
+          }
           else {
               return false;
           }

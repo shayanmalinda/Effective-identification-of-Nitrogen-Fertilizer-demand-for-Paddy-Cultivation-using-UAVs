@@ -24,6 +24,7 @@ import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-f
 import { UserFeildsComponent } from './pages/user-feilds/user-feilds.component';
 import { UserFieldVisitsComponent } from './pages/user-field-visits/user-field-visits.component';
 import { UserReportsComponent } from './pages/user-reports/user-reports.component';
+import { UserFieldHistoryComponent } from './pages/user-field-history/user-field-history.component';
 
 
 
@@ -55,6 +56,7 @@ const routes: Routes =[
     { path: 'user-fields',     component: UserFeildsComponent},
     { path: 'user-field-visits',     component: UserFieldVisitsComponent,},
     { path: 'user-reports',     component: UserReportsComponent},
+    { path: 'user-field-history',     component: UserFieldHistoryComponent,},
     { path: 'admin-profile',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
 
 
