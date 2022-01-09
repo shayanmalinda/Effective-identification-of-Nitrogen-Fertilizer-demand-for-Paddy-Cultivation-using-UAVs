@@ -27,6 +27,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,9 +74,11 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
     String folderName;
     Integer delayTime;
     TextureView txvCamera;
+    Button btStop;
     TextView tvColorLevel, tvLongitude, tvLatitude;
     ImageButton btCaptureImage;
     FrameLayout frameLayout;
+    ArrayList<Long> fileNames = new ArrayList<>();
 
     private SensorManager sensorMan;
     private Sensor accelerometer;
@@ -160,6 +164,19 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
         tvColorLevel = findViewById(R.id.tvColorLevel);
         tvLongitude = findViewById(R.id.tvLongitude);
         tvLatitude = findViewById(R.id.tvLatitude);
+        btStop = findViewById(R.id.btStop);
+
+        btStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ImageCaptureOfflineActivity.this, DeleteImageActivity.class);
+                intent.putExtra("fileNames", fileNames);
+                intent.putExtra("folderName", folderName);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         tvColorLevel.setText("Delaying...");
 
@@ -220,13 +237,14 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
     private File captureImage(ImageCapture imgCap) {
         shutterSound.start();
         responseWaiting = true;
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + folderName + "/" + System.currentTimeMillis() + ".jpg";
+        long currentTimestamp = System.currentTimeMillis();
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + folderName + "/" + currentTimestamp + ".jpg";
         File file = new File(filePath);
         imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onImageSaved(@NonNull @NotNull File file) {
-
+                fileNames.add(currentTimestamp);
                 tvColorLevel.setText("Saving...");
                 ExifInterface exif = null;
                 try {

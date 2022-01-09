@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Smartricecare"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CalibrateSensorActivity"></activity>
+        <activity android:name=".DeleteImageActivity"></activity>
+        <activity android:name=".CalibrateSensorActivity" />
         <activity android:name=".FarmerViewResultsActivity" />
         <activity android:name=".ExamineFieldActivity" />
         <activity android:name=".ExamineFieldOfflineActivity" />
