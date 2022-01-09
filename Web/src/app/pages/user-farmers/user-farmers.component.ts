@@ -173,6 +173,7 @@ export class UserFarmersComponent implements OnInit {
         } as Field;
       })
       fields.forEach(f => {
+        this.all ++;
         this.userService.getUser(f.farmerId).subscribe(data => {
           farmer = data.payload.data() as User;
           // f.farmer = farmer.firstName + " " + farmer.lastName;
@@ -214,6 +215,7 @@ export class UserFarmersComponent implements OnInit {
         } as UserTemp;
       })
       farmers.forEach(element => {
+        this.all ++;
         credentials.userID = element.id;
         console.log("the id is here : " + element.id);
         this.fieldService.getFieldsByFarmerId(credentials).subscribe(data =>{

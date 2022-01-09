@@ -40,6 +40,7 @@ import { MaterialModule } from './material/material.module';
 import { AuthGuard } from './services/auth/auth.guard';
 import { AgmCoreModule } from '@agm/core';
 import { UserReportsComponent } from './pages/user-reports/user-reports.component';
+import { UserFieldHistoryComponent } from './pages/user-field-history/user-field-history.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { UserReportsComponent } from './pages/user-reports/user-reports.componen
     UserFieldVisitsComponent,
     DetailsFormComponent,
     UserReportsComponent,
+    UserFieldHistoryComponent,
     
   ],
   imports: [
