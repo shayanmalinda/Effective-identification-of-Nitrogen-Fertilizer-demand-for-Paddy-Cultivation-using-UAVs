@@ -11,11 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Smartricecare"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CalibrateSensorActivity"></activity>
+        <activity android:name=".DeleteImageActivity"></activity>
+        <activity android:name=".CalibrateSensorActivity" />
         <activity android:name=".FarmerViewResultsActivity" />
         <activity android:name=".ExamineFieldActivity" />
+        <activity android:name=".ExamineFieldOfflineActivity" />
         <activity android:name=".ViewRequests" />
         <activity android:name=".AgriculturalOfficerHomeActivity" />
+        <activity android:name=".AgriculturalOfficerHomeOfflineActivity" />
         <activity
             android:name=".SendRequestMapActivity"
             android:label="@string/title_activity_maps"
@@ -29,6 +32,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ImageCaptureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ImageCaptureOfflineActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SignInActivity"

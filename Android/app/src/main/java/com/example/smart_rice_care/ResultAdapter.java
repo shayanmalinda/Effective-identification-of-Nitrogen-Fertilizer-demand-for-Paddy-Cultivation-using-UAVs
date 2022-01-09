@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,6 +90,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MapsActivity.class);
                 intent.putExtra("requestId", result.requestId);
+                intent.putExtra("plantAge", result.plantAge);
                 v.getContext().startActivity(intent);
             }
         });
