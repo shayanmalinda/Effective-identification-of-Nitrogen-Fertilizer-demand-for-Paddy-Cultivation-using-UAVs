@@ -22,6 +22,7 @@ export class DetailsFormComponent implements OnInit {
 
   btnStyleOne : string  = "";
   btnStyleTwo : string  = "";
+  btnStyleThree : string  = "";
   btnTextOne : string  = "";
   isVisible : boolean = true;
   formTitle : string;
@@ -126,6 +127,7 @@ export class DetailsFormComponent implements OnInit {
     }
     this.btnStyleOne = "btn btn-success btn-round margin-left : 500px";
     this.btnStyleTwo = "btn btn-default btn-round margin-left : 500px";
+    this.btnStyleThree = "btn btn-success btn-round margin-left : 500px;";
     this.btnTextOne = "ok";
   }
 
@@ -331,6 +333,10 @@ export class DetailsFormComponent implements OnInit {
   onViewRequestsButtonClick(){
     this.router.navigate(['/user-field-history'], { state: { fieldId : this.fieldVisitTemp.fieldId } } );
     // sessionStorage.setItem('fieldId', this.fieldVisitTemp.fieldId);
+  }
+
+  onAddImagesClick(){
+    this.router.navigate(['/user-metadata'],);
   }
 }
 

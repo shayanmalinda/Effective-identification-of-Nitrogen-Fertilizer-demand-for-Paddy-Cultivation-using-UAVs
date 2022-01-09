@@ -23,6 +23,9 @@ import { UserFarmerRequestsComponent } from './pages/user-farmer-requests/user-f
 import { UserFeildsComponent } from './pages/user-feilds/user-feilds.component';
 import { UserFieldVisitsComponent } from './pages/user-field-visits/user-field-visits.component';
 import { DetailsFormComponent } from './details-form/details-form.component';
+import { UserReportsComponent } from './pages/user-reports/user-reports.component';
+import { UserFieldHistoryComponent } from './pages/user-field-history/user-field-history.component';
+import { MetaDataComponent } from './meta-data/meta-data.component';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -39,8 +42,6 @@ import { MaterialModule } from './material/material.module';
 //route authentication
 import { AuthGuard } from './services/auth/auth.guard';
 import { AgmCoreModule } from '@agm/core';
-import { UserReportsComponent } from './pages/user-reports/user-reports.component';
-import { UserFieldHistoryComponent } from './pages/user-field-history/user-field-history.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { UserFieldHistoryComponent } from './pages/user-field-history/user-field
     DetailsFormComponent,
     UserReportsComponent,
     UserFieldHistoryComponent,
+    MetaDataComponent,
     
   ],
   imports: [
