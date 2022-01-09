@@ -770,8 +770,9 @@
             <!-- <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button> -->
             <button type="button" [class]="btnStyleTwo" [mat-dialog-close]="true">ok</button>
           </div>
-          <div class="row" style="margin-left: 280px; align-items: right;" *ngIf="(data.type == 'changeDetails' && !processingForm)">
+          <div class="row" style="margin-left: 165px; align-items: right;" *ngIf="(data.type == 'changeDetails' && !processingForm)">
             <!-- <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button> -->
+            <button type="button" [class]="btnStyleThree" [mat-dialog-close]="true" style="background-color: white; color: #6BD098;" (click)="onAddImagesClick()" >add images</button>
             <button type="button" [class]="btnStyleTwo" [mat-dialog-close]="true">cancel</button>
             <button type="button" [class]="btnStyleOne" (click)="onCompletedButtonClick()" [mat-dialog-close]="true">Complete</button>
           </div>
