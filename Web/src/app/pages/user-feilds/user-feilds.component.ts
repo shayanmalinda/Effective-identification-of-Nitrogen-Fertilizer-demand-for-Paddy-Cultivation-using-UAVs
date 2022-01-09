@@ -188,6 +188,7 @@ export class UserFeildsComponent implements OnInit {
       // console.log(this.fields.length);
       // console.log(this.fields[1])
       this.fieldsTemp.forEach(f => {
+        this.all ++;
         this.userService.getUser(f.farmerId).subscribe(data => {
           this.farmer = data.payload.data() as User;
           // f.farmer = this.farmer.firstName + " " + this.farmer.lastName; @heshan

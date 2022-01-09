@@ -44,3 +44,39 @@ table {
     font-size: 15px;
   }
 
+  .label-success-our-light{
+    background-color: #A5D647;
+  }
+  
+  .label-success-our-normal{
+    background-color: #4CAF50;
+  }  
+  
+  .label-success-our-dark{
+    background-color: #2E7D32;
+  }
+  
+  .label-danger-our-light{
+    background-color: #FFAB91;
+  }
+  
+  .label-danger-our-dark{
+    background-color: #E65100;
+  }
+  
+  .label-default-our-light{
+    background-color: #FFAB91;
+  }
+  
+  .label-default-our-dark{
+    background-color: #524d48;
+  }
+  
+  .label-warning-our-light{
+    background-color: #FFAB91;
+  }
+  
+  .label-warning-our-dark{
+    background-color:  #c79734;
+  }
+
