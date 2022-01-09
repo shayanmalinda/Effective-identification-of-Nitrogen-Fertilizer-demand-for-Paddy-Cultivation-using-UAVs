@@ -52,7 +52,7 @@ const routes: Routes =[
     { path: 'user-dashboard',     component: UserDashboardComponent},
     { path: 'user-farmers',     component: UserFarmersComponent, canActivate : [AuthGuard]  },
     { path: 'user-farmer-requests',     component: UserFarmerRequestsComponent},
-    { path: 'user-fields',     component: UserFeildsComponent, canActivate : [AuthGuard]  },
+    { path: 'user-fields',     component: UserFeildsComponent},
     { path: 'user-field-visits',     component: UserFieldVisitsComponent,},
     { path: 'user-reports',     component: UserReportsComponent},
     { path: 'admin-profile',       component: UpdateProfileComponent, canActivate : [AuthGuard] },

@@ -734,8 +734,9 @@
             <div class="row" style="margin-left: 435px; align-items: right;" *ngIf="data.type == 'farmerDetails'">
                 <button type="button" [class]="btnStyleOne" [mat-dialog-close]="true">ok</button>
             </div>
-             <div class="row" style="margin-left: 420px; align-items: right;" *ngIf="data.type == 'fieldDetails'">
+             <div class="row" style="margin-left: 280px; align-items: right;" *ngIf="data.type == 'fieldDetails'">
                 <!-- <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button> -->
+                <button type="button" [class]="btnStyleTwo" (click)="onViewRequestsButtonClick()" [mat-dialog-close]="true">View requests</button>
                 <button type="button" [class]="btnStyleOne" [mat-dialog-close]="true">ok</button>
             </div>
             <div class="row" style="margin-left: 275px; align-items: right;" *ngIf="(data.type == 'addDetails' && acceptForm == 0)">

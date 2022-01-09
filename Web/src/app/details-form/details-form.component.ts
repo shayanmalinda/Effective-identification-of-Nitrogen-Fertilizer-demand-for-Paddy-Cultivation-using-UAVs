@@ -326,5 +326,9 @@ export class DetailsFormComponent implements OnInit {
     });
     // this.router.navigate(['/user-farmer-requests']);
   }
+
+  onViewRequestsButtonClick(){
+    this.router.navigate(['/user-dashboard']);
+  }
 }
 
