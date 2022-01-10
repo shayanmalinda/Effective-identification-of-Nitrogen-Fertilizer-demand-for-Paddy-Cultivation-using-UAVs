@@ -14,15 +14,7 @@ This work is intended to automate the manual process of identifying Nitrogen fer
 
     $ pip3 install Flask
     
-2. Install OpenCV,ScikitLearn and other python libraries used by the server.
-3. Add the following line in build.gradle (app)
-    implementation 'com.squareup.okhttp3:okhttp:4.5.0'
-   
-4. Add the following line in application tag of android manifest
-   android:usesCleartextTraffic="true"
-   
-5. Add this line before the application tag in manifest
-    <uses-permission android:name="android.permission.INTERNET" />
+2. Install OpenCV,ScikitLearn,Numpy, Pandas,Piexif,Pillow python libraries 
 
 ## Access the server with follownig URL
 https://docker-python3-opencv-uvbeppe6ea-el.a.run.app/process
