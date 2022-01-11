@@ -1,5 +1,6 @@
 package com.example.smart_rice_care;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,11 +8,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -24,7 +36,7 @@ public class DeleteImageActivity extends AppCompatActivity {
     Integer currentIndex;
     ImageView ivImage, ivNext, ivBack;
     Button btDelete, btFinish;
-    String folderName;
+    String folderName, approach;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +46,7 @@ public class DeleteImageActivity extends AppCompatActivity {
         Intent getIntent = getIntent();
         fileNames =  (ArrayList<Long>)  getIntent.getSerializableExtra("fileNames");
         folderName =  getIntent.getStringExtra("folderName");
+        approach = getIntent.getStringExtra("approach");
         ivImage = findViewById(R.id.ivImage);
         ivNext = findViewById(R.id.ivNext);
         ivBack = findViewById(R.id.ivBack);
@@ -67,6 +80,41 @@ public class DeleteImageActivity extends AppCompatActivity {
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(approach.equals("online")){
+                    // Remove responses from the DB in online approach
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("FieldData")
+                            .whereEqualTo("timestamp", fileNames.get(currentIndex))
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            String docId = document.getId();
+                                            db.collection("FieldData").document(docId)
+                                                    .delete()
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {
+                                                            Log.d("Deleting :", "DocumentSnapshot successfully deleted!");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull @NotNull Exception e) {
+                                                            Log.w("Deleting :", "Error deleting document", e);
+                                                        }
+                                                    });
+                                        }
+                                    } else {
+                                        Log.d("Fetching :", "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                }
+
                 if(fileNames.size()>1){
                     File imgFile = new  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() +
                             "/" + folderName + "/" + fileNames.get(currentIndex)+".jpg");
@@ -121,7 +169,7 @@ public class DeleteImageActivity extends AppCompatActivity {
         if (fileNames.size()>currentIndex){
 
             File imgFile = new  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() +
-                    "/" + folderName + "/" + fileNames.get(currentIndex)+".jpg");
+                    "/" + folderName + "/" + fileNames.get(currentIndex) +".jpg");
             if(imgFile.exists()){
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 ivImage.setImageBitmap(myBitmap);
