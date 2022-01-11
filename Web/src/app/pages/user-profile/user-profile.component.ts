@@ -61,6 +61,14 @@ export class UserProfileComponent implements OnInit {
 
   constructor(private router: Router, private userService: UserService, private dialog: DialogService) {
     this.user = this.router.getCurrentNavigation().extras.state.user;
+    
+    this.provinceSelected=this.user.province;
+    this.districtSelected=this.user.district;
+    this.divisionSelected=this.user.division;
+    this.loadDistrictSelected(this.provinceSelected);
+    console.log(this.divisionSelected)
+    this.loadDivisionSelected(this.districtSelected);
+
     this.id = this.router.getCurrentNavigation().extras.state.id;
     this.type = this.router.getCurrentNavigation().extras.state.type;
 
