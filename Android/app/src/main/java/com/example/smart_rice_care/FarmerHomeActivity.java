@@ -1,6 +1,7 @@
 package com.example.smart_rice_care;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class FarmerHomeActivity extends AppCompatActivity {
 
-    Button btSendRequest, btSignout, btViewResults;
+    CardView btSendRequest, btSignout, btViewResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

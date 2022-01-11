@@ -7,7 +7,7 @@ import { User, UserCredential } from 'app/models/user.model';
 import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
 import { DialogService } from 'app/services/dialog.service';
 import { Router } from '@angular/router';
-import { Field } from 'app/models/field.model';
+import { Field, FieldTemp } from 'app/models/field.model';
 import { FieldService } from 'app/services/field.service';
 import { UserService } from 'app/services/user.service';
 import { sample } from 'rxjs-compat/operator/sample';
@@ -59,6 +59,7 @@ export class UserFeildsComponent implements OnInit {
   havePreviousRecords : boolean = false;
   farmer: User;
   fields : Field[];
+  fieldsTemp : FieldTemp[];
   displayedColumns: string[] = ['registrationNumber', 'address', 'fullName', 'phone'];
   dataSource : MatTableDataSource<Field>;
   approved = 0;
@@ -178,19 +179,21 @@ export class UserFeildsComponent implements OnInit {
     var fieldWithFarmer = [];
     this.fieldService.getFieldsByDivision(this.user).subscribe(data => {
       // console.log("this is the lenght of the divisions : " + data.length);
-      this.fields = data.map(e => {
+      this.fieldsTemp = data.map(e => {
         return {
-          // id: e.payload.doc.id,
+          id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
-        } as Field;
+        } as FieldTemp;
       })
       // console.log(this.fields.length);
       // console.log(this.fields[1])
-      this.fields.forEach(f => {
+      this.fieldsTemp.forEach(f => {
+        this.all ++;
         this.userService.getUser(f.farmerId).subscribe(data => {
           this.farmer = data.payload.data() as User;
           // f.farmer = this.farmer.firstName + " " + this.farmer.lastName; @heshan
           fieldWithFarmer.push({
+            fieldId : f.id,
             address : f.address, 
             registrationNumber : f.registrationNumber,
             firstName : this.farmer.firstName,

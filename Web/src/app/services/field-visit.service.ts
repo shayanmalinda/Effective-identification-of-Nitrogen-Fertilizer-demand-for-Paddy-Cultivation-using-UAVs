@@ -66,6 +66,11 @@ export class FieldVisitService {
     return this.fireStore.collection('FieldRequests', ref => ref.where('division', '==', user.division)).snapshotChanges();
   }
 
+  getFieldVisitsByFieldID(fieldVisitTemp: FieldVisitTemp) {
+    // console.log(fieldVisitTemp.fieldId);
+    return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldVisitTemp.fieldId)).snapshotChanges();
+  }
+
   deleteFieldVisit(fieldVisitId: String) {
     this.fireStore.doc('FieldRequests/' + fieldVisitId).delete();
   }

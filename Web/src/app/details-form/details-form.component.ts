@@ -22,6 +22,7 @@ export class DetailsFormComponent implements OnInit {
 
   btnStyleOne : string  = "";
   btnStyleTwo : string  = "";
+  btnStyleThree : string  = "";
   btnTextOne : string  = "";
   isVisible : boolean = true;
   formTitle : string;
@@ -92,7 +93,8 @@ export class DetailsFormComponent implements OnInit {
       this.formTitle = "Field Details"
       console.log(data.details)
       this.userCredential.userID = data.details.farmerId;
-      console.log("this is the farmer ID needed in field:" + data.details.farmerId);
+      this.fieldVisitTemp.fieldId = data.details.fieldId;
+      // console.log("this is the field ID needed in field:" + data.details.fieldId);
     }
     if(data.type == "farmers"){
       this.formTitle = "Farmers"
@@ -125,6 +127,7 @@ export class DetailsFormComponent implements OnInit {
     }
     this.btnStyleOne = "btn btn-success btn-round margin-left : 500px";
     this.btnStyleTwo = "btn btn-default btn-round margin-left : 500px";
+    this.btnStyleThree = "btn btn-success btn-round margin-left : 500px;";
     this.btnTextOne = "ok";
   }
 
@@ -325,6 +328,15 @@ export class DetailsFormComponent implements OnInit {
       })
     });
     // this.router.navigate(['/user-farmer-requests']);
+  }
+
+  onViewRequestsButtonClick(){
+    this.router.navigate(['/user-field-history'], { state: { fieldId : this.fieldVisitTemp.fieldId } } );
+    // sessionStorage.setItem('fieldId', this.fieldVisitTemp.fieldId);
+  }
+
+  onAddImagesClick(){
+    this.router.navigate(['/user-metadata'],);
   }
 }
 
