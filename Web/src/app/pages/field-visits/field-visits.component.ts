@@ -101,6 +101,7 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
 
 
   async ngOnInit() {
+    this.fieldVisitsTemp=[];
     let input_group_focus = document.getElementsByClassName('form-control');
     let input_group = document.getElementsByClassName('input-group');
     for (let i = 0; i < input_group.length; i++) {

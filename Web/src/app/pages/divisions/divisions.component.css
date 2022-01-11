@@ -14,6 +14,9 @@ table {
     margin-top: 5rem;
 }
   
+.background{
+  color: white;
+}
 .mat-row.highlighted {
   background: lightgreen;
   }
