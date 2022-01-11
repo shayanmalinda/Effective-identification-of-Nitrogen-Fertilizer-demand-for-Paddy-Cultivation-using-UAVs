@@ -172,6 +172,7 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
                 Intent intent = new Intent(ImageCaptureOfflineActivity.this, DeleteImageActivity.class);
                 intent.putExtra("fileNames", fileNames);
                 intent.putExtra("folderName", folderName);
+                intent.putExtra("approach", "online");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();

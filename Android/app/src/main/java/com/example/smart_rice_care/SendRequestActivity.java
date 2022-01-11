@@ -72,7 +72,6 @@ public class SendRequestActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SendRequestActivity.this, SendRequestMapActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 

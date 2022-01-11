@@ -124,6 +124,8 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     Location currentLocation;
 
+    ArrayList<Long> fileNames = new ArrayList<>();
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,6 +274,13 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                                                                                 }
                                                                                             });
 
+                                                                                    Intent intent = new Intent(ImageCaptureActivity.this, DeleteImageActivity.class);
+
+                                                                                    intent.putExtra("fileNames", fileNames);
+                                                                                    intent.putExtra("folderName", requestId);
+                                                                                    intent.putExtra("approach", "online");
+                                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                    startActivity(intent);
                                                                                     finish();
                                                                                 }
                                                                             })
@@ -330,6 +339,14 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                                                             }
                                                                         });
 
+
+                                                                Intent intent = new Intent(ImageCaptureActivity.this, DeleteImageActivity.class);
+
+                                                                intent.putExtra("fileNames", fileNames);
+                                                                intent.putExtra("folderName", requestId);
+                                                                intent.putExtra("approach", "online");
+                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                startActivity(intent);
                                                                 finish();
 
                                                             }
@@ -397,6 +414,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     private File captureImage(ImageCapture imgCap) {
         shutterSound.start();
         responseWaiting = true;
+        long currentTimestamp = System.currentTimeMillis();
         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + requestId);
         try {
             if (dir.mkdir()) {
@@ -407,13 +425,14 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + requestId + "/" + System.currentTimeMillis() + ".jpg";
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + requestId + "/" + currentTimestamp + ".jpg";
         File file = new File(filePath);
         imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onImageSaved(@NonNull @NotNull File file) {
 
+                fileNames.add(currentTimestamp);
                 ExifInterface exif = null;
                 try {
                     exif = new ExifInterface(filePath);
@@ -425,7 +444,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                 try {
                     exif.saveAttributes();
                     String msg = "Pic captured at " + file.getAbsolutePath();
-                    processImage(file, currentLocation);
+                    processImage(file, currentLocation, currentTimestamp);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -490,9 +509,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         return true;
     }
 
-    public void processImage(File file, Location location) throws IOException {
+    public void processImage(File file, Location location, Long currentTimestamp) throws IOException {
         tvColorLevel.setText("Processing...");
-        String url = "http://192.168.8.103:5000/process";
+        String url = "https://docker-python3-opencv-uvbeppe6ea-el.a.run.app/process";
 
         Thread thread = new Thread(new Runnable() {
 
@@ -523,6 +542,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                         String level = responseString;
                         System.out.println("Response===Success =  "+ level);
                         Log.d("Response===Success ", responseString);
+                        System.out.println("Response===Success "+ responseString);
                         tvColorLevel.setText("Level "+level);
 
                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -535,6 +555,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                         data.put("longitude", location.getLongitude());
                         data.put("officerId", uId);
                         data.put("level", Integer.parseInt(level));
+                        data.put("timestamp", currentTimestamp);
 
                         db.collection("FieldData")
                                 .add(data)
