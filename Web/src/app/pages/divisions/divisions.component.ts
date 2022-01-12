@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { Router } from '@angular/router';
+import divisionalDataFile from '../../../assets/jsonfiles/divisions.json';
 
 @Component({
   selector: 'app-divisions',
@@ -42,16 +43,31 @@ export class DivisionsComponent implements OnInit {
   // status;
   selectedType: String;
   all = 0;
+  none: any;
   pending = 0;
   declined = 0;
   active = 0;
   inactive = 0;
   field;
-
+  divisionalData = divisionalDataFile;
+  provinces;
+  // provinces = this.divisionalData.provinces;
+  allDistricts = [];
+  allDivisions = [];
+  districts: any;
+  divisions: any;
+  provinceSelected: string;
+  districtSelected: string;
+  divisionSelected: string;
   constructor(private renderer: Renderer2, private userService: UserService, private fieldService: FieldService, private router: Router) {
     this.role = this.router.getCurrentNavigation().extras.state.role;
     this.displayedColumns = ['division', 'province', 'district', 'view'];
-
+    this.loadLocationFilters();
+  }
+  loadLocationFilters() {
+    this.loadAllProvinces();
+    this.loadAllDistricts();
+    this.loadAllDivisions();
   }
 
 
@@ -77,57 +93,6 @@ export class DivisionsComponent implements OnInit {
     this.router.navigate(['/division-details'], { state: { user: this.user } });
 
   }
-  // deleteUser() {
-  //   this.userService.deleteUser(this.user.id);
-  // }
-  // accept() {
-  //   this.userService.changeUserStatus(this.user.id, 'active');
-  // }
-  // deactivate() {
-  //   // this.userService.changeUserStatus(this.user.id, 'inactive')
-  //   // this.fieldService.getFieldofFarmer(this.user.id).subscribe(data => {  
-  //   this.userService.changeuserActivation(this.user.id, this.field, 'inactive');
-
-  //   // })
-  // }
-  // decline() {
-  //   this.userService.changeUserStatus(this.user.id, 'declined');
-  // }
-  // selectReqType() {
-  //   let filterValue;
-  //   if (this.selectedType == "all") {
-  //     filterValue = '';
-  //   } else {
-  //     filterValue = this.selectedType;
-  //   }
-
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
-  // getCounts() {
-  //   if (this.type == 'request') {
-  //     this.users.forEach(data => {
-  //       if (data.status == 'pending') {
-  //         this.pending++;
-  //       } else {
-  //         this.declined++;
-  //       }
-  //     });
-  //     this.all = this.declined + this.pending;
-  //   } else {
-  //     this.users.forEach(data => {
-  //       if (data.status == 'active') {
-  //         this.active++;
-  //       } else {
-  //         this.inactive++;
-  //       }
-  //     });
-  //     this.all = this.declined + this.pending;
-  //   }
-  // }
 
 
   applyFilter(event: Event) {
@@ -139,7 +104,108 @@ export class DivisionsComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  loadAllProvinces() {
+    this.provinces = ['Province'];
+    this.divisionalData.provinces.forEach(pro => {
+      this.provinces.push(pro);
+    })
+    console.log(this.provinces);
+  }
+  loadAllDistricts() {
+    let val: any;
+    var i = 0;
+    this.allDistricts = [];
+    this.divisionalData.provinces.forEach(pro => {
+      val = this.divisionalData["" + pro + ""];
+      for (i = 0; i < val.length; i++) {
+        this.allDistricts.push(val[i]);
+      }
+    })
+    this.districts = ['District'];
 
+    this.allDistricts = this.allDistricts.sort();
+    this.allDistricts.forEach(d => {
+      this.districts.push(d);
+    })
+    this.allDistricts = this.districts;
+  }
+  loadAllDivisions() {
+    let val: any;
+    var i = 0;
+    this.allDivisions = [];
+    this.districts.forEach(dis => {
+      if (dis != "District") {
+        val = this.divisionalData["" + dis + ""];
+        console.log(val);
+        for (i = 0; i < val.length; i++) {
+          this.allDivisions.push(val[i]);
+        }
+      }
+    })
+    this.divisions = ['Division'];
+    this.allDivisions = this.allDivisions.sort();
+    this.allDivisions.forEach(d => {
+      this.divisions.push(d);
+    })
+    this.allDivisions = this.divisions;
+
+  }
+
+  // loadDistrictSelected(value: any) { ////
+
+  //   var province = value.toString();
+  //   if (province == 'Province')
+  //     this.districts = this.allDistricts;
+  //   else
+  //     this.districts = this.divisionalData["" + province + ""];
+  // }
+
+  // loadDivisionSelected(value: any) { ////
+  //   var district = value.toString();
+  //   if (district == 'District')
+  //     this.divisions = this.allDivisions;
+  //   else
+  //     this.divisions = this.divisionalData["" + district + ""]
+  // }
+
+  onProvinceSelected(value: any) {
+    var province = value.toString();
+    if (province != 'Province') {
+      this.districts = ['District'];
+      var tempDis = this.divisionalData["" + province + ""];
+      tempDis.forEach(element => {
+        this.districts.push(element);
+      });
+      this.divisions = ['Division'];
+      var tempDiv = this.divisionalData["" + this.divisionalData["" + province + ""][0] + ""];
+      tempDiv.forEach(element => {
+        this.divisions.push(element)
+      });
+    } else {
+      this.districts = this.allDistricts;
+      this.divisions = this.allDivisions;
+    }
+
+  }
+
+  onDistrictSelected(value: any) {
+    var district = value.toString();
+    if (district != 'District') {
+
+      this.divisions = ['Division'];
+      var tempDiv = this.divisionalData["" + district + ""];
+      tempDiv.forEach(element => {
+        this.divisions.push(element)
+      });
+    } else {
+      this.divisions = this.allDivisions;
+    }
+  }
+
+  onDivisionSelected(value: any) {
+    var division = value.toString();
+    // this.user.division = division;
+  }
 
   ngOnInit() {
     let input_group_focus = document.getElementsByClassName('form-control');
