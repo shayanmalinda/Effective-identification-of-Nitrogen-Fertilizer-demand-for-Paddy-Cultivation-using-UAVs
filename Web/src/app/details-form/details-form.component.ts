@@ -336,7 +336,8 @@ export class DetailsFormComponent implements OnInit {
   }
 
   onAddImagesClick(){
-    this.router.navigate(['/user-metadata'],);
+    console.log(this.fieldVisitTemp.id);
+    this.router.navigate(['/user-upload-images'], { state : { fieldRequestId : this.fieldVisitTemp.id }});
   }
 }
 

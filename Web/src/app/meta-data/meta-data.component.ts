@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import * as EXIF from 'exif-js';
 import { HttpClient } from '@angular/common/http';
 import {MatCardHarness} from '@angular/material/card/testing';
+import { FieldDataService } from 'app/services/field-data.service';
+import { FieldData } from 'app/models/field-data.model';
+import { Message } from 'app/models/message.model';
+import { DialogService } from 'app/services/dialog.service';
+import { Router } from '@angular/router';
 
 // declare var EXIF: any;
 
@@ -33,8 +38,24 @@ export class MetaDataComponent implements OnInit {
   public res: { [key: string]: any };
   markersAdded = false;
   disability = false;
+  fieldData : FieldData = {
+    latitude : 0,
+    longitude : 0,
+    level : 0,
+    officerId : "",
+    requestId : "",
+    timestamp : 0
+  };
+  message : Message = {
+    title : '',
+    showMessage : ''
+  }
+  uploadedImages = 0;
 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient, private fieldDataService : FieldDataService, private dialog : DialogService, private router : Router) { 
+    this.fieldData.requestId = this.router.getCurrentNavigation().extras.state.fieldRequestId;
+    console.log("this is the field id : " + this.fieldData.requestId)
+  }
 
   ngOnInit(): void {}
 
@@ -80,6 +101,7 @@ export class MetaDataComponent implements OnInit {
   }
 
   async changeTriggers(event){
+    const currentTime = new Date;
     console.log("length" + event.target.files.length);
     this.length = event.target.files.length;
      for(var i = 0 ; i < event.target.files.length; i++){
@@ -115,7 +137,7 @@ export class MetaDataComponent implements OnInit {
           fileReader.readAsArrayBuffer(selectedFile);
           const fd = new FormData();
           fd.append('image', selectedFile)
-          this.http.post('http://192.168.1.100:5000/process', fd).subscribe(
+          this.http.post<number>('http://192.168.1.100:5000/process', fd).subscribe(
             res => {
               if(i == 0){
                 this.lat = latitude;
@@ -129,7 +151,40 @@ export class MetaDataComponent implements OnInit {
                 iconUrl : (res == 2 ? this.iconUrlRed : (res == 3 ? this.iconUrlYellow : this.iconUrlGreen)),
               });
               //should check for the existing records 
-              
+              this.fieldData.level = res;
+              this.fieldData.latitude = latitude;
+              this.fieldData.longitude = longitude;
+              this.fieldData.officerId = sessionStorage.getItem('userID');
+              this.fieldData.timestamp = currentTime.getTime();
+              // console.log(this.fieldData);
+              this.fieldDataService.getFieldData(this.fieldData)
+              .subscribe(
+                data => {
+                  if(data.length == 0){
+                    this.fieldDataService.insertFieldData(this.fieldData)
+                    .then(res => {
+                      console.log(res);
+                      this.uploadedImages ++;
+                      // this.message.title = "success";
+                      // this.message.showMessage = "You have successfully uploaded images of the field request !";
+                      // this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+                      //   // this.updateSessionDetails();
+                      //   // if (this.user.userRole != "admin")
+                      //   //   this.router.navigate(['/profile']);
+                      // });
+
+                    }, err => {
+                      this.message.title = "error";
+                      this.message.showMessage = err;
+                      this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+                        // this.clearFields();
+                      })
+                    });
+                  }else{
+                    this.uploadedImages ++;
+                  }
+                }
+              )
               resolve();
             }
           )
@@ -137,7 +192,16 @@ export class MetaDataComponent implements OnInit {
       });
      }
      console.log(this.valueArray);
+     //success msg 
+     console.log(this.length)
+     console.log(this.uploadedImages)
+     if(this.length != this.uploadedImages){
+        this.message.title = "success";
+        this.message.showMessage = "You have uploaded images successfully !!";
+        this.dialog.openConfirmDialog(this.message);
+     }
      this.markersAdded = true;
      this.disability = true;
+     this.uploadedImages = 0;
   }
 }
