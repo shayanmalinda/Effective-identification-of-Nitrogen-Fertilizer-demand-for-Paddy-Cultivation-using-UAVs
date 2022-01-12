@@ -151,7 +151,7 @@ export class NavbarComponent implements OnInit {
           if( titlee === '/user-field-history' ) {
             return true;
           }
-          if( titlee === '/user-metadata' ) {
+          if( titlee === '/user-upload-images' ) {
             return true;
           }
           else {

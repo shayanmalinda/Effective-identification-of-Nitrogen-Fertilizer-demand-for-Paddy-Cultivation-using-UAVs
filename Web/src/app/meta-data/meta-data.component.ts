@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as EXIF from 'exif-js';
 import { HttpClient } from '@angular/common/http';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+import {MatCardHarness} from '@angular/material/card/testing';
 
 // declare var EXIF: any;
 
@@ -32,6 +32,7 @@ export class MetaDataComponent implements OnInit {
   valueArray = [];
   public res: { [key: string]: any };
   markersAdded = false;
+  disability = false;
 
   constructor(private http : HttpClient) { }
 
@@ -125,7 +126,9 @@ export class MetaDataComponent implements OnInit {
                 level : res,
                 lat : latitude,
                 lon : longitude,
-                iconUrl : (res == 2 ? this.iconUrlRed : (res == 3 ? this.iconUrlYellow : this.iconUrlGreen))
+                iconUrl : (res == 2 ? this.iconUrlRed : (res == 3 ? this.iconUrlYellow : this.iconUrlGreen)),
+                requestId : '',
+                officerId : '',
               });
               resolve();
             }
@@ -135,5 +138,6 @@ export class MetaDataComponent implements OnInit {
      }
      console.log(this.valueArray);
      this.markersAdded = true;
+     this.disability = true;
   }
 }

@@ -63,7 +63,7 @@ const routes: Routes =[
     { path: 'admin-profile',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
     { path: 'divisions',       component: DivisionsComponent},
     { path: 'division-details',       component: DivisionsDetailsComponent},
-    { path: 'user-metadata',       component: MetaDataComponent},
+    { path: 'user-upload-images',       component: MetaDataComponent},
 
 
 

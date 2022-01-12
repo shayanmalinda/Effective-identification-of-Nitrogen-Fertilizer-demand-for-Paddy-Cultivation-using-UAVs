@@ -1,36 +1,11 @@
-<div class="wrapper">
+<!-- <div class="wrapper">
     <div class="page-header section-dark" style="background-image: url('assets/img/paddy one.jpg')">
         <div class="filter"></div>
         <div class="content-center">
-            <div class="container">
-                <div>
-                    <br>
-                    <br>
-                    <div class="title-brand" style="padding-top: 50px;">
-                        <h1>Upload Images</h1>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-10 col-sm-11">
-                            <input type="file" accept="image/*" multiple (change)="changeTriggers($event)" #fileInput style="display: none;"/>
-                            <button type="button" class="btn btn-outline-success btn-round" (click)="fileInput.click()">upload mulitiple files</button>
-                        </div>
-                        <div class="col-lg-2 col-sm-1">
-                          <p *ngIf="length > 0" style="color: white;">{{length}}</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row" style="height: 700px;" *ngIf="markersAdded">
-                        <div class="col-sm-12" style="width: 700px; height: 700px;">
-                          <agm-map [latitude]="lat" [longitude]="lon" [zoom]="zoom" [mapTypeId]="maptype" [fullscreenControl]='true'>
-                            <agm-marker *ngFor="let value of valueArray" [latitude]="value.lat" [longitude]="value.lon" [iconUrl]="value.iconUrl" ></agm-marker>
-                          </agm-map>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- <div style="margin: 200px;">
     <div class="row">
@@ -44,3 +19,69 @@
         </div>
     </div>
 </div> -->
+
+<div class="wrapper">
+    <div class="full-width-table">
+        <div class="filter"></div>
+        <div class="content-center">
+            <div class="container">
+                <div>
+                    <br>
+                    <br>
+                    <div class="title-brand" style="padding-top: 50px;">
+                        <h1>Upload Images</h1>
+                    </div>
+                    <br>
+                    <div class="row" style="height: 50px;">
+                        <div class="col-sm-4" ></div>
+                        <div class="col-sm-4" style="text-align: center;"> 
+                            <h2>Map</h2>
+                        </div>
+                        <div class="col-sm-4" ></div>
+                    </div>
+                    <div class="row" style="height: 70px;" *ngIf="markersAdded">
+                        <div class="col-sm-7" style="text-align: left;">
+                            <p>No of positions : {{length}}</p>
+                        </div>
+                        <div class="col-sm-5" style="text-align: right;">
+                            <button type="button" class="btn btn-outline-success btn-round" [routerLink]="['/user-field-requests']" routerLinkActive="router-link-active" >back to requests</button>
+                        </div>
+                    </div>
+                    <div class="row" style="height: 700px;" *ngIf="markersAdded">
+                        <div class="col-sm-12" style="width: 700px; height: 700px;">
+                            <!-- <h2>Map</h2> -->
+                          <agm-map [latitude]="lat" [longitude]="lon" [zoom]="zoom" [mapTypeId]="maptype" [fullscreenControl]='true'>
+                            <agm-marker *ngFor="let value of valueArray" [latitude]="value.lat" [longitude]="value.lon" [iconUrl]="value.iconUrl" ></agm-marker>
+                          </agm-map>
+                        </div>
+                    </div>
+                    <div class="row" style="height: 150px;" *ngIf="!markersAdded">
+                        <div class="col-sm-12" style="width: 700px; height: 200px; text-align: center;" >
+                            <!-- <h2>Map</h2> -->
+                            <br>
+                            <br>
+                            <h3>Nothing to show in the map !!!! </h3>
+                            <p>Upload relevant images using "<b>UPLOAD IMAGES</b>" button to view the map</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" *ngIf="!markersAdded">
+                        <div class="col-lg-8 col-sm-6">
+                          <!-- <p *ngIf="length > 0" style="color: white;">{{length}}</p> -->
+                        </div>
+                        <div class="col-lg-4 col-sm-6" style="text-align: right;">
+                            <input type="file" accept="image/*" multiple (change)="changeTriggers($event)" #fileInput style="display: none;"/>
+                            <button type="button" class="btn btn-outline-success btn-round" (click)="fileInput.click()" [disabled]="disability">upload images</button>
+                        </div>
+                    </div>
+                    <!-- <div class="row" *ngIf="markersAdded" style="height: 100px;">
+                        <div class="col-lg-8 col-sm-6"> </div>
+                          <div class="col-lg-4 col-sm-6" style="text-align: right;">
+                              <button type="button" class="btn btn-outline-success btn-round" [routerLink]="['/user-field-requests']" routerLinkActive="router-link-active" >back to requests</button>
+                          </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
