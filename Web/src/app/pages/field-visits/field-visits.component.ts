@@ -11,6 +11,7 @@ import { FieldVisit } from '../../models/field-visit.model';
 import { Router } from '@angular/router';
 import { FieldService } from './../../services/field.service';
 import { Field } from 'app/models/field.model';
+import divisionalDataFile from '../../../assets/jsonfiles/divisions.json';
 
 @Component({
   selector: 'app-field-visits',
@@ -48,17 +49,211 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
   completed = 0;
   selectedType: String;
   fieldId
+  divisionalData = divisionalDataFile;
+  provinces;
+  // provinces = this.divisionalData.provinces;
+  allDistricts = [];
+  allDivisions = [];
+  districts: any;
+  divisions: any;
+  provinceSelected: string;
+  districtSelected: string;
+  divisionSelected: string;
+  filterPredicate;
+  none: any;
 
   constructor(private renderer: Renderer2, private fieldVisitService: FieldVisitService, private fieldService: FieldService, private userService: UserService, private router: Router) {
     this.fieldId = this.router.getCurrentNavigation().extras.state.fieldId;
     if (this.fieldId == 'all')
-      this.displayedColumns = ['registrationNo', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status', 'view', 'delete'];
+      this.displayedColumns = ['registrationNo', 'address', 'farmerName', 'date', 'province', 'division', 'division', 'requestNote', 'status', 'view', 'delete'];
     else
       this.displayedColumns = ['date', 'requestNote', 'status', 'delete'];
 
+    this.loadLocationFilters();
+  }
+  loadLocationFilters() {
+    this.loadAllProvinces();
+    this.loadAllDistricts();
+    this.loadAllDivisions();
+  }
+  loadAllProvinces() {
+    this.provinces = ['Province'];
+    this.divisionalData.provinces.forEach(pro => {
+      this.provinces.push(pro);
+    })
+    this.provinceSelected = 'Province';
+    console.log(this.provinces);
+  }
+  loadAllDistricts() {
+    let val: any;
+    var i = 0;
+    this.allDistricts = [];
+    this.divisionalData.provinces.forEach(pro => {
+      val = this.divisionalData["" + pro + ""];
+      for (i = 0; i < val.length; i++) {
+        this.allDistricts.push(val[i]);
+      }
+    })
+    this.districts = ['District'];
+    this.districtSelected = 'District';
+
+    this.allDistricts = this.allDistricts.sort();
+    this.allDistricts.forEach(d => {
+      this.districts.push(d);
+    })
+    this.allDistricts = this.districts;
+  }
+  loadAllDivisions() {
+    let val: any;
+    var i = 0;
+    this.allDivisions = [];
+    this.districts.forEach(dis => {
+      if (dis != "District") {
+        val = this.divisionalData["" + dis + ""];
+        console.log(val);
+        for (i = 0; i < val.length; i++) {
+          this.allDivisions.push(val[i]);
+        }
+      }
+    })
+    this.divisions = ['Division'];
+    this.divisionSelected = 'Division';
+    this.allDivisions = this.allDivisions.sort();
+    this.allDivisions.forEach(d => {
+      this.divisions.push(d);
+    })
+    this.allDivisions = this.divisions;
+
+  }
+  onProvinceSelected(value: any) {
+    this.dataSource.filterPredicate = function (record, filter) {
+      return record.province.toLocaleLowerCase() == filter.toLocaleLowerCase();
+    }
+    var province = value.toString();
+    if (province != 'Province') {
+      this.districts = ['District'];
+      var tempDis = this.divisionalData["" + province + ""];
+      tempDis.forEach(element => {
+        this.districts.push(element);
+      });
+      this.divisions = ['Division'];
+      var tempDiv = this.divisionalData["" + this.divisionalData["" + province + ""][0] + ""];
+      tempDiv.forEach(element => {
+        this.divisions.push(element)
+      });
+      this.dataSource.filter = province;
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    } else {
+      this.districts = this.allDistricts;
+      this.divisions = this.allDivisions;
+      // if (this.divisionSelected != undefined || this.divisionSelected != 'Division') {
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     return record.division.toLocaleLowerCase() == this.divisionSelected.toLocaleLowerCase();
+      //   }
+      // } else if (this.districtSelected != undefined || this.districtSelected != 'District') {
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     return record.district.toLocaleLowerCase() == this.districtSelected.toLocaleLowerCase();
+      //   }
+      // } else
+      this.dataSource.filter = "";
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
+
+    console.log("Province" + this.provinceSelected)
+    // this.divisionSelected = 'Division';
+    // this.districtSelected = 'District';
+    console.log("District" + this.districtSelected)
+    console.log("Division" + this.divisionSelected)
 
   }
 
+  onDistrictSelected(value: any) {
+    this.dataSource.filterPredicate = function (record, filter) {
+      return record.district.toLocaleLowerCase() == filter.toLocaleLowerCase();
+    }
+    var district = value.toString();
+    if (district != 'District') {
+
+      this.divisions = ['Division'];
+      var tempDiv = this.divisionalData["" + district + ""];
+      tempDiv.forEach(element => {
+        this.divisions.push(element)
+      });
+      this.dataSource.filter = district;
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+
+    } else {
+      this.divisions = this.allDivisions;
+      // if (this.divisionSelected != undefined || this.divisionSelected != 'Division') {
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     return record.division.toLocaleLowerCase() == this.divisionSelected.toLocaleLowerCase();
+      //   }
+      // } else if (this.provinceSelected != undefined || this.provinceSelected != 'Province') {
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     return record.province.toLocaleLowerCase() == this.provinceSelected.toLocaleLowerCase();
+      //   }
+      // } else
+      this.dataSource.filter = "";
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
+    console.log("Province" + this.provinceSelected)
+    console.log("District" + this.districtSelected)
+    console.log("Division" + this.divisionSelected)
+  }
+
+  onDivisionSelected(value: any) {
+    this.dataSource.filterPredicate = function (record, filter) {
+      return record.division.toLocaleLowerCase() == filter.toLocaleLowerCase();
+    }
+    var division = value.toString();
+    console.log("Province" + this.provinceSelected)
+    console.log(this.districtSelected)
+    console.log("Division" + this.divisionSelected)
+    if (division != 'Division') {
+      this.dataSource.filter = division;
+      console.log(this.dataSource.filter)
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    } else {
+      // if (this.districtSelected != 'District') {
+      //   console.log('has a selected distric yet')
+      //   // this.dataSource.filterPredicate = function (record, filter) {
+      //   //   return record.district.toLocaleLowerCase() == this.districtSelected;
+      //   // }
+      //   // this.dataSource.filter = this.districtSelected;
+      // } else if (this.provinceSelected != 'Province') {
+      //   console.log('has a selected province yet')
+      //   console.log(this.provinceSelected)
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     console.log(record+filter);
+      //     console.log(this.provinceSelected);
+      //     return record.province == this.provinceSelected;
+      //   }
+      //   this.dataSource.filter = this.provinceSelected;
+
+      // } else
+      this.dataSource.filter = "";
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
+    // this.user.division = division;
+  }
   isDisabled(date: NgbDateStruct, current: { month: number }) {
     return date.month !== current.month;
   }
@@ -101,7 +296,7 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
 
 
   async ngOnInit() {
-    this.fieldVisitsTemp=[];
+    this.fieldVisitsTemp = [];
     let input_group_focus = document.getElementsByClassName('form-control');
     let input_group = document.getElementsByClassName('input-group');
     for (let i = 0; i < input_group.length; i++) {
@@ -136,15 +331,20 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
           if (this.field.status == 'active') {
             f.field = this.field;
             f.address = this.field.address;
+            f.district = this.field.district;
+            f.province = this.field.province;
             f.registrationNo = this.field.registrationNumber;
             this.userService.getUser(this.field.farmerId).subscribe(data => {
               this.farmer = data.payload.data() as User;
               f.farmer = this.farmer;
+
               f.farmerName = this.farmer.firstName + " " + this.farmer.lastName;
               this.fieldVisits.push(f);
               this.dataSource = new MatTableDataSource(this.fieldVisits);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
+              this.filterPredicate = this.dataSource.filterPredicate;
+
             });
           }
 
