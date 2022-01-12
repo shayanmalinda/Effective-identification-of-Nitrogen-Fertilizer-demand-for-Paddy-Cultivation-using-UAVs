@@ -29,7 +29,7 @@
                     <br>
                     <br>
                     <div class="title-brand" style="padding-top: 50px;">
-                        <h1>Upload Images</h1>
+                        <h1>View Complete Map</h1>
                     </div>
                     <br>
                     <div class="row" style="height: 50px;">
@@ -44,7 +44,7 @@
                             <p>No of positions : {{length}}</p>
                         </div>
                         <div class="col-sm-5" style="text-align: right;">
-                            <button type="button" class="btn btn-outline-success btn-round" [routerLink]="['/user-field-visits']" routerLinkActive="router-link-active" >back to visits</button>
+                            <button type="button" class="btn btn-outline-success btn-round" [routerLink]="['/user-farmer-requests']" routerLinkActive="router-link-active" >back to requests</button>
                         </div>
                     </div>
                     <div class="row" style="height: 700px;" *ngIf="markersAdded">
@@ -65,15 +65,15 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row" *ngIf="!markersAdded">
+                    <!-- <div class="row" *ngIf="!markersAdded">
                         <div class="col-lg-8 col-sm-6">
-                          <!-- <p *ngIf="length > 0" style="color: white;">{{length}}</p> -->
+                          <p *ngIf="length > 0" style="color: white;">{{length}}</p>
                         </div>
                         <div class="col-lg-4 col-sm-6" style="text-align: right;">
                             <input type="file" accept="image/*" multiple (change)="changeTriggers($event)" #fileInput style="display: none;"/>
                             <button type="button" class="btn btn-outline-success btn-round" (click)="fileInput.click()" [disabled]="disability">upload images</button>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="row" *ngIf="markersAdded" style="height: 100px;">
                         <div class="col-lg-8 col-sm-6"> </div>
                           <div class="col-lg-4 col-sm-6" style="text-align: right;">

@@ -766,8 +766,9 @@
             <button type="button" [class]="btnStyleTwo" [mat-dialog-close]="true">cancel</button>
             <button type="button" [class]="btnStyleOne" (click)="onDeclineButtonClick()" [mat-dialog-close]="true">decline</button>
           </div>
-          <div class="row" style="margin-left:410px; align-items: right;" *ngIf="(data.type == 'addDetails' && acceptForm == 2)">
+          <div class="row" style="margin-left:310px; align-items: right;" *ngIf="(data.type == 'addDetails' && acceptForm == 2)">
             <!-- <button type="button" [class]="btnStyleTwo" (click)="onViewFarmerClick()">View Farmer</button> -->
+            <button type="button" [class]="btnStyleOne" (click)="onViewMapButtonClick()" [mat-dialog-close]="true">View Map</button>
             <button type="button" [class]="btnStyleTwo" [mat-dialog-close]="true">ok</button>
           </div>
           <div class="row" style="margin-left: 165px; align-items: right;" *ngIf="(data.type == 'changeDetails' && !processingForm)">

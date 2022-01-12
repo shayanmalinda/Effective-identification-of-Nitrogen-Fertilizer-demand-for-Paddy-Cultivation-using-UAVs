@@ -28,6 +28,7 @@ import { UserReportsComponent } from './pages/user-reports/user-reports.componen
 import { UserFieldHistoryComponent } from './pages/user-field-history/user-field-history.component';
 import { DivisionsDetailsComponent } from './pages/division-details/division-details.component';
 import { MetaDataComponent } from './meta-data/meta-data.component';
+import { UserViewMapComponent } from './pages/user-view-map/user-view-map.component';
 
 
 
@@ -63,7 +64,8 @@ const routes: Routes =[
     { path: 'admin-profile',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
     { path: 'divisions',       component: DivisionsComponent},
     { path: 'division-details',       component: DivisionsDetailsComponent},
-    { path: 'user-metadata',       component: MetaDataComponent},
+    { path: 'user-upload-images',       component: MetaDataComponent},
+    { path: 'user-view-map',       component: UserViewMapComponent},
 
 
 

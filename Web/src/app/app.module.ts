@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 import { DatePipe } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
@@ -42,6 +43,7 @@ import { MaterialModule } from './material/material.module';
 //route authentication
 import { AuthGuard } from './services/auth/auth.guard';
 import { AgmCoreModule } from '@agm/core';
+import { UserViewMapComponent } from './pages/user-view-map/user-view-map.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,7 @@ import { AgmCoreModule } from '@agm/core';
     UserReportsComponent,
     UserFieldHistoryComponent,
     MetaDataComponent,
-    
+    UserViewMapComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +72,7 @@ import { AgmCoreModule } from '@agm/core';
     FormsModule,
     MaterialModule,
     ReactiveFormsModule,
+    HttpClientModule,
     RouterModule,
     ComponentsModule,
     ExamplesModule,
