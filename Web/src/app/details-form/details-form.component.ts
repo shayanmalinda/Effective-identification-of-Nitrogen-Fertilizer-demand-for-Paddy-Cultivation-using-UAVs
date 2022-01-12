@@ -339,5 +339,10 @@ export class DetailsFormComponent implements OnInit {
     console.log(this.fieldVisitTemp.id);
     this.router.navigate(['/user-upload-images'], { state : { fieldRequestId : this.fieldVisitTemp.id }});
   }
+
+  onViewMapButtonClick(){
+    console.log(this.fieldVisitTemp.id);
+    this.router.navigate(['/user-view-map'], { state : { fieldRequestId : this.fieldVisitTemp.id }});
+  }
 }
 

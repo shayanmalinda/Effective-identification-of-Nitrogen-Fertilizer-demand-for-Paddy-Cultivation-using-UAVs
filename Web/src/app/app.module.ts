@@ -43,6 +43,7 @@ import { MaterialModule } from './material/material.module';
 //route authentication
 import { AuthGuard } from './services/auth/auth.guard';
 import { AgmCoreModule } from '@agm/core';
+import { UserViewMapComponent } from './pages/user-view-map/user-view-map.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { AgmCoreModule } from '@agm/core';
     UserReportsComponent,
     UserFieldHistoryComponent,
     MetaDataComponent,
+    UserViewMapComponent,
   ],
   imports: [
     BrowserModule,
