@@ -16,6 +16,8 @@ export class FieldVisit {
 export class FieldVisitTemp {
     id: string;
     date: string;
+    province: string;
+    district: string;
     division: string;
     fieldId: string;
     field: any;

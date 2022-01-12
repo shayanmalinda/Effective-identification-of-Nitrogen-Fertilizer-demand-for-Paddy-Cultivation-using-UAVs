@@ -50,5 +50,15 @@ float: right;}
 .right{
   font-weight: bold;
 }
+.filters{
+  display: inline-flex;
+  align-items: center;
+  background-color:transparent;
+  float: left;
+}
+.transparent{
+  background-color:transparent;
 
+
+}
 

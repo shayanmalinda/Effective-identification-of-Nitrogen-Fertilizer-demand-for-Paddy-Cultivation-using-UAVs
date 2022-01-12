@@ -16,7 +16,15 @@ table {
 .background{
   color: white;
 }
-
+.filters{
+  display: inline-flex;
+  align-items: center;
+  background-color:transparent;
+  float: left;
+}
+.transparent{
+  background-color:transparent;
+}
   
 .mat-row.highlighted {
   background: lightgreen;
