@@ -33,10 +33,10 @@
                     </div>
                     <br>
                     <div class="row" style="height: 50px;">
-                        <div class="col-sm-4" ></div>
-                        <div class="col-sm-4" style="text-align: center;"> 
+                        <div class="col-sm-4" style="text-align: left;"> 
                             <h2>Map</h2>
                         </div>
+                        <div class="col-sm-4" ></div>
                         <div class="col-sm-4" ></div>
                     </div>
                     <div class="row" style="height: 70px;" *ngIf="markersAdded">
@@ -44,7 +44,7 @@
                             <p>No of positions : {{length}}</p>
                         </div>
                         <div class="col-sm-5" style="text-align: right;">
-                            <button type="button" class="btn btn-outline-success btn-round" [routerLink]="['/user-field-visits']" routerLinkActive="router-link-active" >back to requests</button>
+                            <button type="button" class="btn btn-outline-success btn-round" [routerLink]="['/user-field-visits']" routerLinkActive="router-link-active" >back to visits</button>
                         </div>
                     </div>
                     <div class="row" style="height: 700px;" *ngIf="markersAdded">
