@@ -127,9 +127,9 @@ export class MetaDataComponent implements OnInit {
                 lat : latitude,
                 lon : longitude,
                 iconUrl : (res == 2 ? this.iconUrlRed : (res == 3 ? this.iconUrlYellow : this.iconUrlGreen)),
-                requestId : '',
-                officerId : '',
               });
+              //should check for the existing records 
+              
               resolve();
             }
           )
