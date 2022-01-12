@@ -58,7 +58,7 @@ export class LccDetailsComponent implements OnInit {
   havePreviousRecords : boolean = false;
 
 
-  displayedColumns: string[] = ['week', 'levelOne', 'levelTwo', 'levelThree'];
+  displayedColumns: string[] = ['week', 'levelTwo', 'levelThree', 'levelFour'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
 
   constructor(private lccService : LccService, private dialog : DialogService, private router : Router) { }
