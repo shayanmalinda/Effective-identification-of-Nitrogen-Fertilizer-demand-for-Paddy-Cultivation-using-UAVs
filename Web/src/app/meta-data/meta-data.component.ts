@@ -137,8 +137,9 @@ export class MetaDataComponent implements OnInit {
           fileReader.readAsArrayBuffer(selectedFile);
           const fd = new FormData();
           fd.append('image', selectedFile)
-          this.http.post<number>('http://192.168.1.100:5000/process', fd).subscribe(
+          this.fieldDataService.getLevelFromServer(fd).subscribe(
             res => {
+              console.log(res);
               if(i == 0){
                 this.lat = latitude;
                 this.lon = longitude;
@@ -163,8 +164,8 @@ export class MetaDataComponent implements OnInit {
                   if(data.length == 0){
                     this.fieldDataService.insertFieldData(this.fieldData)
                     .then(res => {
-                      console.log(res);
-                      this.uploadedImages ++;
+                      // console.log(res);
+                      // this.uploadedImages ++;
                       // this.message.title = "success";
                       // this.message.showMessage = "You have successfully uploaded images of the field request !";
                       // this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
@@ -181,7 +182,7 @@ export class MetaDataComponent implements OnInit {
                       })
                     });
                   }else{
-                    this.uploadedImages ++;
+                    // this.uploadedImages ++;
                   }
                 }
               )
@@ -193,13 +194,14 @@ export class MetaDataComponent implements OnInit {
      }
      console.log(this.valueArray);
      //success msg 
-     console.log(this.length)
-     console.log(this.uploadedImages)
+    //  console.log(this.length)
+    //  console.log(this.uploadedImages)
      if(this.length != this.uploadedImages){
         this.message.title = "success";
         this.message.showMessage = "You have uploaded images successfully !!";
         this.dialog.openConfirmDialog(this.message);
      }
+     this.valueArray.length = 0;
      this.markersAdded = true;
      this.disability = true;
      this.uploadedImages = 0;

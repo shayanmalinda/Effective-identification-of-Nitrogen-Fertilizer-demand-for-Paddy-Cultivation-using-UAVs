@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { FieldVisitTemp } from 'app/models/field-visit.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FieldData } from 'app/models/field-data.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FieldDataService {
 
-  constructor(private fireStore : AngularFirestore) { }
+  constructor(private fireStore : AngularFirestore, private http : HttpClient) { }
 
   getFieldData(fieldData: FieldData) {
     // console.log(fieldVisitTemp.fieldId);
@@ -25,5 +26,9 @@ export class FieldDataService {
           }
           , err => reject(err.message))
     })
+  }
+
+  getLevelFromServer(fd : FormData){
+    return this.http.post<number>('http://192.168.1.100:5000/process', fd);
   }
 }
