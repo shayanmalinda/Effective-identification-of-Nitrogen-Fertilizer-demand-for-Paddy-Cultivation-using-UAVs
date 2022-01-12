@@ -69,7 +69,7 @@ export class UserFarmerRequestsComponent implements OnInit {
   declinedRequests : number = 0;
   completedRequests : number = 0;
 
-  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'division', 'requestNote', 'status', 'action'];
+  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'requestNote', 'status', 'action'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
 
   constructor(private lccService : LccService, private dialog : DialogService, private userService : UserService, private fieldService : FieldService, private fieldVisitService : FieldVisitService, private router : Router) { }

@@ -124,7 +124,23 @@ public class ExamineFieldActivity extends AppCompatActivity {
                                         Toast.makeText(ExamineFieldActivity.this, "Please Wait", Toast.LENGTH_SHORT).show();
                                     }
                                     else{
-                                        Toast.makeText(ExamineFieldActivity.this, "Data Clear Success", Toast.LENGTH_SHORT).show();
+                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                        System.out.println("test==="+requestId);
+                                        DocumentReference docRef = db.collection("FieldRequests").document(requestId);
+                                        docRef.update("status", "pending")
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        Toast.makeText(ExamineFieldActivity.this, "Data Clear Success", Toast.LENGTH_SHORT).show();
+                                                        Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull @NotNull Exception e) {
+                                                        Log.w("Status Update: ", "Error updating document", e);
+                                                    }
+                                                });
                                     }
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         String documentId = document.getId();
@@ -142,7 +158,23 @@ public class ExamineFieldActivity extends AppCompatActivity {
                                                         isStateBusy = false;
                                                         progressBar.setVisibility(View.GONE);
                                                         System.out.print("testing==="+"Success");
-                                                        Toast.makeText(ExamineFieldActivity.this, "Data Clear Success", Toast.LENGTH_SHORT).show();
+                                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                        System.out.println("test==="+requestId);
+                                                        DocumentReference docRef = db.collection("FieldRequests").document(requestId);
+                                                        docRef.update("status", "pending")
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void unused) {
+                                                                        Toast.makeText(ExamineFieldActivity.this, "Data Clear Success", Toast.LENGTH_SHORT).show();
+                                                                        Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull @NotNull Exception e) {
+                                                                        Log.w("Status Update: ", "Error updating document", e);
+                                                                    }
+                                                                });
                                                     }
                                                 }
                                             })

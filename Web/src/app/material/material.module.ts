@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCardModule} from '@angular/material/card';
 // import * as Material from '@angular/material';
 
 
@@ -29,6 +30,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatPaginatorModule,
     MatRadioModule,
     MatDatepickerModule,
+    MatCardModule,
   ],
   exports: [
     MatSliderModule,
@@ -42,6 +44,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatPaginatorModule,
     MatRadioModule,
     MatDatepickerModule,
+    MatCardModule,
   ]
 })
 export class MaterialModule { }
