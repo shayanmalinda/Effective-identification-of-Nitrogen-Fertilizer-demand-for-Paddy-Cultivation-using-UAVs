@@ -13,6 +13,17 @@ table {
   ngb-progressbar {
     margin-top: 5rem;
 }
+.filters{
+  display: inline-flex;
+  align-items: center;
+  background-color:transparent;
+  float: left;
+}
+.transparent{
+  background-color:transparent;
+
+
+}
   
 .background{
   color: white;

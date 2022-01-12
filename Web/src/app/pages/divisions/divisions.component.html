@@ -5,79 +5,51 @@
             <div class="container">
                 <div>
                     <div class="title-brand"><label>Divisions</label></div>
+                    <div class="filters">
+                        <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}"
+                            >
+                            <div class="dropdown">
 
-                    <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}"
-                        style="padding-left: 45px; font-size: large;">
-                        <div class="dropdown">
-                            <!-- <button class="dropbtn">District</button>
-                              <div class="dropdown-content dropdown-scrollbar">
-                              <a class="dropdown-list">Link 1Link 1Link 1Link 1Link 1Link 1Link 1Link 1</a>
-                              <a >Link 2</a>
-                              <a >Link 3</a>
-                              <a href="#">Link 1</a>
-                              <a href="#">Link 2</a>
-                              <a href="#">Link 3</a> -->
-                            <select class="dropbtn" name="dropdownProvince" id="dropdownProvince"
-                                [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)"
-                                style="padding-top: 10px;">
-                                <!-- <option style="color: black;">hello</option>
-                                <option style="color: black;">hello</option>
-                                <option style="color: black;">hello</option>
-                                <option style="color: black;">Heshan</option> -->
-                                <option [value]="none" disabled selected hidden>Province</option>
-                                <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
-                            </select>
-                            <!-- </div> -->
+                                <select class="dropbtn" name="dropdownProvince" id="dropdownProvince"
+                                    [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)"
+                                    style="padding-top: 0px;">
+
+                                    <option [value]="none" disabled selected hidden>Province</option>
+                                    <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
+                                </select>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                        <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}"
+                            style="padding-left: 15px; ">
+                            <div class="dropdown">
+
+                                <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict"
+                                    [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)"
+                                    [value]="none" style="padding-top: 0px; ">
+
+                                    <option [value]="none" disabled selected hidden>District</option>
+                                    <option *ngFor="let district of districts" [value]="district">{{district}}</option>
+                                </select>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                        <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}"
+                            style="padding-left: 15px;">
+                            <div class="dropdown">
+
+                                <select class="dropbtn" name="dropdownDivision" id="dropdownDivision"
+                                    [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)"
+                                    style="padding-top: 0px;">
+
+                                    <option [value]="none" disabled selected hidden>Division</option>
+                                    <option *ngFor="let division of divisions" [value]="division">{{division}}</option>
+                                </select>
+                                <!-- </div> -->
+                            </div>
                         </div>
                     </div>
-                    <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}"
-                        style="padding-left: 45px; font-size: large;">
-                        <div class="dropdown">
-                            <!-- <button class="dropbtn">District</button>
-                              <div class="dropdown-content dropdown-scrollbar">
-                              <a class="dropdown-list">Link 1Link 1Link 1Link 1Link 1Link 1Link 1Link 1</a>
-                              <a >Link 2</a>
-                              <a >Link 3</a>
-                              <a href="#">Link 1</a>
-                              <a href="#">Link 2</a>
-                              <a href="#">Link 3</a> -->
-                            <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict"
-                                [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)"
-                                [value]="none" style="padding-top: 0px;">
-                                <!-- <option style="color: black;">hello</option>
-                                <option style="color: black;">hello</option>
-                                <option style="color: black;">hello</option>
-                                <option style="color: black;">Heshan</option> -->
-                                <option [value]="none" disabled selected hidden>District</option>
-                                <option *ngFor="let district of districts" [value]="district">{{district}}</option>
-                            </select>
-                            <!-- </div> -->
-                        </div>
-                    </div>
-                    <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus1===true}"
-                        style="padding-left: 45px; font-size: large;">
-                        <div class="dropdown">
-                            <!-- <button class="dropbtn">District</button>
-                              <div class="dropdown-content dropdown-scrollbar">
-                              <a class="dropdown-list">Link 1Link 1Link 1Link 1Link 1Link 1Link 1Link 1</a>
-                              <a >Link 2</a>
-                              <a >Link 3</a>
-                              <a href="#">Link 1</a>
-                              <a href="#">Link 2</a>
-                              <a href="#">Link 3</a> -->
-                            <select class="dropbtn" name="dropdownDivision" id="dropdownDivision"
-                                [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)"
-                                style="padding-top: 0px;">
-                                <!-- <option style="color: black;">hello</option>
-                                <option style="color: black;">hello</option>
-                                <option style="color: black;">hello</option>
-                                <option style="color: black;">Heshan</option> -->
-                                <option [value]="none" disabled selected hidden>Division</option>
-                                <option *ngFor="let division of divisions" [value]="division">{{division}}</option>
-                            </select>
-                            <!-- </div> -->
-                        </div>
-                    </div>
+
 
                     <mat-form-field appearance="standard">
                         <mat-label class="background">Filter</mat-label>
