@@ -10,29 +10,37 @@
                         <h1>Upload Images</h1>
                     </div>
                     <div class="row">
-                        <div class="col-lg-8 col-sm-6">
-                            <input type="file" accept="image/*" multiple (change)="onChange($event)" #fileInput style="display: none;"/>
+                        <div class="col-lg-10 col-sm-11">
+                            <input type="file" accept="image/*" multiple (change)="changeTriggers($event)" #fileInput style="display: none;"/>
                             <button type="button" class="btn btn-outline-success btn-round" (click)="fileInput.click()">upload mulitiple files</button>
                         </div>
-                        <div class="col-lg-4 col-sm-6">
+                        <div class="col-lg-2 col-sm-1">
                           <p *ngIf="length > 0" style="color: white;">{{length}}</p>
                         </div>
                     </div>
                     <br>
-                    <div class="row" style="height: 700px;" *ngIf="length > 0">
+                    <div class="row" style="height: 700px;" *ngIf="markersAdded">
                         <div class="col-sm-12" style="width: 700px; height: 700px;">
                           <agm-map [latitude]="lat" [longitude]="lon" [zoom]="zoom" [mapTypeId]="maptype" [fullscreenControl]='true'>
-                            <agm-marker [latitude]="lat" [longitude]="lon" [iconUrl]="iconUrl"></agm-marker>
+                            <agm-marker *ngFor="let value of valueArray" [latitude]="value.lat" [longitude]="value.lon" [iconUrl]="value.iconUrl" ></agm-marker>
                           </agm-map>
                         </div>
                     </div>
-                    <!-- <br>
-                    <div class="row" style="padding-left: 480px;">
-                        <button class="btn btn-outline-success btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
-                        <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onCancelClick()">cancel</button>
-                    </div> -->
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- <div style="margin: 200px;">
+    <div class="row">
+        <input type="file" (change)="changeTriggers($event)" multiple>
+    </div>
+    <div class="row" *ngIf="markersAdded">
+        <div class="col-sm-12 col-lg-12" style="width: 700px; height: 700px;">
+          <agm-map [latitude]="lat" [longitude]="lon" [zoom]="zoom" [mapTypeId]="maptype" [fullscreenControl]='true'>
+            <agm-marker *ngFor="let value of valueArray" [latitude]="value.lat" [longitude]="value.lon" [iconUrl]="value.iconUrl" ></agm-marker>
+          </agm-map>
+        </div>
+    </div>
+</div> -->
