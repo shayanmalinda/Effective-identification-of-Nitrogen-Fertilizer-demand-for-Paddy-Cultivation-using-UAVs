@@ -12,7 +12,7 @@
 
                                 <select class="dropbtn" name="dropdownProvince" id="dropdownProvince"
                                     [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)"
-                                    style="padding-top: 0px;">
+                                    style="padding-top: 0px; ">
 
                                     <option [value]="none" disabled selected hidden>Province</option>
                                     <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
