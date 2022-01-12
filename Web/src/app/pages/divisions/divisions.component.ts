@@ -59,6 +59,7 @@ export class DivisionsComponent implements OnInit {
   provinceSelected: string;
   districtSelected: string;
   divisionSelected: string;
+  filterPredicate;
   constructor(private renderer: Renderer2, private userService: UserService, private fieldService: FieldService, private router: Router) {
     this.role = this.router.getCurrentNavigation().extras.state.role;
     this.displayedColumns = ['division', 'province', 'district', 'view'];
@@ -96,6 +97,7 @@ export class DivisionsComponent implements OnInit {
 
 
   applyFilter(event: Event) {
+    this.dataSource.filterPredicate = this.filterPredicate;
     const filterValue = (event.target as HTMLInputElement).value;
     console.log(filterValue)
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -109,6 +111,7 @@ export class DivisionsComponent implements OnInit {
     this.divisionalData.provinces.forEach(pro => {
       this.provinces.push(pro);
     })
+    this.provinceSelected = 'Province';
     console.log(this.provinces);
   }
   loadAllDistricts() {
@@ -122,6 +125,7 @@ export class DivisionsComponent implements OnInit {
       }
     })
     this.districts = ['District'];
+    this.districtSelected = 'District';
 
     this.allDistricts = this.allDistricts.sort();
     this.allDistricts.forEach(d => {
@@ -143,6 +147,7 @@ export class DivisionsComponent implements OnInit {
       }
     })
     this.divisions = ['Division'];
+    this.divisionSelected = 'Division';
     this.allDivisions = this.allDivisions.sort();
     this.allDivisions.forEach(d => {
       this.divisions.push(d);
@@ -169,6 +174,9 @@ export class DivisionsComponent implements OnInit {
   // }
 
   onProvinceSelected(value: any) {
+    this.dataSource.filterPredicate = function (record, filter) {
+      return record.province.toLocaleLowerCase() == filter.toLocaleLowerCase();
+    }
     var province = value.toString();
     if (province != 'Province') {
       this.districts = ['District'];
@@ -181,14 +189,42 @@ export class DivisionsComponent implements OnInit {
       tempDiv.forEach(element => {
         this.divisions.push(element)
       });
+      this.dataSource.filter = province;
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
     } else {
       this.districts = this.allDistricts;
       this.divisions = this.allDivisions;
+      // if (this.divisionSelected != undefined || this.divisionSelected != 'Division') {
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     return record.division.toLocaleLowerCase() == this.divisionSelected.toLocaleLowerCase();
+      //   }
+      // } else if (this.districtSelected != undefined || this.districtSelected != 'District') {
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     return record.district.toLocaleLowerCase() == this.districtSelected.toLocaleLowerCase();
+      //   }
+      // } else
+      this.dataSource.filter = "";
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
     }
+
+    console.log("Province" + this.provinceSelected)
+    // this.divisionSelected = 'Division';
+    // this.districtSelected = 'District';
+    console.log("District" + this.districtSelected)
+    console.log("Division" + this.divisionSelected)
 
   }
 
   onDistrictSelected(value: any) {
+    this.dataSource.filterPredicate = function (record, filter) {
+      return record.district.toLocaleLowerCase() == filter.toLocaleLowerCase();
+    }
     var district = value.toString();
     if (district != 'District') {
 
@@ -197,13 +233,73 @@ export class DivisionsComponent implements OnInit {
       tempDiv.forEach(element => {
         this.divisions.push(element)
       });
+      this.dataSource.filter = district;
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+
     } else {
       this.divisions = this.allDivisions;
+      // if (this.divisionSelected != undefined || this.divisionSelected != 'Division') {
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     return record.division.toLocaleLowerCase() == this.divisionSelected.toLocaleLowerCase();
+      //   }
+      // } else if (this.provinceSelected != undefined || this.provinceSelected != 'Province') {
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     return record.province.toLocaleLowerCase() == this.provinceSelected.toLocaleLowerCase();
+      //   }
+      // } else
+      this.dataSource.filter = "";
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
     }
+    console.log("Province" + this.provinceSelected)
+    console.log("District" + this.districtSelected)
+    console.log("Division" + this.divisionSelected)
   }
 
   onDivisionSelected(value: any) {
+    this.dataSource.filterPredicate = function (record, filter) {
+      return record.division.toLocaleLowerCase() == filter.toLocaleLowerCase();
+    }
     var division = value.toString();
+    console.log("Province" + this.provinceSelected)
+    console.log(this.districtSelected)
+    console.log("Division" + this.divisionSelected)
+    if (division != 'Division') {
+      this.dataSource.filter = division;
+      console.log(this.dataSource.filter)
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    } else {
+      // if (this.districtSelected != 'District') {
+      //   console.log('has a selected distric yet')
+      //   // this.dataSource.filterPredicate = function (record, filter) {
+      //   //   return record.district.toLocaleLowerCase() == this.districtSelected;
+      //   // }
+      //   // this.dataSource.filter = this.districtSelected;
+      // } else if (this.provinceSelected != 'Province') {
+      //   console.log('has a selected province yet')
+      //   console.log(this.provinceSelected)
+      //   this.dataSource.filterPredicate = function (record, filter) {
+      //     console.log(record+filter);
+      //     console.log(this.provinceSelected);
+      //     return record.province == this.provinceSelected;
+      //   }
+      //   this.dataSource.filter = this.provinceSelected;
+
+      // } else
+        this.dataSource.filter = "";
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
     // this.user.division = division;
   }
 
@@ -218,7 +314,6 @@ export class DivisionsComponent implements OnInit {
         input_group[i].classList.remove('input-group-focus');
       });
     }
-
     // if (this.type == "request") {// pending declined
     //   this.status = "pending"
     // } else {// active inactive
@@ -236,6 +331,8 @@ export class DivisionsComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.users);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.filterPredicate = this.dataSource.filterPredicate;
+
       // this.getCounts();
     });
 
