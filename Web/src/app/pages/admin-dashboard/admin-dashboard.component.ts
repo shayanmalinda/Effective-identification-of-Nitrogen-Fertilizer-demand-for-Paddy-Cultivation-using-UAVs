@@ -26,17 +26,20 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/officer-requests'], { state: { role: 'officer', type: 'request' } });
   }
   viewOfficers() {
-    this.router.navigate(['/officers'], { state: { role: 'officer'} });
+    this.router.navigate(['/officers'], { state: { role: 'officer' } });
   }
   viewDivisions() {
-    this.router.navigate(['/divisions'], { state: { role: 'officer'} });
+    this.router.navigate(['/divisions'], { state: { role: 'officer' } });
   }
   viewFieldVisits() {
-    this.router.navigate(['/field-visits'],{ state: { fieldId: 'all'}});
+    this.router.navigate(['/field-visits'], { state: { fieldId: 'all', type: 'visit' } });
+  }
+  viewFieldVisitRequests() {
+    this.router.navigate(['/field-visit-requests'], { state: { fieldId: 'all', type: 'request' } });
   }
 
   viewProfile() {
-    this.router.navigate(['/admin-profile'],{ state: { type: 'admin'} });
+    this.router.navigate(['/admin-profile'], { state: { type: 'admin' } });
   }
 }
 

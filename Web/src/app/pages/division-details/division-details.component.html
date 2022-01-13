@@ -42,7 +42,7 @@
                     <div class="form-group element">
                         <label class="name">No of Farmers </label>
                         <label class="name">{{farmerCount}}</label>
-                  <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Farmers</button> -->
+                        <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Farmers</button> -->
 
                     </div>
 
@@ -54,65 +54,54 @@
 
                     </div>
                     <div class="form-group element">
-                        <label class="name">No of field visits</label>
-                        <label class="name"></label>
+                        <label class="name">Field visit requests</label>
+                        <!-- <label class="name"></label> -->
+                        <div class="row counts">
+                            <ul>
+                                <li *ngFor="let index of this.counts">
+                                    <label *ngIf="index.status=='pending'" class="label label-warning">{{ index.status
+                                        }} -
+                                        {{index.count}}</label>
+                                    <label *ngIf="index.status=='confirmed'" class="label label-primary">{{ index.status
+                                        }} -
+                                        {{index.count}}</label>
+                                    <label *ngIf="index.status=='declined'" class="label label-success">{{ index.status
+                                        }} -
+                                        {{index.count}}</label>
+                                </li>
+                            </ul>
+                        </div>
                         <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Field Visits</button> -->
 
                     </div>
 
-
-                    <!-- <div class="col-sm-3">
-                        <div class="form-group has-success">
-                            <input type="text" class="form-control form-control-success" id="inputSuccess1" value="Success">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group has-danger">
-                            <input type="text" class="form-control form-control-danger" id="inputDanger1" value="Error">
-                            <div class="form-control-feedback">Sorry, that username's taken. Try another?</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="input-group" [ngClass]="{'input-group-focus':focus===true}">
-                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" (focus)="focus=true" (blur)="focus=false" >
-                            <div class="input-group-append">
-                              <span class="input-group-text" id="basic-addon1"><i class="fa fa-group" aria-hidden="true"></i></span>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
-                <!-- <div class="row">
 
-                    <div class="ml-auto mr-auto container">
-                        <p>Reg No : {{field.registrationNumber}}</p>
-                        <p>Address : {{field.address}}</p>
-                        <p>Farmer : {{field.farmer}}</p>
-                        <p>Division : {{field.division}}</p>
-                        <p>District : {{field.district}}</p>
-                        <p>Province : {{field.province}}</p>
-                        <br />
-                    </div>
 
-                </div> -->
-                <!-- <div class="row sub-title">
-                    <h6>Field Requests</h6>
-                </div> -->
                 <div class="row">
-                    <ul>
-                        <li *ngFor="let index of this.counts">
-                            <label *ngIf="index.status=='pending'" class="label label-warning">{{ index.status }} -
-                                {{index.count}}</label>
-                            <label *ngIf="index.status=='confirmed'" class="label label-primary">{{ index.status }} -
-                                {{index.count}}</label>
-                            <label *ngIf="index.status=='declined'" class="label label-success">{{ index.status }} -
-                                {{index.count}}</label>
-                            <label *ngIf="index.status=='processing'" class="label label-success">{{ index.status }} -
-                                {{index.count}}</label>
-                            <label *ngIf="index.status=='completed'" class="label label-success">{{ index.status }} -
-                                {{index.count}}</label>
-                        </li>
-                    </ul>
+
+                    <div class="form-group element">
+                        <label class="name">Field visits</label>
+                        <div class="row counts">
+                            <ul>
+                                <li *ngFor="let index of this.counts">
+
+                                    <label *ngIf="index.status=='processing'" class="label label-success">{{
+                                        index.status }} -
+                                        {{index.count}}</label>
+                                    <label *ngIf="index.status=='completed'" class="label label-success">{{ index.status
+                                        }} -
+                                        {{index.count}}</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Field Visits</button> -->
+
+                    </div>
+
                 </div>
+
+
                 <div class="left">
                     <!-- <button class="btn btn-outline-default btn-round update"> Update</button>
                     <button class="btn btn-outline-default btn-round cancel"> Cancel</button> -->

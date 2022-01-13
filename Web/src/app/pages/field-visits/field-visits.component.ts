@@ -61,11 +61,13 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
   divisionSelected: string;
   filterPredicate;
   none: any;
+  type;
 
   constructor(private renderer: Renderer2, private fieldVisitService: FieldVisitService, private fieldService: FieldService, private userService: UserService, private router: Router) {
     this.fieldId = this.router.getCurrentNavigation().extras.state.fieldId;
+    this.type = this.router.getCurrentNavigation().extras.state.type;
     if (this.fieldId == 'all')
-      this.displayedColumns = ['registrationNo', 'address', 'farmerName', 'date', 'province', 'division', 'division', 'requestNote', 'status', 'view', 'delete'];
+      this.displayedColumns = ['registrationNo', 'address', 'farmerName', 'date', 'province', 'district', 'division', 'requestNote', 'status', 'view', 'delete'];
     else
       this.displayedColumns = ['date', 'requestNote', 'status', 'delete'];
 
@@ -308,7 +310,7 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.fieldVisitService.getFieldVisits(this.fieldId).subscribe(data => {
+    this.fieldVisitService.getFieldVisits(this.fieldId,this.type).subscribe(data => {
       this.fieldVisitsTemp = data.map(e => {
         console.log(this.fieldVisit)
         return {

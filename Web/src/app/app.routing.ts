@@ -66,6 +66,7 @@ const routes: Routes =[
     { path: 'division-details',       component: DivisionsDetailsComponent},
     { path: 'user-upload-images',       component: MetaDataComponent},
     { path: 'user-view-map',       component: UserViewMapComponent},
+    { path: 'field-visit-requests',      component: FieldVisitsComponent},
 
 
 

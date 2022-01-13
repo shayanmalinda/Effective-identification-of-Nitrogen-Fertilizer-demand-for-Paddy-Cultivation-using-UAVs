@@ -97,11 +97,22 @@ export class DivisionsComponent implements OnInit {
 
 
   applyFilter(event: Event) {
-    this.dataSource.filterPredicate = this.filterPredicate;
     const filterValue = (event.target as HTMLInputElement).value;
     console.log(filterValue)
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.provinceSelected == 'Province' && this.districtSelected == 'District' && this.divisionSelected == 'Division') {
+      this.dataSource.filterPredicate = this.filterPredicate;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    } else {
+      if (this.divisionSelected != 'Division') {
+        this.dataSource.filterPredicate = function (record, filter) {
+          return record.division.toLocaleLowerCase() == filter.toLocaleLowerCase(); ////
+        }
+      } else if (this.districtSelected != 'District') {
 
+      } else if (this.provinceSelected != 'Province') {
+
+      }
+    }
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -294,7 +305,7 @@ export class DivisionsComponent implements OnInit {
       //   this.dataSource.filter = this.provinceSelected;
 
       // } else
-        this.dataSource.filter = "";
+      this.dataSource.filter = "";
 
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();

@@ -4,29 +4,38 @@
         <div class="content-center">
             <div class="container">
                 <div>
-                    <div class="title-brand"><label>Field Visits</label></div>
+                    <div class="title-brand" *ngIf="type=='request'"><label>Field Visit Requests</label></div>
+                    <div class="title-brand" *ngIf="type=='visit'"><label>Field Visits</label></div>
+
                     <div class="toggle label-bar">
 
                         <div class="left">
                             <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()
                                 aria-label="Font Style">
                                 <mat-button-toggle value="all">All</mat-button-toggle>
-                                <mat-button-toggle value="pending">Pending</mat-button-toggle>
-                                <mat-button-toggle value="confirmed">Confirmed</mat-button-toggle>
-                                <mat-button-toggle value="declined">Declined</mat-button-toggle>
-                                <mat-button-toggle value="processing">Processing</mat-button-toggle>
-                                <mat-button-toggle value="completed">Completed</mat-button-toggle>
+                                <mat-button-toggle value="pending" *ngIf="type=='request'">Pending</mat-button-toggle>
+                                <mat-button-toggle value="confirmed" *ngIf="type=='request'">Confirmed
+                                </mat-button-toggle>
+                                <mat-button-toggle value="declined" *ngIf="type=='request'">Declined</mat-button-toggle>
+                                <mat-button-toggle value="processing" *ngIf="type=='visit'">Processing
+                                </mat-button-toggle>
+                                <mat-button-toggle value="completed" *ngIf="type=='visit'">Completed</mat-button-toggle>
                             </mat-button-toggle-group>
                             <!-- <p>Chosen value is {{fontStyle}}</p> -->
                         </div>
-                        
+
                         <div class="labels">
                             <label class="label label-primary right">All : {{fieldVisits.length}}</label>&nbsp;
-                            <label class="label label-warning right">Pending : {{pending}}</label>&nbsp;
-                            <label class="label label-warning right">Confirmed : {{confirmed}}</label>&nbsp;
-                            <label class="label label-warning right">Declined : {{confirmed}}</label>&nbsp;
-                            <label class="label label-info right">Processing : {{processing}}</label>&nbsp;
-                            <label class="label label-success right">Completed : {{completed}}</label>&nbsp;
+                            <label class="label label-warning right" *ngIf="type=='request'">Pending :
+                                {{pending}}</label>&nbsp;
+                            <label class="label label-warning right" *ngIf="type=='request'">Confirmed :
+                                {{confirmed}}</label>&nbsp;
+                            <label class="label label-warning right" *ngIf="type=='request'">Declined :
+                                {{confirmed}}</label>&nbsp;
+                            <label class="label label-info right" *ngIf="type=='visit'">Processing :
+                                {{processing}}</label>&nbsp;
+                            <label class="label label-success right" *ngIf="type=='visit'">Completed :
+                                {{completed}}</label>&nbsp;
                         </div>
                     </div>
                     <div class="filters">

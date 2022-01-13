@@ -28,7 +28,11 @@ export class FieldDetailsComponent implements OnInit {
   }
   viewFieldVisits() {
     // this.router.navigate(['/field-visits']);
-    this.router.navigate(['/field-visits'], { state: { fieldId: this.field.id } });
+    this.router.navigate(['/field-visits'], { state: { fieldId: this.field.id ,type:'visit'} });
+  }
+  viewFieldRequests() {
+    // this.router.navigate(['/field-visits']);
+    this.router.navigate(['/field-visits'], { state: { fieldId: this.field.id ,type:'request'} });
   }
   ngOnInit() {
     this.counts = [];

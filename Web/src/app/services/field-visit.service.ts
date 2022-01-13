@@ -54,11 +54,18 @@ export class FieldVisitService {
 
   // }
 
-  getFieldVisits(fieldId) {
+  getFieldVisits(fieldId, type) {
     if (fieldId == "all")
-      return this.fireStore.collection('FieldRequests').snapshotChanges(); 
+      if (type == 'request')
+        return this.fireStore.collection('FieldRequests', ref => ref.where('status', 'in', ['pending', 'confirmed', 'declined'])).snapshotChanges();
+      else
+        return this.fireStore.collection('FieldRequests', ref => ref.where('status', 'in', ['completed', 'processing'])).snapshotChanges();
+
     else
-      return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)).snapshotChanges();
+      if (type == 'request')
+        return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId).where('status', 'in', ['pending' || 'confirmed' || 'declined'])).snapshotChanges();
+      else
+        return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId).where('status', 'in', ['completed' || 'processing'])).snapshotChanges();
 
   }
 
@@ -78,7 +85,7 @@ export class FieldVisitService {
   updateFieldVisitStatus(fieldVisitTemp: FieldVisitTemp) {
     console.log("the temp in the service file : " + fieldVisitTemp);
     return new Promise<any>((resolve, reject) => {
-      this.fireStore.collection('FieldRequests').doc('' + fieldVisitTemp.id + '').update({'status' : fieldVisitTemp.status, 'modifiedDate' : fieldVisitTemp.modifiedDate, 'modifiedTimestamp' : fieldVisitTemp.modifiedTimestamp, 'note' : fieldVisitTemp.note, 'visitDate' : fieldVisitTemp.visitDate})
+      this.fireStore.collection('FieldRequests').doc('' + fieldVisitTemp.id + '').update({ 'status': fieldVisitTemp.status, 'modifiedDate': fieldVisitTemp.modifiedDate, 'modifiedTimestamp': fieldVisitTemp.modifiedTimestamp, 'note': fieldVisitTemp.note, 'visitDate': fieldVisitTemp.visitDate })
         .then(
           res => {
             resolve("Success");
