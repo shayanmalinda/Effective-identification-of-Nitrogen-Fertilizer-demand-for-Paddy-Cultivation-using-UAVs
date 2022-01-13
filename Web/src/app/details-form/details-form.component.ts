@@ -44,6 +44,8 @@ export class DetailsFormComponent implements OnInit {
   fieldVisitTemp : FieldVisitTemp = {
     id: '',
     date: '',
+    province: '',
+    district: '',
     division: '',
     fieldId: '',
     field: '',

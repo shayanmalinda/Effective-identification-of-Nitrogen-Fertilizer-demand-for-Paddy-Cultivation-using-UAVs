@@ -161,4 +161,18 @@ export class NavbarComponent implements OnInit {
               return false;
           }
       };
+
+      isReport(){
+        var titlee = this.location.prepareExternalUrl(this.location.path());
+        if(titlee.charAt(0) === '#'){
+            titlee = titlee.slice( 1 );
+        }if( titlee === '/user-reports' ) {
+            return true;
+        }
+      }
+
+      printClick(){
+          console.log("print Click !!!");
+          window.print();
+      }
 }

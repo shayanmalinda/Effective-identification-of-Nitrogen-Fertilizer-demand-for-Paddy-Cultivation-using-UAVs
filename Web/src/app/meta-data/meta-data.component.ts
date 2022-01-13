@@ -53,10 +53,13 @@ export class MetaDataComponent implements OnInit {
     showMessage : ''
   }
   uploadedImages = 0;
+  previousImages = 0;
+  havePreviousImages : boolean = false;
 
   constructor(private http : HttpClient, private fieldDataService : FieldDataService, private dialog : DialogService, private router : Router) { 
     this.fieldData.requestId = this.router.getCurrentNavigation().extras.state.fieldRequestId;
-    console.log("this is the field id : " + this.fieldData.requestId)
+    console.log("this is the field id : " + this.fieldData.requestId);
+    this.loadFieldData();
   }
 
   ngOnInit(): void {}
@@ -209,5 +212,17 @@ export class MetaDataComponent implements OnInit {
      this.markersAdded = true;
      this.disability = true;
      this.uploadedImages = 0;
+  }
+
+  loadFieldData(){
+    console.log(this.fieldData.requestId);
+    this.fieldDataService.getFieldDataUsingRequestId(this.fieldData).subscribe(
+      data => {
+        if(data.length > 0){
+          this.previousImages = data.length;
+          this.havePreviousImages = true;
+        }
+      }
+    )
   }
 }

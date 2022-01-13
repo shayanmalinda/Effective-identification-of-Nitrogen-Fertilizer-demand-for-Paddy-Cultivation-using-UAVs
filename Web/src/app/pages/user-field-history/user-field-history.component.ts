@@ -62,6 +62,8 @@ export class UserFieldHistoryComponent implements OnInit {
   fieldvisitTemp : FieldVisitTemp = {
     id : '',
     date: '',
+    province: '',
+    district: '',
     division: '',
     fieldId: '',
     field: '',
