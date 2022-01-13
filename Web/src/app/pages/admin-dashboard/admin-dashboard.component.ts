@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class AdminDashboardComponent implements OnInit {
   focus: any;
   focus1: any;
-  type:any;
+  type: any;
   constructor(private router: Router) { }
 
   ngOnInit(): void {
@@ -18,10 +18,10 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/fields']);
   }
   viewReports() {
-    this.type='reports';
+    this.type = 'reports';
   }
   viewNav() {
-    this.type='';
+    this.type = '';
   }
   viewUsers() {
     this.router.navigate(['/farmers'], { state: { role: 'farmer' } });
@@ -36,7 +36,10 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/officers'], { state: { role: 'officer' } });
   }
   viewDivisions() {
-    this.router.navigate(['/divisions'], { state: { role: 'officer' } });
+    this.router.navigate(['/divisions'], { state: { role: 'officer', type: '' } });
+  }
+  selectReport() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'report' } });
   }
   viewFieldVisits() {
     this.router.navigate(['/field-visits'], { state: { fieldId: 'all', type: 'visit' } });
