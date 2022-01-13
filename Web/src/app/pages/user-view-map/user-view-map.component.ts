@@ -32,6 +32,7 @@ export class UserViewMapComponent implements OnInit {
   // iconUrlOrange = "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
   // iconUrlGreen = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
   iconUrlGreen = "./assets/img/levels/levelFour.png";
+  iconUrlBlue = "./assets/img/levels/levelFive.png";
   length = 0;
 
   constructor(private router : Router, private fieldDataService : FieldDataService) { 
@@ -65,7 +66,7 @@ export class UserViewMapComponent implements OnInit {
             level : element.level,
             lat : element.latitude,
             lon : element.longitude,
-            iconUrl : (element.level == 2 ? this.iconUrlRed : (element.level == 3 ? this.iconUrlYellow : this.iconUrlGreen)),
+            iconUrl : (element.level == 2 ? this.iconUrlRed : (element.level == 3 ? this.iconUrlYellow : (element.level == 4 ? this.iconUrlGreen : this.iconUrlBlue))),
           })
         });
       }

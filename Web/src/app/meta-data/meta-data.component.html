@@ -24,7 +24,7 @@
     <div class="full-width-table">
         <div class="filter"></div>
         <div class="content-center">
-            <div class="container">
+            <div class="container" [hidden]="loading">
                 <div>
                     <br>
                     <br>
@@ -39,9 +39,19 @@
                         <div class="col-sm-4" ></div>
                         <div class="col-sm-4" ></div>
                     </div>
+                    <div class="row" style="height: 150px;" *ngIf="havePreviousImages && !markersAdded">
+                        <div class="col-sm-12" style="width: 700px; height: 200px; text-align: center;" >
+                            <!-- <h2>Map</h2> -->
+                            <br>
+                            <br>
+                            <h3>There are images regarding this request !!!! </h3>
+                            <p *ngIf="previousImages > 1">There are <b>{{previousImages}}</b> images regarding this field request if you want to upload more images use "<b>UPLOAD IMAGES</b>" button</p>
+                            <p *ngIf="previousImages == 1">There is a image regarding this field request if you want to upload more images use "<b>UPLOAD IMAGES</b>" button</p>
+                        </div>
+                    </div>
                     <div class="row" style="height: 70px;" *ngIf="markersAdded">
                         <div class="col-sm-7" style="text-align: left;">
-                            <p>No of positions : {{length}}</p>
+                            <p>No of new positions : {{length}}</p>
                         </div>
                         <div class="col-sm-5" style="text-align: right;">
                             <button type="button" class="btn btn-outline-success btn-round" [routerLink]="['/user-field-visits']" routerLinkActive="router-link-active" >back to visits</button>
@@ -55,7 +65,7 @@
                           </agm-map>
                         </div>
                     </div>
-                    <div class="row" style="height: 150px;" *ngIf="!markersAdded">
+                    <div class="row" style="height: 150px;" *ngIf="!markersAdded && !havePreviousImages">
                         <div class="col-sm-12" style="width: 700px; height: 200px; text-align: center;" >
                             <!-- <h2>Map</h2> -->
                             <br>
@@ -65,11 +75,21 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row" *ngIf="!markersAdded">
+                    <div class="row" *ngIf="!markersAdded && !havePreviousImages">
                         <div class="col-lg-8 col-sm-6">
                           <!-- <p *ngIf="length > 0" style="color: white;">{{length}}</p> -->
                         </div>
                         <div class="col-lg-4 col-sm-6" style="text-align: right;">
+                            <input type="file" accept="image/*" multiple (change)="changeTriggers($event)" #fileInput style="display: none;"/>
+                            <button type="button" class="btn btn-outline-success btn-round" (click)="fileInput.click()" [disabled]="disability">upload images</button>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="!markersAdded && havePreviousImages">
+                        <div class="col-lg-8 col-sm-6">
+                          <!-- <p *ngIf="length > 0" style="color: white;">{{length}}</p> -->
+                        </div>
+                        <div class="col-lg-4 col-sm-6" style="text-align: right;">
+                            <button class="btn btn-outline-default btn-round" style="width: 100px;" [routerLink]="['/user-field-visits']" routerLinkActive="router-link-active" >cancel</button>
                             <input type="file" accept="image/*" multiple (change)="changeTriggers($event)" #fileInput style="display: none;"/>
                             <button type="button" class="btn btn-outline-success btn-round" (click)="fileInput.click()" [disabled]="disability">upload images</button>
                         </div>
@@ -83,5 +103,6 @@
                 </div>
             </div>
         </div>
+        <div class="spinner" *ngIf="loading"></div>
     </div>
 </div>

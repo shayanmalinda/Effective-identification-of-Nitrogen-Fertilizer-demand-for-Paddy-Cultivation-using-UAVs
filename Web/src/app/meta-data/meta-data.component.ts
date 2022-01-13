@@ -24,6 +24,7 @@ export class MetaDataComponent implements OnInit {
   lon = 79.8612;
   zoom = 400
   maptype = "hybrid"
+  loading : boolean = false;
   // maptype = "satellite"
   // iconUrlYellow = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
   iconUrlYellow = "./assets/img/levels/levelThree.png";
@@ -32,6 +33,7 @@ export class MetaDataComponent implements OnInit {
   // iconUrlOrange = "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
   // iconUrlGreen = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
   iconUrlGreen = "./assets/img/levels/levelFour.png";
+  iconUrlBlue = "./assets/img/levels/levelFive.png";
   imageLocations = [];
   length = 0;
   valueArray = [];
@@ -51,10 +53,13 @@ export class MetaDataComponent implements OnInit {
     showMessage : ''
   }
   uploadedImages = 0;
+  previousImages = 0;
+  havePreviousImages : boolean = false;
 
   constructor(private http : HttpClient, private fieldDataService : FieldDataService, private dialog : DialogService, private router : Router) { 
     this.fieldData.requestId = this.router.getCurrentNavigation().extras.state.fieldRequestId;
-    console.log("this is the field id : " + this.fieldData.requestId)
+    console.log("this is the field id : " + this.fieldData.requestId);
+    this.loadFieldData();
   }
 
   ngOnInit(): void {}
@@ -101,6 +106,7 @@ export class MetaDataComponent implements OnInit {
   }
 
   async changeTriggers(event){
+    this.loading = true;
     const currentTime = new Date;
     console.log("length" + event.target.files.length);
     this.length = event.target.files.length;
@@ -149,7 +155,7 @@ export class MetaDataComponent implements OnInit {
                 level : res,
                 lat : latitude,
                 lon : longitude,
-                iconUrl : (res == 2 ? this.iconUrlRed : (res == 3 ? this.iconUrlYellow : this.iconUrlGreen)),
+                iconUrl : (res == 2 ? this.iconUrlRed : (res == 3 ? this.iconUrlYellow : (res == 4 ? this.iconUrlGreen : this.iconUrlBlue))),
               });
               //should check for the existing records 
               this.fieldData.level = res;
@@ -193,6 +199,7 @@ export class MetaDataComponent implements OnInit {
       });
      }
      console.log(this.valueArray);
+     this.loading = false;
      //success msg 
     //  console.log(this.length)
     //  console.log(this.uploadedImages)
@@ -201,9 +208,21 @@ export class MetaDataComponent implements OnInit {
         this.message.showMessage = "You have uploaded images successfully !!";
         this.dialog.openConfirmDialog(this.message);
      }
-     this.valueArray.length = 0;
+    //  this.valueArray.length = 0;
      this.markersAdded = true;
      this.disability = true;
      this.uploadedImages = 0;
+  }
+
+  loadFieldData(){
+    console.log(this.fieldData.requestId);
+    this.fieldDataService.getFieldDataUsingRequestId(this.fieldData).subscribe(
+      data => {
+        if(data.length > 0){
+          this.previousImages = data.length;
+          this.havePreviousImages = true;
+        }
+      }
+    )
   }
 }

@@ -55,6 +55,10 @@
                 <li class="nav-item" *ngIf="isSignUp()">
                     <a href="/login" class="btn btn-outline-success btn-round">Log in</a>
                 </li>
+                <li class="nav-item" *ngIf="isReport()">
+                    <a href="/user-dashboard" class="btn btn-outline-default btn-round">back</a>
+                    <a (click)="printClick()" class="btn btn-outline-success btn-round">Print</a>
+                </li>
                 <li class="nav-item" *ngIf="!isHome()">
                     <!-- <a [routerLink]="['/home']" *ngIf="!isDocumentation()" class="nav-link"><i class="nc-icon nc-layout-11"></i>Components</a> -->
                     <a [routerLink]="['/home']" *ngIf="isUserProfile()" class="btn btn-outline-success btn-round">Log out</a>
