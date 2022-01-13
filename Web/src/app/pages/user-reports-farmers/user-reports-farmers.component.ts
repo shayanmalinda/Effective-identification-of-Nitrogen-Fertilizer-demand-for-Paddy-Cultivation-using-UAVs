@@ -11,14 +11,12 @@ import { LccService } from 'app/services/lcc.service';
 import { DialogService } from 'app/services/dialog.service';
 import { DatePipe } from '@angular/common';
 
-const NO_OF_WEEKS = 8;
-
 @Component({
-  selector: 'app-user-reports',
-  templateUrl: './user-reports.component.html',
-  styleUrls: ['./user-reports.component.css']
+  selector: 'app-user-reports-farmers',
+  templateUrl: './user-reports-farmers.component.html',
+  styleUrls: ['./user-reports-farmers.component.css']
 })
-export class UserReportsComponent implements OnInit {
+export class UserReportsFarmersComponent implements OnInit {
 
   documentName = "Sample Name";
   date : string;
@@ -29,11 +27,11 @@ export class UserReportsComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort : MatSort;
-  reportType = sessionStorage.getItem('reportType');
+  reportType = "Farmers Report";
 
   constructor(private datepipe : DatePipe) { 
     this.date  = this.datepipe.transform((new Date), 'MMM d, y').toString();
-    this.documentName = "LCC Report";
+    this.documentName = "Farmers Report";
   }
 
   ngOnInit(): void {

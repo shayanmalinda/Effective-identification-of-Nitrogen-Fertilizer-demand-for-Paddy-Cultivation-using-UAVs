@@ -37,4 +37,9 @@ export class UserDashboardComponent implements OnInit {
     this.router.navigate(['/field-visits']);
   }
 
+  onReportsButtonClick(){
+    console.log("comes here ");
+    this.router.navigate(['/user-reports'], { state : { type : "lcc" }});
+  }
+
 }
