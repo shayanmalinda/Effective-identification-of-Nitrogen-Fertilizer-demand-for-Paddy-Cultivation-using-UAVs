@@ -37,12 +37,12 @@
             <td colspan="3" style="text-align: right; padding: 10px; padding-bottom: 40px;"><b>Division</b> : {{division}}</td>
             <th colspan="1"></th>
           </tr>
-          <tr>
+          <tr *ngIf="false">
             <td colspan="1"></td>
             <td colspan="10" style="background-color: gray; text-align: left; padding: 10px; color: white; font-weight: bold;">Summary</td>
             <td colspan="1"></td>
           </tr>
-          <tr>
+          <tr *ngIf="false">
             <td colspan="12" style="color: white;">&nbsp;</td>
           </tr>
           <tr>
@@ -72,28 +72,28 @@
                           The actual rendered columns are set as a property on the row definition" -->
                   
                     <!-- Name Column -->
-                    <ng-container matColumnDef="registrationNumber">
-                        <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 25%;">Registraion No. </th>
-                        <td mat-cell *matCellDef="let element"> {{element.registrationNumber}} </td>
+                    <ng-container matColumnDef="week">
+                        <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 25%;">Week </th>
+                        <td mat-cell *matCellDef="let element"> {{element.week}} </td>
                       </ng-container>
   
                     <!-- Position Column -->
-                    <ng-container matColumnDef="address">
+                    <ng-container matColumnDef="levelTwo">
                       <!-- <th mat-header-cell *matHeaderCellDef > Week </th> -->
-                      <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 30%;">Address </th>
-                      <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+                      <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 30%;">Level Two </th>
+                      <td mat-cell *matCellDef="let element"> {{element.levelTwo}} </td>
                     </ng-container>
                   
                     <!-- Name Column -->
-                    <ng-container matColumnDef="fullName">
-                        <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 25%; ">Full Name </th>
-                        <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+                    <ng-container matColumnDef="levelThree">
+                        <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 25%; ">Level Three </th>
+                        <td mat-cell *matCellDef="let element"> {{element.levelThree}} </td>
                       </ng-container>
   
                     <!-- Name Column -->
-                    <ng-container matColumnDef="phone">
-                        <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 20%; ">Phone </th>
-                        <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                    <ng-container matColumnDef="levelFour">
+                        <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 20%; ">Level Four </th>
+                        <td mat-cell *matCellDef="let element"> {{element.levelFour}} </td>
                       </ng-container>
   
                       <!-- Name Column -->
@@ -109,7 +109,7 @@
                       </ng-container> -->
                   
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     <!-- <tr mat-row (click)="onClick(row)" *matRowDef="let row; columns: displayedColumns;"></tr> -->
                   </table>
                   <!-- <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons></mat-paginator> -->
