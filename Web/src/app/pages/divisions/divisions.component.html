@@ -3,15 +3,15 @@
         <div class="filter"></div>
         <div class="content-center">
             <div class="container">
-                <div *ngIf="type=='report'">
+                <div *ngIf="type!=''">
                     <div class="title-brand"><label>Divisions Reports </label></div>
                     <div class="title-brand2"><label>Summary Report</label></div>
                     <!-- (click)="viewFieldVisits()"  -->
                     <button class="btn btn-outline-default request"> View Summary</button>
                 </div>
                 <div>
-                    <div class="title-brand" *ngIf="type!='report'"><label>Divisions</label></div>
-                    <div class="title-brand2" *ngIf="type=='report'"><label>Divisional Reports</label></div>
+                    <div class="title-brand" *ngIf="type==''"><label>Divisions</label></div>
+                    <div class="title-brand2" *ngIf="type!=''"><label>Divisional Reports</label></div>
                     <div class="filters">
                         <div class="input-group form-group-no-border transparent"
                             [ngClass]="{'input-group-focus':focus1===true}">
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="labels" *ngIf="type!='report'">
+                    <div class="labels" *ngIf="type==''">
                         <label class="label label-info right">Diviisons : {{users.length}}</label>&nbsp;
 
                     </div>

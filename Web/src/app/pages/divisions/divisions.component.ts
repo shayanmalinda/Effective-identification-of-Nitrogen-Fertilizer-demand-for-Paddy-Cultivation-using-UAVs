@@ -63,6 +63,7 @@ export class DivisionsComponent implements OnInit {
   constructor(private renderer: Renderer2, private userService: UserService, private fieldService: FieldService, private router: Router) {
     this.role = this.router.getCurrentNavigation().extras.state.role;
     this.type = this.router.getCurrentNavigation().extras.state.type;
+    console.log(this.type ==  '')
     this.displayedColumns = ['division', 'province', 'district', 'view'];
     this.loadLocationFilters();
   }

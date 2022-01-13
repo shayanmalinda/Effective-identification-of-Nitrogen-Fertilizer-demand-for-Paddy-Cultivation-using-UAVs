@@ -38,9 +38,7 @@ export class AdminDashboardComponent implements OnInit {
   viewDivisions() {
     this.router.navigate(['/divisions'], { state: { role: 'officer', type: '' } });
   }
-  selectReport() {
-    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'report' } });
-  }
+
   viewFieldVisits() {
     this.router.navigate(['/field-visits'], { state: { fieldId: 'all', type: 'visit' } });
   }
@@ -50,6 +48,24 @@ export class AdminDashboardComponent implements OnInit {
 
   viewProfile() {
     this.router.navigate(['/admin-profile'], { state: { type: 'admin' } });
+  }
+  divisionReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'division' } });
+  }
+  officerReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'officer' } });
+  }
+  farmerReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'farmer' } });
+  }
+  fieldReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'field' } });
+  }
+  requestReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'request' } });
+  }
+  visitReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'field' } });
   }
 }
 
