@@ -29,6 +29,10 @@ import { UserFieldHistoryComponent } from './pages/user-field-history/user-field
 import { DivisionsDetailsComponent } from './pages/division-details/division-details.component';
 import { MetaDataComponent } from './meta-data/meta-data.component';
 import { UserViewMapComponent } from './pages/user-view-map/user-view-map.component';
+import { UserReportsFarmersComponent } from './pages/user-reports-farmers/user-reports-farmers.component';
+import { UserReportsFieldsComponent } from './pages/user-reports-fields/user-reports-fields.component';
+import { UserReportsRequestsComponent } from './pages/user-reports-requests/user-reports-requests.component';
+import { UserReportsVisitsComponent } from './pages/user-reports-visits/user-reports-visits.component';
 
 
 
@@ -60,6 +64,10 @@ const routes: Routes =[
     { path: 'user-fields',     component: UserFeildsComponent},
     { path: 'user-field-visits',     component: UserFieldVisitsComponent,},
     { path: 'user-reports',     component: UserReportsComponent},
+    { path: 'user-reports-farmers',     component: UserReportsFarmersComponent},
+    { path: 'user-reports-fields',     component: UserReportsFieldsComponent},
+    { path: 'user-reports-requests',     component: UserReportsRequestsComponent},
+    { path: 'user-reports-visits',     component: UserReportsVisitsComponent},
     { path: 'user-field-history',     component: UserFieldHistoryComponent,},
     { path: 'admin-profile',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
     { path: 'divisions',       component: DivisionsComponent},

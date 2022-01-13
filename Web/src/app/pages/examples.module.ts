@@ -25,6 +25,10 @@ import { FieldVisitsComponent } from './field-visits/field-visits.component';
 import { FieldVisitDetailsComponent } from './field-visit-details/field-visit-details.component';
 import { DivisionsComponent } from './divisions/divisions.component';
 import { DivisionsDetailsComponent } from './division-details/division-details.component';
+import { UserReportsFarmersComponent } from './user-reports-farmers/user-reports-farmers.component';
+import { UserReportsFieldsComponent } from './user-reports-fields/user-reports-fields.component';
+import { UserReportsVisitsComponent } from './user-reports-visits/user-reports-visits.component';
+import { UserReportsRequestsComponent } from './user-reports-requests/user-reports-requests.component';
 
 @NgModule({
     imports: [
@@ -53,6 +57,10 @@ import { DivisionsDetailsComponent } from './division-details/division-details.c
         FieldVisitDetailsComponent,
         DivisionsComponent,
         DivisionsDetailsComponent,
+        UserReportsFarmersComponent,
+        UserReportsFieldsComponent,
+        UserReportsVisitsComponent,
+        UserReportsRequestsComponent,
 
     ]
 })
