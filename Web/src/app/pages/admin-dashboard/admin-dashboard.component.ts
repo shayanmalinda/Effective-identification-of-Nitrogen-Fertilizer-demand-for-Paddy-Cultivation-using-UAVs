@@ -9,12 +9,19 @@ import { Router } from '@angular/router';
 export class AdminDashboardComponent implements OnInit {
   focus: any;
   focus1: any;
+  type:any;
   constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
   viewFields() {
     this.router.navigate(['/fields']);
+  }
+  viewReports() {
+    this.type='reports';
+  }
+  viewNav() {
+    this.type='';
   }
   viewUsers() {
     this.router.navigate(['/farmers'], { state: { role: 'farmer' } });
