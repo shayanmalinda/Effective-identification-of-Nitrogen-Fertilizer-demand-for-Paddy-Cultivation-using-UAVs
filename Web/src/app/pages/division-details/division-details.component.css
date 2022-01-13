@@ -19,6 +19,7 @@ ul {
 .btn{
     color: #000;
 }
+
 .element{
     display: flex;
     flex-direction: row;
@@ -26,6 +27,12 @@ ul {
     margin-bottom: 0px;
 
 }
+.counts{
+    padding-top: 30px;
+    margin-left: -50px;
+
+}
+
 .name{
     width: 150px;
 }

@@ -78,7 +78,7 @@
 
                 </div> -->
                 <div class="row sub-title">
-                    <h6>Field Requests</h6>
+                    <h6>Field Visit Requests</h6>
                 </div>
                 <div class="row">
                     <ul>
@@ -89,6 +89,17 @@
                                 {{index.count}}</label>
                             <label *ngIf="index.status=='declined'" class="label label-success">{{ index.status }} -
                                 {{index.count}}</label>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="row sub-title">
+                    <h6>Field Visits</h6>
+                </div>
+                <div class="row">
+                    <ul>
+                        <li *ngFor="let index of this.counts">
+
                             <label *ngIf="index.status=='processing'" class="label label-success">{{ index.status }} -
                                 {{index.count}}</label>
                             <label *ngIf="index.status=='completed'" class="label label-success">{{ index.status }} -
@@ -100,7 +111,9 @@
                     <!-- <button class="btn btn-outline-default btn-round update"> Update</button>
                     <button class="btn btn-outline-default btn-round cancel"> Cancel</button> -->
                     <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Field
-                        Requests</button>
+                        Visits</button>
+                    <button (click)="viewFieldRequests()" class="btn btn-outline-default btn-round request"> View Field
+                        Visit Requests</button>
                     <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View N 
                         Concentrations</button> -->
 

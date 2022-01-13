@@ -21,6 +21,7 @@ table {
   align-items: center;
   background-color:transparent;
   float: left;
+  padding-top: 10px;
 }
 .transparent{
   background-color:transparent;
@@ -44,6 +45,7 @@ table {
   }
   .left{
     flex:1;
+    padding-right: 60px;
   }
   .right{
     font-weight: bold;
