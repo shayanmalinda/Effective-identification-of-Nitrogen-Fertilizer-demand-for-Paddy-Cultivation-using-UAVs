@@ -66,6 +66,7 @@ export class UserFeildsComponent implements OnInit {
   declined = 0;
   pending = 0;
   all = 0;
+  length = false;
 
   constructor(private fieldService : FieldService, private dialog : DialogService, private router : Router, private userService : UserService) { }
 
@@ -178,6 +179,7 @@ export class UserFeildsComponent implements OnInit {
   getFieldsDetailsWithFarmerNew(){
     var fieldWithFarmer = [];
     this.fieldService.getFieldsByDivision(this.user).subscribe(data => {
+      this.length = (data.length > 0 ? true : false);
       // console.log("this is the lenght of the divisions : " + data.length);
       this.fieldsTemp = data.map(e => {
         return {
