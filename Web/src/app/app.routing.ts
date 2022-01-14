@@ -70,7 +70,7 @@ const routes: Routes =[
     { path: 'user-reports-requests',     component: UserReportsRequestsComponent},
     { path: 'user-reports-visits',     component: UserReportsVisitsComponent},
     { path: 'user-field-history',     component: UserFieldHistoryComponent,},
-    { path: 'admin-profile',       component: UpdateProfileComponent, canActivate : [AuthGuard] },
+    { path: 'admin-profile',       component: UpdateProfileComponent},
     { path: 'divisions',       component: DivisionsComponent},
     { path: 'division-details',       component: DivisionsDetailsComponent},
     { path: 'user-upload-images',       component: MetaDataComponent},
