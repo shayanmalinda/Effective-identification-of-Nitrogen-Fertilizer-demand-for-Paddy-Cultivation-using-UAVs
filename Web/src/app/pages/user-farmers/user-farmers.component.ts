@@ -215,7 +215,6 @@ export class UserFarmersComponent implements OnInit {
         } as UserTemp;
       })
       farmers.forEach(element => {
-        this.all ++;
         credentials.userID = element.id;
         console.log("the id is here : " + element.id);
         this.fieldService.getFieldsByFarmerId(credentials).subscribe(data =>{
@@ -229,6 +228,7 @@ export class UserFarmersComponent implements OnInit {
           })
           // console.log("number records : " + field.length)
           for(var i = 0; i < field.length; i++){
+            this.all ++;
             if(field[i].division == this.user.division){
               fieldsWithFarmer.push({
                 details : field[i].id,

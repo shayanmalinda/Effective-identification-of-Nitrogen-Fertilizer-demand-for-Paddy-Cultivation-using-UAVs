@@ -65,7 +65,7 @@
                     <th colspan="1"></th>
                   </tr>
                 </table> -->
-                <table mat-table [dataSource]="dataSource" *ngIf="length">
+                <table mat-table [dataSource]="dataSource" *ngIf="all > 0">
                   <!-- <table mat-table [dataSource]="dataSource" matSort > -->
     
                       <!--- Note that these columns can be defined in any order.
@@ -119,7 +119,7 @@
                       <!-- <tr mat-row (click)="onClick(row)" *matRowDef="let row; columns: displayedColumns;"></tr> -->
                     </table>
                     <!-- <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons></mat-paginator> -->
-                    <table *ngIf="!length">
+                    <table *ngIf="all == 0">
                         <tr>
                             <td colspan="12" class="innerth" style="text-align: center; padding:15px"> No records to show in the details section</td>
                         </tr>

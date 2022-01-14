@@ -41,7 +41,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="mat-elevation-z8">
-                                <table mat-table [dataSource]="dataSource" matSort>
+                                <table mat-table [dataSource]="dataSource" matSort *ngIf="all > 0">
                                 <!-- <table mat-table [dataSource]="dataSource" matSort > -->
 
                                     <!--- Note that these columns can be defined in any order.
@@ -109,7 +109,12 @@
                                     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
                                     <tr mat-row (change)="onChange(row)" (click)="onViewVisitsClick(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
                                   </table>
-                                  <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons></mat-paginator>
+                                  <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons *ngIf="all > 0"></mat-paginator>
+                                  <table *ngIf="all == 0">
+                                    <tr>
+                                        <td colspan="12" class="innerth" style="text-align: center; padding:20px"> No records to show in the details section</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
