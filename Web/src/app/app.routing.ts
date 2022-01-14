@@ -1,3 +1,4 @@
+import { DivisionReportsComponent } from './pages/division-reports/division-reports.component';
 import { DivisionsComponent } from './pages/divisions/divisions.component';
 import { FieldVisitsComponent } from './pages/field-visits/field-visits.component';
 import { FieldVisitDetailsComponent } from './pages/field-visit-details/field-visit-details.component';
@@ -68,6 +69,7 @@ const routes: Routes =[
     { path: 'user-view-map',       component: UserViewMapComponent},
     { path: 'field-visit-requests',      component: FieldVisitsComponent},
     { path: 'select-report',       component: DivisionsComponent},
+    { path: 'division-report',       component: DivisionReportsComponent},
 
 
 

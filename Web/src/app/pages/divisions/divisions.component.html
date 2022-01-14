@@ -7,7 +7,7 @@
                     <div class="title-brand"><label>Divisions Reports </label></div>
                     <div class="title-brand2"><label>Summary Report</label></div>
                     <!-- (click)="viewFieldVisits()"  -->
-                    <button class="btn btn-outline-default request"> View Summary</button>
+                    <button class="btn btn-outline-default request" (click)="viewReport('summary')"> View Summary</button>
                 </div>
                 <div>
                     <div class="title-brand" *ngIf="type==''"><label>Divisions</label></div>
@@ -115,6 +115,16 @@
                                     <button mat-icon-button color="primary" (click)="viewDistrictDetails()"
                                         aria-label="Example icon button with a home icon">
                                         <mat-icon [ngStyle]="{'color':'blue'}">visibility</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="viewReport">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                                <td mat-cell *matCellDef="let element">
+
+                                    <button mat-icon-button color="primary" (click)="viewReport()"
+                                        aria-label="Example icon button with a home icon">
+                                        <i class="fa fa-file-text" aria-hidden="true"></i>
                                     </button>
                                 </td>
                             </ng-container>

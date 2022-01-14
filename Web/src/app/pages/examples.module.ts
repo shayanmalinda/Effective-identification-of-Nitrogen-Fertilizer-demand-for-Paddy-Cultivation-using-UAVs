@@ -25,6 +25,7 @@ import { FieldVisitsComponent } from './field-visits/field-visits.component';
 import { FieldVisitDetailsComponent } from './field-visit-details/field-visit-details.component';
 import { DivisionsComponent } from './divisions/divisions.component';
 import { DivisionsDetailsComponent } from './division-details/division-details.component';
+import { DivisionReportsComponent } from './division-reports/division-reports.component';
 
 @NgModule({
     imports: [
@@ -53,6 +54,7 @@ import { DivisionsDetailsComponent } from './division-details/division-details.c
         FieldVisitDetailsComponent,
         DivisionsComponent,
         DivisionsDetailsComponent,
+        DivisionReportsComponent
 
     ]
 })

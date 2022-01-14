@@ -6,11 +6,13 @@ import { Location, LocationStrategy, PathLocationStrategy } from '@angular/commo
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss']
 })
+ 
 export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
+    type: any;
 
-    constructor(public location: Location, private element : ElementRef) {
+    constructor(public location: Location, private element: ElementRef) {
         this.sidebarVisible = false;
     }
 
@@ -24,7 +26,7 @@ export class NavbarComponent implements OnInit {
         // console.log(html);
         // console.log(toggleButton, 'toggle');
 
-        setTimeout(function(){
+        setTimeout(function () {
             toggleButton.classList.add('toggled');
         }, 500);
         html.classList.add('nav-open');
@@ -48,11 +50,11 @@ export class NavbarComponent implements OnInit {
         }
     };
     isHome() {
-      var titlee = this.location.prepareExternalUrl(this.location.path());
-      if(titlee.charAt(0) === '#'){
-          titlee = titlee.slice( 1 );
-      }
-        if( titlee === '/home') {
+        var titlee = this.location.prepareExternalUrl(this.location.path());
+        if (titlee.charAt(0) === '#') {
+            titlee = titlee.slice(1);
+        }
+        if (titlee === '/home') {
             return true;
         }
         else {
@@ -61,11 +63,11 @@ export class NavbarComponent implements OnInit {
     }
 
     isDocumentation() {
-      var titlee = this.location.prepareExternalUrl(this.location.path());
-      if(titlee.charAt(0) === '#'){
-          titlee = titlee.slice( 1 );
-      }
-        if( titlee === '/documentation' ) {
+        var titlee = this.location.prepareExternalUrl(this.location.path());
+        if (titlee.charAt(0) === '#') {
+            titlee = titlee.slice(1);
+        }
+        if (titlee === '/documentation') {
             return true;
         }
         else {
@@ -75,104 +77,107 @@ export class NavbarComponent implements OnInit {
 
     isUserProfile() {
         var titlee = this.location.prepareExternalUrl(this.location.path());
-        if(titlee.charAt(0) === '#'){
-            titlee = titlee.slice( 1 );
+        if (titlee.charAt(0) === '#') {
+            titlee = titlee.slice(1);
         }
-          if( titlee === '/user-profile' ) {
-              return true;
-          }
-          else {
-              return false;
-          }
-      };
+        if (titlee === '/user-profile') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
 
-      isLogin() {
+    isLogin() {
         var titlee = this.location.prepareExternalUrl(this.location.path());
-        if(titlee.charAt(0) === '#'){
-            titlee = titlee.slice( 1 );
+        if (titlee.charAt(0) === '#') {
+            titlee = titlee.slice(1);
         }
-          if( titlee === '/login' ) {
-              return true;
-          }
-          else {
-              return false;
-          }
-      };
+        if (titlee === '/login') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
 
-      isSignUp() {
+    isSignUp() {
         var titlee = this.location.prepareExternalUrl(this.location.path());
-        if(titlee.charAt(0) === '#'){
-            titlee = titlee.slice( 1 );
+        if (titlee.charAt(0) === '#') {
+            titlee = titlee.slice(1);
         }
-          if( titlee === '/signup' ) {
-              return true;
-          }
-          else {
-              return false;
-          }
-      };
+        if (titlee === '/signup') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
 
-      isRelevantPages(){
+    isRelevantPages() {
         var titlee = this.location.prepareExternalUrl(this.location.path());
-        if(titlee.charAt(0) === '#'){
-            titlee = titlee.slice( 1 );
+        if (titlee.charAt(0) === '#') {
+            titlee = titlee.slice(1);
         }
-          if( titlee === '/user-dashboard' ) {
-              return true;
-          }
-          if( titlee === '/lcc-details' ) {
+        if (titlee === '/user-dashboard') {
             return true;
-          }
-          if( titlee === '/updateuser' ) {
+        }
+        if (titlee === '/lcc-details') {
             return true;
-          }
-          else {
-              return false;
-          }
-      };
+        }
+        if (titlee === '/updateuser') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
 
-      isRelevantDashPages(){
+    isRelevantDashPages() {
         var titlee = this.location.prepareExternalUrl(this.location.path());
-        if(titlee.charAt(0) === '#'){
-            titlee = titlee.slice( 1 );
+        if (titlee.charAt(0) === '#') {
+            titlee = titlee.slice(1);
         }
-          if( titlee === '/user-farmers' ) {
-              return true;
-          }
-          if( titlee === '/user-farmer-requests' ) {
+        if (titlee === '/user-farmers') {
             return true;
-          }
-          if( titlee === '/user-fields' ) {
+        }
+        if (titlee === '/user-farmer-requests') {
             return true;
-          }
-          if( titlee === '/user-field-visits' ) {
+        }
+        if (titlee === '/user-fields') {
             return true;
-          }
-          if( titlee === '/user-field-history' ) {
+        }
+        if (titlee === '/user-field-visits') {
             return true;
-          }
-          if( titlee === '/user-upload-images' ) {
+        }
+        if (titlee === '/user-field-history') {
             return true;
-          }
-          if( titlee === '/user-view-map' ) {
+        }
+        if (titlee === '/user-upload-images') {
             return true;
-          }
-          else {
-              return false;
-          }
-      };
+        }
+        if (titlee === '/user-view-map') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
 
-      isReport(){
+    isReport() {
         var titlee = this.location.prepareExternalUrl(this.location.path());
-        if(titlee.charAt(0) === '#'){
-            titlee = titlee.slice( 1 );
-        }if( titlee === '/user-reports' ) {
+        if (titlee.charAt(0) === '#') {
+            titlee = titlee.slice(1);
+        } if (titlee === '/user-reports') {
+            return true;
+        } else if (titlee === '/division-report') {// admin reports
+            this.type='admin';
             return true;
         }
-      }
+    }
 
-      printClick(){
-          console.log("print Click !!!");
-          window.print();
-      }
+    printClick() {
+        console.log("print Click !!!");
+        window.print();
+    }
 }
