@@ -62,7 +62,13 @@ export class DivisionsComponent implements OnInit {
   filterPredicate;
   constructor(private renderer: Renderer2, private userService: UserService, private fieldService: FieldService, private router: Router) {
     this.role = this.router.getCurrentNavigation().extras.state.role;
-    this.displayedColumns = ['division', 'province', 'district', 'view'];
+    this.type = this.router.getCurrentNavigation().extras.state.type;
+    console.log(this.type == '')
+    if (this.type == '')
+      this.displayedColumns = ['division', 'province', 'district', 'view'];
+    else
+      this.displayedColumns = ['division', 'province', 'district', 'viewReport'];
+
     this.loadLocationFilters();
   }
   loadLocationFilters() {
@@ -92,6 +98,14 @@ export class DivisionsComponent implements OnInit {
   viewDistrictDetails() {
     console.log(this.user)
     this.router.navigate(['/division-details'], { state: { user: this.user } });
+
+  }
+  viewReport(selectedType) {
+    // this.type = selectedType;
+    if (this.type == 'division')
+      this.router.navigate(['/division-report'], { state: { type: selectedType } });
+    // console.log(this.user)
+    // this.router.navigate(['/division-details'], { state: { user: this.user } });
 
   }
 

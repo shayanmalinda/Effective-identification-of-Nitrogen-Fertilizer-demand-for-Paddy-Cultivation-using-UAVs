@@ -29,6 +29,9 @@ import { UserReportsFarmersComponent } from './user-reports-farmers/user-reports
 import { UserReportsFieldsComponent } from './user-reports-fields/user-reports-fields.component';
 import { UserReportsVisitsComponent } from './user-reports-visits/user-reports-visits.component';
 import { UserReportsRequestsComponent } from './user-reports-requests/user-reports-requests.component';
+import { DivisionReportsComponent } from './division-reports/division-reports.component';
+
+
 
 @NgModule({
     imports: [
@@ -61,6 +64,7 @@ import { UserReportsRequestsComponent } from './user-reports-requests/user-repor
         UserReportsFieldsComponent,
         UserReportsVisitsComponent,
         UserReportsRequestsComponent,
+        DivisionReportsComponent
 
     ]
 })

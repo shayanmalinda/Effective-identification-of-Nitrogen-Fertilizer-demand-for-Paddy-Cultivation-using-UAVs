@@ -9,12 +9,19 @@ import { Router } from '@angular/router';
 export class AdminDashboardComponent implements OnInit {
   focus: any;
   focus1: any;
+  type: any;
   constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
   viewFields() {
     this.router.navigate(['/fields']);
+  }
+  viewReports() {
+    this.type = 'reports';
+  }
+  viewNav() {
+    this.type = '';
   }
   viewUsers() {
     this.router.navigate(['/farmers'], { state: { role: 'farmer' } });
@@ -29,8 +36,9 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/officers'], { state: { role: 'officer' } });
   }
   viewDivisions() {
-    this.router.navigate(['/divisions'], { state: { role: 'officer' } });
+    this.router.navigate(['/divisions'], { state: { role: 'officer', type: '' } });
   }
+
   viewFieldVisits() {
     this.router.navigate(['/field-visits'], { state: { fieldId: 'all', type: 'visit' } });
   }
@@ -40,6 +48,24 @@ export class AdminDashboardComponent implements OnInit {
 
   viewProfile() {
     this.router.navigate(['/admin-profile'], { state: { type: 'admin' } });
+  }
+  divisionReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'division' } });
+  }
+  officerReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'officer' } });
+  }
+  farmerReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'farmer' } });
+  }
+  fieldReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'field' } });
+  }
+  requestReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'request' } });
+  }
+  visitReports() {
+    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'field' } });
   }
 }
 
