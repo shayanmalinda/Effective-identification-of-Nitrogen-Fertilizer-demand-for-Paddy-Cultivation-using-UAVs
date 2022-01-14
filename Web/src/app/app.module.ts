@@ -36,6 +36,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { UpdateProfileComponent } from './pages/update-profile/update-profile.component';
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 //material
 import { MaterialModule } from './material/material.module';
@@ -67,6 +68,7 @@ import { UserViewMapComponent } from './pages/user-view-map/user-view-map.compon
     UserViewMapComponent,
   ],
   imports: [
+    MatTableExporterModule,
     BrowserModule,
     NgbModule,
     FormsModule,

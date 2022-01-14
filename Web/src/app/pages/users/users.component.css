@@ -47,6 +47,17 @@ float: right;}
 .left{
   flex:1;
 }
+.label-bar2{
+  width: 100%;
+  display: flex;
+  margin-bottom: 25px;
+  margin-top: 10px;
+
+}
+.print{
+  flex:1;
+  height:20px;
+}
 .right{
   font-weight: bold;
 }

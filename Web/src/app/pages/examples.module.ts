@@ -16,6 +16,8 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableExporterModule } from 'mat-table-exporter';
+
 import { FieldsComponent } from './fields/fields.component';
 import { FieldDetailsComponent } from './field-details/field-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
@@ -46,7 +48,9 @@ import { DivisionReportsComponent } from './division-reports/division-reports.co
         MatTableModule,
         MatSortModule,
         MatPaginatorModule,
-        MatIconModule
+        MatIconModule,
+        MatTableExporterModule,
+
     ],
     declarations: [
         LandingComponent,
