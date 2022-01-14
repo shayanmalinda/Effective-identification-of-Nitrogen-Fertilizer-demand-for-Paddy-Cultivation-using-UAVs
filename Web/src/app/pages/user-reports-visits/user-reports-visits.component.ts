@@ -69,7 +69,7 @@ export class UserReportsVisitsComponent implements OnInit {
   confirmedRequests : number = 0;
   processingRequests : number = 0;
   all : number  = 0;
-  length = 0;
+  length = false;
 
   // displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
   displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'status'];
@@ -81,6 +81,7 @@ export class UserReportsVisitsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadSessionDetails();
     this.getVisitDetailsWithFields();
   }
 
@@ -98,8 +99,7 @@ export class UserReportsVisitsComponent implements OnInit {
     this.processingRequests = 0;
     this.confirmedRequests = 0;
     this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
-      // console.log("fieldvisit details in user field : " + fieldVisits);
-      this.length = data.length;
+      // console.log("fieldvisit details in user field : " + fieldVisits)
       fieldVisits = data.map(e => {
         return {
           id: e.payload.doc.id,
@@ -114,6 +114,7 @@ export class UserReportsVisitsComponent implements OnInit {
         // else if (f.status == 'completed') completed += 1;
 
         if(f.status == "processing" || f.status == "confirmed"){
+          this.length = true;
           if(f.status == "processing"){ this.processingRequests++; }
           else{ this.confirmedRequests++ ;}
           this.all = this.confirmedRequests + this.processingRequests;

@@ -71,7 +71,7 @@ export class UserReportsRequestsComponent implements OnInit {
   pendingRequests : number = 0;
   declinedRequests : number = 0;
   completedRequests : number = 0;
-  length = 0;
+  length = false;
 
   displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'status'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
@@ -122,7 +122,6 @@ export class UserReportsRequestsComponent implements OnInit {
     this.declinedRequests = 0;
     this.fieldVisitService.getFieldVisitsByDivision(this.user)
     .subscribe(data => {
-      this.length = data.length;
       fieldVisits = data.map(e => {
         return {
           id: e.payload.doc.id,
@@ -137,6 +136,7 @@ export class UserReportsRequestsComponent implements OnInit {
         // else if (f.status == 'completed') completed += 1;
         // console.log("in here");
         if(f.status == "pending" || f.status == "completed" || f.status == "declined"){
+          this.length = true;
           if(f.status == "pending"){ this.pendingRequests++; }
           else if(f.status == "completed"){ this.completedRequests++; }
           else{ this.declinedRequests++ ;}

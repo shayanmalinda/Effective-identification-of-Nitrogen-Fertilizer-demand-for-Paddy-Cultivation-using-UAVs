@@ -72,6 +72,7 @@ export class UserReportsFieldsComponent implements OnInit {
   declined = 0;
   pending = 0;
   all = 0;
+  length = false;
 
   constructor(private datepipe : DatePipe, private fieldService : FieldService, private userService : UserService) { 
     this.date  = this.datepipe.transform((new Date), 'MMM d, y').toString();
@@ -87,6 +88,7 @@ export class UserReportsFieldsComponent implements OnInit {
   getFieldsDetailsWithFarmerNew(){
     var fieldWithFarmer = [];
     this.fieldService.getFieldsByDivision(this.user).subscribe(data => {
+      this.length = (data.length > 0 ? true : false);
       // console.log("this is the lenght of the divisions : " + data.length);
       this.fieldsTemp = data.map(e => {
         return {

@@ -88,6 +88,7 @@ export class UserReportsFarmersComponent implements OnInit {
   all = 0;
   fields : Field [];
   passedUser : User;
+  length = false;
 
   displayedColumns: string[] = ['firstName', 'lastName', 'address', 'phone', 'nic' ];
   dataSource : MatTableDataSource<User>;
@@ -114,6 +115,7 @@ export class UserReportsFarmersComponent implements OnInit {
       password : ''
     }
     this.userFarmersService.getAllFarmers().subscribe(data =>{
+      this.length = (data.length > 0 ? true : false);
       farmers = data.map(e =>{
         return {
           id : e.payload.doc.id,
