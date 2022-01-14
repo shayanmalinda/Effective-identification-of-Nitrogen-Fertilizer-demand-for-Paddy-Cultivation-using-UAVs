@@ -100,3 +100,9 @@ td{
     font-size: 20px;
   }
 
+  .innertable, .innerth, .innertd {
+    /* border: 1px solid black;
+    border-collapse: collapse; */
+    background-color: #CEDCC3;
+  }
+

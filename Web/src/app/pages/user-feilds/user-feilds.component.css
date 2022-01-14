@@ -80,3 +80,9 @@ table {
     background-color:  #c79734;
   }
 
+  .innertable, .innerth, .innertd {
+    /* border: 1px solid black;
+    border-collapse: collapse; */
+    background-color: #CEDCC3;
+  }
+
