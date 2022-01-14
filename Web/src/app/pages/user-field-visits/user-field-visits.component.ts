@@ -63,9 +63,10 @@ export class UserFieldVisitsComponent implements OnInit {
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
   actionButtonClicked : boolean = false;
-  confirmedRequests : number = 0;
+  compledtedRequests : number = 0;
   processingRequests : number = 0;
   all : number  = 0;
+  fieldVisits;
 
   // displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
   displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'division', 'status', 'action'];
@@ -199,7 +200,6 @@ export class UserFieldVisitsComponent implements OnInit {
   }
 
   getVisitDetailsWithFields(){
-    var fieldVisits;
     var relevantFields = [];
     var fieldVisit;
     var requestPending;
@@ -209,26 +209,26 @@ export class UserFieldVisitsComponent implements OnInit {
     var field;
     var farmer;
     this.processingRequests = 0;
-    this.confirmedRequests = 0;
+    this.compledtedRequests = 0;
     this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
       // console.log("fieldvisit details in user field : " + fieldVisits);
-      fieldVisits = data.map(e => {
+      this.fieldVisits = data.map(e => {
         return {
           id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
         } as FieldVisitTemp;
       })
 
-      fieldVisits.forEach(f => {
+      this.fieldVisits.forEach(f => {
         // if (f.status == 'request pending') requestPending += 1;
         // else if (f.status == 'visit pending') visitPending += 1;
         // else if (f.status == 'processing') processing += 1;
         // else if (f.status == 'completed') completed += 1;
 
-        if(f.status == "processing" || f.status == "confirmed"){
+        if(f.status == "processing" || f.status == "completed"){
           if(f.status == "processing"){ this.processingRequests++; }
-          else{ this.confirmedRequests++ ;}
-          this.all = this.confirmedRequests + this.processingRequests;
+          else{ this.compledtedRequests++ ;}
+          this.all = this.compledtedRequests + this.processingRequests;
           this.fieldService.getField(f.fieldId).subscribe(data => {
             field = data.payload.data() as Field;
             f.field = field;
@@ -240,7 +240,7 @@ export class UserFieldVisitsComponent implements OnInit {
               f.farmerName = farmer.firstName + " " + farmer.lastName;
               // console.log(f.field);
               
-              this.dataSource = new MatTableDataSource(fieldVisits);
+              this.dataSource = new MatTableDataSource(this.fieldVisits);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
             });
