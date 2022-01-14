@@ -139,9 +139,6 @@ export class NavbarComponent implements OnInit {
         if (titlee === '/user-dashboard') {
             return true;
         }
-        if (titlee === '/lcc-details') {
-            return true;
-        }
         if (titlee === '/updateuser') {
             return true;
         }
@@ -174,6 +171,9 @@ export class NavbarComponent implements OnInit {
             return true;
         }
         if (titlee === '/user-view-map') {
+            return true;
+        }
+        if (titlee === '/lcc-details') {
             return true;
         }
         else {
