@@ -115,7 +115,7 @@ export class LccDetailsComponent implements OnInit {
     this.message.title = "warning";
     this.message.showMessage = "The changes you have done not be applied to the LCC details !";
     this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/user-dashboard']);
       });
   }
 

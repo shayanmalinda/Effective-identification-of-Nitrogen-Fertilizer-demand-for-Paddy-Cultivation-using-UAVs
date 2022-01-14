@@ -73,7 +73,7 @@ export class UserReportsRequestsComponent implements OnInit {
   confirmedRequests : number = 0;
   length = false;
 
-  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'status'];
+  displayedColumns: string[] = ['createdDate', 'registrationNumber', 'farmerName', 'plantAge', 'modifiedDate', 'status'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
 
 
