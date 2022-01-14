@@ -34,7 +34,7 @@
                         <div class="col-sm-8" style="padding-top: 25px; padding-bottom: 25px; padding-right: 0px; text-align: right; ">
                             <label class="label label-default-our-dark right label-styles">all : {{all}}</label>&nbsp;
                             <label class="label label-warning-our-dark right label-styles">pending : {{pendingRequests}}</label>&nbsp;
-                            <label class="label label-success-our-dark right label-styles">completed : {{completedRequests}}</label>&nbsp;
+                            <label class="label label-success-our-dark right label-styles">confirmed : {{confirmedRequests}}</label>&nbsp;
                             <label class="label label-danger-our-dark right label-styles" style="margin-right: 10px;">declined : {{declinedRequests}}</label>&nbsp;
                             <br>
                         </div>
@@ -93,7 +93,7 @@
                                             <label *ngIf="element.status=='declined'"
                                                 class="label label-danger-our-dark right label-styles">{{element.status}}
                                             </label>
-                                            <label *ngIf="element.status=='completed'"
+                                            <label *ngIf="element.status=='confirmed'"
                                                 class="label label-success-our-dark right label-styles">{{element.status}}
                                             </label>
                                         </td>

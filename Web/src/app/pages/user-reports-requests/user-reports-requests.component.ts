@@ -70,7 +70,7 @@ export class UserReportsRequestsComponent implements OnInit {
   all : number = 0;
   pendingRequests : number = 0;
   declinedRequests : number = 0;
-  completedRequests : number = 0;
+  confirmedRequests : number = 0;
   length = false;
 
   displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'status'];
@@ -118,7 +118,7 @@ export class UserReportsRequestsComponent implements OnInit {
     var field;
     var farmer;
     this.pendingRequests = 0;
-    this.completedRequests = 0;
+    this.confirmedRequests = 0;
     this.declinedRequests = 0;
     this.fieldVisitService.getFieldVisitsByDivision(this.user)
     .subscribe(data => {
@@ -135,12 +135,12 @@ export class UserReportsRequestsComponent implements OnInit {
         // else if (f.status == 'processing') processing += 1;
         // else if (f.status == 'completed') completed += 1;
         // console.log("in here");
-        if(f.status == "pending" || f.status == "completed" || f.status == "declined"){
+        if(f.status == "pending" || f.status == "confirmed" || f.status == "declined"){
           this.length = true;
           if(f.status == "pending"){ this.pendingRequests++; }
-          else if(f.status == "completed"){ this.completedRequests++; }
+          else if(f.status == "confirmed"){ this.confirmedRequests++; }
           else{ this.declinedRequests++ ;}
-          this.all = this.pendingRequests + this.declinedRequests + this.completedRequests;
+          this.all = this.pendingRequests + this.declinedRequests + this.confirmedRequests;
           this.fieldService.getField(f.fieldId).subscribe(data => {
             field = data.payload.data() as Field;
             f.field = field;

@@ -66,7 +66,7 @@ export class UserReportsVisitsComponent implements OnInit {
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
   actionButtonClicked : boolean = false;
-  confirmedRequests : number = 0;
+  completedRequests : number = 0;
   processingRequests : number = 0;
   all : number  = 0;
   length = false;
@@ -97,7 +97,7 @@ export class UserReportsVisitsComponent implements OnInit {
     var field;
     var farmer;
     this.processingRequests = 0;
-    this.confirmedRequests = 0;
+    this.completedRequests = 0;
     this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
       // console.log("fieldvisit details in user field : " + fieldVisits)
       fieldVisits = data.map(e => {
@@ -113,11 +113,11 @@ export class UserReportsVisitsComponent implements OnInit {
         // else if (f.status == 'processing') processing += 1;
         // else if (f.status == 'completed') completed += 1;
 
-        if(f.status == "processing" || f.status == "confirmed"){
+        if(f.status == "processing" || f.status == "completed"){
           this.length = true;
           if(f.status == "processing"){ this.processingRequests++; }
-          else{ this.confirmedRequests++ ;}
-          this.all = this.confirmedRequests + this.processingRequests;
+          else{ this.completedRequests++ ;}
+          this.all = this.completedRequests + this.processingRequests;
           this.fieldService.getField(f.fieldId).subscribe(data => {
             field = data.payload.data() as Field;
             f.field = field;
