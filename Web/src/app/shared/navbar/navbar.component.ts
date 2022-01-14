@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-navbar',
@@ -12,7 +13,9 @@ export class NavbarComponent implements OnInit {
     private sidebarVisible: boolean;
     type: any;
 
-    constructor(public location: Location, private element: ElementRef) {
+
+    constructor(public location: Location, private element : ElementRef, private router : Router) {
+
         this.sidebarVisible = false;
     }
 
@@ -173,11 +176,47 @@ export class NavbarComponent implements OnInit {
         } else if (titlee === '/division-report') {// admin reports
             this.type='admin';
             return true;
+        }if( titlee === '/user-reports-farmers' ) {
+            return true;
+        }if( titlee === '/user-reports-fields' ) {
+            return true;
+        }if( titlee === '/user-reports-requests' ) {
+            return true;
+        }if( titlee === '/user-reports-visits' ) {
+            return true;
         }
     }
 
-    printClick() {
-        console.log("print Click !!!");
-        window.print();
+
+      printClick(){
+          console.log("print Click !!!");
+          window.print();
+      }
+      
+      onLccReportClick(){
+        console.log("lcc clicked");
+        this.router.navigate(['/user-reports'], { state : { type : "lcc" }});
+      }
+
+      onFarmersReportClick(){
+        console.log("farmers clicked");
+        this.router.navigate(['/user-reports-farmers']);
     }
+
+    onRequestsReportClick(){
+        console.log("requests clicked");
+        this.router.navigate(['/user-reports-requests']);
+    }
+
+    onFieldsReportClick(){
+        console.log("fields clicked");
+        this.router.navigate(['/user-reports-fields']);
+    }
+
+    onVisitsReportClick(){
+        console.log("visits clicked");
+        this.router.navigate(['/user-reports-visits']);
+    }
+
+
 }

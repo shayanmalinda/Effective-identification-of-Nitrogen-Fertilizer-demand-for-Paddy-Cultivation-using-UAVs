@@ -56,8 +56,14 @@
                     <a href="/login" class="btn btn-outline-success btn-round">Log in</a>
                 </li>
                 <li class="nav-item" *ngIf="isReport()">
-                    <a href="/user-dashboard" class="btn btn-outline-default btn-round " *ngIf="type!='admin'">back</a>
+                   
                     <a href="/select-report" class="btn btn-outline-default btn-round" *ngIf="type=='admin'">back</a>
+                    <a (click)="onLccReportClick()"  class="btn btn-outline-success btn-round" *ngIf="type!='admin'">LCC</a>
+                    <a (click)="onFarmersReportClick()" class="btn btn-outline-success btn-round" *ngIf="type!='admin'">Farmers</a>
+                    <a (click)="onRequestsReportClick()" class="btn btn-outline-success btn-round" *ngIf="type!='admin'">Requests</a>
+                    <a (click)="onFieldsReportClick()" class="btn btn-outline-success btn-round" *ngIf="type!='admin'">Fields</a>
+                    <a (click)="onVisitsReportClick()" class="btn btn-outline-success btn-round" style="margin-right: 100px;" *ngIf="type!='admin'">Visits</a>
+                    <a href="/user-dashboard" class="btn btn-outline-default btn-round" *ngIf="type!='admin'">back</a>
                     <a (click)="printClick()" class="btn btn-outline-success btn-round">Print</a>
                 </li>
                 <li class="nav-item" *ngIf="!isHome()">

@@ -1,7 +1,24 @@
 table {
     width: 100%;
   }
-
+  
+  .full-width-table{
+    background-color: #0b1011;
+    background-position: center center;
+    background-size: cover;
+    min-height: 100vh;
+    max-height: 999px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    display: flow-root;
+    align-items: center;
+    justify-content: center;
+    padding-top: 100px;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('assets/img/paddy one.jpg');
+  }
+  
   ::ng-deep  .mat-form-field-label {
     /*change color of label*/
     color: white !important;
@@ -14,36 +31,32 @@ table {
   
   ::ng-deep.mat-form-field-ripple {
    /*change color of underline when focused*/
-   background-color: white !important;
+   background-color: white !important;;
   }
-
+  
   #fieldInput{
     width: 200px;
   }
-
+  
   .mat-paginator {
     background-color: #CEDCC3;
   }
-
+  
   th{
     font-size: 15px;
     background-color: #CEDCC3;
     /* width: 25%; */
   }
-
+  
   /* td{
     text-align: center;
   } */
-
+  
   .label-styles{
     padding:10px;
     margin-right: 5px;
   }
-
-  .mat-icon {
-    font-size: 15px;
-  }
-
+  
   .label-success-our-light{
     background-color: #A5D647;
   }
@@ -79,10 +92,24 @@ table {
   .label-warning-our-dark{
     background-color:  #c79734;
   }
+  
+  .mat-row.highlighted {
+    background: lightgreen;
+    }
+    
+    .mat-icon {
+      font-size: 20px;
+    }
 
-  .innertable, .innerth, .innertd {
-    /* border: 1px solid black;
-    border-collapse: collapse; */
-    background-color: #CEDCC3;
-  }
+    th, td{
+        background-color: white;
+        color: black;
+    }
 
+    .innertable, .innerth, .innertd {
+        /* border: 1px solid black;
+        border-collapse: collapse; */
+        background-color: #CEDCC3;
+      }
+  
+  

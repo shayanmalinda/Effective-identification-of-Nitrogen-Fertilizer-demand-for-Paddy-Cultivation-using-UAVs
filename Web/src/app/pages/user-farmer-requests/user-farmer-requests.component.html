@@ -34,7 +34,7 @@
                         <div class="col-sm-8" style="padding-top: 25px; padding-bottom: 25px; padding-right: 0px; text-align: right; ">
                             <label class="label label-default-our-dark right label-styles">all : {{all}}</label>&nbsp;
                             <label class="label label-warning-our-dark right label-styles">pending : {{pendingRequests}}</label>&nbsp;
-                            <label class="label label-success-our-dark right label-styles">completed : {{completedRequests}}</label>&nbsp;
+                            <label class="label label-success-our-dark right label-styles">confirmed : {{confirmedRequests}}</label>&nbsp;
                             <label class="label label-danger-our-dark right label-styles" style="margin-right: 10px;">declined : {{declinedRequests}}</label>&nbsp;
                             <br>
                         </div>
@@ -42,7 +42,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="mat-elevation-z8">
-                                <table mat-table [dataSource]="dataSource" matSort>
+                                <table mat-table [dataSource]="dataSource" matSort *ngIf="all > 0">
                                 <!-- <table mat-table [dataSource]="dataSource" matSort > -->
 
                                     <!--- Note that these columns can be defined in any order.
@@ -93,7 +93,7 @@
                                             <label *ngIf="element.status=='declined'"
                                                 class="label label-danger-our-dark right label-styles">{{element.status}}
                                             </label>
-                                            <label *ngIf="element.status=='completed'"
+                                            <label *ngIf="element.status=='confirmed'"
                                                 class="label label-success-our-dark right label-styles">{{element.status}}
                                             </label>
                                         </td>
@@ -113,7 +113,12 @@
                                     <!-- <tr mat-row (change)="onChange(row)" *matRowDef="let row; columns: displayedColumns;"></tr> -->
                                     <tr mat-row (change)="onChange(row)" (click)="onViewVisitsClick(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
                                   </table>
-                                  <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons></mat-paginator>
+                                  <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons *ngIf="all > 0"></mat-paginator>
+                                  <table *ngIf="all == 0">
+                                    <tr>
+                                        <td colspan="12" class="innerth" style="text-align: center; padding:20px"> No records to show in this section</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
