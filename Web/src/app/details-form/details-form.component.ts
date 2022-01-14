@@ -93,7 +93,7 @@ export class DetailsFormComponent implements OnInit {
     }
     if(data.type == "fieldDetails"){
       this.formTitle = "Field Details"
-      console.log(data.details)
+      // console.log(data.details)
       this.userCredential.userID = data.details.farmerId;
       this.fieldVisitTemp.fieldId = data.details.fieldId;
       // console.log("this is the field ID needed in field:" + data.details.fieldId);
