@@ -79,6 +79,7 @@ export class DetailsFormComponent implements OnInit {
   };
   noteInput : string = "";
   dateSelected : boolean = false;
+  maptype ="hybrid";
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {type : string, details }, private datepipe : DatePipe, private fieldVisitService : FieldVisitService, private datePipe : DatePipe, private router: Router, private matDialogRef : MatDialogRef<DetailsFormComponent>, private dialog : DialogService, private userService : UserService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private userFarmersService : UserFarmersService) { 
     
@@ -89,7 +90,8 @@ export class DetailsFormComponent implements OnInit {
     console.log("Thi i s : " + this.data)
     
     if(data.type == "farmerDetails"){
-      this.formTitle = "Farmer Details"
+      this.formTitle = "Farmer Details";
+      // console.log(data.details);
     }
     if(data.type == "fieldDetails"){
       this.formTitle = "Field Details"
@@ -121,7 +123,7 @@ export class DetailsFormComponent implements OnInit {
     if(data.type == "changeDetails"){
       this.formTitle = "Field Visit Details";
       // console.log(data.details);
-      this.processingForm = (data.details.status == "confirmed" ? true : false);
+      this.processingForm = (data.details.status == "completed" ? true : false);
       // console.log(" type : " + data.type + " status : " + this.processingForm);
       this.fieldVisitTemp.id = data.details.requestId;
       this.fieldVisitTemp.note = data.details.note;
