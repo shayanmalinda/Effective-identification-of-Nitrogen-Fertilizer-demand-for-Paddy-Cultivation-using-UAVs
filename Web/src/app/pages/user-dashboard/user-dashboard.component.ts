@@ -45,7 +45,7 @@ export class UserDashboardComponent implements OnInit {
       options: {
           legend: {
               labels: {
-                fontColor : "white",
+                // fontColor : "white",
               }
           }
       }
@@ -72,7 +72,7 @@ export class UserDashboardComponent implements OnInit {
     options: {
       legend: {
         labels: {
-          fontColor : "white",
+          // fontColor : "white",
         }
       }
     }
