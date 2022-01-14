@@ -85,6 +85,10 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         tvPlantAge.setText(result.plantAge.toString());
 
         Button btViewLocation = holder.btViewResults;
+
+        if(result.status.equals("pending") || result.status.equals("confirmed")  || result.status.equals("declined") ) {
+            btViewLocation.setEnabled(false);
+        }
         btViewLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

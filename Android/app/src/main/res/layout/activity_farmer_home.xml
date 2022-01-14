@@ -114,7 +114,7 @@
                 android:id="@+id/ivCalibrateSensor"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/ic_baseline_developer_mode_24"
+                android:src="@drawable/ic_baseline_map_24"
                 android:background="@drawable/card_bg_shape_green"
                 android:padding="20dp"/>
 

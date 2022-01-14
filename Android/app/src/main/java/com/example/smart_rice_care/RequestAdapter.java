@@ -28,7 +28,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         private TextView tvDate, tvFarmerName, tvPhone, tvRequestNote, tvAddress, tvStatus, tvPlantAge;
-        private Button btViewLocation, btStartExamine;
+        private Button btViewLocation, btStartExamine, btViewResults;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -46,7 +46,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             tvRequestNote = (TextView) itemView.findViewById(R.id.tvRequestNote);
             btViewLocation = (Button) itemView.findViewById(R.id.btViewLocation);
             btStartExamine = (Button) itemView.findViewById(R.id.btStartExamine);
-
+            btViewResults = (Button) itemView.findViewById(R.id.btViewResults);
         }
 
     }
@@ -118,6 +118,21 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                 intent.putExtra("plantAge", request.getPlantAge());
                 intent.putExtra("fieldId", request.getFieldId());
                 intent.putExtra("farmerId", request.getFarmerId());
+                v.getContext().startActivity(intent);
+            }
+        });
+
+
+        Button btViewResults = holder.btViewResults;
+        if(request.getStatus().equals("pending") || request.getStatus().equals("confirmed")  || request.getStatus().equals("declined") ) {
+            btViewResults.setEnabled(false);
+        }
+        btViewResults.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MapsActivity.class);
+                intent.putExtra("requestId", request.getRequestId());
+                intent.putExtra("plantAge", request.getPlantAge());
                 v.getContext().startActivity(intent);
             }
         });
