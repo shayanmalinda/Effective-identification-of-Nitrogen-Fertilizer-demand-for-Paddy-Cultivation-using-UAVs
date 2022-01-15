@@ -90,7 +90,13 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         TextView tvStatus = holder.tvStatus;
         tvStatus.setText(request.getStatus());
         TextView tvPlantAge = holder.tvPlantAge;
-        tvPlantAge.setText(String.valueOf(request.getPlantAge()));
+        if(request.getPlantAge()==1){
+            tvPlantAge.setText(String.valueOf(request.getPlantAge()) + " Week");
+        }
+        else{
+            tvPlantAge.setText(String.valueOf(request.getPlantAge()) + " Weeks");
+        }
+
 
         Button btViewLocation = holder.btViewLocation;
         btViewLocation.setOnClickListener(new View.OnClickListener() {

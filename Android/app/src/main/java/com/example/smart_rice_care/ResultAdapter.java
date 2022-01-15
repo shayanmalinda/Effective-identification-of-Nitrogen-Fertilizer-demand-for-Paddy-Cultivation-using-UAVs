@@ -82,7 +82,12 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         TextView tvStatus = holder.tvStatus;
         tvStatus.setText(result.status);
         TextView tvPlantAge = holder.tvPlantAge;
-        tvPlantAge.setText(result.plantAge.toString());
+        if(result.plantAge==1){
+            tvPlantAge.setText(result.plantAge.toString() + " Week");
+        }
+        else{
+            tvPlantAge.setText(result.plantAge.toString() + " Weeks");
+        }
 
         Button btViewLocation = holder.btViewResults;
 
