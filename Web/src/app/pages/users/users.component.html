@@ -48,7 +48,8 @@
                                 </div>
                             </div>
                             <div class="input-group form-group-no-border transparent"
-                                [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; padding-right: 30px;">
+                                [ngClass]="{'input-group-focus':focus1===true}"
+                                style="padding-left: 15px; padding-right: 30px;">
                                 <div class="dropdown">
 
                                     <select class="dropbtn" name="dropdownDivision" id="dropdownDivision"
@@ -114,7 +115,8 @@
                                 </div>
                             </div>
                             <div class="input-group form-group-no-border transparent"
-                                [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; padding-right: 30px;">
+                                [ngClass]="{'input-group-focus':focus1===true}"
+                                style="padding-left: 15px; padding-right: 30px;">
                                 <div class="dropdown">
 
                                     <select class="dropbtn" name="dropdownDivision" id="dropdownDivision"
@@ -138,19 +140,28 @@
                             <div>Declined: <label class="label label-warning">all</label></div> -->
                         </div>
                     </div>
+                    <div class="label-bar2">
+
+                        <!-- <div class="title-brand-left"> -->
+                        <mat-form-field appearance="standard" class="print">
+                            <mat-label class="background">Filter</mat-label>
+                            <input class="background" matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia"
+                                #input>
+
+                        </mat-form-field>
+                        <button class="btn btn-outline-success btn-round"
+                            (click)="exporter.exportTable('csv', {fileName:getFileName()})">Print</button>
 
 
-
-                    <!-- <div class="title-brand-left"> -->
-                    <mat-form-field appearance="standard">
-                        <mat-label class="background">Filter</mat-label>
-                        <input class="background" matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
-                    </mat-form-field>
+                    </div>
                     <!-- </div> -->
 
 
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataSource" matSort>
+                        <mat-table matTableExporter [dataSource]="dataSource" matSort #exporter="matTableExporter"
+                            [hiddenColumns]="[8,9,10]">
+
+                            <!-- <table matTableExporter [dataSource]="dataSource" matSort #exporter="matTableExporter"> -->
 
                             <!-- ID Column -->
                             <ng-container matColumnDef="firstName">
@@ -290,13 +301,16 @@
                             <tr class="mat-row" *matNoDataRow>
                                 <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                             </tr>
-                        </table>
+                            <!-- </table> -->
+                        </mat-table>
+
 
                         <mat-paginator [pageSizeOptions]="[5,6,7,8,9,10,15,20, 25,50, 100]"
                             aria-label="Select page of users"></mat-paginator>
                     </div>
+                    <!-- <button mat-raised-button (click)="exporter.exportTable('xlsx', {fileName:'test', sheet: 'sheet_name', Props: {Author: 'Talha'}})">Excel</button> -->
 
-
+                    <!-- <button mat-raised-button (click)="exporter.exportTable('csv', {fileName:getFileName()})">Csv</button> -->
                     <!-- Copyright 2021 Google LLC. All Rights Reserved.
                           Use of this source code is governed by an MIT-style license that
                           can be found in the LICENSE file at https://angular.io/license -->

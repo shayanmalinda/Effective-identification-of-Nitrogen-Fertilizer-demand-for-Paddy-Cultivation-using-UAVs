@@ -59,6 +59,7 @@ export class UsersComponent implements OnInit {
   districtSelected: string;
   divisionSelected: string;
   filterPredicate;
+  filterValue = '';
   constructor(private renderer: Renderer2, private userService: UserService, private fieldService: FieldService, private router: Router) {
     this.type = this.router.getCurrentNavigation().extras.state.type;
     this.role = this.router.getCurrentNavigation().extras.state.role;
@@ -91,6 +92,34 @@ export class UsersComponent implements OnInit {
   ngAfterViewInit() {
     //   this.dataSource.paginator = this.paginator;
     //   this.dataSource.sort = this.sort;
+  }
+
+  getFileName() {
+    let name = ''
+
+    if (this.type == 'request') {
+      name += 'Officer Requests'
+    } else if (this.role == 'farmer') {
+      name += 'Farmers'
+    } else {
+      name += 'Officers'
+    }
+
+    if (this.divisionSelected != 'Division') {
+      name += '-' + this.divisionSelected + ' division';
+    }
+    else if (this.districtSelected != 'District') {
+      name += '-' + this.districtSelected + ' district';
+    }
+    else if (this.provinceSelected != 'Province') {
+      name += '-' + this.provinceSelected + ' province';
+    }
+    if (this.filterValue != '') {
+      name += ' (Filter :' + this.filterValue + ')';
+    }
+    name += ' report'
+    return name;
+
   }
   getRecord(row) {
     this.selectedRowIndex = row.id;
@@ -168,7 +197,7 @@ export class UsersComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    console.log(filterValue)
+    this.filterValue = filterValue;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
