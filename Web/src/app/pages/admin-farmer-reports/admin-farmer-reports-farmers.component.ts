@@ -1,3 +1,4 @@
+import { FieldTemp } from './../../models/field.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -70,10 +71,15 @@ export class AdminFarmerReportsComponent implements OnInit {
 
   constructor(private router: Router, private userService: UserService, private datepipe: DatePipe, private userFarmersService: UserFarmersService, private fieldService: FieldService) {
     this.date = this.datepipe.transform((new Date), 'MMM d, y').toString();
-    this.documentName = "Farmers Report";
     this.optionSelected = 'Provinces'
     this.displayedColumns = ['key', 'value'];
     this.role = this.router.getCurrentNavigation().extras.state.role;
+    if (this.role == 'farmer')
+      this.documentName = "Farmers Report";
+    else if (this.role == 'agricultural officer')
+      this.documentName = "Agricultural Officer Report";
+    else if (this.role == 'field')
+      this.documentName = "Field Report";
 
   }
   clearTable() {
@@ -280,6 +286,29 @@ export class AdminFarmerReportsComponent implements OnInit {
           this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
         })
         this.farmerCount = this.users.length;
+        this.provinceCount = this.provinces.size;
+        this.districtCount = this.districts.size;
+        this.divisionCount = this.divisions.size;
+
+        this.onOptionSelected('Provinces');
+
+
+      });
+    } else if (this.role == 'field') {
+      this.fieldService.getActiveFields().subscribe(data => {
+        this.totalFarmers = data.length;
+        this.fields = data.map(e => {
+          return {
+            ...e.payload.doc.data() as {},
+          } as Field;
+        })
+
+        this.fields.forEach(e => {
+          this.provinces.set(e.province, this.provinces.get(e.province) == null ? 1 : this.provinces.get(e.province) + 1);
+          this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
+          this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+        })
+        this.farmerCount = this.fields.length;
         this.provinceCount = this.provinces.size;
         this.districtCount = this.districts.size;
         this.divisionCount = this.divisions.size;

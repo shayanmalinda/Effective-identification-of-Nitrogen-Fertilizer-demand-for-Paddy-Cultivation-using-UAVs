@@ -44,6 +44,9 @@ export class FieldService {
   getFieldofFarmer(farmerId: string) {
     return this.fireStore.collection('FieldDetails', ref => ref.where('farmerId', '==', farmerId)).snapshotChanges()
   }
+  getActiveFields() {
+    return this.fireStore.collection('FieldDetails', ref => ref.where('status', '==', 'active')).snapshotChanges();
+  }
 
 }
 

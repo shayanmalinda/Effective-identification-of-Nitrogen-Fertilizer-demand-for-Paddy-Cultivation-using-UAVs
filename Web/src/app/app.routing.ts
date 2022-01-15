@@ -81,6 +81,7 @@ const routes: Routes =[
     { path: 'division-report',       component: DivisionReportsComponent},
     { path: 'admin-farmer-reports',       component: AdminFarmerReportsComponent},
     { path: 'admin-officer-reports',       component: AdminFarmerReportsComponent},
+    { path: 'admin-field-reports',       component: AdminFarmerReportsComponent},
 
 
 
