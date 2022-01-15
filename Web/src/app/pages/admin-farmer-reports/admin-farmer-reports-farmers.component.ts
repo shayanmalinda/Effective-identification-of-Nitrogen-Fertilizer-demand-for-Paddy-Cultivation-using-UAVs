@@ -15,6 +15,7 @@ import { Field } from 'app/models/field.model';
 import { FieldService } from 'app/services/field.service';
 import { UserService } from '../../services/user.service';
 import divisionalDataFile from '../../../assets/jsonfiles/divisions.json';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-farmer-reports-farmers',
@@ -67,11 +68,12 @@ export class AdminFarmerReportsComponent implements OnInit {
   selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District'];
   // dataSource: MatTableDataSource<User>;
 
-  constructor(private userService: UserService, private datepipe: DatePipe, private userFarmersService: UserFarmersService, private fieldService: FieldService) {
+  constructor(private router: Router, private userService: UserService, private datepipe: DatePipe, private userFarmersService: UserFarmersService, private fieldService: FieldService) {
     this.date = this.datepipe.transform((new Date), 'MMM d, y').toString();
     this.documentName = "Farmers Report";
     this.optionSelected = 'Provinces'
     this.displayedColumns = ['key', 'value'];
+    this.role = this.router.getCurrentNavigation().extras.state.role;
 
   }
   clearTable() {
@@ -216,51 +218,77 @@ export class AdminFarmerReportsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.userService.getActiveUsers('farmer').subscribe(data => {
-      this.totalFarmers = data.length;
-      this.users = data.map(e => {
-        return {
-          ...e.payload.doc.data() as {},
-          id: e.payload.doc.id,
-        } as UserTemp;
-      })
-      this.users.forEach(e => {
-        this.fieldService.getFieldofFarmer(e.id).subscribe(f => {
-          this.userField = f.map(val => {
-            console.log(val.payload.doc.data())
-            return {
-              ...val.payload.doc.data() as {},
-            } as Field;
+    if (this.role == 'farmer') {
+      this.userService.getActiveUsers(this.role).subscribe(data => {
+        this.totalFarmers = data.length;
+        this.users = data.map(e => {
+          return {
+            ...e.payload.doc.data() as {},
+            id: e.payload.doc.id,
+          } as UserTemp;
+        })
+        this.users.forEach(e => {
+          this.fieldService.getFieldofFarmer(e.id).subscribe(f => {
+            this.userField = f.map(val => {
+              console.log(val.payload.doc.data())
+              return {
+                ...val.payload.doc.data() as {},
+              } as Field;
+            })
+            e.province = this.userField[0].province;
+            e.district = this.userField[0].district;
+            e.division = this.userField[0].division;
+            console.log(e.district)
+            this.provinces.set(e.province, this.provinces.get(e.province) == null ? 1 : this.provinces.get(e.province) + 1);
+            this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
+            this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+
+            console.log(this.userField[0].province)
+            console.log(this.users)
+
+            // this.users.forEach(e => {
+            //   console.log(e.district)
+            //   this.provinces.set(e.province, this.provinces.get(e.province) == null ? 1 : this.provinces.get(e.province) + 1);
+            //   this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
+            //   this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+            // })
+            this.farmerCount = this.users.length;
+            this.provinceCount = this.provinces.size;
+            this.districtCount = this.districts.size;
+            this.divisionCount = this.divisions.size;
+
+            this.onOptionSelected('Provinces');
           })
-          e.province = this.userField[0].province;
-          e.district = this.userField[0].district;
-          e.division = this.userField[0].division;
-          console.log(e.district)
+        });
+
+
+
+      });
+    } else if (this.role == 'agricultural officer') {
+      this.userService.getActiveUsers(this.role).subscribe(data => {
+        this.totalFarmers = data.length;
+        this.users = data.map(e => {
+          return {
+            ...e.payload.doc.data() as {},
+            id: e.payload.doc.id,
+          } as UserTemp;
+        })
+
+        this.users.forEach(e => {
           this.provinces.set(e.province, this.provinces.get(e.province) == null ? 1 : this.provinces.get(e.province) + 1);
           this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
           this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
-
-          console.log(this.userField[0].province)
-          console.log(this.users)
-
-          // this.users.forEach(e => {
-          //   console.log(e.district)
-          //   this.provinces.set(e.province, this.provinces.get(e.province) == null ? 1 : this.provinces.get(e.province) + 1);
-          //   this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
-          //   this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
-          // })
-          this.farmerCount = this.users.length;
-          this.provinceCount = this.provinces.size;
-          this.districtCount = this.districts.size;
-          this.divisionCount = this.divisions.size;
-    
-          this.onOptionSelected('Provinces');
         })
+        this.farmerCount = this.users.length;
+        this.provinceCount = this.provinces.size;
+        this.districtCount = this.districts.size;
+        this.divisionCount = this.divisions.size;
+
+        this.onOptionSelected('Provinces');
+
+
       });
-    
-
-
-    });
+    }
 
 
 
