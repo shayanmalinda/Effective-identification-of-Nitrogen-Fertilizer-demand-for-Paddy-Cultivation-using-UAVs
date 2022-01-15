@@ -28,8 +28,24 @@ def image():
     os.remove("image.jpg")
     return str(image_bytes);
 
-@app.route("/process", methods=['POST','GET'])
+@app.route("/process", methods=['POST'])
 def process():
+    #capture the image from request
+    img = request.files["image"].read()
+
+    #preprocess & predict from saved image
+    preprocessed_image=preprocess(img);
+    arr_rgb=rgb_mean(preprocessed_image);
+    df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
+    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]  
+    print(str(df))
+    result=predict(df);
+    #print(str(arr_rgb))
+    return str(result[0]);
+
+
+@app.route("/dtprocess", methods=['POST','GET'])
+def dtprocess():
     #capture the image from request
     img = request.files["image"].read()
 
@@ -39,9 +55,12 @@ def process():
     df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
     df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
-    df['brightness']=df_metadata['brightness']
+    #df['brightness']=df_metadata['brightness']
     df['shutter_speed']=df_metadata['shutter_speed']
     df['exposure_time']=df_metadata['exposure_time']
+    #standard scalar
+    #---------
+    
     print(str(df))
     result=predict(df);
     #print(str(arr_rgb))
@@ -50,7 +69,7 @@ def process():
 def predict(df):
     print("predict")
     # Load the model from the file
-    model = joblib.load('./model.pkl')
+    model = joblib.load('./model_rgb.pkl')
     
     # Use the loaded model to make predictions
     prd=model.predict(df)
@@ -101,15 +120,15 @@ def rgb_mean(image):
 
 def extract_metadata(image):
     #pre-process
-    
+
     exif_dict = piexif.load(image)
     #df = pd.DataFrame(columns=['image', 'brightness','shutter_speed','exposure_time'])
     df = pd.DataFrame(columns=['brightness','shutter_speed','exposure_time'])
     img_mdata=np.zeros(3)
-    
+
     # Iterate through all the other ifd names and print them
     #print(exif_dict.get('Exif'));
-    
+
     for tag in exif_dict['Exif']:
         tag_name = piexif.TAGS['Exif'][tag]["name"]
         tag_value = exif_dict['Exif'][tag]
@@ -119,7 +138,7 @@ def extract_metadata(image):
         #print(f'\t{tag_name:25}: {tag_value}')
         if(tag_name=='BrightnessValue'): #string brightness value not found
             img_mdata[0]=tag_value[0]/tag_value[1]
-    
+
         if(tag_name=='ShutterSpeedValue'):
             img_mdata[1]=tag_value[0]/tag_value[1]
 
