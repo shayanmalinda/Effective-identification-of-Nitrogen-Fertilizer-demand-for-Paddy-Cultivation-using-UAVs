@@ -39,3 +39,9 @@ export class UserTemp {
     image : string;             //to store the image of the user as base64 string
     registeredDate : string;
 }
+
+export class Counts {
+    key:string;
+    value: number;
+  
+}

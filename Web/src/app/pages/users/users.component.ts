@@ -1,3 +1,4 @@
+import { Field } from './../../models/field.model';
 import { FieldService } from 'app/services/field.service';
 import { UserTemp } from './../../models/user.model';
 import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
@@ -60,6 +61,7 @@ export class UsersComponent implements OnInit {
   divisionSelected: string;
   filterPredicate;
   filterValue = '';
+  userField: Field[];
   constructor(private renderer: Renderer2, private userService: UserService, private fieldService: FieldService, private router: Router) {
     this.type = this.router.getCurrentNavigation().extras.state.type;
     this.role = this.router.getCurrentNavigation().extras.state.role;
@@ -224,21 +226,59 @@ export class UsersComponent implements OnInit {
     //   this.status = "approved"
     // }
     console.log(this.role)
-    this.userService.getUsers(this.role, this.type).subscribe(data => {
-      this.users = data.map(e => {
-        return {
-          ...e.payload.doc.data() as {},
-          id: e.payload.doc.id,
-        } as UserTemp;
-      })
-      console.log(this.users)
-      this.dataSource = new MatTableDataSource(this.users);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.filterPredicate = this.dataSource.filterPredicate;
+    if (this.role != 'farmer') {
+      this.userService.getUsers(this.role, this.type).subscribe(data => {
+        console.log(this.role, this.type)
+        this.users = data.map(e => {
+          return {
+            ...e.payload.doc.data() as {},
+            id: e.payload.doc.id,
+          } as UserTemp;
+        })
+        console.log(this.users)
+        this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.filterPredicate = this.dataSource.filterPredicate;
 
-      this.getCounts();
-    });
+        this.getCounts();
+      });
+    } else {
+      this.userService.getUsers(this.role, this.type).subscribe(data => {
+        console.log(this.role, this.type)
+        this.users = data.map(e => {
+          return {
+            ...e.payload.doc.data() as {},
+            id: e.payload.doc.id,
+
+          } as UserTemp;
+        })
+        console.log(this.users);
+        this.users.forEach(element => { //not working
+          this.fieldService.getFieldofFarmer(element.id).subscribe(f => {
+            this.userField = f.map(val => {
+              console.log(val.payload.doc.data())
+              return {
+                ...val.payload.doc.data() as {},
+              } as Field;
+            })
+            element.province = this.userField[0].province;
+            element.district = this.userField[0].district;
+            element.division = this.userField[0].division;
+            console.log(this.userField)
+          })
+        });
+
+
+        console.log(this.users)
+        this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.filterPredicate = this.dataSource.filterPredicate;
+
+        this.getCounts();
+      });
+    }
 
   }
   loadAllProvinces() {

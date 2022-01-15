@@ -1,0 +1,142 @@
+table {
+    width: 100%;
+}
+
+select {
+    appearance: none;
+    border: 0px;
+    outline: 0px;
+    background-color: rgba(107, 105, 105, 0.336);
+}
+
+.dropbtn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 110px;
+    margin-right: 20px;
+    padding: 5px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.full-width-table {
+    background-color: #0b1011;
+    background-position: center center;
+    background-size: cover;
+    min-height: 100vh;
+    max-height: 999px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    display: flow-root;
+    align-items: center;
+    justify-content: center;
+    padding-top: 100px;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('assets/img/paddy one.jpg');
+}
+
+::ng-deep .mat-form-field-label {
+    /*change color of label*/
+    color: white !important;
+}
+
+ ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: white !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+    /*change color of underline when focused*/
+    background-color: white !important;
+    ;
+}
+
+#fieldInput {
+    width: 200px;
+}
+
+.mat-paginator {
+    background-color: #CEDCC3;
+}
+
+th {
+    font-size: 15px;
+    background-color: #CEDCC3;
+    /* width: 25%; */
+}
+
+
+/* td{
+  text-align: center;
+} */
+
+.label-styles {
+    padding: 10px;
+    margin-right: 5px;
+}
+
+.label-success-our-light {
+    background-color: #A5D647;
+}
+
+.label-success-our-normal {
+    background-color: #4CAF50;
+}
+
+.label-success-our-dark {
+    background-color: #2E7D32;
+}
+
+.label-danger-our-light {
+    background-color: #FFAB91;
+}
+
+.label-danger-our-dark {
+    background-color: #E65100;
+}
+
+.label-default-our-light {
+    background-color: #FFAB91;
+}
+
+.label-default-our-dark {
+    background-color: #524d48;
+}
+
+.label-warning-our-light {
+    background-color: #FFAB91;
+}
+
+.label-warning-our-dark {
+    background-color: #c79734;
+}
+
+.mat-row.highlighted {
+    background: lightgreen;
+}
+
+.mat-icon {
+    font-size: 20px;
+}
+
+th,
+td {
+    background-color: white;
+    color: black;
+}
+
+.innertable,
+.innerth,
+.innertd {
+    /* border: 1px solid black;
+      border-collapse: collapse; */
+    background-color: #CEDCC3;
+}
+
+.sumtd {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 7px;
+    color: black;
+}

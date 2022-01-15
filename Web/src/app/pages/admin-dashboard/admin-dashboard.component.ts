@@ -53,10 +53,12 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'division' } });
   }
   officerReports() {
-    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'officer' } });
+    this.router.navigate(['/admin-officer-reports'], { state: { role: 'agricultural officer' } });
+    // this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'officer' } });
   }
   farmerReports() {
-    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'farmer' } });
+    // this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'farmer' } });
+    this.router.navigate(['/admin-farmer-reports'], { state: { role: 'farmer' } });
   }
   fieldReports() {
     this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'field' } });
