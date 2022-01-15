@@ -39,7 +39,7 @@ def process():
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
     df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]  
     print(str(df))
-    result=predict(df);
+    result=predictSVC(df);
     #print(str(arr_rgb))
     return str(result[0]);
 
@@ -58,18 +58,25 @@ def dtprocess():
     #df['brightness']=df_metadata['brightness']
     df['shutter_speed']=df_metadata['shutter_speed']
     df['exposure_time']=df_metadata['exposure_time']
-    #standard scalar
-    #---------
-    
+     
     print(str(df))
-    result=predict(df);
+    result=predictDTree(df);
     #print(str(arr_rgb))
     return str(result[0]);
 
-def predict(df):
+def predictSVC(df):
     print("predict")
     # Load the model from the file
     model = joblib.load('./model_rgb.pkl')
+    
+    # Use the loaded model to make predictions
+    prd=model.predict(df)
+    return prd;
+
+def predictDTree(df):
+    print("predict")
+    # Load the model from the file
+    model = joblib.load('./dtreemodel.pkl')
     
     # Use the loaded model to make predictions
     prd=model.predict(df)
@@ -146,7 +153,7 @@ def extract_metadata(image):
             img_mdata[2]=tag_value[0]/tag_value[1]
 
     df.loc[0] =[img_mdata[0]] + [img_mdata[1]] + [img_mdata[2]]
-    #print("###Metadata",str(df))
+    print("###Metadata",str(df))
     return df
 
 
