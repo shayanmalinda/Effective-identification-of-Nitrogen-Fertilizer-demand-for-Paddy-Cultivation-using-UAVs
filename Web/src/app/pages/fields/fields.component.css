@@ -36,6 +36,17 @@ table {
   .right{
     font-weight: bold;
   }
+  .label-bar2{
+  width: 100%;
+  display: flex;
+  margin-bottom: 25px;
+  margin-top: 10px;
+
+}
+.print{
+  flex:1;
+  height:20px;
+}
   .title-brand{
     text-transform:uppercase;
     font-weight: bold;

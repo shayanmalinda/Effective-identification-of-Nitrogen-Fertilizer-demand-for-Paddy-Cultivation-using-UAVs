@@ -65,9 +65,9 @@ export class DivisionsComponent implements OnInit {
     this.type = this.router.getCurrentNavigation().extras.state.type;
     console.log(this.type == '')
     if (this.type == '')
-      this.displayedColumns = ['division', 'province', 'district', 'view'];
+      this.displayedColumns = ['province', 'district','division',  'view'];
     else
-      this.displayedColumns = ['division', 'province', 'district', 'viewReport'];
+      this.displayedColumns = ['province', 'district','division',  'viewReport'];
 
     this.loadLocationFilters();
   }

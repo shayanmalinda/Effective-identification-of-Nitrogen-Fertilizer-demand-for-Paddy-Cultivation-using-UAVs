@@ -52,6 +52,7 @@ export class FieldsComponent implements OnInit, AfterViewInit {
   districtSelected: string;
   divisionSelected: string;
   filterPredicate;
+  filterValue = '';
 
   constructor(private renderer: Renderer2, private fieldService: FieldService, private userService: UserService, private router: Router) {
     this.loadLocationFilters();
@@ -68,6 +69,25 @@ export class FieldsComponent implements OnInit, AfterViewInit {
     })
     this.provinceSelected = 'Province';
     console.log(this.provinces);
+  }
+   getFileName() {
+    let name = 'Field'
+
+    if (this.divisionSelected != 'Division') {
+      name += '-' + this.divisionSelected + ' division';
+    }
+    else if (this.districtSelected != 'District') {
+      name += '-' + this.districtSelected + ' district';
+    }
+    else if (this.provinceSelected != 'Province') {
+      name += '-' + this.provinceSelected + ' province';
+    }
+    if (this.filterValue != '') {
+      name += ' (Filter :' + this.filterValue + ')';
+    }
+    name += ' report'
+    return name;
+
   }
   loadAllDistricts() {
     let val: any;

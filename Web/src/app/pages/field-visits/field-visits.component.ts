@@ -62,6 +62,7 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
   filterPredicate;
   none: any;
   type;
+  filterValue = '';
 
   constructor(private renderer: Renderer2, private fieldVisitService: FieldVisitService, private fieldService: FieldService, private userService: UserService, private router: Router) {
     this.fieldId = this.router.getCurrentNavigation().extras.state.fieldId;
@@ -104,6 +105,27 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
       this.districts.push(d);
     })
     this.allDistricts = this.districts;
+  }
+  getFileName() {
+    let name = '';
+
+    if (this.type == 'request')
+      name += 'Field  Visit Request'; else name += 'Field Visit'
+    if (this.divisionSelected != 'Division') {
+      name += '-' + this.divisionSelected + ' division';
+    }
+    else if (this.districtSelected != 'District') {
+      name += '-' + this.districtSelected + ' district';
+    }
+    else if (this.provinceSelected != 'Province') {
+      name += '-' + this.provinceSelected + ' province';
+    }
+    if (this.filterValue != '') {
+      name += ' (Filter :' + this.filterValue + ')';
+    }
+    name += ' report'
+    return name;
+
   }
   loadAllDivisions() {
     let val: any;
@@ -310,7 +332,7 @@ export class FieldVisitsComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.fieldVisitService.getFieldVisits(this.fieldId,this.type).subscribe(data => {
+    this.fieldVisitService.getFieldVisits(this.fieldId, this.type).subscribe(data => {
       this.fieldVisitsTemp = data.map(e => {
         console.log(this.fieldVisit)
         return {

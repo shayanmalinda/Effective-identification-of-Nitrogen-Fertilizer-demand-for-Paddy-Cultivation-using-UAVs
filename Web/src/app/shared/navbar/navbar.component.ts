@@ -7,16 +7,17 @@ import { Router } from '@angular/router';
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss']
 })
- 
+
 export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
     type: any;
 
 
-    constructor(public location: Location, private element : ElementRef, private router : Router) {
+    constructor(public location: Location, private element: ElementRef, private router: Router) {
 
         this.sidebarVisible = false;
+   
     }
 
     ngOnInit() {
@@ -116,6 +117,19 @@ export class NavbarComponent implements OnInit {
             return false;
         }
     };
+    isAdminPages() {
+        var titlee = this.location.prepareExternalUrl(this.location.path());
+        if (titlee.charAt(0) === '#') {
+            titlee = titlee.slice(1);
+        }
+        if (titlee === '/admin-dashboard') {
+            return true;
+        }
+       
+        else {
+            return false;
+        }
+    };
 
     isRelevantPages() {
         var titlee = this.location.prepareExternalUrl(this.location.path());
@@ -166,7 +180,10 @@ export class NavbarComponent implements OnInit {
             return false;
         }
     };
-
+    viewProfile() {
+        console.log(this.type)
+        this.router.navigate(['/admin-profile'], { state: { type: 'admin' } });
+    }
     isReport() {
         var titlee = this.location.prepareExternalUrl(this.location.path());
         if (titlee.charAt(0) === '#') {
@@ -174,46 +191,46 @@ export class NavbarComponent implements OnInit {
         } if (titlee === '/user-reports') {
             return true;
         } else if (titlee === '/division-report') {// admin reports
-            this.type='admin';
+            this.type = 'admin';
             return true;
-        }if( titlee === '/user-reports-farmers' ) {
+        } if (titlee === '/user-reports-farmers') {
             return true;
-        }if( titlee === '/user-reports-fields' ) {
+        } if (titlee === '/user-reports-fields') {
             return true;
-        }if( titlee === '/user-reports-requests' ) {
+        } if (titlee === '/user-reports-requests') {
             return true;
-        }if( titlee === '/user-reports-visits' ) {
+        } if (titlee === '/user-reports-visits') {
             return true;
         }
     }
 
 
-      printClick(){
-          console.log("print Click !!!");
-          window.print();
-      }
-      
-      onLccReportClick(){
-        console.log("lcc clicked");
-        this.router.navigate(['/user-reports'], { state : { type : "lcc" }});
-      }
+    printClick() {
+        console.log("print Click !!!");
+        window.print();
+    }
 
-      onFarmersReportClick(){
+    onLccReportClick() {
+        console.log("lcc clicked");
+        this.router.navigate(['/user-reports'], { state: { type: "lcc" } });
+    }
+
+    onFarmersReportClick() {
         console.log("farmers clicked");
         this.router.navigate(['/user-reports-farmers']);
     }
 
-    onRequestsReportClick(){
+    onRequestsReportClick() {
         console.log("requests clicked");
         this.router.navigate(['/user-reports-requests']);
     }
 
-    onFieldsReportClick(){
+    onFieldsReportClick() {
         console.log("fields clicked");
         this.router.navigate(['/user-reports-fields']);
     }
 
-    onVisitsReportClick(){
+    onVisitsReportClick() {
         console.log("visits clicked");
         this.router.navigate(['/user-reports-visits']);
     }
