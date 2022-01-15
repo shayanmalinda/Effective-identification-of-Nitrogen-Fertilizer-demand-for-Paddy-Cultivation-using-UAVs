@@ -1,14 +1,16 @@
-.input-image{
+.input-image {
     display: none;
 }
-.container{
-  margin-top: 100px;
+
+.container {
+    margin-top: 100px;
 }
+
 .image-upload-container {
     cursor: pointer;
-  }
+}
 
-  .dropbtn {
+.dropbtn {
     background-color: white;
     color: #d2d2d2;
     padding: 16px;
@@ -16,24 +18,28 @@
     border: transparent;
     cursor: pointer;
     font-weight: 100;
-    outline: transparent; 
-    color: black; 
+    outline: transparent;
+    color: black;
     width: 200px;
-  }
-  
-  .dropdown {
+}
+
+.dropdown {
     position: relative;
     display: inline-block;
-  }
-  .card-register{
+}
+
+.card-register {
     background-color: white;
     width: 400px;
-  }
-  /* .avtar{
+}
+
+
+/* .avtar{
     margin-top: 10px;
     background-color: darksalmon;
   } */
-  .dropdown-content {
+
+.dropdown-content {
     display: none;
     position: absolute;
     background-color: #f30e0e;
@@ -41,35 +47,41 @@
     min-width: 250px;
     /* // box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
     z-index: 1;
-  }
-  
-  .dropdown-content a {
+}
+
+.content-center {
+    background-color: white;
+    height: 750px;
+}
+
+.dropdown-content a {
     color: black;
     padding: 10px 16px;
     text-decoration: none;
     display: block;
-  }
-  
-  .dropdown-content a:hover {background-color: #f1f1f1}
-  
-  .dropdown:hover .dropdown-content {
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+.dropdown:hover .dropdown-content {
     display: block;
     width: 20px;
-  }
-  
-  .dropdown:hover{
-    background-color: #9DC59D;
-  }
+}
 
-  .dropdown-scrollbar
-{
+.dropdown:hover {
+    background-color: #9DC59D;
+}
+
+.dropdown-scrollbar {
     height: 150px;
     overflow: scroll;
     overflow-x: hidden;
 }
 
-.dropdown-list{
-  width: 2000px;
+.dropdown-list {
+    width: 2000px;
 }
 
 :disabled {

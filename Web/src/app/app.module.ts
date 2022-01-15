@@ -27,6 +27,7 @@ import { DetailsFormComponent } from './details-form/details-form.component';
 import { UserReportsComponent } from './pages/user-reports/user-reports.component';
 import { UserFieldHistoryComponent } from './pages/user-field-history/user-field-history.component';
 import { MetaDataComponent } from './meta-data/meta-data.component';
+import { ChartsModule } from 'ng2-charts';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -36,6 +37,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { UpdateProfileComponent } from './pages/update-profile/update-profile.component';
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 //material
 import { MaterialModule } from './material/material.module';
@@ -67,12 +69,14 @@ import { UserViewMapComponent } from './pages/user-view-map/user-view-map.compon
     UserViewMapComponent,
   ],
   imports: [
+    MatTableExporterModule,
     BrowserModule,
     NgbModule,
     FormsModule,
     MaterialModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ChartsModule,
     RouterModule,
     ComponentsModule,
     ExamplesModule,

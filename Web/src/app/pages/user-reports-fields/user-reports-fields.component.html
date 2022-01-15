@@ -65,7 +65,7 @@
                     <th colspan="1"></th>
                   </tr>
                 </table> -->
-                <table mat-table [dataSource]="dataSource" *ngIf="all > 0">
+                <table mat-table [dataSource]="dataSource" *ngIf="all > 0" matSort>
                   <!-- <table mat-table [dataSource]="dataSource" matSort > -->
     
                       <!--- Note that these columns can be defined in any order.
@@ -73,26 +73,26 @@
                     
                       <!-- Name Column -->
                       <ng-container matColumnDef="registrationNumber">
-                          <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 25%;">Registraion No. </th>
+                          <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef style="width: 25%;">Registraion No. </th>
                           <td mat-cell *matCellDef="let element"> {{element.registrationNumber}} </td>
                         </ng-container>
     
                       <!-- Position Column -->
                       <ng-container matColumnDef="address">
                         <!-- <th mat-header-cell *matHeaderCellDef > Week </th> -->
-                        <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 30%;">Address </th>
+                        <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef style="width: 30%;">Address </th>
                         <td mat-cell *matCellDef="let element"> {{element.address}} </td>
                       </ng-container>
                     
                       <!-- Name Column -->
                       <ng-container matColumnDef="fullName">
-                          <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 25%; ">Full Name </th>
+                          <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef style="width: 25%; ">Farmer Name </th>
                           <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
                         </ng-container>
     
                       <!-- Name Column -->
                       <ng-container matColumnDef="phone">
-                          <th class="innerth" mat-header-cell *matHeaderCellDef style="width: 20%; ">Phone </th>
+                          <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef style="width: 20%; ">Phone </th>
                           <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
                         </ng-container>
     

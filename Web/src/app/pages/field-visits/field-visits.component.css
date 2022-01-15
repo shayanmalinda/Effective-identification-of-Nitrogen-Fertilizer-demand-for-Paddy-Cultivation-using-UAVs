@@ -33,6 +33,17 @@ table {
   .mat-icon {
     font-size: 15px;
   }
+    .label-bar2{
+  width: 100%;
+  display: flex;
+  margin-bottom: 25px;
+  margin-top: 10px;
+
+}
+.print{
+  flex:1;
+  height:20px;
+}
 
   .labels{
     display: inline-flex;

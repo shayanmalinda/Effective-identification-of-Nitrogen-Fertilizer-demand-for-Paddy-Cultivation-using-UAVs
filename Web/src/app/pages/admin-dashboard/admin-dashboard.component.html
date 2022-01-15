@@ -1,30 +1,22 @@
 <div class="page-header" style="background-image: url('assets/img/paddy one.jpg');">
     <div class="filter"></div>
     <div class="container">
-        <div class="profile">
-            <button type="button" class="btn btn-info btn-outline-neutral btn-just-icon" (click)="viewProfile()"><i
-                    class="fa fa-user"></i></button>
-        </div>
+
         <div class="content">
             <div *ngIf="type!='reports'" class="motto left">
                 <!-- <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewRequests()">Farmer
                     Requests</button><br /> -->
-                <button type="button" class="btn btn-outline-neutral btn-round"
-                    (click)="viewDivisions()">Divisions</button><br />
+                <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewDivisions()">Divisions</button><br />
                 <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewOfficerRequests()">Officer
                     Requests</button><br />
-                <button type="button" class="btn btn-outline-neutral btn-round"
-                    (click)="viewOfficers()">Officers</button><br />
-                <button type="button" class="btn btn-outline-neutral btn-round"
-                    (click)="viewUsers()">Farmers</button><br />
-                <button type="button" class="btn btn-outline-neutral btn-round"
-                    (click)="viewFields()">Fields</button><br />
+                <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewOfficers()">Officers</button><br />
+                <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewUsers()">Farmers</button><br />
+                <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewFields()">Fields</button><br />
                 <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewFieldVisitRequests()">Field
                     Visit Requests</button><br />
                 <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewFieldVisits()">Field
                     Visits</button><br />
-                <button type="button" class="btn btn-outline-neutral btn-round"
-                    (click)="viewReports()">Reports</button><br />
+                <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewReports()">Reports</button><br />
 
 
             </div>
@@ -32,11 +24,11 @@
 
 
                 <button type="button" (click)="divisionReports()" class="btn btn-outline-neutral btn-round btn2">Division Reports</button><br />
-                <button type="button" (click)="officerReports()"class="btn btn-outline-neutral btn-round btn2">Officer Reports</button><br />
-                <button type="button" (click)="farmerReports()"class="btn btn-outline-neutral btn-round btn2">Farmer Reports</button><br />
-                <button type="button" (click)="fieldReports()"class="btn btn-outline-neutral btn-round btn2">Field Reports</button><br />
-                <button type="button" (click)="requestReports()"class="btn btn-outline-neutral btn-round btn2">Visit Request Reports</button><br />
-                <button type="button" (click)="visitReports()"class="btn btn-outline-neutral btn-round btn2">Field Visit Reports</button><br />
+                <button type="button" (click)="officerReports()" class="btn btn-outline-neutral btn-round btn2">Officer Reports</button><br />
+                <button type="button" (click)="farmerReports()" class="btn btn-outline-neutral btn-round btn2">Farmer Reports</button><br />
+                <button type="button" (click)="fieldReports()" class="btn btn-outline-neutral btn-round btn2">Field Reports</button><br />
+                <button type="button" (click)="requestReports()" class="btn btn-outline-neutral btn-round btn2">Visit Request Reports</button><br />
+                <button type="button" (click)="visitReports()" class="btn btn-outline-neutral btn-round btn2">Field Visit Reports</button><br />
                 <div class="icon">
                     <button type="button" class="btn btn-default btn-just-icon" (click)="viewNav()"> <i
                             class="fa fa-angle-double-up" aria-hidden="true"></i></button>

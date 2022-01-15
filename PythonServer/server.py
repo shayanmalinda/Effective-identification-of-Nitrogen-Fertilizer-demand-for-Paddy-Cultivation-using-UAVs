@@ -43,6 +43,29 @@ def process():
     #print(str(arr_rgb))
     return str(result[0]);
 
+
+@app.route("/dtprocess", methods=['POST','GET'])
+def dtprocess():
+    #capture the image from request
+    img = request.files["image"].read()
+
+    #preprocess & predict from saved image
+    preprocessed_image=preprocess(img);
+    arr_rgb=rgb_mean(preprocessed_image);
+    df_metadata=extract_metadata(img);
+    df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
+    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
+    #df['brightness']=df_metadata['brightness']
+    df['shutter_speed']=df_metadata['shutter_speed']
+    df['exposure_time']=df_metadata['exposure_time']
+    #standard scalar
+    #---------
+    
+    print(str(df))
+    result=predict(df);
+    #print(str(arr_rgb))
+    return str(result[0]);
+
 def predict(df):
     print("predict")
     # Load the model from the file
