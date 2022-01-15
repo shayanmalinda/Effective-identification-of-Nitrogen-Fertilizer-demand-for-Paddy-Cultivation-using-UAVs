@@ -14,7 +14,7 @@ export class UserService {
   getActiveUsers(userRole) {
     return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', '==', 'active')).snapshotChanges();
   }
-
+  
   getUsers(userRole, type) {
     if (userRole == 'officer')
       userRole = 'agricultural officer';

@@ -46,6 +46,7 @@ export class AdminFarmerReportsComponent implements OnInit {
   havePreviousRecords: boolean = false;
   divisionalData = divisionalDataFile;
   list;
+  userField: Field[];
   approved = 0;
   declined = 0;
   pending = 0;
@@ -223,20 +224,41 @@ export class AdminFarmerReportsComponent implements OnInit {
           id: e.payload.doc.id,
         } as UserTemp;
       })
-
       this.users.forEach(e => {
-        console.log(e.district)
-        this.provinces.set(e.province, this.provinces.get(e.province) == null ? 1 : this.provinces.get(e.province) + 1);
-        this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
-        this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
-      })
-      this.farmerCount=this.users.length;
-      this.provinceCount=this.provinces.size;
-      this.districtCount=this.districts.size;
-      this.divisionCount=this.divisions.size;
+        this.fieldService.getFieldofFarmer(e.id).subscribe(f => {
+          this.userField = f.map(val => {
+            console.log(val.payload.doc.data())
+            return {
+              ...val.payload.doc.data() as {},
+            } as Field;
+          })
+          e.province = this.userField[0].province;
+          e.district = this.userField[0].district;
+          e.division = this.userField[0].division;
+          console.log(e.district)
+          this.provinces.set(e.province, this.provinces.get(e.province) == null ? 1 : this.provinces.get(e.province) + 1);
+          this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
+          this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
 
-      this.onOptionSelected('Provinces');
-      
+          console.log(this.userField[0].province)
+          console.log(this.users)
+
+          // this.users.forEach(e => {
+          //   console.log(e.district)
+          //   this.provinces.set(e.province, this.provinces.get(e.province) == null ? 1 : this.provinces.get(e.province) + 1);
+          //   this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
+          //   this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+          // })
+          this.farmerCount = this.users.length;
+          this.provinceCount = this.provinces.size;
+          this.districtCount = this.districts.size;
+          this.divisionCount = this.divisions.size;
+    
+          this.onOptionSelected('Provinces');
+        })
+      });
+    
+
 
     });
 
