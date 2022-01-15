@@ -27,6 +27,7 @@ import { DetailsFormComponent } from './details-form/details-form.component';
 import { UserReportsComponent } from './pages/user-reports/user-reports.component';
 import { UserFieldHistoryComponent } from './pages/user-field-history/user-field-history.component';
 import { MetaDataComponent } from './meta-data/meta-data.component';
+import { ChartsModule } from 'ng2-charts';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -75,6 +76,7 @@ import { UserViewMapComponent } from './pages/user-view-map/user-view-map.compon
     MaterialModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ChartsModule,
     RouterModule,
     ComponentsModule,
     ExamplesModule,

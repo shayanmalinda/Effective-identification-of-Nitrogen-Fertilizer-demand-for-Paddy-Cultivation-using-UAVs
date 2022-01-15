@@ -90,7 +90,7 @@ export class UserReportsFarmersComponent implements OnInit {
   passedUser : User;
   length = false;
 
-  displayedColumns: string[] = ['firstName', 'lastName', 'address', 'phone', 'nic' ];
+  displayedColumns: string[] = ['firstName', 'lastName', 'nic', 'email', 'phone' ];
   dataSource : MatTableDataSource<User>;
 
   constructor(private datepipe : DatePipe, private userFarmersService : UserFarmersService, private fieldService : FieldService) { 
