@@ -150,8 +150,9 @@ export class UserReportsRequestsComponent implements OnInit {
               farmer = data.payload.data() as User;
               f.farmer = farmer;
               f.farmerName = farmer.firstName + " " + farmer.lastName;
+              relevantFields.push(f);
               // console.log(fieldVisits)
-              this.dataSource = new MatTableDataSource(fieldVisits);
+              this.dataSource = new MatTableDataSource(relevantFields);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
             });

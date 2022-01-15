@@ -212,6 +212,8 @@ export class UserFarmerRequestsComponent implements OnInit {
     this.pendingRequests = 0;
     this.confirmedRequests = 0;
     this.declinedRequests = 0;
+    var i = 0;
+    var releventFields;
     this.fieldVisitService.getFieldVisitsByDivision(this.user)
     .subscribe(data => {
       fieldVisits = data.map(e => {
@@ -220,7 +222,6 @@ export class UserFarmerRequestsComponent implements OnInit {
           ...e.payload.doc.data() as {}
         } as FieldVisitTemp;
       })
-
       fieldVisits.forEach(f => {
         // if (f.status == 'request pending') requestPending += 1;
         // else if (f.status == 'visit pending') visitPending += 1;
@@ -241,8 +242,9 @@ export class UserFarmerRequestsComponent implements OnInit {
               farmer = data.payload.data() as User;
               f.farmer = farmer;
               f.farmerName = farmer.firstName + " " + farmer.lastName;
+              relevantFields.push(f);
               // console.log(fieldVisits)
-              this.dataSource = new MatTableDataSource(fieldVisits);
+              this.dataSource = new MatTableDataSource(relevantFields);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
             });
@@ -252,10 +254,12 @@ export class UserFarmerRequestsComponent implements OnInit {
             // this.dataSource.sort = this.sort;
   
           });
+        }else{
+          // console.log(f);
         }
-
       })
-
+      // console.log(fieldVisits);
+      // console.log(relevantFields);
     });
   }
 

@@ -239,8 +239,10 @@ export class UserFieldVisitsComponent implements OnInit {
               f.farmer = farmer;
               f.farmerName = farmer.firstName + " " + farmer.lastName;
               // console.log(f.field);
-              
-              this.dataSource = new MatTableDataSource(this.fieldVisits);
+              relevantFields.push(f);
+              // console.log(fieldVisits)
+              this.dataSource = new MatTableDataSource(relevantFields);
+              // this.dataSource = new MatTableDataSource(this.fieldVisits);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
             });

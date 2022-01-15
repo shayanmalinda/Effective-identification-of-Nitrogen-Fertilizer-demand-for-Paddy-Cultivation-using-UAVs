@@ -160,6 +160,7 @@ export class UserReportsFarmersComponent implements OnInit {
       });
     })
   }
+  
 
   loadSessionDetails(){
     this.userCredential.userID = sessionStorage.getItem('userID');
