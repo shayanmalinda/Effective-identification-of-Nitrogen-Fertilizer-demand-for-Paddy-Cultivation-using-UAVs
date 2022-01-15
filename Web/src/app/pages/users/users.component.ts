@@ -225,6 +225,7 @@ export class UsersComponent implements OnInit {
     // }
     console.log(this.role)
     this.userService.getUsers(this.role, this.type).subscribe(data => {
+      console.log(this.role, this.type)
       this.users = data.map(e => {
         return {
           ...e.payload.doc.data() as {},

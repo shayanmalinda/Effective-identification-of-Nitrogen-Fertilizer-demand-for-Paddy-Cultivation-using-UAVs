@@ -32,6 +32,7 @@ import { UserReportsFieldsComponent } from './user-reports-fields/user-reports-f
 import { UserReportsVisitsComponent } from './user-reports-visits/user-reports-visits.component';
 import { UserReportsRequestsComponent } from './user-reports-requests/user-reports-requests.component';
 import { DivisionReportsComponent } from './division-reports/division-reports.component';
+import { AdminFarmerReportsComponent } from './admin-farmer-reports/admin-farmer-reports-farmers.component';
 
 
 
@@ -68,7 +69,8 @@ import { DivisionReportsComponent } from './division-reports/division-reports.co
         UserReportsFieldsComponent,
         UserReportsVisitsComponent,
         UserReportsRequestsComponent,
-        DivisionReportsComponent
+        DivisionReportsComponent,
+        AdminFarmerReportsComponent
 
     ]
 })

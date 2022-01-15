@@ -11,6 +11,9 @@ export class UserService {
   user: User;
 
   constructor(private fireStore: AngularFirestore) { }
+  getActiveUsers(userRole) {
+    return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', '==', 'active')).snapshotChanges();
+  }
 
   getUsers(userRole, type) {
     if (userRole == 'officer')
@@ -146,7 +149,7 @@ export class UserService {
   }
 
   getFarmersofDivision(division) {
-    return this.fireStore.collection('Users', ref => ref.where('userRole', '==','farmer' ).where('status', '==', 'active').where('division', '==', division)).snapshotChanges();
+    return this.fireStore.collection('Users', ref => ref.where('userRole', '==', 'farmer').where('status', '==', 'active').where('division', '==', division)).snapshotChanges();
   }
 
 

@@ -34,6 +34,7 @@ import { UserReportsFarmersComponent } from './pages/user-reports-farmers/user-r
 import { UserReportsFieldsComponent } from './pages/user-reports-fields/user-reports-fields.component';
 import { UserReportsRequestsComponent } from './pages/user-reports-requests/user-reports-requests.component';
 import { UserReportsVisitsComponent } from './pages/user-reports-visits/user-reports-visits.component';
+import { AdminFarmerReportsComponent } from './pages/admin-farmer-reports/admin-farmer-reports-farmers.component';
 
 
 
@@ -78,6 +79,7 @@ const routes: Routes =[
     { path: 'field-visit-requests',      component: FieldVisitsComponent},
     { path: 'select-report',       component: DivisionsComponent},
     { path: 'division-report',       component: DivisionReportsComponent},
+    { path: 'admin-farmer-reports',       component: AdminFarmerReportsComponent},
 
 
 
