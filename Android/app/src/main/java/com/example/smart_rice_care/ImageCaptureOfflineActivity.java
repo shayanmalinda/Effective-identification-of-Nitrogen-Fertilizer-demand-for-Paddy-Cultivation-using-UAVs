@@ -415,6 +415,9 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
                 }
             }
         }
+        else{
+            isWithinBoundary = true;
+        }
 
     }
 
