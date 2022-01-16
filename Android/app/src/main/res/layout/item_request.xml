@@ -232,7 +232,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginRight="8dp"
-            android:text="View Location"/>
+            android:text="View Location"
+            android:backgroundTint="#777"/>
 
         <Button
             android:id="@+id/btStartExamine"
@@ -242,6 +243,20 @@
             android:backgroundTint="@color/orange_900"
             android:layout_marginLeft="8dp"
             android:text="Examine Field"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btViewResults"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="View Results"/>
 
     </LinearLayout>
 

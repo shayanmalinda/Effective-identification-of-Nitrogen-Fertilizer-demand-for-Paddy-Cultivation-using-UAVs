@@ -285,7 +285,7 @@ public class MapsActivity extends FragmentActivity implements
                 tvFertilizer2.setText(fertilizer2+" kg/ha");
                 tvFertilizer3.setText(fertilizer3+" kg/ha");
                 tvFertilizer4.setText(fertilizer4+" kg/ha");
-                tvFertilizer5.setText("-");
+                tvFertilizer5.setText("0 kg/ha");
 
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
@@ -343,14 +343,17 @@ public class MapsActivity extends FragmentActivity implements
                                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                             @Override
                                                             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task3) {
+
+                                                                System.out.println("testing==="+task3.getResult().size());
+                                                                System.out.println("testing==="+task3.getResult().size());
                                                                 if(task3.isSuccessful()){
 
                                                                     for (QueryDocumentSnapshot document : task3.getResult()) {
                                                                         ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
                                                                         HashMap<String, Long> weekData = data.get(plantAge-1);
-                                                                        fertilizer2 = weekData.get("levelOne");
-                                                                        fertilizer3 = weekData.get("levelTwo");
-                                                                        fertilizer4 = weekData.get("levelThree");
+                                                                        fertilizer2 = weekData.get("levelTwo");
+                                                                        fertilizer3 = weekData.get("levelThree");
+                                                                        fertilizer4 = weekData.get("levelFour");
                                                                     }
                                                                 }
                                                                 else{
@@ -365,9 +368,9 @@ public class MapsActivity extends FragmentActivity implements
                                                 for (QueryDocumentSnapshot document : task2.getResult()) {
                                                     ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
                                                     HashMap<String, Long> weekData = data.get(plantAge-1);
-                                                    fertilizer2 = weekData.get("levelOne");
-                                                    fertilizer3 = weekData.get("levelTwo");
-                                                    fertilizer4 = weekData.get("levelThree");
+                                                    fertilizer2 = weekData.get("levelTwo");
+                                                    fertilizer3 = weekData.get("levelThree");
+                                                    fertilizer4 = weekData.get("levelFour");
                                                 }
                                             }
                                         }
