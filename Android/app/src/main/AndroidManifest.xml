@@ -19,6 +19,7 @@
         <activity android:name=".ViewRequests" />
         <activity android:name=".AgriculturalOfficerHomeActivity" />
         <activity android:name=".AgriculturalOfficerHomeOfflineActivity" />
+        <activity android:name=".AddBoundriesMapActivity" />
         <activity
             android:name=".SendRequestMapActivity"
             android:label="@string/title_activity_maps"

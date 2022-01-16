@@ -1,14 +1,10 @@
 package com.example.smart_rice_care;
 
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -18,24 +14,33 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.maps.android.PolyUtil;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SendRequestMapActivity extends FragmentActivity
+public class AddBoundriesMapActivity extends FragmentActivity
         implements
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
@@ -45,41 +50,44 @@ public class SendRequestMapActivity extends FragmentActivity
     private GoogleMap mMap;
     private UiSettings mUiSettings;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private Button btSelectLocation;
+    private Button btClear, btDone;
     LatLng currentMarker;
     List<LatLng> polygonList = new ArrayList<>();
-
+    Polygon polygon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_send_request_map);
+        setContentView(R.layout.activity_add_boundries_map);
 
-        polygonList.add(new LatLng(6.1383346503509815, 80.76919477432966));
-        polygonList.add(new LatLng(6.13884268139556, 80.7693500071764));
-        polygonList.add(new LatLng(6.139009691495347, 80.76976172626019));
-        polygonList.add(new LatLng(6.138674004475167, 80.77003497630358));
-        polygonList.add(new LatLng(6.138451324190167, 80.76967522501945));
-        polygonList.add(new LatLng(6.138073967566553, 80.76950892806053));
-
-
-        btSelectLocation = findViewById(R.id.btSelectLocation);
-        btSelectLocation.setVisibility(View.GONE);
+        btClear = findViewById(R.id.btClear);
+        btDone = findViewById(R.id.btDone);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.sendRequestMap);
         mapFragment.getMapAsync(this);
 
-        btSelectLocation.setOnClickListener(new View.OnClickListener() {
+        btClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SendRequestMapActivity.this,SendRequestActivity.class);
-                intent.putExtra("latitude", currentMarker.latitude);
-                intent.putExtra("longitude", currentMarker.longitude);
-                startActivity(intent);
-                finish();
-                finish();
-                finish();
+                mMap.clear();
+                polygonList.clear();
+            }
+        });
+
+        btDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(polygonList.size()>2){
+                    Intent intent = new Intent(AddBoundriesMapActivity.this, ExamineFieldOfflineActivity.class);
+                    Bundle args = new Bundle();
+                    args.putSerializable("polygonList",(Serializable) polygonList);
+                    intent.putExtra("BUNDLE",args);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(AddBoundriesMapActivity.this, "Minimum 3 points should be added", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -98,30 +106,38 @@ public class SendRequestMapActivity extends FragmentActivity
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull @NotNull LatLng latLng) {
-                if(btSelectLocation.getVisibility()==View.GONE){
-                    btSelectLocation.setVisibility(View.VISIBLE);
-                }
                 currentMarker = latLng;
+                btClear.setVisibility(View.VISIBLE);
+                btDone.setVisibility(View.VISIBLE);
 
-                System.out.println("testing==="+ currentMarker.latitude + " - " + currentMarker.longitude);
-                if (PolyUtil.containsLocation(currentMarker.latitude, currentMarker.longitude, polygonList, true)) {
-                    Toast.makeText(SendRequestMapActivity.this, "Inside", Toast.LENGTH_SHORT).show();
-                    System.out.println("testing=== inside");
-                }
-                else{
-                    Toast.makeText(SendRequestMapActivity.this, "Outside", Toast.LENGTH_SHORT).show();
-                    System.out.println("testing=== outside");
-                }
+//                System.out.println("testing==="+ currentMarker.latitude + " - " + currentMarker.longitude);
+//                if (PolyUtil.containsLocation(currentMarker.latitude, currentMarker.longitude, polygonList, true)) {
+//                    Toast.makeText(AddBoundriesMapActivity.this, "Inside", Toast.LENGTH_SHORT).show();
+//                    System.out.println("testing=== inside");
+//                }
+//                else{
+//                    Toast.makeText(AddBoundriesMapActivity.this, "Outside", Toast.LENGTH_SHORT).show();
+//                    System.out.println("testing=== outside");
+//                }
 
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(latLng));
+                polygonList.add(new LatLng(currentMarker.latitude, currentMarker.longitude));
+                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Point " + polygonList.size()));
+                marker.showInfoWindow();
+                LatLng[] array = polygonList.toArray(new LatLng[0]);
+                if(polygon!=null){
+                    polygon.remove();
+                }
+                polygon = mMap.addPolygon(new PolygonOptions()
+                        .add(array)
+                        .strokeColor(getResources().getColor(R.color.green_500))
+                        .fillColor(Color.argb(50, 255, 255, 255)));
             }
         });
 
     }
 
     private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             if (mMap != null) {
                 mMap.setMyLocationEnabled(true);
@@ -143,16 +159,13 @@ public class SendRequestMapActivity extends FragmentActivity
             }
         } else {
             // Permission to access the location is missing. Show rationale and request permission
-            PermissionUtils.requestPermission(SendRequestMapActivity.this, LOCATION_PERMISSION_REQUEST_CODE,
+            PermissionUtils.requestPermission(AddBoundriesMapActivity.this, LOCATION_PERMISSION_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
         }
     }
 
     @Override
     public boolean onMyLocationButtonClick() {
-//        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
         return false;
     }
 
