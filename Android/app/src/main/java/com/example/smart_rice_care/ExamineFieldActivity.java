@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,13 +34,21 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExamineFieldActivity extends AppCompatActivity {
 
     String requestId, fieldId, farmerId;
     EditText etDelayTime;
-    Button btStart, btClearData;
+    Button btStart, btClearData, btAddBoundaries;
     ProgressBar progressBar;
     Boolean isStateBusy = false;
+    TextView tvBoundaryCount;
+
+
+    List<LatLng> polygonList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +60,41 @@ public class ExamineFieldActivity extends AppCompatActivity {
         btClearData = findViewById(R.id.btClearData);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
+        btAddBoundaries = findViewById(R.id.btAddBoundries);
+        tvBoundaryCount = findViewById(R.id.tvBoundaryCount);
+
 
         Intent getIntent = getIntent();
         requestId = getIntent.getStringExtra("requestId");
         fieldId = getIntent.getStringExtra("fieldId");
         farmerId = getIntent.getStringExtra("farmerId");
 
+        try {
+            Bundle args = getIntent.getBundleExtra("BUNDLE");
+            polygonList = (List<LatLng>) args.getSerializable("polygonList");
+        }
+        catch (Exception e){
+
+        }
+        tvBoundaryCount.setText("No. of Boundary Points : "+ polygonList.size());
+
+
         if(!isStateBusy){
+
+
+            btAddBoundaries.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    Intent intent = new Intent(ExamineFieldActivity.this, AddBoundriesMapActivity.class);
+                    intent.putExtra("approach", "online");
+                    intent.putExtra("requestId", requestId);
+                    intent.putExtra("fieldId", fieldId);
+                    intent.putExtra("farmerId", farmerId);
+                    startActivity(intent);
+                }
+            });
+
 
             btStart.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,6 +128,9 @@ public class ExamineFieldActivity extends AppCompatActivity {
                                     });
 
                             Intent intent = new Intent(ExamineFieldActivity.this, ImageCaptureActivity.class);
+                            Bundle args = new Bundle();
+                            args.putSerializable("polygonList",(Serializable) polygonList);
+                            intent.putExtra("BUNDLE",args);
                             intent.putExtra("requestId", requestId);
                             intent.putExtra("fieldId", fieldId);
                             intent.putExtra("farmerId", farmerId);

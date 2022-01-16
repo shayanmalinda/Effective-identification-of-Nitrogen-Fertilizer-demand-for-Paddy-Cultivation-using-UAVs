@@ -27,13 +27,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExamineFieldOfflineActivity extends AppCompatActivity {
 
     EditText etDelayTime, etFolderName;
-    Button btStart, btClearData, btAddBoundries;
+    Button btStart, btClearData, btAddBoundaries;
     ProgressBar progressBar;
     TextView tvBoundaryCount;
 
@@ -47,7 +48,7 @@ public class ExamineFieldOfflineActivity extends AppCompatActivity {
         etDelayTime = findViewById(R.id.etDelayTime);
         etFolderName = findViewById(R.id.etFolderName);
         btStart = findViewById(R.id.btStart);
-        btAddBoundries = findViewById(R.id.btAddBoundries);
+        btAddBoundaries = findViewById(R.id.btAddBoundries);
         btClearData = findViewById(R.id.btClearData);
         btClearData.setVisibility(View.GONE);
         progressBar = findViewById(R.id.progressBar);
@@ -84,12 +85,15 @@ public class ExamineFieldOfflineActivity extends AppCompatActivity {
                         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + etFolderName.getText().toString());
                         try {
                             if(dir.exists()){
-                                Toast.makeText(ExamineFieldOfflineActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ExamineFieldOfflineActivity.this, "Folder Already Exists", Toast.LENGTH_SHORT).show();
                             }
                             else{
                                 if (dir.mkdir()) {
                                     Log.d("Directory creation", "Directory created");
                                     Intent intent = new Intent(ExamineFieldOfflineActivity.this, ImageCaptureOfflineActivity.class);
+                                    Bundle args = new Bundle();
+                                    args.putSerializable("polygonList",(Serializable) polygonList);
+                                    intent.putExtra("BUNDLE",args);
                                     intent.putExtra("delayTime", delayTime);
                                     intent.putExtra("folderName", etFolderName.getText().toString());
                                     startActivity(intent);
@@ -106,11 +110,12 @@ public class ExamineFieldOfflineActivity extends AppCompatActivity {
             }
         });
 
-        btAddBoundries.setOnClickListener(new View.OnClickListener() {
+        btAddBoundaries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
                 Intent intent = new Intent(ExamineFieldOfflineActivity.this, AddBoundriesMapActivity.class);
+                intent.putExtra("approach", "offline");
                 startActivity(intent);
             }
         });

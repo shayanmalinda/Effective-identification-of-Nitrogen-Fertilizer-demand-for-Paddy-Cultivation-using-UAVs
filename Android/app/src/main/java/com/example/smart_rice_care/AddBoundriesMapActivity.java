@@ -54,6 +54,7 @@ public class AddBoundriesMapActivity extends FragmentActivity
     LatLng currentMarker;
     List<LatLng> polygonList = new ArrayList<>();
     Polygon polygon;
+    String approach;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,9 @@ public class AddBoundriesMapActivity extends FragmentActivity
 
         btClear = findViewById(R.id.btClear);
         btDone = findViewById(R.id.btDone);
+
+        Intent intent = getIntent();
+        approach = intent.getStringExtra("approach");
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -79,11 +83,30 @@ public class AddBoundriesMapActivity extends FragmentActivity
             @Override
             public void onClick(View v) {
                 if(polygonList.size()>2){
-                    Intent intent = new Intent(AddBoundriesMapActivity.this, ExamineFieldOfflineActivity.class);
-                    Bundle args = new Bundle();
-                    args.putSerializable("polygonList",(Serializable) polygonList);
-                    intent.putExtra("BUNDLE",args);
-                    startActivity(intent);
+                    if(approach.equals("offline")){
+                        Intent intent = new Intent(AddBoundriesMapActivity.this, ExamineFieldOfflineActivity.class);
+                        Bundle args = new Bundle();
+                        args.putSerializable("polygonList",(Serializable) polygonList);
+                        intent.putExtra("BUNDLE",args);
+                        finish();
+                        startActivity(intent);
+                    }
+                    else{
+
+                        Intent getIntent = getIntent();
+                        String requestId = getIntent.getStringExtra("requestId");
+                        String fieldId = getIntent.getStringExtra("fieldId");
+                        String farmerId = getIntent.getStringExtra("farmerId");
+                        Intent intent = new Intent(AddBoundriesMapActivity.this, ExamineFieldActivity.class);
+                        Bundle args = new Bundle();
+                        args.putSerializable("polygonList",(Serializable) polygonList);
+                        intent.putExtra("BUNDLE",args);
+                        intent.putExtra("requestId", requestId);
+                        intent.putExtra("fieldId", fieldId);
+                        intent.putExtra("farmerId", farmerId);
+                        finish();
+                        startActivity(intent);
+                    }
                 }
                 else{
                     Toast.makeText(AddBoundriesMapActivity.this, "Minimum 3 points should be added", Toast.LENGTH_SHORT).show();
@@ -109,16 +132,6 @@ public class AddBoundriesMapActivity extends FragmentActivity
                 currentMarker = latLng;
                 btClear.setVisibility(View.VISIBLE);
                 btDone.setVisibility(View.VISIBLE);
-
-//                System.out.println("testing==="+ currentMarker.latitude + " - " + currentMarker.longitude);
-//                if (PolyUtil.containsLocation(currentMarker.latitude, currentMarker.longitude, polygonList, true)) {
-//                    Toast.makeText(AddBoundriesMapActivity.this, "Inside", Toast.LENGTH_SHORT).show();
-//                    System.out.println("testing=== inside");
-//                }
-//                else{
-//                    Toast.makeText(AddBoundriesMapActivity.this, "Outside", Toast.LENGTH_SHORT).show();
-//                    System.out.println("testing=== outside");
-//                }
 
                 polygonList.add(new LatLng(currentMarker.latitude, currentMarker.longitude));
                 Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Point " + polygonList.size()));
