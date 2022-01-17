@@ -69,6 +69,7 @@ export class UserFeildsComponent implements OnInit {
   all = 0;
   length = false;
   testingFields = [];
+  loading = true;
 
   constructor(private fireStore : AngularFirestore, private fieldService : FieldService, private dialog : DialogService, private router : Router, private userService : UserService) { }
 
@@ -311,7 +312,7 @@ export class UserFeildsComponent implements OnInit {
         // this.dataSource = new MatTableDataSource(this.testingFields);
         // this.dataSource.paginator = this.paginator;
         // this.dataSource.sort = this.sort;
-        
+        this.loading = false;
       }
     )
   }

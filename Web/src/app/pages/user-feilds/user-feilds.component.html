@@ -2,7 +2,8 @@
     <div class="page-header section-dark" style="background-image: url('assets/img/paddy one.jpg')">
         <div class="filter"></div>
         <div class="content-center">
-            <div class="container">
+            <div class="spinner" *ngIf="loading"></div>
+            <div class="container" *ngIf="!loading">
                 <div>
                     <br>
                     <br>
@@ -39,7 +40,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" style="padding-bottom: 30px;">
                             <div class="mat-elevation-z8">
                                 <table mat-table [dataSource]="dataSource" matSort *ngIf="all > 0">
                                 <!-- <table mat-table [dataSource]="dataSource" matSort > -->

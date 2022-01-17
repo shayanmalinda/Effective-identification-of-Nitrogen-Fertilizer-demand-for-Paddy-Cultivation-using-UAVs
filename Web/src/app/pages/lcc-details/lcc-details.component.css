@@ -21,9 +21,9 @@ table {
     width: 200px;
   }
 
-  .mat-table {
+  /* .mat-table { */
     /* outline-bott: 2px solid purple; */
-  }
+  /* } */
 
   .mat-paginator {
     background-color: #CEDCC3;
