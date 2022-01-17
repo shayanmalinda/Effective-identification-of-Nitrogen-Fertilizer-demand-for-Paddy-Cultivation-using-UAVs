@@ -2,7 +2,8 @@
     <div class="page-header section-dark" style="background-image: url('assets/img/paddy one.jpg')">
         <div class="filter"></div>
         <div class="content-center">
-            <div class="container">
+            <div class="spinner" *ngIf="loading"></div>
+            <div class="container" *ngIf="!loading">
                 <div>
                     <div class="title-brand">
                         <h1>LCC Details</h1>

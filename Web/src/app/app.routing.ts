@@ -57,7 +57,7 @@ const routes: Routes =[
     { path: 'farmer-request',     component: UserProfileComponent },
     { path: 'officer-requests',     component: UsersComponent },
     { path: 'officers',     component: UsersComponent },
-    { path: 'lcc-details',      component: LccDetailsComponent, canActivate : [AuthGuard] },
+    { path: 'lcc-details',      component: LccDetailsComponent},
     { path: 'field-visits',      component: FieldVisitsComponent},
     { path: 'field-visit-details',      component: FieldVisitDetailsComponent},
     { path: 'user-dashboard',     component: UserDashboardComponent},

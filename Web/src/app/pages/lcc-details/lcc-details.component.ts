@@ -56,7 +56,7 @@ export class LccDetailsComponent implements OnInit {
   changedWeekDetails: LCCWeekDetails[];
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
-
+  loading : boolean = true;
 
   displayedColumns: string[] = ['week', 'levelTwo', 'levelThree', 'levelFour'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
@@ -205,6 +205,7 @@ export class LccDetailsComponent implements OnInit {
         setTimeout(() => this.dataSource.sort = this.sort);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.loading = false;
       }
     )
   }
