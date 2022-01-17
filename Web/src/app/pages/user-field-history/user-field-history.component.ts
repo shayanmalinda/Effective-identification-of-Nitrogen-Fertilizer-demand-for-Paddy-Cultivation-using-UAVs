@@ -90,6 +90,7 @@ export class UserFieldHistoryComponent implements OnInit {
   processingRequests : number = 0;
   all : number  = 0;
   fieldId : string;
+  loading = true;
 
   // displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
   displayedColumns: string[] = ['requestNote','plantAge', 'modifiedDate', 'note', 'status', 'visitDate'];
@@ -254,6 +255,7 @@ export class UserFieldHistoryComponent implements OnInit {
       this.dataSource = new MatTableDataSource(fieldVisits);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.loading = false;
     });
   }
 

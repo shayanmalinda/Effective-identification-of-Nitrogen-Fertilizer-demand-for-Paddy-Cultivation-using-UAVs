@@ -69,6 +69,7 @@ export class UserFieldVisitsComponent implements OnInit {
   all : number  = 0;
   fieldVisits;
   testingFields = [];
+  loading = true;
 
   // displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
   displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'plantAge', 'status', 'action'];
@@ -372,6 +373,7 @@ export class UserFieldVisitsComponent implements OnInit {
           // }
           // i++;
         })
+        this.loading = false;
       }
     )
   }
