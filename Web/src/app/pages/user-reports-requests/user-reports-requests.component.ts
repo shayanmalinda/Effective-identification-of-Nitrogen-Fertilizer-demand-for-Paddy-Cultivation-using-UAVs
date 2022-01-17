@@ -74,6 +74,7 @@ export class UserReportsRequestsComponent implements OnInit {
   confirmedRequests : number = 0;
   length = false;
   testingFields = [];
+  loading = true;
 
   displayedColumns: string[] = ['createdDate', 'registrationNumber', 'farmerName', 'plantAge', 'modifiedDate', 'status'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
@@ -257,6 +258,7 @@ export class UserReportsRequestsComponent implements OnInit {
           // }
           // i++;
         })
+        this.loading = false;
       }
     )
   }

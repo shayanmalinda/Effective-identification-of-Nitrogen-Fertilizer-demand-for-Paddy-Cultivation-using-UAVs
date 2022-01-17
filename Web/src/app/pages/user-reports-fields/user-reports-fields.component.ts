@@ -75,6 +75,7 @@ export class UserReportsFieldsComponent implements OnInit {
   all = 0;
   // length = false;
   testingFields = [];
+  loading = true;
 
   constructor(private fireStore : AngularFirestore, private datepipe : DatePipe, private fieldService : FieldService, private userService : UserService) { 
     this.date  = this.datepipe.transform((new Date), 'MMM d, y').toString();
@@ -85,7 +86,7 @@ export class UserReportsFieldsComponent implements OnInit {
     this.loadSessionDetails();
 
     //this is the working function
-    this.getFieldsDetailsWithFarmerNew();
+    // this.getFieldsDetailsWithFarmerNew();
     this.getFieldsDetailsWithFarmerTesting();
   }
 
@@ -217,6 +218,7 @@ export class UserReportsFieldsComponent implements OnInit {
         // this.dataSource = new MatTableDataSource(this.testingFields);
         // this.dataSource.paginator = this.paginator;
         // this.dataSource.sort = this.sort;
+        this.loading = false;
         
       }
     )
