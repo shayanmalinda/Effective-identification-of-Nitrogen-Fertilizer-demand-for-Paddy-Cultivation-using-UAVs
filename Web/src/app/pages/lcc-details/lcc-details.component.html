@@ -52,12 +52,12 @@
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                     <tr mat-row (change)="onChange(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
                                   </table>
-                                  <mat-paginator [pageSizeOptions]="[4]" aria-label="Select page of Fields" ></mat-paginator>
+                                  <mat-paginator [pageSizeOptions]="[8]" aria-label="Select page of Fields" ></mat-paginator>
                             </div>
                         </div>
                     </div>
                     <br>
-                    <div class="row" style="padding-left: 480px;">
+                    <div class="row" style="padding-left: 480px; padding-bottom: 30px;">
                         <button class="btn btn-outline-success btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
                         <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onCancelClick()">cancel</button>
                     </div>
