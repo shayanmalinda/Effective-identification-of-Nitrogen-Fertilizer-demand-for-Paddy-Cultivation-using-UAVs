@@ -34,6 +34,7 @@ export class UserViewMapComponent implements OnInit {
   iconUrlGreen = "./assets/img/levels/levelFour.png";
   iconUrlBlue = "./assets/img/levels/levelFive.png";
   length = 0;
+  loading = false;
 
   constructor(private router : Router, private fieldDataService : FieldDataService) { 
     this.fieldData.requestId = this.router.getCurrentNavigation().extras.state.fieldRequestId;
@@ -69,6 +70,7 @@ export class UserViewMapComponent implements OnInit {
             iconUrl : (element.level == 2 ? this.iconUrlRed : (element.level == 3 ? this.iconUrlYellow : (element.level == 4 ? this.iconUrlGreen : this.iconUrlBlue))),
           })
         });
+        this.loading = false;
       }
     )
     console.log(this.valueArray);

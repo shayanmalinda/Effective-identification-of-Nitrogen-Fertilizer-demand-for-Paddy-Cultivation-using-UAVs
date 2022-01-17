@@ -22,3 +22,20 @@ h2, h3, p{
     padding-top: 100px;
     background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('assets/img/paddy one.jpg');
   }
+
+  .spinner {
+    border: 16px solid silver;
+    border-top: 16px solid #2E7D32;
+    border-radius : 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 800ms linear infinite;
+    top: 40%;
+    left: 45%;
+    position: absolute;
+  }
+  
+  @keyframes spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+  }
