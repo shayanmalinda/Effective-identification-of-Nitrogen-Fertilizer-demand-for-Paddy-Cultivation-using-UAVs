@@ -72,7 +72,7 @@ export class UserReportsVisitsComponent implements OnInit {
   length = false;
 
   // displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
-  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'status'];
+  displayedColumns: string[] = ['createdDate', 'registrationNumber', 'farmerName', 'plantAge', 'modifiedDate', 'status'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
 
   constructor(private datepipe : DatePipe, private fieldVisitService : FieldVisitService, private fieldService : FieldService, private userService : UserService) { 
@@ -128,8 +128,10 @@ export class UserReportsVisitsComponent implements OnInit {
               f.farmer = farmer;
               f.farmerName = farmer.firstName + " " + farmer.lastName;
               // console.log(f.field);
-              
-              this.dataSource = new MatTableDataSource(fieldVisits);
+              relevantFields.push(f);
+              // console.log(fieldVisits)
+              this.dataSource = new MatTableDataSource(relevantFields);
+              // this.dataSource = new MatTableDataSource(this.fieldVisits);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
             });

@@ -13,6 +13,7 @@ import { UserFarmersService } from 'app/services/user-farmers.service';
 import { FieldService } from 'app/services/field.service';
 import { Field } from 'app/models/field.model';
 import { UserService } from 'app/services/user.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 const NO_OF_WEEKS = 8;
 
@@ -84,17 +85,24 @@ export class UserFarmersComponent implements OnInit {
   all = 0;
   fields : Field [];
   passedUser : User;
+  framersWithFields;
+  testingFields = [];
 
   displayedColumns: string[] = ['firstName', 'lastName', 'address', 'phone' ];
   dataSource : MatTableDataSource<User>;
 
-  constructor(private userFarmersService : UserFarmersService, private dialog : DialogService, private fieldService : FieldService, private userService : UserService, private router : Router) { }
+  constructor(private fireStore : AngularFirestore, private userFarmersService : UserFarmersService, private dialog : DialogService, private fieldService : FieldService, private userService : UserService, private router : Router) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
     // this.getFarmerDetails();
     // this.getFarmerDetailsWithFields();
-    this.getFarmerDetailsWithFieldsNew();
+
+    //this is the relevant method
+    // this.getFarmerDetailsWithFieldsNew();
+    this.getFarmerDetailsWithFieldsTesting();
+
+
     // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
     // setTimeout(() => this.dataSource.paginator = this.paginator);
     // setTimeout(() => this.dataSource.sort = this.sort);
@@ -250,6 +258,83 @@ export class UserFarmersComponent implements OnInit {
         })
       });
     })
+  }
+
+  getFarmerDetailsWithFieldsTesting(){
+    var credentials : UserCredential = {
+      userID : '',
+      email : '',
+      password : ''
+    }
+    // this.all = 1;
+    this.fireStore.collection('FieldDetails', ref => ref.where('division', '==', this.user.division)).snapshotChanges().subscribe(
+      data => {
+        this.all = data.length;
+        console.log(data.length);
+        var i = 0;
+        var field = data.map(e =>{
+          // console.log(e.payload.doc.data())
+          console.log(e.payload.doc.get("farmerId"))
+          credentials.userID = e.payload.doc.get("farmerId");
+          var farmers = this.fireStore.collection('Users').doc(credentials.userID).snapshotChanges().subscribe(
+            res => {
+              console.log(res.payload.get("firstName"))
+              console.log(res.payload.get("lastName"))
+              console.log(res.payload.get("email"))
+              console.log(res.payload.get("nic"))
+              console.log(res.payload.get("phone"))
+              this.testingFields.push({
+                details : e.payload.doc.get("id"),
+                address : e.payload.doc.get("address"),
+                registrationNumber : e.payload.doc.get("registrationNumber"),
+                firstName : res.payload.get("firstName"),
+                lastName : res.payload.get("lastName"),
+                phone : res.payload.get("phone"),
+                email : res.payload.get("email"),
+                nic : res.payload.get("nic"),
+                fullName : res.payload.get("firstName") + " " + res.payload.get("lastName")
+              })
+              i++;
+              if(i == data.length){
+                console.log(this.testingFields)
+                this.dataSource = new MatTableDataSource(this.testingFields);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+              }
+              // this.testingFields.push(res.payload.get("nic"))
+              // this.testingFields.push(res.payload.get("firstName"))
+              // this.testingFields.push(res.payload.get("lastName"))
+              // this.testingFields.push(res.payload.get("email"))
+              // this.testingFields.push(res.payload.get("phone"))
+              // return res.payload.get("phone") as string;
+              // framersWithFields.push({
+              //   details : e.payload.doc.get("id"),
+              //   address : e.payload.doc.get("address"),
+              //   registrationNumber : e.payload.doc.get("registrationNumber"),
+              //   firstName : res.payload.get("firstName"),
+              //   lastName : res.payload.get("lastName"),
+              //   phone : res.payload.get("phone"),
+              //   email : res.payload.get("email"),
+              //   nic : res.payload.get("nic"),
+              //   fullName : res.payload.get("firstName") + " " + res.payload.get("lastName")
+              // })
+            }
+          )
+          // console.log(farmers)
+          // console.log(this.testingFields)
+          return {
+            // id : e.payload.doc.id, //
+            ...e.payload.doc.data() as {}
+          } as Field
+        })
+        // console.log(field);
+        // console.log(this.testingFields)
+        // this.dataSource = new MatTableDataSource(this.testingFields);
+        // this.dataSource.paginator = this.paginator;
+        // this.dataSource.sort = this.sort;
+        
+      }
+    )
   }
 
   // getFarmerDetailsWithFieldsNew(){
