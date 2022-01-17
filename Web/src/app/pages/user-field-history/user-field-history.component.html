@@ -107,7 +107,7 @@
                                   
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
-                                    <tr mat-row (change)="onChange(row)" (click)="onViewVisitsClick(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    <tr mat-row (change)="onChange(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
                                   </table>
                                   <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons *ngIf="all > 0"></mat-paginator>
                                   <table *ngIf="all == 0">

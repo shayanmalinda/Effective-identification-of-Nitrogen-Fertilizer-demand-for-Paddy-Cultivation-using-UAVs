@@ -86,7 +86,7 @@
                                 <table class="col-sm-12 col-lg-12">
                                     <tr>
                                         <td colspan="8" style="font-weight: bold;">Total Requests </td>
-                                        <td colspan="4" style="text-align: center; font-weight: bold;">{{TotalRequests}}</td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold;">{{visitsAll + requestsAll}}</td>
                                     </tr>
                                 </table>
                             </mat-card-content>
@@ -107,33 +107,44 @@
                                     </tr>
                                 </table>
                             </mat-card-content>
-                            <canvas id="myCanvas" height="250px" [hidden]="false"></canvas>
+                            <canvas id="myCanvas" height="250px" [hidden]="hiddenRequestAll"></canvas>
                             <br>
-                            <mat-card-content *ngIf="true">
+                            <mat-card-content *ngIf="requestsAll > 0">
                                 <table class="col-sm-12 col-lg-12">
                                     <tr>
                                         <td colspan="8" style="font-weight: bold; padding: 5px;">Total Farmer Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px;">{{requestsAll}}</td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{requestsAll}}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="8" style="font-weight: bold; padding: 5px;">Pending Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px;">{{pendingRequests}} ({{pendingRequestsPrecentage}}%) </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{pendingRequests}} ({{pendingRequestsPrecentage}}%) </td>
                                     </tr>
                                     <tr>
                                         <td colspan="8" style="font-weight: bold; padding: 5px;">Confirmed Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px;">{{confirmedRequests}} ({{confirmedRequestsPrecentage}}%) </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{confirmedRequests}} ({{confirmedRequestsPrecentage}}%) </td>
                                     </tr>
                                     <tr>
                                         <td colspan="8" style="font-weight: bold; padding: 5px;">Declined Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px;">{{declinedRequests}} ({{declinedRequestsPrecentage}}%) </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{declinedRequests}} ({{declinedRequestsPrecentage}}%) </td>
                                     </tr>
                                 </table>
                             </mat-card-content>
-                            <mat-card-content *ngIf="false">
+                            <mat-card-content *ngIf="requestsAll == 0">
                                 <table class="col-sm-12 col-lg-12">
                                     <tr>
-                                        <td colspan="8" style="font-weight: bold;">Total Farmer Requests </td>
-                                        <td colspan="4" style="text-align: center; font-weight: bold;">0</td>
+                                        <td colspan="8" style="font-weight: bold;  padding: 5px;">Total Farmer Requests </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold;  padding: 5px;">0</td>
+                                    </tr><tr>
+                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Pending Requests </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{pendingRequests}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Confirmed Requests </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{confirmedRequests}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Declined Requests </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{declinedRequests}} </td>
                                     </tr>
                                 </table>
                             </mat-card-content>
@@ -149,33 +160,44 @@
                                     </tr>
                                 </table>
                             </mat-card-content>
-                            <canvas id="myCanvas2" height="250px" [hidden]="false"></canvas>
+                            <canvas id="myCanvas2" height="250px" [hidden]="hiddenVisitAll"></canvas>
                             <br>
-                            <mat-card-content *ngIf="true">
+                            <mat-card-content *ngIf="visitsAll != 0">
                                 <table class="col-sm-12 col-lg-12">
                                     <tr>
                                         <td colspan="8" style="font-weight: bold; padding: 5px;">Total Field Visits </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px;">{{visitsAll}}</td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{visitsAll}}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="8" style="font-weight: bold; padding: 5px;">Completed Visits </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px;">{{completedRequests}} ({{completedRequestsPrecentage}}%) </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{completedRequests}} ({{completedRequestsPrecentage}}%) </td>
                                     </tr>
                                     <tr>
                                         <td colspan="8" style="font-weight: bold; padding: 5px;">Processing Visits </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px;">{{processingRequests}} ({{processingRequestsPrecentage}}%) </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{processingRequests}} ({{processingRequestsPrecentage}}%) </td>
                                     </tr>
                                     <tr>
                                         <td colspan="8" style="font-weight: bold; padding: 5px;">&nbsp;</td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px;">&nbsp;</td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">&nbsp;</td>
                                     </tr>
                                 </table>
                             </mat-card-content>
-                            <mat-card-content *ngIf="false">
+                            <mat-card-content *ngIf="visitsAll == 0">
                                 <table class="col-sm-12 col-lg-12">
                                     <tr>
-                                        <td colspan="8" style="font-weight: bold;">Total Field Visits </td>
-                                        <td colspan="4" style="text-align: center; font-weight: bold;">0</td>
+                                        <td colspan="8" style="font-weight: bold;  padding: 5px;">Total Field Visits </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold;  padding: 5px;">0</td>
+                                    </tr><tr>
+                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Completed Visits </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{completedRequests}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Processing Visits </td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">{{processingRequests}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" style="font-weight: bold; padding: 5px;">&nbsp;</td>
+                                        <td colspan="4" style="text-align: center; font-weight: bold; padding: 5px;">&nbsp;</td>
                                     </tr>
                                 </table>
                             </mat-card-content>

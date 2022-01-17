@@ -9,6 +9,7 @@ import { FieldService } from 'app/services/field.service';
 import { Field } from 'app/models/field.model';
 import { FieldVisitService } from 'app/services/field-visit.service';
 import { FieldVisitTemp } from 'app/models/field-visit.model';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -66,20 +67,27 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   farmerRequestsSection = false;
   fieldVisitsSection = false;
   labelsForChartTwo = [];
+  hiddenVisitAll = true;
+  hiddenRequestAll = true;
 
-  constructor(private fieldVisitService : FieldVisitService, private router : Router, private userFarmersService : UserFarmersService, private fieldService : FieldService) { }
+  constructor(private fireStore : AngularFirestore, private fieldVisitService : FieldVisitService, private router : Router, private userFarmersService : UserFarmersService, private fieldService : FieldService) { }
 
   ngOnInit(): void {
 
     console.log("begin");
-    
-
     this.loadSessionDetails();
-    this.getFarmerDetailsWithFieldsNew();
-    this.getFieldsDetailsWithFarmerNew();
-    this.getVisitDetailsWithFields();
-    this.getVisitDetailsWithFieldsNew();
-    this.getCalculations();
+    // this.getFarmerDetailsWithFieldsNew();
+    this.getFarmerDetailsWithFieldsTesting();
+    // this.getFieldsDetailsWithFarmerNew();
+    this.getFieldsDetailsWithFarmerTesting();
+    // this.getVisitDetailsWithFields();
+    this.getVisitDetailsWithFieldsTesting();
+    // this.getVisitDetailsWithFieldsNew();
+    this.getVisitDetailsWithFieldsPendingTesting();
+    // this.getCalculations();
+    // this.TotalRequests = this.requestsAll + this.visitsAll;
+    // console.log(this.TotalRequests);
+    
 
     // var ctx = document.getElementById('myChart')as HTMLCanvasElement;
 //     var myChart = new Chart('myChart', {
@@ -206,6 +214,82 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  getVisitDetailsWithFieldsPendingTesting(){
+    var fieldVisits;
+    var relevantFields = [];
+    var field;
+    var farmer;
+    this.completedRequests = 0;
+    this.processingRequests = 0;
+    console.log(this.user.division);
+    var printable = false;
+    
+    this.fireStore.collection('FieldRequests', ref => ref.where('division', '==', this.user.division)).snapshotChanges().subscribe(
+      data => {
+        if(printable == false){
+          printable = true;
+          var i = 0;
+          var fieldVisits = data.map(e => {
+          // console.log(e.payload.doc.get('status'));
+          var status = e.payload.doc.get('status');
+          var fieldId = e.payload.doc.get('fieldId');
+          var details;
+          // i++;
+          if(status == "confirmed" || status == "pending" || status == "declined"){
+            this.hiddenRequestAll = false;
+            if(status == "confirmed"){ this.confirmedRequests++; }
+            else if(status == "pending"){ this.pendingRequests++; }
+            else if(status == "declined"){ this.declinedRequests++; }
+            this.requestsAll = this.confirmedRequests + this.pendingRequests + this.declinedRequests;
+            // console.log("this is the requests : " + this.requestsAll);
+            // this.TotalRequests = this.TotalRequests + this.requestsAll;
+            this.confirmedRequestsPrecentage = (this.requestsAll == 0 ? "0" : ((this.confirmedRequests/this.requestsAll)*100).toFixed(1));
+            this.declinedRequestsPrecentage = (this.requestsAll == 0 ? "0" : ((this.declinedRequests/this.requestsAll)*100).toFixed(1));
+            this.pendingRequestsPrecentage = (this.requestsAll == 0 ? "0" : ((this.pendingRequests/this.requestsAll)*100).toFixed(1));
+            this.labelsForChartTwo = [this.completedRequests, this.processingRequests];
+          }
+          // console.log(i);
+          // if(i == data.length){
+          //   console.log(this.testingFields)
+          //   this.dataSource = new MatTableDataSource(this.testingFields);
+          //   this.dataSource.paginator = this.paginator;
+          //   this.dataSource.sort = this.sort;
+          // }
+          // i++;
+        })
+        var myChart = new Chart("myCanvas", {
+          type: 'doughnut',
+          data: {
+              labels: ['Confirmed', 'Declined', 'Pending'],
+              datasets: [{
+                  label: '# of Votes',
+                  data: [this.confirmedRequests, this.declinedRequests, this.pendingRequests],
+                  backgroundColor: [
+                      'rgba(46, 125, 50, 0.8)',
+                      'rgba(230, 81, 0, 0.8)',
+                      'rgba(199, 151, 52, 0.8)'
+                  ],
+                  borderColor: [
+                      'rgba(46, 125, 50, 1)',
+                      'rgba(230, 81, 0, 1)',
+                      'rgba(199, 151, 52, 1)'
+                  ],
+                  borderWidth: 1,
+              }]
+          },
+          options: {
+              legend: {
+                  labels: {
+                    // fontColor : "white",
+                  }
+              }
+            }
+          });
+        }
+      }
+    )
+  }
+
   getVisitDetailsWithFieldsNew(){
     var fieldVisits;
     this.fieldVisitService.getFieldVisitsByDivision(this.user)
@@ -263,6 +347,80 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         }
       });
     });
+  }
+
+  getVisitDetailsWithFieldsTesting(){
+    var fieldVisits;
+    var relevantFields = [];
+    var field;
+    var farmer;
+    this.completedRequests = 0;
+    this.processingRequests = 0;
+    console.log(this.user.division);
+    var printable = false;
+    
+    this.fireStore.collection('FieldRequests', ref => ref.where('division', '==', this.user.division)).snapshotChanges().subscribe(
+      data => {
+          if(printable == false){
+            printable = true;
+            console.log(data.length);
+            var i = 0;
+            var fieldVisits = data.map(e => {
+            // console.log(e.payload.doc.get('status'));
+            var status = e.payload.doc.get('status');
+            var fieldId = e.payload.doc.get('fieldId');
+            var details;
+            // i++;
+            if(status == "completed" || status == "processing"){
+              this.hiddenVisitAll = false;
+              if(status == "completed"){ this.completedRequests++; }
+              else if(status == "processing"){ this.processingRequests++; }
+              this.visitsAll = this.completedRequests + this.processingRequests;
+              // console.log("this is the visits : " + this.requestsAll);
+              // this.TotalRequests = this.TotalRequests + this.visitsAll;
+              this.completedRequestsPrecentage = (this.visitsAll == 0 ? "0" : ((this.completedRequests/this.visitsAll)*100).toFixed(1));
+              this.processingRequestsPrecentage = (this.visitsAll == 0 ? "0" : ((this.processingRequests/this.visitsAll)*100).toFixed(1));
+              this.labelsForChartTwo = [this.completedRequests, this.processingRequests];
+            }else{
+            }
+            // console.log(i);
+            // if(i == data.length){
+            //   console.log(this.testingFields)
+            //   this.dataSource = new MatTableDataSource(this.testingFields);
+            //   this.dataSource.paginator = this.paginator;
+            //   this.dataSource.sort = this.sort;
+            // }
+            // i++;
+          })
+          var myChart2 = new Chart("myCanvas2", {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'Processing'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [this.completedRequests, this.processingRequests],
+                    backgroundColor: [
+                        'rgba(46, 125, 50, 0.8)',
+                        'rgba(230, 81, 0, 0.8)',
+                    ],
+                    borderColor: [
+                        'rgba(46, 125, 50, 1)',
+                        'rgba(230, 81, 0, 1)',
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+              legend: {
+                labels: {
+                  // fontColor : "white",
+                }
+              }
+            }
+          });
+        }
+      }
+    )
   }
 
   getVisitDetailsWithFields(){
@@ -345,5 +503,39 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log("end");
     
+  }
+
+  getFarmerDetailsWithFieldsTesting(){
+    var credentials : UserCredential = {
+      userID : '',
+      email : '',
+      password : ''
+    }
+    // this.all = 1;
+    this.fireStore.collection('FieldDetails', ref => ref.where('division', '==', this.user.division)).snapshotChanges().subscribe(
+      data => {
+        this.farmersAll = data.length;
+        // console.log(field);
+        // console.log(this.testingFields)
+        // this.dataSource = new MatTableDataSource(this.testingFields);
+        // this.dataSource.paginator = this.paginator;
+        // this.dataSource.sort = this.sort;
+        
+      }
+    )
+  }
+
+  getFieldsDetailsWithFarmerTesting(){
+    var credentials : UserCredential = {
+      userID : '',
+      email : '',
+      password : ''
+    }
+    // this.all = 1;
+    this.fireStore.collection('FieldDetails', ref => ref.where('division', '==', this.user.division)).snapshotChanges().subscribe(
+      data => {
+        this.fieldsAll = data.length;
+      }
+    )
   }
 }
