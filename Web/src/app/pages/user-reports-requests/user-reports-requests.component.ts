@@ -15,6 +15,7 @@ import { FieldVisitTemp } from 'app/models/field-visit.model';
 import { FieldService } from 'app/services/field.service';
 import { Field } from 'app/models/field.model';
 import { UserService } from 'app/services/user.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-user-reports-requests',
@@ -72,19 +73,23 @@ export class UserReportsRequestsComponent implements OnInit {
   declinedRequests : number = 0;
   confirmedRequests : number = 0;
   length = false;
+  testingFields = [];
 
   displayedColumns: string[] = ['createdDate', 'registrationNumber', 'farmerName', 'plantAge', 'modifiedDate', 'status'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
 
 
-  constructor(private datepipe : DatePipe, private fieldVisitService : FieldVisitService, private fieldService : FieldService, private userService : UserService) { 
+  constructor(private fireStore : AngularFirestore, private datepipe : DatePipe, private fieldVisitService : FieldVisitService, private fieldService : FieldService, private userService : UserService) { 
     this.date  = this.datepipe.transform((new Date), 'MMM d, y').toString();
     this.documentName = "Requests Report";
   }
 
   ngOnInit(): void {
     this.loadSessionDetails();
-    this.getVisitDetailsWithFields();
+
+    //this is the working function
+    // this.getVisitDetailsWithFields();
+    this.getVisitDetailsWithFieldsTesting();
   }
 
   //to load user details
@@ -167,6 +172,93 @@ export class UserReportsRequestsComponent implements OnInit {
       })
 
     });
+  }
+
+  getVisitDetailsWithFieldsTesting(){
+    var fieldVisits;
+    var relevantFields = [];
+    var field;
+    var farmer;
+    this.pendingRequests = 0;
+    this.confirmedRequests = 0;
+    this.declinedRequests = 0;
+    console.log(this.user.division);
+    var printable = true;
+    
+    this.fireStore.collection('FieldRequests', ref => ref.where('division', '==', this.user.division)).snapshotChanges().subscribe(
+      data => {
+          // console.log(data.length);
+          var i = 0;
+          var fieldVisits = data.map(e => {
+            console.log(i);
+            
+          // console.log(e.payload.doc.get('status'));
+          var status = e.payload.doc.get('status');
+          var fieldId = e.payload.doc.get('fieldId');
+          var details;
+          // i++;
+          if(status == "pending" || status == "declined" || status == "confirmed"){
+            this.length = true;
+            if(status == "pending"){ this.pendingRequests++; }
+            else if(status == "confirmed"){ this.confirmedRequests++; }
+            else{ this.declinedRequests++ ;}
+            this.all = this.pendingRequests + this.declinedRequests + this.confirmedRequests;
+            this.fireStore.collection('FieldDetails').doc(fieldId).snapshotChanges().subscribe(
+              recievedField => {
+                field = recievedField.payload.data() as Field;
+                // console.log(field.farmerId)
+                this.fireStore.collection('Users').doc(field.farmerId).snapshotChanges().subscribe(
+                  recievedFarmer =>{
+                    farmer = recievedFarmer.payload.data() as User;
+                    this.testingFields.push({
+                      farmer : farmer,
+                      field : field,
+                      address : field.address,
+                      registrationNumber : field.registrationNumber,
+                      farmerName : farmer.firstName + " " +farmer.lastName,
+                      createdDate : e.payload.doc.get('createdDate'),
+                      createdTimestamp : e.payload.doc.get('createdTimestamp'),
+                      division : e.payload.doc.get('division'),
+                      fieldId : e.payload.doc.get('fieldId'),
+                      latitude : e.payload.doc.get('latitude'),
+                      longitude : e.payload.doc.get('longitude'),
+                      modifiedDate : e.payload.doc.get('modifiedDate'),
+                      modifiedTimestamp : e.payload.doc.get('modifiedTimestamp'),
+                      note : e.payload.doc.get('note'),
+                      plantAge : e.payload.doc.get('plantAge'),
+                      requestNote : e.payload.doc.get('requestNote'),
+                      status : e.payload.doc.get('status'),
+                      visitDate : e.payload.doc.get('visitDate'),
+                      id : e.payload.doc.id,
+                    })
+                    i++;
+                    console.log(e.payload.doc.id);
+                    if(i == data.length){
+                      printable = false;
+                      console.log(this.testingFields)
+                      this.dataSource = new MatTableDataSource(this.testingFields);
+                      this.dataSource.paginator = this.paginator;
+                      this.dataSource.sort = this.sort;
+                    }
+                    // console.log(this.testingFields);
+                  }
+                )
+              }
+            )
+          }else{
+            i++;
+          }
+          // console.log(i);
+          // if(i == data.length){
+          //   console.log(this.testingFields)
+          //   this.dataSource = new MatTableDataSource(this.testingFields);
+          //   this.dataSource.paginator = this.paginator;
+          //   this.dataSource.sort = this.sort;
+          // }
+          // i++;
+        })
+      }
+    )
   }
 }
 
