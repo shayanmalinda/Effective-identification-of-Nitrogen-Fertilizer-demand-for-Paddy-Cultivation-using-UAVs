@@ -317,7 +317,7 @@ export class UserFieldVisitsComponent implements OnInit {
           // i++;
           if(status == "completed" || status == "processing"){
             if(status == "completed"){ this.completedRequests++; }
-            else if(status == "processing"){ this.completedRequests++; }
+            else if(status == "processing"){ this.processingRequests++; }
             this.all = this.completedRequests + this.processingRequests;
             this.fireStore.collection('FieldDetails').doc(fieldId).snapshotChanges().subscribe(
               recievedField => {

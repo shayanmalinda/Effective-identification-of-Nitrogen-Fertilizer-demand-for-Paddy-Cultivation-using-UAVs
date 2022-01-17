@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12" style="padding-bottom : 30px;">
+                        <div class="col-sm-12">
                             <div class="mat-elevation-z8">
                                 <table mat-table [dataSource]="dataSource" matSort *ngIf="all > 0">
                                 <!-- <table mat-table [dataSource]="dataSource" matSort > -->
@@ -107,10 +107,10 @@
                                     </ng-container>
                                   
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                                     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
-                                    <tr mat-row (change)="onChange(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
                                   </table>
-                                  <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons *ngIf="all > 0"></mat-paginator>
+                                  <mat-paginator [pageSizeOptions]="[5,10,15]" aria-label="Select page of Fields" showFirstLastButtons *ngIf="all > 0"></mat-paginator>
                                   <table *ngIf="all == 0">
                                     <tr>
                                         <td colspan="12" class="innerth" style="text-align: center; padding:15px"> No records to show in this section</td>
@@ -121,7 +121,7 @@
                     </div>
                     <br>
                     <div class="row" style="padding-left: 970px;">
-                        <button class="btn btn-outline-success btn-round" [routerLink]="['/user-fields']" routerLinkActive="router-link-active" >Back to fields</button>
+                        <button class="btn btn-outline-success btn-round" [routerLink]="['/user-fields']" routerLinkActive="router-link-active">Back to fields</button>
                     </div>
                 </div>
             </div>
