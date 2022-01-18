@@ -69,6 +69,7 @@ export class UserFieldVisitsComponent implements OnInit {
   all : number  = 0;
   fieldVisits;
   testingFields = [];
+  loading = true;
 
   // displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
   displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'plantAge', 'status', 'action'];
@@ -316,7 +317,7 @@ export class UserFieldVisitsComponent implements OnInit {
           // i++;
           if(status == "completed" || status == "processing"){
             if(status == "completed"){ this.completedRequests++; }
-            else if(status == "processing"){ this.completedRequests++; }
+            else if(status == "processing"){ this.processingRequests++; }
             this.all = this.completedRequests + this.processingRequests;
             this.fireStore.collection('FieldDetails').doc(fieldId).snapshotChanges().subscribe(
               recievedField => {
@@ -372,6 +373,7 @@ export class UserFieldVisitsComponent implements OnInit {
           // }
           // i++;
         })
+        this.loading = false;
       }
     )
   }

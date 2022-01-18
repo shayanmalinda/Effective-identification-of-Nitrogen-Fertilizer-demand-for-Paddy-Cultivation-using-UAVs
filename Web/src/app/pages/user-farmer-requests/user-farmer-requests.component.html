@@ -2,7 +2,8 @@
     <div class="full-width-table">
         <div class="filter"></div>
         <div class="content-center">
-            <div class="container">
+            <div class="spinner" *ngIf="loading"></div>
+            <div class="container" *ngIf="!loading">
                 <div>
                     <br>
                     <br>
@@ -40,7 +41,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" style="padding-bottom: 30px;">
                             <div class="mat-elevation-z8">
                                 <table mat-table [dataSource]="dataSource" matSort *ngIf="all > 0">
                                 <!-- <table mat-table [dataSource]="dataSource" matSort > -->
@@ -105,7 +106,7 @@
                                             aria-label="Example icon button with a home icon">
                                                 <mat-icon [ngStyle]="{'color':'blue'}">visibility</mat-icon>
                                             </button> -->
-                                            <mat-icon role="img" class="mat-icon notranslate material-icons mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font" (click)="onEditClick(element)">edit</mat-icon>
+                                            <mat-icon role="img" class="mat-icon notranslate material-icons mat-icon-no-color" style="color: green; cursor: pointer;" aria-hidden="true" data-mat-icon-type="font" (click)="onEditClick(element)">edit</mat-icon>
                                         </td>
                                     </ng-container>
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

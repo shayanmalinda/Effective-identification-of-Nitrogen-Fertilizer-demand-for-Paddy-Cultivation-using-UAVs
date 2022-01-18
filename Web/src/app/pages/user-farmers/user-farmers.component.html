@@ -2,7 +2,8 @@
     <div class="page-header section-dark" style="background-image: url('assets/img/paddy one.jpg')">
         <div class="filter"></div>
         <div class="content-center">
-            <div class="container">
+            <div class="spinner" *ngIf="loading"></div>
+            <div class="container" *ngIf="!loading">
                 <div>
                     <br>
                     <br>
@@ -37,7 +38,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" style="padding-bottom: 30px;">
                             <div class="mat-elevation-z8">
                                 <table mat-table [dataSource]="dataSource" matSort *ngIf="all > 0">
                                 <!-- <table mat-table [dataSource]="dataSource" matSort > -->
@@ -85,7 +86,7 @@
                                     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
                                     <tr mat-row (change)="onChange(row)" (click)="onClick(row)" *matRowDef="let row; columns: displayedColumns;" ></tr>
                                   </table>
-                                  <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons *ngIf="all > 0"></mat-paginator>
+                                  <mat-paginator [pageSizeOptions]="[5,10,15]" aria-label="Select page of Fields" showFirstLastButtons *ngIf="all > 0"></mat-paginator>
                                   <table *ngIf="all == 0">
                                     <tr>
                                         <td colspan="12" class="innerth" style="text-align: center; padding:15px"> No records to show in this section</td>

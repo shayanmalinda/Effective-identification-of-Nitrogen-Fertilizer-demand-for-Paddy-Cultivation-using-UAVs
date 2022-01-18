@@ -69,6 +69,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   labelsForChartTwo = [];
   hiddenVisitAll = true;
   hiddenRequestAll = true;
+  loading = true;
 
   constructor(private fireStore : AngularFirestore, private fieldVisitService : FieldVisitService, private router : Router, private userFarmersService : UserFarmersService, private fieldService : FieldService) { }
 
@@ -288,6 +289,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         }
       }
     )
+    this.loading = false;
   }
 
   getVisitDetailsWithFieldsNew(){

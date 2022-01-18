@@ -2,7 +2,8 @@
     <div class="page-header" style="background-image: url('./assets/img/paddy field.jpg');">
         <div class="filter"></div>
             <div class="container">
-                <div class="row">
+              <div class="spinner" *ngIf="loading"></div>
+                <div class="row" *ngIf="!loading">
                     <div class="col-lg-4 col-sm-6 mr-auto ml-auto">
                       <div class="card card-register" style="width: 400px;">
                           <h3 class="title">Welcome</h3>

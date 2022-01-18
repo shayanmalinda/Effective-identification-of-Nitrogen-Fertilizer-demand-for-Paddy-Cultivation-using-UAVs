@@ -87,6 +87,7 @@ export class UserFarmersComponent implements OnInit {
   passedUser : User;
   framersWithFields;
   testingFields = [];
+  loading = true;
 
   displayedColumns: string[] = ['firstName', 'lastName', 'address', 'phone' ];
   dataSource : MatTableDataSource<User>;
@@ -332,7 +333,7 @@ export class UserFarmersComponent implements OnInit {
         // this.dataSource = new MatTableDataSource(this.testingFields);
         // this.dataSource.paginator = this.paginator;
         // this.dataSource.sort = this.sort;
-        
+        this.loading = false;
       }
     )
   }
