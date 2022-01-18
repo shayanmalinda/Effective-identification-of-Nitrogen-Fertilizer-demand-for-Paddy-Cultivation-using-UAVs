@@ -16,20 +16,8 @@ cors = CORS(app)
 IMG_WIDTH=300
 IMG_HEIGHT=400
 
-@app.route("/image", methods=['POST','GET'])
-def image():
-    img = request.files["image"]
-    #img.raw.decode_content = True
-    image_bytes = Image.open(io.BytesIO(img.read()))
-    b = BytesIO()
-    image_bytes.save(b,"jpeg")
-    image_bytes.save("image.jpg",quality=95,subsampling=0)
-    #print("######",str(img),type(img))
-    os.remove("image.jpg")
-    return str(image_bytes);
-
-@app.route("/process", methods=['POST'])
-def process():
+@app.route("/svcprocess", methods=['POST'])
+def svcprocess():
     #capture the image from request
     img = request.files["image"].read()
 
@@ -44,7 +32,7 @@ def process():
     return str(result[0]);
 
 
-@app.route("/dtprocess", methods=['POST','GET'])
+@app.route("/dtprocess", methods=['POST'])
 def dtprocess():
     #capture the image from request
     img = request.files["image"].read()
@@ -67,19 +55,19 @@ def dtprocess():
 def predictSVC(df):
     print("predict")
     # Load the model from the file
-    model = joblib.load('./model_rgb.pkl')
+    model_svc = joblib.load('./model_rgb.pkl')
     
     # Use the loaded model to make predictions
-    prd=model.predict(df)
+    prd=model_svc.predict(df)
     return prd;
 
 def predictDTree(df):
     print("predict")
     # Load the model from the file
-    model = joblib.load('./dtreemodel.pkl')
+    model_dt = joblib.load('./dtreemodel.pkl')
     
     # Use the loaded model to make predictions
-    prd=model.predict(df)
+    prd=model_dt.predict(df)
     return prd;
 
 def preprocess(image):
