@@ -2,6 +2,7 @@ from flask import Flask,request
 from io import BytesIO
 from flask_cors import CORS
 import os
+import json
 import cv2
 import  numpy as np
 import pandas as pd
@@ -9,6 +10,13 @@ import piexif
 import joblib
 from PIL import Image
 import io
+import firebase_admin
+from firebase_admin import credentials, firestore, initialize_app
+
+cred = credentials.Certificate("../smart-rice-care-firebase-adminsdk.json")
+firestore_app = initialize_app(cred)
+db = firestore.client()
+result_ref = db.collection('TestingFieldData')
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -16,11 +24,11 @@ cors = CORS(app)
 IMG_WIDTH=300
 IMG_HEIGHT=400
 
+
 @app.route("/svcprocess", methods=['POST'])
 def svcprocess():
     #capture the image from request
     img = request.files["image"].read()
-
     #preprocess & predict from saved image
     preprocessed_image=preprocess(img);
     arr_rgb=rgb_mean(preprocessed_image);
@@ -36,7 +44,6 @@ def svcprocess():
 def dtprocess():
     #capture the image from request
     img = request.files["image"].read()
-
     #preprocess & predict from saved image
     preprocessed_image=preprocess(img);
     arr_rgb=rgb_mean(preprocessed_image);
@@ -50,7 +57,24 @@ def dtprocess():
     print(str(df))
     result=predictDTree(df);
     #print(str(arr_rgb))
-    return str(result[0]);
+    write_response=writeToServer(result[0])
+    if (write_response=="success"):
+        return str(result[0]);
+    else:    
+        return str(-1);
+
+def writeToServer(computed_level):
+    try:
+        field_data_json=request.files["field_data"].read()
+        field_data = json.loads(field_data_json)
+        request_id=field_data["requestId"]
+        doc_ref = result_ref.document(request_id)
+        field_data['level']=int(computed_level)
+        doc_ref.set(field_data)
+        return "success"
+    except Exception as e:
+        return "error"
+        #return f"An Error Occured: {e}"
 
 def predictSVC(df):
     print("predict")
