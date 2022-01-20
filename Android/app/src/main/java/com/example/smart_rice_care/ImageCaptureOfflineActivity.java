@@ -181,7 +181,7 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
                 Intent intent = new Intent(ImageCaptureOfflineActivity.this, DeleteImageActivity.class);
                 intent.putExtra("fileNames", fileNames);
                 intent.putExtra("folderName", folderName);
-                intent.putExtra("approach", "online");
+                intent.putExtra("approach", "offline");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 music.stop();
                 error.stop();
@@ -268,8 +268,10 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
                 exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, GPS.convert(currentLocation.getLatitude()));
                 exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,  GPS.convert(currentLocation.getLongitude()));
                 try {
+                    System.out.println("testing=== "+ "suceess");
                     exif.saveAttributes();
                     String msg = "Pic captured at " + file.getAbsolutePath();
+                    shutterSound.pause();
                     success.start();
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -280,6 +282,7 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
                     }, 2000);
                     Toast.makeText(ImageCaptureOfflineActivity.this, msg, Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
+                    Toast.makeText(ImageCaptureOfflineActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }

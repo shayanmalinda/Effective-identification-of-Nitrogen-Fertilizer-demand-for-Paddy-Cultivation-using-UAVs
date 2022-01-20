@@ -103,16 +103,6 @@ public class SendRequestMapActivity extends FragmentActivity
                 }
                 currentMarker = latLng;
 
-                System.out.println("testing==="+ currentMarker.latitude + " - " + currentMarker.longitude);
-                if (PolyUtil.containsLocation(currentMarker.latitude, currentMarker.longitude, polygonList, true)) {
-                    Toast.makeText(SendRequestMapActivity.this, "Inside", Toast.LENGTH_SHORT).show();
-                    System.out.println("testing=== inside");
-                }
-                else{
-                    Toast.makeText(SendRequestMapActivity.this, "Outside", Toast.LENGTH_SHORT).show();
-                    System.out.println("testing=== outside");
-                }
-
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng));
             }

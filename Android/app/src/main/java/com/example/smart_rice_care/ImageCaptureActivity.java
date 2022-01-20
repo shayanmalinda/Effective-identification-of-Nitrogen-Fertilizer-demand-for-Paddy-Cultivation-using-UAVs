@@ -266,8 +266,6 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                 @Override
                                                                                 public void onSuccess(Void unused) {
-                                                                                    Toast.makeText(ImageCaptureActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
-
                                                                                     openDeleteImageIntent();
                                                                                 }
                                                                             })
@@ -310,9 +308,8 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void unused) {
-                                                                Toast.makeText(ImageCaptureActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
-
-                                                                                                                           }
+                                                                openDeleteImageIntent();
+                                                           }
                                                         })
                                                         .addOnFailureListener(new OnFailureListener() {
                                                             @Override
@@ -344,18 +341,20 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     private void openDeleteImageIntent() {
 
-        Intent intent = new Intent(ImageCaptureActivity.this, DeleteImageActivity.class);
-        intent.putExtra("requestId", requestId);
-        intent.putExtra("fileNames", fileNames);
-        intent.putExtra("folderName", requestId);
-        intent.putExtra("approach", "online");
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Toast.makeText(ImageCaptureActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
 
         music.stop();
         error.stop();
         success.stop();
         shutterSound.stop();
         beep.stop();
+
+        Intent intent = new Intent(ImageCaptureActivity.this, DeleteImageActivity.class);
+        intent.putExtra("requestId", requestId);
+        intent.putExtra("fileNames", fileNames);
+        intent.putExtra("folderName", requestId);
+        intent.putExtra("approach", "online");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }

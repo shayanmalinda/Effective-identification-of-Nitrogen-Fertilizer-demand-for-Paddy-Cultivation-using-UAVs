@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -78,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements
     private UiSettings mUiSettings;
     private ImageView ivFocus, ivSettings, ivClose, ivInfo;
     private CheckBox cbLevel2, cbLevel3, cbLevel4, cbLevel5;
-    private TextView tvPercentage2, tvFertilizer2, tvPercentage3, tvFertilizer3, tvPercentage4, tvFertilizer4, tvPercentage5, tvFertilizer5;
+    private TextView tvPercentage2, tvFertilizer2, tvPercentage3, tvFertilizer3, tvPercentage4, tvFertilizer4, tvPercentage5, tvFertilizer5, tvFieldDataCount;
     private View settingsPopupView, infoPopupView;
     private Boolean filterLevel2 = true, filterLevel3 = true, filterLevel4 = true, filterLevel5 = true;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -89,11 +90,12 @@ public class MapsActivity extends FragmentActivity implements
     Float[] fertilizerAmount = new Float[4];
     private Integer fetchCount=0;
 
+    MediaPlayer success;
+
     List<WeightedLatLng> level2List = new ArrayList<>();
     List<WeightedLatLng> level3List = new ArrayList<>();
     List<WeightedLatLng> level4List = new ArrayList<>();
     List<WeightedLatLng> level5List = new ArrayList<>();
-    List<Marker> markers = new ArrayList<>();
     List<Marker> currentMarkers = new ArrayList<>();
     Integer radius = 40;
     Double opacity = 0.8;
@@ -124,6 +126,8 @@ public class MapsActivity extends FragmentActivity implements
         requestId = intent.getStringExtra("requestId");
         plantAge = intent.getIntExtra("plantAge",0);
 
+        success = MediaPlayer.create(MapsActivity.this, R.raw.success);
+
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         uId = mAuth.getInstance().getUid();
@@ -140,6 +144,7 @@ public class MapsActivity extends FragmentActivity implements
         ivFocus = findViewById(R.id.ivFocus);
         ivSettings = findViewById(R.id.ivSettings);
         ivInfo = findViewById(R.id.ivInfo);
+        tvFieldDataCount = findViewById(R.id.tvFieldDataCount);
 
         ivFocus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -418,6 +423,7 @@ public class MapsActivity extends FragmentActivity implements
                             Toast.makeText(MapsActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        level2List.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             Double latitude = doc.getDouble("latitude");
                             Double longitude = doc.getDouble("longitude");;
@@ -431,12 +437,13 @@ public class MapsActivity extends FragmentActivity implements
                             WeightedLatLng weightedLatLngObj = new WeightedLatLng(latLng, 1);
                             level2List.add(weightedLatLngObj);
 
-                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).draggable(true).visible(false));
-                            markers.add(marker);
-
                         }
 
                         addHeatMap(level2List, level2Colors, false);
+                        if(level2List.size()+level3List.size()+level4List.size()+level5List.size()>0){
+                            success.start();
+                            tvFieldDataCount.setText("Field Data Count: "+ (level2List.size()+level3List.size()+level4List.size()+level5List.size()));
+                        }
 
                     }
                 });
@@ -453,6 +460,8 @@ public class MapsActivity extends FragmentActivity implements
                             Toast.makeText(MapsActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        level3List.clear();
+
                         for (QueryDocumentSnapshot doc : value) {
                             Double latitude = doc.getDouble("latitude");
                             Double longitude = doc.getDouble("longitude");;
@@ -466,11 +475,12 @@ public class MapsActivity extends FragmentActivity implements
                             WeightedLatLng weightedLatLngObj = new WeightedLatLng(latLng, 1);
                             level3List.add(weightedLatLngObj);
 
-                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).draggable(true).visible(false));
-                            markers.add(marker);
                         }
-
                         addHeatMap(level3List, level3Colors, false);
+                        if(level2List.size()+level3List.size()+level4List.size()+level5List.size()>0){
+                            success.start();
+                            tvFieldDataCount.setText("Field Data Count: "+ (level2List.size()+level3List.size()+level4List.size()+level5List.size()));
+                        }
                     }
                 });
 
@@ -487,6 +497,8 @@ public class MapsActivity extends FragmentActivity implements
                             Toast.makeText(MapsActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        level4List.clear();
+
                         for (QueryDocumentSnapshot doc : value) {
                             Double latitude = doc.getDouble("latitude");
                             Double longitude = doc.getDouble("longitude");;
@@ -500,11 +512,12 @@ public class MapsActivity extends FragmentActivity implements
                             WeightedLatLng weightedLatLngObj = new WeightedLatLng(latLng, 1);
                             level4List.add(weightedLatLngObj);
 
-                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).draggable(true).visible(false));
-                            markers.add(marker);
                         }
-
                         addHeatMap(level4List, level4Colors, false);
+                        if(level2List.size()+level3List.size()+level4List.size()+level5List.size()>0){
+                            success.start();
+                            tvFieldDataCount.setText("Field Data Count: "+ (level2List.size()+level3List.size()+level4List.size()+level5List.size()));
+                        }
                     }
                 });
 
@@ -521,6 +534,8 @@ public class MapsActivity extends FragmentActivity implements
                             Toast.makeText(MapsActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        level5List.clear();
+
                         for (QueryDocumentSnapshot doc : value) {
                             Double latitude = doc.getDouble("latitude");
                             Double longitude = doc.getDouble("longitude");;
@@ -534,11 +549,14 @@ public class MapsActivity extends FragmentActivity implements
                             WeightedLatLng weightedLatLngObj = new WeightedLatLng(latLng, 1);
                             level5List.add(weightedLatLngObj);
 
-                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).draggable(true).visible(false));
-                            markers.add(marker);
+
                         }
 
                         addHeatMap(level5List, level5Colors, false);
+                        if(level2List.size()+level3List.size()+level4List.size()+level5List.size()>0){
+                            success.start();
+                            tvFieldDataCount.setText("Field Data Count: "+ (level2List.size()+level3List.size()+level4List.size()+level5List.size()));
+                        }
                     }
                 });
 

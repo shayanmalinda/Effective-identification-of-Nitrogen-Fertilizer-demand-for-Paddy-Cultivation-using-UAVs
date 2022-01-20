@@ -94,6 +94,9 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         if(result.status.equals("pending") || result.status.equals("confirmed")  || result.status.equals("declined") ) {
             btViewLocation.setEnabled(false);
         }
+        else{
+            btViewLocation.setEnabled(true);
+        }
         btViewLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

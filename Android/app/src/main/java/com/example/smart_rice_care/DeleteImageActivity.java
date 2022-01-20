@@ -149,24 +149,25 @@ public class DeleteImageActivity extends AppCompatActivity {
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = getIntent();
-                String requestId = intent.getStringExtra("requestId");
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference docRef = db.collection("FieldRequests").document(requestId);
-                docRef.update("status", "completed")
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull @NotNull Exception e) {
-                                Log.w("Status Update: ", "Error updating document", e);
-                            }
-                        });
+                if(approach.equals("online")){
+                    Intent intent = getIntent();
+                    String requestId = intent.getStringExtra("requestId");
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference docRef = db.collection("FieldRequests").document(requestId);
+                    docRef.update("status", "completed")
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull @NotNull Exception e) {
+                                    Log.w("Status Update: ", "Error updating document", e);
+                                }
+                            });
+                }
                 finish();
             }
         });
