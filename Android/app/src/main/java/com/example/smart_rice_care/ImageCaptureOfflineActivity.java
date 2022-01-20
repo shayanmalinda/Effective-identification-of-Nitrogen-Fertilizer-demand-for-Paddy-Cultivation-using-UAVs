@@ -47,11 +47,13 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.maps.android.PolyUtil;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -63,6 +65,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
@@ -105,8 +108,10 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
     MediaPlayer error;
 
     private boolean captured = false;
-    private boolean cameraWaiting = true;
+    private boolean countdownWaiting = true;
+    private boolean cameraWaiting = false;
     private boolean responseWaiting = false;
+    private boolean isWithinBoundary = false;
 
     private FusedLocationProviderClient fusedLocationClient;
     protected LocationManager locationManager;
@@ -116,6 +121,7 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
     protected boolean gps_enabled, network_enabled;
 
     Location currentLocation;
+    List<LatLng> polygonList = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -131,6 +137,9 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
         Intent getIntent = getIntent();
         folderName = getIntent.getStringExtra("folderName");
         delayTime = getIntent.getIntExtra("delayTime", 0);
+
+        Bundle args = getIntent.getBundleExtra("BUNDLE");
+        polygonList = (List<LatLng>) args.getSerializable("polygonList");
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -174,6 +183,9 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
                 intent.putExtra("folderName", folderName);
                 intent.putExtra("approach", "online");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                music.stop();
+                error.stop();
+                success.stop();
                 startActivity(intent);
                 finish();
             }
@@ -186,7 +198,7 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
             public void run() {
                 tvColorLevel.setText("Ready...");
                 music.stop();
-                cameraWaiting = false;
+                countdownWaiting = false;
             }
         }, delayTime*1000);
 
@@ -355,7 +367,7 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
                     captured = false;
                 }
 
-                if(hitResult <= THRESHOLD && !captured && !cameraWaiting && !responseWaiting){
+                if(hitResult <= THRESHOLD && !captured && !cameraWaiting && !responseWaiting && isWithinBoundary && !countdownWaiting){
                     tvColorLevel.setText("Capturing...");
                     captured = true;
                     cameraWaiting = true;
@@ -391,5 +403,27 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
         currentLocation = location;
         tvLatitude.setText("Latitude: "+location.getLatitude());
         tvLongitude.setText("Longitude: "+location.getLongitude());
+
+        if(polygonList.size()>2){
+            if (PolyUtil.containsLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), polygonList, true)) {
+                isWithinBoundary = true;
+            }
+            else{
+                isWithinBoundary = false;
+                if(!countdownWaiting) {
+                    error.start();
+                }
+            }
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        music.stop();
+        error.stop();
+        success.stop();
     }
 }

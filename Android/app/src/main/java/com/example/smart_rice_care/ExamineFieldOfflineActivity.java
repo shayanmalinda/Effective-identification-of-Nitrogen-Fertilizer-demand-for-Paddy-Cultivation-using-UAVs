@@ -9,11 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,12 +27,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExamineFieldOfflineActivity extends AppCompatActivity {
 
     EditText etDelayTime, etFolderName;
-    Button btStart, btClearData;
+    Button btStart, btClearData, btAddBoundaries;
     ProgressBar progressBar;
+    TextView tvBoundaryCount;
+
+    List<LatLng> polygonList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +48,23 @@ public class ExamineFieldOfflineActivity extends AppCompatActivity {
         etDelayTime = findViewById(R.id.etDelayTime);
         etFolderName = findViewById(R.id.etFolderName);
         btStart = findViewById(R.id.btStart);
+        btAddBoundaries = findViewById(R.id.btAddBoundries);
         btClearData = findViewById(R.id.btClearData);
         btClearData.setVisibility(View.GONE);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
+        tvBoundaryCount = findViewById(R.id.tvBoundaryCount);
+
+        try {
+            Intent getIntent = getIntent();
+            Bundle args = getIntent.getBundleExtra("BUNDLE");
+            polygonList = (List<LatLng>) args.getSerializable("polygonList");
+        }
+        catch (Exception e){
+
+        }
+
+        tvBoundaryCount.setText("No. of Boundary Points : "+ polygonList.size());
 
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,12 +85,15 @@ public class ExamineFieldOfflineActivity extends AppCompatActivity {
                         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + etFolderName.getText().toString());
                         try {
                             if(dir.exists()){
-                                Toast.makeText(ExamineFieldOfflineActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ExamineFieldOfflineActivity.this, "Folder Already Exists", Toast.LENGTH_SHORT).show();
                             }
                             else{
                                 if (dir.mkdir()) {
                                     Log.d("Directory creation", "Directory created");
                                     Intent intent = new Intent(ExamineFieldOfflineActivity.this, ImageCaptureOfflineActivity.class);
+                                    Bundle args = new Bundle();
+                                    args.putSerializable("polygonList",(Serializable) polygonList);
+                                    intent.putExtra("BUNDLE",args);
                                     intent.putExtra("delayTime", delayTime);
                                     intent.putExtra("folderName", etFolderName.getText().toString());
                                     startActivity(intent);
@@ -86,7 +110,15 @@ public class ExamineFieldOfflineActivity extends AppCompatActivity {
             }
         });
 
-
+        btAddBoundaries.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent intent = new Intent(ExamineFieldOfflineActivity.this, AddBoundriesMapActivity.class);
+                intent.putExtra("approach", "offline");
+                startActivity(intent);
+            }
+        });
 
 
     }

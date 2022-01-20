@@ -99,6 +99,22 @@
         android:gravity="bottom"
         android:paddingBottom="15dp">
 
+        <TextView
+            android:id="@+id/tvBoundaryCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="No. of Boundary Points : 0"
+            />
+
+        <Button
+            android:id="@+id/btAddBoundries"
+            android:text="Add Boundries"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            />
+
         <EditText
             android:id="@+id/etDelayTime"
             android:layout_width="match_parent"

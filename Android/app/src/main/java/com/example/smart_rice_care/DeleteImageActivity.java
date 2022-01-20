@@ -82,9 +82,10 @@ public class DeleteImageActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(approach.equals("online")){
-                    // Remove responses from the DB in online approach
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("FieldData")
+                    if(fileNames.size()>1){
+                        // Remove responses from the DB in online approach
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("FieldData")
                             .whereEqualTo("timestamp", fileNames.get(currentIndex))
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -113,6 +114,11 @@ public class DeleteImageActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                    }
+                    else{
+                        Toast.makeText(DeleteImageActivity.this, "You can not delete all the images", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
                 if(fileNames.size()>1){
@@ -166,7 +172,7 @@ public class DeleteImageActivity extends AppCompatActivity {
             ivNext.setVisibility(View.GONE);
         }
 
-        if (fileNames.size()>currentIndex){
+        if (fileNames.size()>0 && fileNames.size()>currentIndex){
 
             File imgFile = new  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() +
                     "/" + folderName + "/" + fileNames.get(currentIndex) +".jpg");
