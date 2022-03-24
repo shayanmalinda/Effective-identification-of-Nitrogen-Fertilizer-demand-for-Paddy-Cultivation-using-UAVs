@@ -133,6 +133,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         if(request.getStatus().equals("pending") || request.getStatus().equals("confirmed")  || request.getStatus().equals("declined") ) {
             btViewResults.setEnabled(false);
         }
+        else{
+            btViewResults.setEnabled(true);
+        }
         btViewResults.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
