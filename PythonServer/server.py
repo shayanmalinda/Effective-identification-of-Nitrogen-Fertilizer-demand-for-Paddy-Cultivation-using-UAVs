@@ -32,9 +32,12 @@ def svcprocess():
     #preprocess & predict from saved image
     preprocessed_image=preprocess(img);
     arr_rgb=rgb_mean(preprocessed_image);
+    df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
-    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]  
-    print(str(df))
+    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
+    print("###RGB : ",str(df))
+    df['shutter_speed']=df_metadata['shutter_speed']
+    df['exposure_time']=df_metadata['exposure_time']
     result=predictSVC(df);
     #print(str(arr_rgb))
     return str(result[0]);
@@ -98,7 +101,7 @@ def writeToServer(computed_level):
 def predictSVC(df):
     print("predict")
     # Load the model from the file
-    model_svc = joblib.load('./model_rgb.pkl')
+    model_svc = joblib.load('./svcmodel.pkl')
     
     # Use the loaded model to make predictions
     prd=model_svc.predict(df)
