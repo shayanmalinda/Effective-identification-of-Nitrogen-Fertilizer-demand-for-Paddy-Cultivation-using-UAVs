@@ -115,7 +115,7 @@ export class DetailsFormComponent implements OnInit {
       console.log("comes to add details section ");
       this.formTitle = "Farmer Request Details";
       // console.log(data.details);
-      this.acceptForm = (data.details.status == "pending" ? 0 : (data.details.status == "decline" ? 1 : 2));
+      this.acceptForm = (data.details.status == "pending" ? 0 : (data.details.status == "declined" ? 3 : 2));
       this.fieldVisitTemp.id = data.details.requestId;
       this.fieldVisitTemp.note = data.details.note;
       this.fieldVisitTemp.visitDate = data.details.visitDate;

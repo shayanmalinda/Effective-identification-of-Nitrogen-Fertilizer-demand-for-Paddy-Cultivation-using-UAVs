@@ -62,8 +62,7 @@ export class SignupComponent implements OnInit {
     districtSelected : string;
     divisionSelected : string;
     submitted = false;
-
-
+    loading = false;
 
     constructor(private datepipe : DatePipe, private formBuilder : FormBuilder, private dialog : DialogService, private userService : UserService, private router: Router, private authenticationService : AuthenticationService) { }
 
@@ -212,18 +211,22 @@ export class SignupComponent implements OnInit {
           this.user.lastName == '' || this.user.nic == '' || this.user.phone == '' || 
           this.user.userRole == '')
         {
+          this.loading = false;
           this.message.title = "error";
           this.message.showMessage = "You have to enter relevant fields to register !";
           this.dialog.openConfirmDialog(this.message);
         }else{
+          this.loading = true;
           this.authenticationService.signUp(this.userCredential, this.user)
           .then(res =>{
+              this.loading = false;
               this.message.title = "success";
               this.message.showMessage = "You have successfully registered within the system and wait until the system administor's approval !";
               this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
                 this.router.navigate(['/login']);
               });
             }, err => {
+              this.loading = false;
               this.message.title = "error";
               this.message.showMessage = err;
               this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{

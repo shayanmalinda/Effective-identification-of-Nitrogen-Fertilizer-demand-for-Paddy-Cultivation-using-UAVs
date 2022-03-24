@@ -181,6 +181,7 @@ export class MetaDataComponent implements OnInit {
                       // });
 
                     }, err => {
+                      this.loading = false;
                       this.message.title = "error";
                       this.message.showMessage = err;
                       this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
@@ -200,14 +201,17 @@ export class MetaDataComponent implements OnInit {
      }
      console.log(this.valueArray);
      this.loading = false;
+     this.message.title = "success";
+     this.message.showMessage = "You have uploaded images successfully !!";
+     this.dialog.openConfirmDialog(this.message);
      //success msg 
     //  console.log(this.length)
     //  console.log(this.uploadedImages)
-     if(this.length != this.uploadedImages){
-        this.message.title = "success";
-        this.message.showMessage = "You have uploaded images successfully !!";
-        this.dialog.openConfirmDialog(this.message);
-     }
+    //  if(this.length != this.uploadedImages){
+    //     this.message.title = "success";
+    //     this.message.showMessage = "You have uploaded images successfully !!";
+    //     this.dialog.openConfirmDialog(this.message);
+    //  }
     //  this.valueArray.length = 0;
      this.markersAdded = true;
      this.disability = true;

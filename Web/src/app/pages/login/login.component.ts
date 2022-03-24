@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
   users: Array<any> = [];
   plainPassword = "";
   submitted = true;
+  loading = false;
 
   constructor(private formBuilder: FormBuilder, private dialog: DialogService, private userService: UserService, private router: Router, private authenticationService: AuthenticationService) { }
 
@@ -70,8 +71,10 @@ export class LoginComponent implements OnInit {
   }
 
   logInClicked() {
+    this.loading = true;
     this.submitted = true;
     if (this.userCredential.email == "" || this.userCredential.password == "") {
+      this.loading = false;
       this.message.title = "Error";
       this.message.showMessage = "You have to enter relevant fields to login !";
       this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
@@ -91,15 +94,18 @@ export class LoginComponent implements OnInit {
             var redirect;
             if (res.userRole == "agricultural officer") {
               if (res.status == "active") {
+                this.loading = false;
                 redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
                 this.router.navigateByUrl(redirect);
               } else if (res.status == "pending") {
+                this.loading = false;
                 this.message.title = "warning";
                 this.message.showMessage = "You still haven't recieve the admin approval to interact with the system !!";
                 this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
                   this.clearFields();
                 })
               }else if (res.status == "inactive") {
+                this.loading = false;
                 this.message.title = "error";
                 this.message.showMessage = "Please contact system admin to interact with the system !!";
                 this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
@@ -112,6 +118,7 @@ export class LoginComponent implements OnInit {
               redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'admin-dashboard'
               this.router.navigateByUrl(redirect);
             } else {
+              this.loading = false;
               this.message.title = "error";
               this.message.showMessage = "Invalid login !!"
               this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
@@ -122,6 +129,7 @@ export class LoginComponent implements OnInit {
           //end of the testing region
 
         }, err => {
+          this.loading = false;
           this.message.title = "error";
           // console.log(err);
           if (err == "auth/wrong-password") {

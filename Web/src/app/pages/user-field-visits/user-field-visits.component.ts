@@ -16,6 +16,7 @@ import { FieldVisit, FieldVisitTemp } from 'app/models/field-visit.model';
 import { Field } from 'app/models/field.model';
 import { UserService } from 'app/services/user.service';
 import { PathLocationStrategy } from '@angular/common';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 const NO_OF_WEEKS = 8;
 
@@ -63,20 +64,26 @@ export class UserFieldVisitsComponent implements OnInit {
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
   actionButtonClicked : boolean = false;
-  compledtedRequests : number = 0;
+  completedRequests : number = 0;
   processingRequests : number = 0;
   all : number  = 0;
   fieldVisits;
+  testingFields = [];
+  loading = true;
 
   // displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'date', 'division', 'requestNote', 'status'];
-  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'division', 'status', 'action'];
+  displayedColumns: string[] = ['registrationNumber', 'address', 'farmerName', 'createdDate', 'plantAge', 'status', 'action'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
 
-  constructor(private lccService : LccService, private dialog : DialogService, private userService : UserService, private fieldService : FieldService, private fieldVisitService : FieldVisitService, private router : Router) { }
+  constructor(private fireStore : AngularFirestore, private lccService : LccService, private dialog : DialogService, private userService : UserService, private fieldService : FieldService, private fieldVisitService : FieldVisitService, private router : Router) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
-    this.getVisitDetailsWithFields();
+
+    //this is the working function
+    // this.getVisitDetailsWithFields();
+    this.getVisitDetailsWithFieldsTesting();
+
     // this.getLCCDetails();
     // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
     // setTimeout(() => this.dataSource.paginator = this.paginator);
@@ -209,7 +216,7 @@ export class UserFieldVisitsComponent implements OnInit {
     var field;
     var farmer;
     this.processingRequests = 0;
-    this.compledtedRequests = 0;
+    this.completedRequests = 0;
     this.fieldVisitService.getFieldVisitsByDivision(this.user).subscribe(data => {
       // console.log("fieldvisit details in user field : " + fieldVisits);
       this.fieldVisits = data.map(e => {
@@ -227,8 +234,8 @@ export class UserFieldVisitsComponent implements OnInit {
 
         if(f.status == "processing" || f.status == "completed"){
           if(f.status == "processing"){ this.processingRequests++; }
-          else{ this.compledtedRequests++ ;}
-          this.all = this.compledtedRequests + this.processingRequests;
+          else{ this.completedRequests++ ;}
+          this.all = this.completedRequests + this.processingRequests;
           this.fieldService.getField(f.fieldId).subscribe(data => {
             field = data.payload.data() as Field;
             f.field = field;
@@ -239,8 +246,10 @@ export class UserFieldVisitsComponent implements OnInit {
               f.farmer = farmer;
               f.farmerName = farmer.firstName + " " + farmer.lastName;
               // console.log(f.field);
-              
-              this.dataSource = new MatTableDataSource(this.fieldVisits);
+              relevantFields.push(f);
+              // console.log(fieldVisits)
+              this.dataSource = new MatTableDataSource(relevantFields);
+              // this.dataSource = new MatTableDataSource(this.fieldVisits);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
             });
@@ -282,6 +291,91 @@ export class UserFieldVisitsComponent implements OnInit {
       .subscribe(data =>{
       this.actionButtonClicked = !data;
     })
+  }
+
+  getVisitDetailsWithFieldsTesting(){
+    var fieldVisits;
+    var relevantFields = [];
+    var field;
+    var farmer;
+    this.completedRequests = 0;
+    this.processingRequests = 0;
+    console.log(this.user.division);
+    var printable = true;
+    
+    this.fireStore.collection('FieldRequests', ref => ref.where('division', '==', this.user.division)).snapshotChanges().subscribe(
+      data => {
+          // console.log(data.length);
+          var i = 0;
+          var fieldVisits = data.map(e => {
+            console.log(i);
+            
+          // console.log(e.payload.doc.get('status'));
+          var status = e.payload.doc.get('status');
+          var fieldId = e.payload.doc.get('fieldId');
+          var details;
+          // i++;
+          if(status == "completed" || status == "processing"){
+            if(status == "completed"){ this.completedRequests++; }
+            else if(status == "processing"){ this.processingRequests++; }
+            this.all = this.completedRequests + this.processingRequests;
+            this.fireStore.collection('FieldDetails').doc(fieldId).snapshotChanges().subscribe(
+              recievedField => {
+                field = recievedField.payload.data() as Field;
+                // console.log(field.farmerId)
+                this.fireStore.collection('Users').doc(field.farmerId).snapshotChanges().subscribe(
+                  recievedFarmer =>{
+                    farmer = recievedFarmer.payload.data() as User;
+                    this.testingFields.push({
+                      farmer : farmer,
+                      field : field,
+                      address : field.address,
+                      registrationNumber : field.registrationNumber,
+                      farmerName : farmer.firstName + " " +farmer.lastName,
+                      createdDate : e.payload.doc.get('createdDate'),
+                      createdTimestamp : e.payload.doc.get('createdTimestamp'),
+                      division : e.payload.doc.get('division'),
+                      fieldId : e.payload.doc.get('fieldId'),
+                      latitude : e.payload.doc.get('latitude'),
+                      longitude : e.payload.doc.get('longitude'),
+                      modifiedDate : e.payload.doc.get('modifiedDate'),
+                      modifiedTimestamp : e.payload.doc.get('modifiedTimestamp'),
+                      note : e.payload.doc.get('note'),
+                      plantAge : e.payload.doc.get('plantAge'),
+                      requestNote : e.payload.doc.get('requestNote'),
+                      status : e.payload.doc.get('status'),
+                      visitDate : e.payload.doc.get('visitDate'),
+                      id : e.payload.doc.id,
+                    })
+                    i++;
+                    console.log(e.payload.doc.id);
+                    if(i == data.length){
+                      printable = false;
+                      console.log(this.testingFields)
+                      this.dataSource = new MatTableDataSource(this.testingFields);
+                      this.dataSource.paginator = this.paginator;
+                      this.dataSource.sort = this.sort;
+                    }
+                    // console.log(this.testingFields);
+                  }
+                )
+              }
+            )
+          }else{
+            i++;
+          }
+          // console.log(i);
+          // if(i == data.length){
+          //   console.log(this.testingFields)
+          //   this.dataSource = new MatTableDataSource(this.testingFields);
+          //   this.dataSource.paginator = this.paginator;
+          //   this.dataSource.sort = this.sort;
+          // }
+          // i++;
+        })
+        this.loading = false;
+      }
+    )
   }
 
 }
