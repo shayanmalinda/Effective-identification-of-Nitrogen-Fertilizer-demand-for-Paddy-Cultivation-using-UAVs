@@ -85,6 +85,29 @@ def dtprocessfire():
     else:    
         return str(-1);
 
+@app.route("/svcprocessfire", methods=['POST'])
+def svcprocessfire():
+    #capture the image from request
+    img = request.files["image"].read()
+    #preprocess & predict from saved image
+    preprocessed_image=preprocess(img);
+    arr_rgb=rgb_mean(preprocessed_image);
+    df_metadata=extract_metadata(img);
+    df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
+    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
+    print("###RGB : ",str(df))
+    #df['brightness']=df_metadata['brightness']
+    df['shutter_speed']=df_metadata['shutter_speed']
+    df['exposure_time']=df_metadata['exposure_time']
+    result=predictSVC(df);
+    #print(str(arr_rgb))
+    write_response=writeToServer(result[0])
+    print("Response from Firestore : ",write_response);
+    if (write_response=="success"):
+        return str(result[0]);
+    else:    
+        return str(-1);
+
 def writeToServer(computed_level):
     try:
         field_data_json=request.files["field_data"].read()
