@@ -48,8 +48,8 @@ public class RegisterUserDetailsActivity extends AppCompatActivity {
 
                 allFieldsValidated = validateAllFields();
 
-//                if(allFieldsValidated){
-                if(true){
+                if(allFieldsValidated){
+//                if(true){
                     Intent intent = new Intent(RegisterUserDetailsActivity.this, RegisterFieldDetailsActivity.class);
                     intent.putExtra("firstName", firstName);
                     intent.putExtra("lastName", lastName);

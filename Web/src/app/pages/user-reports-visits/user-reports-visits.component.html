@@ -2,8 +2,9 @@
     <div class="filter"></div>
     
 </div> -->
-<div style="background-color: #f5f5f5; min-height: 420mm;">
-    <div class="container" style="min-width: 250mm; min-height: 295mm;">
+<div style="background-color: #f5f5f5; min-height: 395mm;">
+  <div class="spinner" *ngIf="loading"></div>
+    <div class="container" style="min-width: 250mm; min-height: 295mm;" *ngIf="!loading">
       <div class="profile" style="margin-top: 0px; padding-right: 80px;">
       </div>
       <br>
@@ -89,35 +90,49 @@
                             The actual rendered columns are set as a property on the row definition" -->
                     
                       <!-- Name Column -->
+                      <ng-container matColumnDef="createdDate">
+                        <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef >Requested Date </th>
+                        <td mat-cell *matCellDef="let element"> {{element.createdDate | date:'MMM d, y'}} </td>
+                      </ng-container>
+
+                  <!-- Name Column -->
                       <ng-container matColumnDef="registrationNumber">
-                          <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef style="width: 25%;">Registraion No. </th>
+                          <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef >Field Reg No </th>
                           <td mat-cell *matCellDef="let element"> {{element.registrationNumber}} </td>
                         </ng-container>
     
-                      <!-- Position Column -->
-                      <ng-container matColumnDef="address">
-                        <!-- <th mat-header-cell *matHeaderCellDef > Week </th> -->
-                        <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef style="width: 30%;">Address </th>
-                        <td mat-cell *matCellDef="let element"> {{element.address}} </td>
-                      </ng-container>
-                    
                       <!-- Name Column -->
                       <ng-container matColumnDef="farmerName">
-                          <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef style="width: 25%; ">Farmer Name </th>
+                          <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef >Farmer Name </th>
                           <td mat-cell *matCellDef="let element"> {{element.farmerName}} </td>
                         </ng-container>
+
+                        <!-- Position Column -->
+                      <ng-container matColumnDef="plantAge">
+                        <!-- <th mat-header-cell *matHeaderCellDef > Week </th> -->
+                        <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef >Plant Age </th>
+                        <td mat-cell *matCellDef="let element"> {{element.plantAge}} </td>
+                      </ng-container>
+
+                      <!-- Position Column -->
+                    <ng-container matColumnDef="note">
+                      <!-- <th mat-header-cell *matHeaderCellDef > Week </th> -->
+                      <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef >Request Note </th>
+                      <td mat-cell *matCellDef="let element"> {{element.note}} </td>
+                    </ng-container>
                     
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="createdDate">
-                            <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef style="width: 25%; ">Date </th>
-                            <td mat-cell *matCellDef="let element"> {{element.createdDate | date:'MMM d, y'}} </td>
-                          </ng-container>
     
                       <!-- Name Column -->
-                      <ng-container matColumnDef="status">
-                          <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef style="width: 20%; ">Status </th>
-                          <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-                        </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef >Status </th>
+                        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                      </ng-container>
+
+                      <!-- Name Column -->
+                      <ng-container matColumnDef="modifiedDate">
+                        <th class="innerth" mat-sort-header mat-header-cell *matHeaderCellDef>Modified Date </th>
+                        <td mat-cell *matCellDef="let element"> {{element.modifiedDate | date:'MMM d, y'}} </td>
+                      </ng-container>
     
                         <!-- Name Column -->
                       <!-- <ng-container matColumnDef="">
@@ -138,7 +153,7 @@
                     <!-- <mat-paginator [pageSizeOptions]="[4,8,12]" aria-label="Select page of Fields" showFirstLastButtons></mat-paginator> -->
                     <table *ngIf="!length">
                         <tr>
-                            <td colspan="12" class="innerth" style="text-align: center; padding:15px"> No records to show in the details section</td>
+                            <td colspan="12" class="innerth" style="text-align: center; padding:7px"> No records to show in the details section</td>
                         </tr>
                     </table>
               </td>

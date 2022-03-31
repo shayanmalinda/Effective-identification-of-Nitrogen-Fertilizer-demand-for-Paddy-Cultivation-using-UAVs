@@ -2,7 +2,8 @@
     <div class="page-header section-dark" style="background-image: url('assets/img/paddy one.jpg')">
         <div class="filter"></div>
         <div class="content-center">
-            <div class="container">
+            <div class="spinner" *ngIf="loading"></div>
+            <div class="container" *ngIf="!loading">
                 <div>
                     <div class="title-brand">
                         <h1>LCC Details</h1>
@@ -51,12 +52,12 @@
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                     <tr mat-row (change)="onChange(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
                                   </table>
-                                  <mat-paginator [pageSizeOptions]="[4]" aria-label="Select page of Fields" ></mat-paginator>
+                                  <mat-paginator [pageSizeOptions]="[8]" aria-label="Select page of Fields" ></mat-paginator>
                             </div>
                         </div>
                     </div>
                     <br>
-                    <div class="row" style="padding-left: 480px;">
+                    <div class="row" style="padding-left: 480px; padding-bottom: 30px;">
                         <button class="btn btn-outline-success btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
                         <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onCancelClick()">cancel</button>
                     </div>

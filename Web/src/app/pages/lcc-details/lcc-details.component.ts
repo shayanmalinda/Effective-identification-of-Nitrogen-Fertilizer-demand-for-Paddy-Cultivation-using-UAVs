@@ -56,7 +56,7 @@ export class LccDetailsComponent implements OnInit {
   changedWeekDetails: LCCWeekDetails[];
   lccMainDetails : LCCMainDetails;
   havePreviousRecords : boolean = false;
-
+  loading : boolean = true;
 
   displayedColumns: string[] = ['week', 'levelTwo', 'levelThree', 'levelFour'];
   dataSource : MatTableDataSource<LCCWeekDetails>;
@@ -82,6 +82,7 @@ export class LccDetailsComponent implements OnInit {
 
   //onSaveClick click event
   onSaveClick(){
+    this.loading = true;
     console.log("in the onsave" + this.changedWeekDetails);
     console.log(sessionStorage.getItem('userID'));
     this.lccMainDetails = {
@@ -96,12 +97,14 @@ export class LccDetailsComponent implements OnInit {
     console.log("these are the details :" + this.lccMainDetails.weekDetails.entries)
     this.lccService.saveLccDetails(this.lccMainDetails, this.havePreviousRecords)
           .then(res =>{
+            this.loading = false;
               this.message.title = "success";
               this.message.showMessage = "You have successfully update the LCC details !";
               this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
-              this.router.navigate(['/profile']);
+              this.router.navigate(['/user-dashboard']);
               });
             }, err => {
+              this.loading = false;
               this.message.title = "error";
               this.message.showMessage = err;
               this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res =>{
@@ -205,6 +208,7 @@ export class LccDetailsComponent implements OnInit {
         setTimeout(() => this.dataSource.sort = this.sort);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.loading = false;
       }
     )
   }

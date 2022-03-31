@@ -2,8 +2,9 @@
     <div class="filter"></div>
     
 </div> -->
-<div style="background-color: #f5f5f5; min-height: 420mm;">
-    <div class="container" style="min-width: 250mm; min-height: 295mm;">
+<div style="background-color: #f5f5f5; min-height: 395mm;">
+  <div class="spinner" *ngIf="loading"></div>
+    <div class="container" style="min-width: 250mm; min-height: 295mm;" *ngIf="!loading">
       <div class="profile" style="margin-top: 0px; padding-right: 80px;">
       </div>
       <br>

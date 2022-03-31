@@ -72,4 +72,7 @@ dependencies {
     implementation "com.loopj.android:android-async-http:1.4.9"
     implementation "com.google.android.gms:play-services-location:15.0.1"
 
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
 }

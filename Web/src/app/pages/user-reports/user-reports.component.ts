@@ -56,6 +56,7 @@ export class UserReportsComponent implements OnInit {
   province = "Sample Province";
   district = "Sample District";
   division = "Sample Division";
+  loading = true;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort : MatSort;
@@ -142,6 +143,7 @@ export class UserReportsComponent implements OnInit {
           setTimeout(() => this.dataSource.sort = this.sort);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+          this.loading = false;
         }
       )
     }

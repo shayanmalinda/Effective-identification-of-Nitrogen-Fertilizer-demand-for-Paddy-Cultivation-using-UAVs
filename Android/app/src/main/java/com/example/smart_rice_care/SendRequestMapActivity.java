@@ -27,8 +27,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.PolyUtil;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SendRequestMapActivity extends FragmentActivity
@@ -43,11 +47,20 @@ public class SendRequestMapActivity extends FragmentActivity
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Button btSelectLocation;
     LatLng currentMarker;
+    List<LatLng> polygonList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_request_map);
+
+        polygonList.add(new LatLng(6.1383346503509815, 80.76919477432966));
+        polygonList.add(new LatLng(6.13884268139556, 80.7693500071764));
+        polygonList.add(new LatLng(6.139009691495347, 80.76976172626019));
+        polygonList.add(new LatLng(6.138674004475167, 80.77003497630358));
+        polygonList.add(new LatLng(6.138451324190167, 80.76967522501945));
+        polygonList.add(new LatLng(6.138073967566553, 80.76950892806053));
+
 
         btSelectLocation = findViewById(R.id.btSelectLocation);
         btSelectLocation.setVisibility(View.GONE);
@@ -114,7 +127,7 @@ public class SendRequestMapActivity extends FragmentActivity
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker,19.0F));
                 }
                 catch (Exception e){
-                    Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("Location Error",e.getMessage());
                 }
             }
@@ -127,7 +140,7 @@ public class SendRequestMapActivity extends FragmentActivity
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;

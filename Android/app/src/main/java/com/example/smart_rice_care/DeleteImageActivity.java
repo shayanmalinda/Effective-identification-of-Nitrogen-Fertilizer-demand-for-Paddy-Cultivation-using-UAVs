@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -82,9 +83,10 @@ public class DeleteImageActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(approach.equals("online")){
-                    // Remove responses from the DB in online approach
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("FieldData")
+                    if(fileNames.size()>1){
+                        // Remove responses from the DB in online approach
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("FieldData")
                             .whereEqualTo("timestamp", fileNames.get(currentIndex))
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -113,6 +115,11 @@ public class DeleteImageActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                    }
+                    else{
+                        Toast.makeText(DeleteImageActivity.this, "You can not delete all the images", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
                 if(fileNames.size()>1){
@@ -142,6 +149,25 @@ public class DeleteImageActivity extends AppCompatActivity {
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(approach.equals("online")){
+                    Intent intent = getIntent();
+                    String requestId = intent.getStringExtra("requestId");
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference docRef = db.collection("FieldRequests").document(requestId);
+                    docRef.update("status", "completed")
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull @NotNull Exception e) {
+                                    Log.w("Status Update: ", "Error updating document", e);
+                                }
+                            });
+                }
                 finish();
             }
         });
@@ -166,7 +192,7 @@ public class DeleteImageActivity extends AppCompatActivity {
             ivNext.setVisibility(View.GONE);
         }
 
-        if (fileNames.size()>currentIndex){
+        if (fileNames.size()>0 && fileNames.size()>currentIndex){
 
             File imgFile = new  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() +
                     "/" + folderName + "/" + fileNames.get(currentIndex) +".jpg");

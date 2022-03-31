@@ -47,6 +47,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,6 +58,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.maps.android.PolyUtil;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -70,6 +72,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
@@ -110,10 +113,13 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     MediaPlayer music;
     MediaPlayer success;
     MediaPlayer error;
+    MediaPlayer beep;
 
     private boolean captured = false;
-    private boolean cameraWaiting = true;
+    private boolean cameraWaiting = false;
     private boolean responseWaiting = false;
+    private boolean countdownWaiting = true;
+    private boolean isWithinBoundary = false;
 
     private FusedLocationProviderClient fusedLocationClient;
     protected LocationManager locationManager;
@@ -123,6 +129,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
     protected boolean gps_enabled, network_enabled;
 
     Location currentLocation;
+    List<LatLng> polygonList = new ArrayList<>();
 
     ArrayList<Long> fileNames = new ArrayList<>();
 
@@ -135,6 +142,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         music = MediaPlayer.create(ImageCaptureActivity.this, R.raw.music);
         success = MediaPlayer.create(ImageCaptureActivity.this, R.raw.success);
         error = MediaPlayer.create(ImageCaptureActivity.this, R.raw.error);
+        beep = MediaPlayer.create(ImageCaptureActivity.this, R.raw.beep);
         music.start();
 
 
@@ -143,6 +151,8 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         fieldId = getIntent.getStringExtra("fieldId");
         farmerId = getIntent.getStringExtra("farmerId");
         delayTime = getIntent.getIntExtra("delayTime", 0);
+        Bundle args = getIntent.getBundleExtra("BUNDLE");
+        polygonList = (List<LatLng>) args.getSerializable("polygonList");
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -185,7 +195,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
             public void run() {
                 tvColorLevel.setText("Starting...");
                 music.stop();
-                cameraWaiting = false;
+                countdownWaiting = false;
             }
         }, delayTime*1000);
 
@@ -240,9 +250,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                                                     for (QueryDocumentSnapshot document : task3.getResult()) {
                                                                         ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
                                                                         HashMap<String, Long> weekData = data.get(plantAge.intValue()-1);
-                                                                        fertilizer2 = weekData.get("levelOne");
-                                                                        fertilizer3 = weekData.get("levelTwo");
-                                                                        fertilizer4 = weekData.get("levelThree");
+                                                                        fertilizer2 = weekData.get("levelTwo");
+                                                                        fertilizer3 = weekData.get("levelThree");
+                                                                        fertilizer4 = weekData.get("levelFour");
                                                                     }
 
                                                                     Map<String, Object> fertilizerAmount = new HashMap<>();
@@ -256,43 +266,20 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                 @Override
                                                                                 public void onSuccess(Void unused) {
-                                                                                    Toast.makeText(ImageCaptureActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
-
-                                                                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                                                                    DocumentReference docRef = db.collection("FieldRequests").document(requestId);
-                                                                                    docRef.update("status", "completed")
-                                                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                @Override
-                                                                                                public void onSuccess(Void unused) {
-                                                                                                    Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
-                                                                                                }
-                                                                                            })
-                                                                                            .addOnFailureListener(new OnFailureListener() {
-                                                                                                @Override
-                                                                                                public void onFailure(@NonNull @NotNull Exception e) {
-                                                                                                    Log.w("Status Update: ", "Error updating document", e);
-                                                                                                }
-                                                                                            });
-
-                                                                                    Intent intent = new Intent(ImageCaptureActivity.this, DeleteImageActivity.class);
-
-                                                                                    intent.putExtra("fileNames", fileNames);
-                                                                                    intent.putExtra("folderName", requestId);
-                                                                                    intent.putExtra("approach", "online");
-                                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                                    startActivity(intent);
-                                                                                    finish();
+                                                                                    openDeleteImageIntent();
                                                                                 }
                                                                             })
                                                                             .addOnFailureListener(new OnFailureListener() {
                                                                                 @Override
                                                                                 public void onFailure(@NonNull @NotNull Exception e) {
+                                                                                    openDeleteImageIntent();
                                                                                     Toast.makeText(ImageCaptureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                                                                 }
                                                                             });
                                                                 }
 
                                                                 else{
+                                                                    openDeleteImageIntent();
                                                                     Log.d("LCCDetails error:", task3.getException().toString());
                                                                     Toast.makeText(ImageCaptureActivity.this, ""+task3.getException(), Toast.LENGTH_SHORT).show();
                                                                 }
@@ -305,9 +292,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                                 for (QueryDocumentSnapshot document : task2.getResult()) {
                                                     ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
                                                     HashMap<String, Long> weekData = data.get(plantAge.intValue()-1);
-                                                    fertilizer2 = weekData.get("levelOne");
-                                                    fertilizer3 = weekData.get("levelTwo");
-                                                    fertilizer4 = weekData.get("levelThree");
+                                                    fertilizer2 = weekData.get("levelTwo");
+                                                    fertilizer3 = weekData.get("levelThree");
+                                                    fertilizer4 = weekData.get("levelFour");
                                                 }
 
                                                 Map<String, Object> fertilizerAmount = new HashMap<>();
@@ -321,58 +308,55 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void unused) {
-                                                                Toast.makeText(ImageCaptureActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
-
-                                                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                                                DocumentReference docRef = db.collection("FieldRequests").document(requestId);
-                                                                docRef.update("status", "completed")
-                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                            @Override
-                                                                            public void onSuccess(Void unused) {
-                                                                                Log.d("Status Update: ", "DocumentSnapshot successfully updated!");
-                                                                            }
-                                                                        })
-                                                                        .addOnFailureListener(new OnFailureListener() {
-                                                                            @Override
-                                                                            public void onFailure(@NonNull @NotNull Exception e) {
-                                                                                Log.w("Status Update: ", "Error updating document", e);
-                                                                            }
-                                                                        });
-
-
-                                                                Intent intent = new Intent(ImageCaptureActivity.this, DeleteImageActivity.class);
-
-                                                                intent.putExtra("fileNames", fileNames);
-                                                                intent.putExtra("folderName", requestId);
-                                                                intent.putExtra("approach", "online");
-                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                startActivity(intent);
-                                                                finish();
-
-                                                            }
+                                                                openDeleteImageIntent();
+                                                           }
                                                         })
                                                         .addOnFailureListener(new OnFailureListener() {
                                                             @Override
                                                             public void onFailure(@NonNull @NotNull Exception e) {
+                                                                openDeleteImageIntent();
                                                                 Toast.makeText(ImageCaptureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                                             }
                                                         });
                                             }
                                         }
                                         else{
+                                            openDeleteImageIntent();
                                             Log.d("LCCDetails error:", task.getException().toString());
                                             Toast.makeText(ImageCaptureActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
                     } else {
+                        openDeleteImageIntent();
                         Log.d("FieldRequests fetch: ", "No such document");
                     }
                 } else {
+                    openDeleteImageIntent();
                     Log.d("FieldRequests fetch: ", "get failed with ", task.getException());
                 }
             }
         });
+    }
+
+    private void openDeleteImageIntent() {
+
+        Toast.makeText(ImageCaptureActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
+
+        music.stop();
+        error.stop();
+        success.stop();
+        shutterSound.stop();
+        beep.stop();
+
+        Intent intent = new Intent(ImageCaptureActivity.this, DeleteImageActivity.class);
+        intent.putExtra("requestId", requestId);
+        intent.putExtra("fileNames", fileNames);
+        intent.putExtra("folderName", requestId);
+        intent.putExtra("approach", "online");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     private void startCamera() {
@@ -529,12 +513,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                 client.post(url, params, new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        if(!responseString.equals(null)){
-                            System.out.println("Response===Failed "+ responseString);
-                            Log.d("Response===Failed ", responseString);
-                            Toast.makeText(ImageCaptureActivity.this, responseString, Toast.LENGTH_SHORT).show();
-                        }
-                        error.start();
+                        System.out.print("Response===no response");
+//                        Toast.makeText(ImageCaptureActivity.this, "No response from the Server", Toast.LENGTH_SHORT).show();
+                        beep.start();
                     }
 
                     @Override
@@ -577,7 +558,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                                     public void onFailure(@NonNull @NotNull Exception e) {
                                         responseWaiting = false;
                                         Toast.makeText(ImageCaptureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        error.start();
+                                        beep.start();
                                     }
                                 });
 
@@ -620,7 +601,9 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                     captured = false;
                 }
 
-                if(hitResult <= THRESHOLD && !captured && !cameraWaiting && !responseWaiting){
+                System.out.println("testing == "+ captured + "-" + cameraWaiting + "-" + responseWaiting + "-" + isWithinBoundary+ "-" + countdownWaiting);
+
+                if(hitResult <= THRESHOLD && !captured && !cameraWaiting && !responseWaiting  && isWithinBoundary && !countdownWaiting){
                     captured = true;
                     cameraWaiting = true;
                     captureImage(imgCap);
@@ -655,5 +638,31 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
         currentLocation = location;
         tvLatitude.setText("Latitude: "+location.getLatitude());
         tvLongitude.setText("Longitude: "+location.getLongitude());
+
+        if(polygonList.size()>2){
+            if (PolyUtil.containsLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), polygonList, true)) {
+                isWithinBoundary = true;
+            }
+            else{
+                isWithinBoundary = false;
+                if(!countdownWaiting) {
+                    error.start();
+                }
+            }
+        }
+        else{
+            isWithinBoundary = true;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        music.stop();
+        error.stop();
+        success.stop();
+        shutterSound.stop();
+        beep.stop();
     }
 }
