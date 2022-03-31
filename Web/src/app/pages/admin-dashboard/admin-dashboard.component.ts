@@ -33,7 +33,7 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/officer-requests'], { state: { role: 'officer', type: 'request' } });
   }
   viewOfficers() {
-    this.router.navigate(['/officers'], { state: { role: 'officer' } });
+    this.router.navigate(['/admin-officers'], { state: { role: 'officer' } });
   }
   viewDivisions() {
     this.router.navigate(['/divisions'], { state: { role: 'officer', type: '' } });
