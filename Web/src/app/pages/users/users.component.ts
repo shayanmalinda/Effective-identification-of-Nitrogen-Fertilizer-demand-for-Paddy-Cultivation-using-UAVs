@@ -139,7 +139,7 @@ export class UsersComponent implements OnInit {
     console.log(this.user)
 
     if (this.type == 'request')
-      this.router.navigate(['/farmer-request'], { state: { user: this.user, id: this.user.id, type: this.type } });
+      this.router.navigate(['/officer-request'], { state: { user: this.user, id: this.user.id, type: this.type } });
     else
       this.router.navigate(['/farmer-profile'], { state: { user: this.user, id: this.user.id, type: this.type } });
 

@@ -71,7 +71,6 @@ export class UserProfileComponent implements OnInit {
 
     this.id = this.router.getCurrentNavigation().extras.state.id;
     this.type = this.router.getCurrentNavigation().extras.state.type;
-
     console.log(this.user)
     this.nameChanged();
   }

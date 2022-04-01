@@ -54,7 +54,7 @@ const routes: Routes =[
     { path: 'agricultural-officers',      component: UsersComponent },
     { path: 'admin-dashboard',      component: AdminDashboardComponent },
     { path: 'requests',      component: UsersComponent },
-    { path: 'farmer-request',     component: UserProfileComponent },
+    { path: 'officer-request',     component: UserProfileComponent },
     { path: 'officer-requests',     component: UsersComponent },
     { path: 'officers',     component: UsersComponent, canActivate : [AuthGuard]  },
     { path: 'admin-officers',     component: UsersComponent},
