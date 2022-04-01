@@ -8,8 +8,7 @@
                     <div class="toggle label-bar" *ngIf="type=='request'">
 
                         <div class="left">
-                            <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()
-                                aria-label="Font Style">
+                            <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType() aria-label="Font Style">
                                 <mat-button-toggle value="all">All</mat-button-toggle>
                                 <mat-button-toggle value="pending">Pending</mat-button-toggle>
                                 <mat-button-toggle value="declined">Declined</mat-button-toggle>
@@ -17,13 +16,10 @@
                             <!-- <p>Chosen value is {{fontStyle}}</p> -->
                         </div>
                         <div class="filters">
-                            <div class="input-group form-group-no-border transparent"
-                                [ngClass]="{'input-group-focus':focus1===true}">
+                            <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}">
                                 <div class="dropdown">
 
-                                    <select class="dropbtn" name="dropdownProvince" id="dropdownProvince"
-                                        [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)"
-                                        style="padding-top: 0px;">
+                                    <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding-top: 0px;">
 
                                         <option [value]="none" disabled selected hidden>Province</option>
                                         <option *ngFor="let province of provinces" [value]="province">{{province}}
@@ -32,13 +28,10 @@
                                     <!-- </div> -->
                                 </div>
                             </div>
-                            <div class="input-group form-group-no-border transparent"
-                                [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; ">
+                            <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; ">
                                 <div class="dropdown">
 
-                                    <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict"
-                                        [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)"
-                                        [value]="none" style="padding-top: 0px; ">
+                                    <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding-top: 0px; ">
 
                                         <option [value]="none" disabled selected hidden>District</option>
                                         <option *ngFor="let district of districts" [value]="district">{{district}}
@@ -47,14 +40,10 @@
                                     <!-- </div> -->
                                 </div>
                             </div>
-                            <div class="input-group form-group-no-border transparent"
-                                [ngClass]="{'input-group-focus':focus1===true}"
-                                style="padding-left: 15px; padding-right: 30px;">
+                            <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; padding-right: 30px;">
                                 <div class="dropdown">
 
-                                    <select class="dropbtn" name="dropdownDivision" id="dropdownDivision"
-                                        [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)"
-                                        style="padding-top: 0px; ">
+                                    <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding-top: 0px; ">
 
                                         <option [value]="none" disabled selected hidden>Division</option>
                                         <option *ngFor="let division of divisions" [value]="division">{{division}}
@@ -75,8 +64,7 @@
                     </div>
                     <div class="toggle label-bar" *ngIf="type!='request'">
                         <div class="left">
-                            <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType()
-                                aria-label="Font Style">
+                            <mat-button-toggle-group [(ngModel)]="selectedType" (change)=selectReqType() aria-label="Font Style">
                                 <mat-button-toggle value="all">All</mat-button-toggle>
                                 <mat-button-toggle value="active">Active</mat-button-toggle>
                                 <mat-button-toggle value="inactive">Inactive</mat-button-toggle>
@@ -84,13 +72,10 @@
                             <!-- <p>Chosen value is {{fontStyle}}</p> -->
                         </div>
                         <div class="filters">
-                            <div class="input-group form-group-no-border transparent"
-                                [ngClass]="{'input-group-focus':focus1===true}">
+                            <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}">
                                 <div class="dropdown">
 
-                                    <select class="dropbtn" name="dropdownProvince" id="dropdownProvince"
-                                        [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)"
-                                        style="padding-top: 0px;">
+                                    <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding-top: 0px;">
 
                                         <option [value]="none" disabled selected hidden>Province</option>
                                         <option *ngFor="let province of provinces" [value]="province">{{province}}
@@ -99,13 +84,10 @@
                                     <!-- </div> -->
                                 </div>
                             </div>
-                            <div class="input-group form-group-no-border transparent"
-                                [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; ">
+                            <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; ">
                                 <div class="dropdown">
 
-                                    <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict"
-                                        [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)"
-                                        [value]="none" style="padding-top: 0px;  ">
+                                    <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding-top: 0px;  ">
 
                                         <option [value]="none" disabled selected hidden>District</option>
                                         <option *ngFor="let district of districts" [value]="district">{{district}}
@@ -114,14 +96,10 @@
                                     <!-- </div> -->
                                 </div>
                             </div>
-                            <div class="input-group form-group-no-border transparent"
-                                [ngClass]="{'input-group-focus':focus1===true}"
-                                style="padding-left: 15px; padding-right: 30px;">
+                            <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; padding-right: 30px;">
                                 <div class="dropdown">
 
-                                    <select class="dropbtn" name="dropdownDivision" id="dropdownDivision"
-                                        [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)"
-                                        style="padding-top: 0px; ">
+                                    <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding-top: 0px; ">
 
                                         <option [value]="none" disabled selected hidden>Division</option>
                                         <option *ngFor="let division of divisions" [value]="division">{{division}}
@@ -145,12 +123,10 @@
                         <!-- <div class="title-brand-left"> -->
                         <mat-form-field appearance="standard" class="print">
                             <mat-label class="background">Filter</mat-label>
-                            <input class="background" matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia"
-                                #input>
+                            <input class="background" matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
 
                         </mat-form-field>
-                        <button class="btn btn-outline-success btn-round"
-                            (click)="exporter.exportTable('csv', {fileName:getFileName()})">Print</button>
+                        <button class="btn btn-outline-success btn-round" (click)="exporter.exportTable('csv', {fileName:getFileName()})">Print</button>
 
 
                     </div>
@@ -158,8 +134,7 @@
 
 
                     <div class="mat-elevation-z8">
-                        <mat-table matTableExporter [dataSource]="dataSource" matSort #exporter="matTableExporter"
-                            [hiddenColumns]="[8,9,10]">
+                        <mat-table matTableExporter [dataSource]="dataSource" matSort #exporter="matTableExporter" [hiddenColumns]="[8,9,10]">
 
                             <!-- <table matTableExporter [dataSource]="dataSource" matSort #exporter="matTableExporter"> -->
 
@@ -214,14 +189,10 @@
                             <ng-container matColumnDef="status">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <label *ngIf="row.status=='pending'"
-                                        class="label label-primary">{{row.status}}</label>
-                                    <label *ngIf="row.status=='declined'"
-                                        class="label label-warning">{{row.status}}</label>
-                                    <label *ngIf="row.status=='active'"
-                                        class="label label-primary">{{row.status}}</label>
-                                    <label *ngIf="row.status=='inactive'"
-                                        class="label label-warning">{{row.status}}</label>
+                                    <label *ngIf="row.status=='pending'" class="label label-primary">{{row.status}}</label>
+                                    <label *ngIf="row.status=='declined'" class="label label-warning">{{row.status}}</label>
+                                    <label *ngIf="row.status=='active'" class="label label-primary">{{row.status}}</label>
+                                    <label *ngIf="row.status=='inactive'" class="label label-warning">{{row.status}}</label>
 
                                 </td>
                             </ng-container>
@@ -229,8 +200,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
 
-                                    <button mat-icon-button color="primary" (click)="viewUser()"
-                                        aria-label="Example icon button with a home icon">
+                                    <button mat-icon-button color="primary" (click)="viewUser()" aria-label="Example icon button with a home icon">
                                         <mat-icon [ngStyle]="{'color':'blue'}">visibility</mat-icon>
                                     </button>
                                 </td>
@@ -239,8 +209,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
 
-                                    <button mat-icon-button color="primary" (click)="accept()"
-                                        aria-label="Example icon button with a home icon">
+                                    <button mat-icon-button color="primary" (click)="accept()" aria-label="Example icon button with a home icon">
                                         <mat-icon [ngStyle]="{'color':'green'}">check</mat-icon>
                                         <!-- <i class="fa fa-calendar" aria-hidden="true"></i> -->
 
@@ -251,8 +220,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
 
-                                    <button mat-icon-button color="primary" (click)="deactivate()"
-                                        aria-label="Example icon button with a home icon">
+                                    <button mat-icon-button color="primary" (click)="deactivate()" aria-label="Example icon button with a home icon" [disabled]="element.status=='inactive'">
                                         <i class="fa fa-user-times" aria-hidden="true"></i>
                                         <!-- <mat-icon [ngStyle]="{'color':'green'}">indeterminate_check_box</mat-icon> -->
                                     </button>
@@ -262,11 +230,11 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
 
-                                    <button mat-icon-button color="primary" (click)="deactivate()"
-                                        aria-label="Example icon button with a home icon">
-                                        <mat-icon [ngStyle]="{'color':'green'}">how_to_reg </mat-icon>
+                                    <button mat-icon-button color="success" (click)="activate()" aria-label="Example icon button with a home icon" [disabled]="element.status=='active'">
+                                        <mat-icon>how_to_reg </mat-icon>
                                         <!-- <i class='fas fa-user-minus'>fa-user-minus</i> -->
-
+                                        <!-- {{element.status=='active'}} -->
+                                        <!-- <i class="fa fa-user-times" aria-hidden="true"></i> -->
                                     </button>
                                 </td>
                             </ng-container>
@@ -274,8 +242,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
 
-                                    <button mat-icon-button color="primary" (click)="decline()"
-                                        aria-label="Example icon button with a home icon">
+                                    <button mat-icon-button color="primary" (click)="decline()" aria-label="Example icon button with a home icon">
                                         <mat-icon [ngStyle]="{'color':'orange'}">close</mat-icon>
                                     </button>
                                 </td>
@@ -285,8 +252,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
 
-                                    <button mat-icon-button color="primary" (click)="deleteUser()"
-                                        aria-label="Example icon button with a home icon">
+                                    <button mat-icon-button color="primary" (click)="deleteUser()" aria-label="Example icon button with a home icon">
                                         <mat-icon [ngStyle]="{'color':'red'}">delete</mat-icon>
                                     </button>
                                 </td>
@@ -294,8 +260,7 @@
 
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                                [ngClass]="{highlighted: selectedRowIndex == row.id}" (click)="getRecord(row)"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{highlighted: selectedRowIndex == row.id}" (click)="getRecord(row)"></tr>
 
                             <!-- Row shown when there is no matching data. -->
                             <tr class="mat-row" *matNoDataRow>
@@ -305,8 +270,7 @@
                         </mat-table>
 
 
-                        <mat-paginator [pageSizeOptions]="[5,6,7,8,9,10,15,20, 25,50, 100]"
-                            aria-label="Select page of users"></mat-paginator>
+                        <mat-paginator [pageSizeOptions]="[5,6,7,8,9,10,15,20, 25,50, 100]" aria-label="Select page of users"></mat-paginator>
                     </div>
                     <!-- <button mat-raised-button (click)="exporter.exportTable('xlsx', {fileName:'test', sheet: 'sheet_name', Props: {Author: 'Talha'}})">Excel</button> -->
 
