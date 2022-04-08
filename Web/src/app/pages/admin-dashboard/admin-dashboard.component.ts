@@ -65,7 +65,6 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getFarmerChartData() {
-    console.log('Running.........................................................')
     this.userService.getActiveUsers('farmer').subscribe(data => {
       this.farmersactive = data.map(e => {
         return {
@@ -85,24 +84,29 @@ export class AdminDashboardComponent implements OnInit {
         let val = this.monthlyRegisteredFarmers.get(dm);
         this.monthlyRegisteredFarmers.set(dm, ++val);
       })
+      var keys=Array.from(this.monthlyRegisteredFarmers.keys()).sort();
+      var values=[];
+      keys.forEach(a=>{
+        values.push(this.monthlyRegisteredFarmers.get(a));
+      })
 
-      console.log(this.monthlyRegisteredFarmers);
 
-      this.array = Array.from(this.monthlyRegisteredFarmers.values());
+      // this.array = Array.from(this.monthlyRegisteredFarmers.values());
       let i = 0;
-      for (i = 1; i < this.array.length; i++) {
-        this.array[i] += this.array[i - 1];
+      for (i = 1; i < values.length; i++) {
+        values[i] += values[i - 1];
       }
-      this.farmerChartLabels = Array.from(this.monthlyRegisteredFarmers.keys());
+      this.farmerChartLabels = keys;
       this.farmerChartData = [
-        { data: this.array, label: 'Farmers', backgroundColor: "#3CB371", borderColor: "#008000" },
+        { data: values, label: 'Farmers', backgroundColor: "#3CB371", borderColor: "#008000" },
       ];
       this.isLoaded2 = true;
-      console.log('nnnnnnnnnnnnnnnnnnnnnn' + this.farmerChartData)
     })
   }
 
   getFieldVisitChartData() {
+    var val1;
+    var val2;
     this.fieldVisitService.getAllFieldVisitRequests().subscribe(data => {
       this.fieldvisits = data.map(a => {
         return {
@@ -120,7 +124,11 @@ export class AdminDashboardComponent implements OnInit {
         let month = new Date(v.createdDate).getMonth() + 1;
         let dm = new Date(v.createdDate).getFullYear() + "/" + month;
         this.fieldVisitReqMonthYear.set(dm, 0);
+
       })
+      val1=Array.from(this.fieldVisitMonthYear.keys()).sort();
+      val2=Array.from(this.fieldVisitReqMonthYear.keys()).sort();
+
       this.fieldvisits.forEach(v => {
         if ((v.status == 'processing' || v.status == 'completed') && v.visitDate != undefined) {
 
@@ -135,16 +143,25 @@ export class AdminDashboardComponent implements OnInit {
         let val2 = this.fieldVisitReqMonthYear.get(dm2);
         this.fieldVisitReqMonthYear.set(dm2, ++val2);
       })
+      var val3=[];
+      var val4=[];
+      val1.forEach(v=>{
+        val3.push(this.fieldVisitMonthYear.get(v));
+      })
+      val2.forEach(v=>{
+        val4.push(this.fieldVisitReqMonthYear.get(v));
+      })
+
       console.log(this.fieldVisitMonthYear)
-      this.fieldVisitChartLabels = Array.from(this.fieldVisitMonthYear.keys());
-      let val = Array.from(this.fieldVisitMonthYear.values());
+      this.fieldVisitChartLabels = val1;
+      // let val = Array.from(this.fieldVisitMonthYear.values());
       this.fieldVisitChartData = [
-        { data: val, label: 'Field Visits', backgroundColor: "#3CB371", borderColor: "#008000" },
+        { data: val3, label: 'Field Visits', backgroundColor: "#3CB371", borderColor: "#008000" },
       ];
-      this.fieldVisitReqChartLabels = Array.from(this.fieldVisitReqMonthYear.keys());
-      let valReq = Array.from(this.fieldVisitReqMonthYear.values());
+      this.fieldVisitReqChartLabels = val2;
+      // let valReq = Array.from(this.fieldVisitReqMonthYear.values());
       this.fieldVisitReqChartData = [
-        { data: valReq, label: 'Field Visit Requests', backgroundColor: "#3CB371", borderColor: "#008000" },
+        { data: val4, label: 'Field Visit Requests', backgroundColor: "#3CB371", borderColor: "#008000" },
       ];
       this.isLoaded = true;
 
