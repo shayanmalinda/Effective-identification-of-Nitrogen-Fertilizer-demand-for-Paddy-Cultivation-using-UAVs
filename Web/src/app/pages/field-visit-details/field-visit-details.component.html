@@ -14,16 +14,11 @@
 
 
                 <div class="row">
-                    <div> <label *ngIf="fieldVisit.status=='pending'"
-                            class="label label-warning">{{fieldVisit.status}}</label>
-                        <label *ngIf="fieldVisit.status=='confirmed'"
-                            class="label label-warning">{{fieldVisit.status}}</label>
-                        <label *ngIf="fieldVisit.status=='declined'"
-                            class="label label-warning">{{fieldVisit.status}}</label>
-                        <label *ngIf="fieldVisit.status=='processing'"
-                            class="label label-info">{{fieldVisit.status}}</label>
-                        <label *ngIf="fieldVisit.status=='completed'"
-                            class="label label-success">{{fieldVisit.status}}</label>
+                    <div> <label *ngIf="fieldVisit.status=='pending'" class="label label-warning">{{fieldVisit.status}}</label>
+                        <label *ngIf="fieldVisit.status=='confirmed'" class="label label-warning">{{fieldVisit.status}}</label>
+                        <label *ngIf="fieldVisit.status=='declined'" class="label label-warning">{{fieldVisit.status}}</label>
+                        <label *ngIf="fieldVisit.status=='processing'" class="label label-info">{{fieldVisit.status}}</label>
+                        <label *ngIf="fieldVisit.status=='completed'" class="label label-success">{{fieldVisit.status}}</label>
                     </div>
 
                     <div class="form-group element">
@@ -58,47 +53,9 @@
                         <input type="text" class="form-control" value={{fieldVisit.requestNote}}>
                     </div>
 
-                    <!-- <div class="col-sm-3">
-                        <div class="form-group has-success">
-                            <input type="text" class="form-control form-control-success" id="inputSuccess1" value="Success">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group has-danger">
-                            <input type="text" class="form-control form-control-danger" id="inputDanger1" value="Error">
-                            <div class="form-control-feedback">Sorry, that username's taken. Try another?</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="input-group" [ngClass]="{'input-group-focus':focus===true}">
-                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" (focus)="focus=true" (blur)="focus=false" >
-                            <div class="input-group-append">
-                              <span class="input-group-text" id="basic-addon1"><i class="fa fa-group" aria-hidden="true"></i></span>
-                            </div>
-                        </div>
-                    </div> -->
+
                 </div>
-                <!-- <div *ngIf="fieldVisit.status=='completed'"> // result Summary 
-                    <div class="row sub-title">
-                        <h6>Results Summary</h6>
-                    </div>
-                    <div class="row">
-                        <p class="section1">
-                            Level 1 :&nbsp; 90% <br />
-                            Level 2 : &nbsp; 90%<br />
-                            Level 3 : &nbsp; 90%<br />
-                            Level 4 : &nbsp; 90%</p><br />
 
-
-                    </div>
-                </div> -->
-
-                <!-- <div class="left">
-                    <button *ngIf="this.fieldVisit.status=='completed'"
-                        class="btn btn-outline-default btn-round result" on> View Results</button>
-                    <button class="btn btn-outline-default btn-round update"> View All Visits</button>
-                    <button class="btn btn-outline-default btn-round request"> View All Requests</button>
-                </div> -->
             </div>
         </div>
     </div>

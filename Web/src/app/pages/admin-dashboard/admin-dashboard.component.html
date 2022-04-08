@@ -37,7 +37,104 @@
                 </div>
             </div>
             <div class="motto right">
+                <div class="row" style="padding-left:25px;">
+                    <!-- <div class="col-sm-1"></div> -->
+                    <div style="padding:5px; opacity: 80%; width :16%;">
+                        <mat-card>
+                            <mat-card-content>
+                                <table>
+                                    <tr>
+                                        <td style=" font-weight: bold; "> Provinces </td>
+                                        <td style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px; ">{{this.provinces.size}}</td>
+                                    </tr>
+                                </table>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div style="padding:5px; opacity: 80%; width :16%; height: 15px ">
+                        <mat-card>
+                            <mat-card-content>
+                                <table>
+                                    <tr>
+                                        <td style="font-weight: bold; "> Districts </td>
+                                        <td style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px; ">{{this.districts.size}}</td>
+                                    </tr>
+                                </table>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div style="padding:5px; opacity: 80%; width :16%; height: 15px ">
+                        <mat-card>
+                            <mat-card-content>
+                                <table>
+                                    <tr>
+                                        <td style=" font-weight: bold; "> Divisions </td>
+                                        <td style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px; ">{{this.divisions.size}}</td>
+                                    </tr>
+                                </table>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div style="padding:5px; opacity: 80%; width :16%; height: 15px ">
+                        <mat-card>
+                            <mat-card-content>
+                                <table>
+                                    <tr>
+                                        <td style="font-weight: bold; "> Ag. Officers </td>
+                                        <td style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px; ">{{this.officers.length}}</td>
+                                    </tr>
+                                </table>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div style="padding:5px; opacity: 80%; width :16%; height: 15px ">
+                        <mat-card>
+                            <mat-card-content>
+                                <table>
+                                    <tr>
+                                        <td style="font-weight: bold; "> Farmers </td>
+                                        <td style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px; ">{{this.farmers.length}}</td>
+                                    </tr>
+                                </table>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div style="padding:5px; opacity: 80%; width :16%; height: 15px ">
+                        <mat-card>
+                            <mat-card-content>
+                                <table>
+                                    <tr>
+                                        <td style="font-weight: bold; "> Fields </td>
+                                        <td style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px; ">{{this.farmers.length}}</td>
+                                    </tr>
+                                </table>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+                <div class="row" style="padding-left:25px;">
 
+
+                    <div *ngIf="isLoaded" style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px">
+                        <div style="display: block; ">
+                            <canvas baseChart [datasets]="fieldVisitChartData " [labels]="fieldVisitChartLabels " [options]="fieldVisitChartOptions " [legend]="fieldVisitChartLegend " [chartType]="fieldVisitChartType ">
+                            </canvas>
+                        </div>
+                    </div>
+                    <div *ngIf="isLoaded" style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px">
+                        <div style="display: block; ">
+                            <canvas baseChart [datasets]="fieldVisitReqChartData " [labels]="fieldVisitReqChartLabels " [options]="fieldVisitReqChartOptions " [legend]="fieldVisitReqChartLegend " [chartType]="fieldVisitReqChartType">
+                            </canvas>
+                        </div>
+                    </div>
+
+                    <div *ngIf="isLoaded2" style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px">
+                        <div style="display: block; ">
+                            <canvas baseChart [datasets]="farmerChartData " [labels]="farmerChartLabels " [options]="fieldVisitReqChartOptions " [legend]="farmerChartLegend " [chartType]="farmerChartType">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
