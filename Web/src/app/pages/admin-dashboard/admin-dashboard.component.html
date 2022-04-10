@@ -112,31 +112,49 @@
                         </mat-card>
                     </div>
                 </div>
-                <div class="row" style="padding-left:25px;">
+                <div *ngIf="isLoaded && isLoaded2 && isLoaded3 && isLoaded4" class="row" style="padding-left:25px;">
 
-
-                    <div *ngIf="isLoaded" style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px">
+                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px">
                         <div style="display: block; ">
-                            <canvas baseChart [datasets]="fieldVisitChartData " [labels]="fieldVisitChartLabels " [options]="fieldVisitChartOptions " [legend]="fieldVisitChartLegend " [chartType]="fieldVisitChartType ">
+                            <canvas id="chart4" baseChart [datasets]="nChartData " [labels]="nChartLabels " [options]="fieldVisitChartOptions " [legend]="nChartLegend " [chartType]="nChartType ">
                             </canvas>
                         </div>
                     </div>
-                    <div *ngIf="isLoaded" style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px">
+                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px">
                         <div style="display: block; ">
-                            <canvas baseChart [datasets]="fieldVisitReqChartData " [labels]="fieldVisitReqChartLabels " [options]="fieldVisitReqChartOptions " [legend]="fieldVisitReqChartLegend " [chartType]="fieldVisitReqChartType">
+                            <canvas id="chart5" baseChart [datasets]="nChartData2 " [labels]="nChartLabels2 " [options]="fieldVisitChartOptions " [legend]="nChartLegend2 " [chartType]="nChartType2 ">
                             </canvas>
                         </div>
                     </div>
 
-                    <div *ngIf="isLoaded2" style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px">
+                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px">
                         <div style="display: block; ">
-                            <canvas baseChart [datasets]="farmerChartData " [labels]="farmerChartLabels " [options]="fieldVisitReqChartOptions " [legend]="farmerChartLegend " [chartType]="farmerChartType">
+                            <canvas id="chart3" baseChart [datasets]="farmerChartData " [labels]="farmerChartLabels " [options]="fieldVisitChartOptions " [legend]="farmerChartLegend " [chartType]="farmerChartType">
                             </canvas>
                         </div>
                     </div>
+                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px">
+                        <div style="display: block; ">
+                            <canvas id="chart2" baseChart [datasets]="fieldVisitReqChartData " [labels]="fieldVisitReqChartLabels " [options]="fieldVisitChartOptions " [legend]="fieldVisitReqChartLegend " [chartType]="fieldVisitReqChartType">
+                            </canvas>
+                        </div>
+                    </div>
+                    <!-- <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px">
+                        <div style="display: block; ">
+                            <canvas id="chart1" baseChart [datasets]="fieldVisitChartData " [labels]="fieldVisitChartLabels " [options]="fieldVisitChartOptions " [legend]="fieldVisitChartLegend " [chartType]="fieldVisitChartType ">
+                            </canvas>
+                        </div>
+                    </div> -->
+
+
+
+
+
                 </div>
-            </div>
-        </div>
+                <!-- <div class="row" style="padding-left:25px;">
 
+                </div> -->
+            </div>
+
+        </div>
     </div>
-</div>
