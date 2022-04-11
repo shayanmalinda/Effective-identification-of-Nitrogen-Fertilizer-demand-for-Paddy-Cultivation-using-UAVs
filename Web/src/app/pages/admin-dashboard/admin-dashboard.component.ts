@@ -25,6 +25,7 @@ export class AdminDashboardComponent implements OnInit {
   districts = new Set();
   divisions = new Set();
   farmersactive: User[];
+  officersactive: User[];
   fieldData: FieldData[];
   farmers: UserTemp[];
   fieldvisits: FieldVisitReqTemp[];
@@ -33,6 +34,7 @@ export class AdminDashboardComponent implements OnInit {
   fieldVisitMonthYear = new Map<string, any>();
   fieldVisitReqMonthYear = new Map<string, any>();
   monthlyRegisteredFarmers = new Map<string, any>();
+  monthlyRegisteredofficers = new Map<string, any>();
   nLevelCountsMap = new Map<number, any>();
   nLevelCountsMap2 = new Map<string, any>();
   nLevelCountsMap3 = new Map<string, any>();
@@ -50,35 +52,32 @@ export class AdminDashboardComponent implements OnInit {
 
   constructor(private router: Router, private userService: UserService, private fieldDataService: FieldDataService, private fieldVisitService: FieldVisitService) { }
 
-  public fieldVisitChartOptions = {
+  public options = {
     scaleShowVerticalLines: false,
     responsive: true
   };
   fieldVisitChartLabels;
-  fieldVisitChartType = 'line';
-  fieldVisitChartLegend = true;
+  lineChart = 'line';
   fieldVisitChartData;
   fieldVisitReqChartLabels;
-  fieldVisitReqChartType = 'line';
-  fieldVisitReqChartLegend = true;
   fieldVisitReqChartData;
   farmerChartLabels;
-  farmerChartType = 'line';
-  farmerChartLegend = true;
   farmerChartData;
+  officerChartLabels;
+  officerChartData;
+  reqChartLabels;
+  doughnut = 'doughnut';
+  reqChartData;
   nChartLabels;
-  nChartType = 'pie';
-  nChartLegend = true;
   nChartData;
   nChartLabels2;
-  nChartType2 = 'line';
-  nChartLegend2 = true;
   nChartData2;
   isLoaded = false;
   isLoaded2 = false;
   isLoaded3 = false;
   loadCharts = false;
   isLoaded4 = false;
+  isLoaded5 = false;
 
 
   ngOnInit() {
@@ -87,8 +86,9 @@ export class AdminDashboardComponent implements OnInit {
     this.getFieldVisitChartData();
     this.getNLevelData();
     this.getNLevelChangingData();
-
+    this.getofficerChartData();
   }
+
   getNLevelChangingData() {
     this.fieldDataService.getAllFieldData().subscribe(data => {
 
@@ -224,10 +224,52 @@ export class AdminDashboardComponent implements OnInit {
 
     })
   }
+  getofficerChartData() {
+    this.userService.getActiveUsers('agricultural officer').subscribe(data => {
+      this.officersactive = data.map(e => {
+        return {
+          ...e.payload.doc.data() as {},
+        } as User;
+      })
+
+      this.officersactive.forEach(v => {
+        let month = new Date(v.createdDate).getMonth() + 1;
+        let dm = new Date(v.createdDate).getFullYear() + "/" + month;
+        this.monthlyRegisteredofficers.set(dm, 0);
+      })
+       console.log(this.monthlyRegisteredofficers)
+      this.officersactive.forEach(v => {
+        let month = new Date(v.createdDate).getMonth() + 1;
+        let dm = new Date(v.createdDate).getFullYear() + "/" + month;
+        let val = this.monthlyRegisteredofficers.get(dm);
+        this.monthlyRegisteredofficers.set(dm, ++val);
+      })
+      var keys = Array.from(this.monthlyRegisteredofficers.keys()).sort();
+      var values = [];
+      keys.forEach(a => {
+        values.push(this.monthlyRegisteredofficers.get(a));
+      })
+      console.log(this.monthlyRegisteredofficers.values())
+
+
+      // this.array = Array.from(this.monthlyRegisteredFarmers.values());
+      let i = 0;
+      for (i = 1; i < values.length; i++) {
+        values[i] += values[i - 1];
+      }
+      this.officerChartLabels = keys;
+      this.officerChartData = [
+        { data: values, label: 'Officers'},
+      ];
+      this.isLoaded5= true;
+
+    })
+  }
 
   getFieldVisitChartData() {
     var val1;
     var val2;
+    var countsForbarChart=[0,0,0,0];
     this.fieldVisitService.getAllFieldVisitRequests().subscribe(data => {
       this.fieldvisits = data.map(a => {
         return {
@@ -249,7 +291,17 @@ export class AdminDashboardComponent implements OnInit {
         this.fieldVisitReqMonthYear.set(dm, 0);
         this.fieldVisitMonthYear.set(dm, 0);
         this.allDates.set(dm,0);
-
+ 
+        //for Bar chart
+        if(v.status == 'processing' || v.status == 'confirmed'){
+          countsForbarChart[1]++;
+        }else if(v.status == 'pending'){
+          countsForbarChart[0]++;
+        }else if(v.status == 'declined'){
+          countsForbarChart[3]++;
+        }else if(v.status == 'completed'){
+          countsForbarChart[2]++;
+        }
 
       })
      
@@ -293,7 +345,11 @@ export class AdminDashboardComponent implements OnInit {
 
       ];
 
-      //// Set Average divisional counts
+      //// Set bar chart 
+      this.reqChartLabels=['Pending','In Progress','Completed','Declined'];
+      this.reqChartData = [
+        { data: countsForbarChart, label: 'Field Visits'},
+      ];
 
       this.isLoaded = true;
 
