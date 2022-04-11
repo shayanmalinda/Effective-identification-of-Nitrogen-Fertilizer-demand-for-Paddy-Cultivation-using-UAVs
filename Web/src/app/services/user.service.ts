@@ -14,10 +14,12 @@ export class UserService {
   getActiveUsers(userRole) {
     return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', '==', 'active')).snapshotChanges();
   }
-  
+
   getUsers(userRole, type) {
     if (userRole == 'officer')
       userRole = 'agricultural officer';
+    if (type == 'active_count')
+      return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', '==', 'active')).snapshotChanges();
 
     if (type == 'request')
       return this.fireStore.collection('Users', ref => ref.where('userRole', '==', userRole).where('status', 'in', ['pending', 'declined'])).snapshotChanges();

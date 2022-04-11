@@ -12,6 +12,8 @@ export class FieldDataService {
 
   constructor(private fireStore : AngularFirestore, private http : HttpClient) { }
 
+  
+
   getFieldData(fieldData: FieldData) {
     // console.log(fieldVisitTemp.fieldId);
     return this.fireStore.collection('TestingFieldData', ref => ref.where('longitude', '==', fieldData.longitude).where('latitude', '==' , fieldData.latitude).where('requestId', '==', fieldData.requestId)).snapshotChanges();
@@ -35,5 +37,9 @@ export class FieldDataService {
 
   getFieldDataUsingRequestId(fieldData : FieldData){
     return this.fireStore.collection('TestingFieldData', ref => ref.where('requestId', '==', fieldData.requestId)).snapshotChanges();
+  }
+
+  getAllFieldData(){
+    return this.fireStore.collection('FieldData').snapshotChanges();
   }
 }

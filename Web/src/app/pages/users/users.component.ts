@@ -157,6 +157,13 @@ export class UsersComponent implements OnInit {
 
     // })
   }
+  activate() {
+    // this.userService.changeUserStatus(this.user.id, 'inactive')
+    // this.fieldService.getFieldofFarmer(this.user.id).subscribe(data => {  
+    this.userService.changeuserActivation(this.user.id, this.field, 'active');
+
+    // })
+  }
   decline() {
     this.userService.changeUserStatus(this.user.id, 'declined');
   }

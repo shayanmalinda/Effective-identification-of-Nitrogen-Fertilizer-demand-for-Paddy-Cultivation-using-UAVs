@@ -23,8 +23,8 @@
 .container {
     justify-content: flex-start;
     align-items: flex-start;
-    background-color: rgba(115, 158, 138, 0.5);
     padding: 0;
+    background-color: rgba(115, 158, 138, 0.5);
     margin: 0;
     margin-top: 90px;
     min-height: 100%;

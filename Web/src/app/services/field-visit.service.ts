@@ -13,6 +13,10 @@ export class FieldVisitService {
 
   constructor(private fireStore: AngularFirestore) { }
 
+  getAllFieldVisitRequests() {
+    return this.fireStore.collection('FieldRequests').valueChanges();
+  }
+
   getFieldVisitRequests(fieldId: String) {
     return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)).valueChanges();
   }
