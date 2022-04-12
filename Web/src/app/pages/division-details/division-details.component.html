@@ -2,118 +2,152 @@
 
     <div class="page-header section-dark" style="background-image: url('./assets/img/paddy field.jpg')">
         <div class="filter"></div>
-        <div class="section profile-content">
+        <div class="section profile-content" style=" margin-top: 100px;        ">
             <div class="container">
-                <div class="owner">
-
-                    <div class="name">
-                        <h6>{{user.division}} Division</h6><br />
-                    </div>
-                </div>
                 <div class="row">
+                    <div style="width: 30%;">
+                        <div class="owner">
 
-                    <div class="form-group element">
-                        <label class="name">Officer </label>
-                        <label class="name">{{user.firstName}} {{user.lastName}}</label>
-
-                        <!-- <input type="text" class="form-control" value={{field.registrationNumber}}> -->
-                    </div>
-
-                    <div class="form-group element">
-                        <label class="name">Contact No </label>
-                        <label class="name">{{user.phone}}</label>
-
-                    </div>
-
-                    <div class="form-group element">
-                        <label class="name">Province </label>
-                        <label class="name">{{user.province}}</label>
-                    </div>
-
-                    <div class="form-group element">
-                        <label class="name">District </label>
-                        <label class="name">{{user.district}}</label>
-                    </div>
-
-                    <!-- <div class="form-group element">
-                        <label class="name">Division : </label>
-                        <input type="text" class="form-control" value={{user.division}}>
-                    </div> -->
-                    <div class="form-group element">
-                        <label class="name">No of Farmers </label>
-                        <label class="name">{{farmerCount}}</label>
-                        <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Farmers</button> -->
-
-                    </div>
-
-
-                    <div class="form-group element">
-                        <label class="name">No of fields</label>
-                        <label class="name">{{fieldCount}}</label>
-                        <label class="name"></label>
-                        <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Fields</button> -->
-
-                    </div>
-                    <div class="form-group element">
-                        <label class="name">Field visit requests</label>
-                        <label class="name" *ngIf="this.counts.length==0">{{this.counts.length}}</label>
-                        <div class="row counts" *ngIf="this.counts.length!=0">
-                            <ul>
-                                <li *ngFor="let index of this.counts">
-                                    <label *ngIf="index.status=='pending'" class="label label-warning">{{ index.status
-                                        }} -
-                                        {{index.count}}</label>
-                                    <label *ngIf="index.status=='confirmed'" class="label label-primary">{{ index.status
-                                        }} -
-                                        {{index.count}}</label>
-                                    <label *ngIf="index.status=='declined'" class="label label-success">{{ index.status
-                                        }} -
-                                        {{index.count}}</label>
-                                </li>
-                            </ul>
+                            <div class=" name ">
+                                <h6>{{user.division}} Division</h6><br />
+                            </div>
                         </div>
-                        <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Field Visits</button> -->
+                        <div class="row ">
 
-                    </div>
+                            <div class="form-group element ">
+                                <label class="name ">Officer </label>
+                                <label class="name ">{{user.firstName}} {{user.lastName}}</label>
 
-                </div>
+                                <!-- <input type="text " class="form-control " value={{field.registrationNumber}}> -->
+                            </div>
+
+                            <div class="form-group element ">
+                                <label class="name ">Contact No </label>
+                                <label class="name ">{{user.phone}}</label>
+
+                            </div>
+
+                            <div class="form-group element ">
+                                <label class="name ">Province </label>
+                                <label class="name ">{{user.province}}</label>
+                            </div>
+
+                            <div class="form-group element ">
+                                <label class="name ">District </label>
+                                <label class="name ">{{user.district}}</label>
+                            </div>
+
+                            <!-- <div class="form-group element ">
+                                    <label class="name ">Division : </label>
+                                    <input type="text " class="form-control " value={{user.division}}>
+                                </div> -->
+                            <div class="form-group element ">
+                                <label class="name ">No of Farmers </label>
+                                <label class="name ">{{farmerCount}}</label>
+                                <!-- <button (click)="viewFieldVisits() " class="btn btn-outline-default btn-round request "> View Farmers</button> -->
+
+                            </div>
 
 
-                <div class="row">
+                            <div class="form-group element ">
+                                <label class="name ">No of fields</label>
+                                <label class="name ">{{fieldCount}}</label>
+                                <label class="name "></label>
+                                <!-- <button (click)="viewFieldVisits() " class="btn btn-outline-default btn-round request "> View Fields</button> -->
 
-                    <div class="form-group element">
-                        <label class="name">Field visits</label>
-                        <label class="name" *ngIf="this.counts.length==0">{{this.counts.length}}</label>
-                        <div class="row counts">
-                            <ul>
-                                <li *ngFor="let index of this.counts">
+                            </div>
+                            <div class="form-group element ">
+                                <label class="name ">Field visit requests</label>
+                                <label class="name " *ngIf="this.counts.length==0 ">{{this.counts.length}}</label>
+                                <div class="row counts " *ngIf="this.counts.length!=0 ">
+                                    <ul>
+                                        <li *ngFor="let index of this.counts ">
+                                            <label *ngIf="index.status=='pending' " class="label label-warning ">{{ index.status
+                                                    }} -
+                                                    {{index.count}}</label>
+                                            <label *ngIf="index.status=='confirmed' " class="label label-primary ">{{ index.status
+                                                    }} -
+                                                    {{index.count}}</label>
+                                            <label *ngIf="index.status=='declined' " class="label label-success ">{{ index.status
+                                                    }} -
+                                                    {{index.count}}</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- <button (click)="viewFieldVisits() " class="btn btn-outline-default btn-round request "> View Field Visits</button> -->
 
-                                    <label *ngIf="index.status=='processing'" class="label label-success">{{
-                                        index.status }} -
-                                        {{index.count}}</label>
-                                    <label *ngIf="index.status=='completed'" class="label label-success">{{ index.status
-                                        }} -
-                                        {{index.count}}</label>
-                                </li>
-                            </ul>
+                            </div>
+
                         </div>
-                        <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Field Visits</button> -->
+                        <div class="row ">
+
+                            <div class="form-group element ">
+                                <label class="name ">Field visits</label>
+                                <label class="name " *ngIf="this.counts.length==0 ">{{this.counts.length}}</label>
+                                <div class="row counts ">
+                                    <ul>
+                                        <li *ngFor="let index of this.counts ">
+
+                                            <label *ngIf="index.status=='processing' " class="label label-success ">{{
+                                                    index.status }} -
+                                                    {{index.count}}</label>
+                                            <label *ngIf="index.status=='completed' " class="label label-success ">{{ index.status
+                                                    }} -
+                                                    {{index.count}}</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- <button (click)="viewFieldVisits() " class="btn btn-outline-default btn-round request "> View Field Visits</button> -->
+
+                            </div>
+
+                        </div>
+                        <div class="left ">
+                            <!-- <button class="btn btn-outline-default btn-round update "> Update</button>
+                                <button class="btn btn-outline-default btn-round cancel "> Cancel</button> -->
+                            <!-- <button (click)="viewFieldVisits() " class="btn btn-outline-default btn-round request "> View Field
+                                    Requests</button> -->
+                            <!-- <button (click)="viewFieldVisits() " class="btn btn-outline-default btn-round request "> View N 
+                                    Concentrations</button> -->
+
+                        </div>
+                    </div>
+                    <div>
+                        <div *ngIf="isLoaded1 &&  isLoaded2 && isLoaded3 && isLoaded4" class="row " style="padding-left:25px; ">
+                            <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px">
+                                <div style="display: block; ">
+                                    <canvas id="chart4" baseChart [datasets]="nChartData " [labels]="nChartLabels " [options]="options " [legend]="'true' " [chartType]="'doughnut' ">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px ">
+                                <div style="display: block; ">
+                                    <canvas id="chart5 " baseChart [datasets]="nChartData2 " [labels]="nChartLabels2 " [options]="options " [legend]="'true'  " [chartType]="'line' ">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div style=" opacity: 100%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px ">
+                                <div style="display: block; ">
+                                    <canvas id="chart3 " baseChart [datasets]="farmerChartData " [labels]="farmerChartLabels " [options]="options " [legend]=" 'true' " [chartType]=" 'line' ">
+                                    </canvas>
+                                </div>
+                            </div>
+
+                            <div style=" opacity: 100%; width:30%; height:30% ;background-color: rgb(253, 253, 253); margin:10px ">
+                                <div style="display: block; ">
+                                    <canvas id="chart5 " baseChart [datasets]="reqChartData " [labels]="reqChartLabels " [options]="options " [legend]="'true'  " [chartType]="'doughnut'  ">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div style=" opacity: 100%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px ">
+                                <div style="display: block; ">
+                                    <canvas id="chart2 " baseChart [datasets]="fieldVisitReqChartData " [labels]="fieldVisitReqChartLabels " [options]="options " [legend]="'true'  " [chartType]="'line'  ">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
-
-                </div>
-
-
-                <div class="left">
-                    <!-- <button class="btn btn-outline-default btn-round update"> Update</button>
-                    <button class="btn btn-outline-default btn-round cancel"> Cancel</button> -->
-                    <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View Field
-                        Requests</button> -->
-                    <!-- <button (click)="viewFieldVisits()" class="btn btn-outline-default btn-round request"> View N 
-                        Concentrations</button> -->
-
                 </div>
             </div>
         </div>
-    </div>
-</div>

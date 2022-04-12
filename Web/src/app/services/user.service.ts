@@ -151,6 +151,7 @@ export class UserService {
   }
 
   getFarmersofDivision(division) {
+    console.log(division+"//////////////////////////")
     return this.fireStore.collection('Users', ref => ref.where('userRole', '==', 'farmer').where('status', '==', 'active').where('division', '==', division)).snapshotChanges();
   }
 
