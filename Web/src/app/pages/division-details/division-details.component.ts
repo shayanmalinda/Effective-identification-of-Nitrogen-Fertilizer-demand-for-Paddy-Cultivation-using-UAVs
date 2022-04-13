@@ -210,19 +210,19 @@ export class DivisionsDetailsComponent implements OnInit {
               var o = 0;
               if (f.level == 2) {
                 var val = this.nLevelCountsMap2.get(key);
-                this.nLevelCountsMap2.set(key, val++);
+                this.nLevelCountsMap2.set(key, val+1);
               }
               else if (f.level == 3) {
                 var val = this.nLevelCountsMap3.get(key);
-                this.nLevelCountsMap3.set(key, val++);
+                this.nLevelCountsMap3.set(key, val+1);
               }
               else if (f.level == 4) {
                 var val = this.nLevelCountsMap4.get(key);
-                this.nLevelCountsMap4.set(key, val++);
+                this.nLevelCountsMap4.set(key, val+1);
               }
               else if (f.level == 5) {
                 var val = this.nLevelCountsMap5.get(key);
-                this.nLevelCountsMap5.set(key, val++);
+                this.nLevelCountsMap5.set(key, val+1);
               }
               console.log(o)
             })
