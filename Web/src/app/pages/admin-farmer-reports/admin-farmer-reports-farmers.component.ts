@@ -42,6 +42,7 @@ export class AdminFarmerReportsComponent implements OnInit {
   provinceCount;
   districtCount;
   divisionCount;
+  tempCounts = [0, 0, 0, 0];
   reportType = "Farmers Report";
   changedWeekDetails: LCCWeekDetails[];
   lccMainDetails: LCCMainDetails;
@@ -66,6 +67,7 @@ export class AdminFarmerReportsComponent implements OnInit {
   optionSelected;
   proviceSelected;
   displayedColumns;
+  name;
   selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District'];
   // dataSource: MatTableDataSource<User>;
 
@@ -74,12 +76,21 @@ export class AdminFarmerReportsComponent implements OnInit {
     this.optionSelected = 'Provinces'
     this.displayedColumns = ['key', 'value'];
     this.role = this.router.getCurrentNavigation().extras.state.role;
-    if (this.role == 'farmer')
+    if (this.role == 'farmer') {
       this.documentName = "Farmers Report";
-    else if (this.role == 'agricultural officer')
+      this.name = "Farmers";
+    }
+
+    else if (this.role == 'agricultural officer') {
       this.documentName = "Agricultural Officer Report";
-    else if (this.role == 'field')
+      this.name = "Officers";
+
+    }
+    else if (this.role == 'field') {
       this.documentName = "Field Report";
+      this.name = "Fields";
+
+    }
 
   }
   clearTable() {
@@ -104,6 +115,10 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.values);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.farmerCount = this.tempCounts[0];
+      this.provinceCount = this.tempCounts[1];
+      this.districtCount = this.tempCounts[2];
+      this.divisionCount = this.tempCounts[3];
     } else if (this.optionSelected == 'Districts') {
       this.districts.forEach((value: number, key: string) => {
         console.log(key, value);
@@ -117,15 +132,26 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.values);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.farmerCount = this.tempCounts[0];
+      this.provinceCount = this.tempCounts[1];
+      this.districtCount = this.tempCounts[2];
+      this.divisionCount = this.tempCounts[3];
     }
     else if (this.optionSelected == 'Province') {
       this.clearTable();
       this.list = this.divisionalData.provinces;
+      this.farmerCount = 0;
+      this.provinceCount = 0;
+      this.districtCount = 0;
+      this.divisionCount = 0;
 
     }
     else if (this.optionSelected == 'District') {
       this.clearTable();
-
+      this.farmerCount = 0;
+      this.provinceCount = 0;
+      this.districtCount = 0;
+      this.divisionCount = 0;
       this.list = this.divisionalData.provinces;
       let val, i;
       let allDistricts = [];
@@ -169,12 +195,17 @@ export class AdminFarmerReportsComponent implements OnInit {
       });
 
       console.log(this.values)
+      this.farmerCount = this.tempCounts[0];
+      this.provinceCount = this.tempCounts[1];
+      this.districtCount = this.tempCounts[2];
+      this.divisionCount = this.tempCounts[3];
       this.dataSource = new MatTableDataSource(this.values);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
 
 
     }
+
   }
 
   onValueSelected(value: any) {
@@ -186,27 +217,50 @@ export class AdminFarmerReportsComponent implements OnInit {
     this.users.forEach(e => {
       if (e.province == value)
         this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
-      if (e.district == value) this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+      if (e.district == value)
+        this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
     })
 
-    if (this.optionSelected == 'Province')
+    if (this.optionSelected == 'Province') {
+      var fCount = 0;
       this.districts.forEach((value: number, key: string) => {
         console.log(key, value);
-
+        fCount += value;
         this.values.push({
           key: key,
           value: value
         });
+        console.log('Keyyyyy' + key)
+        this.users.forEach(e => {
+
+          if (e.district == key)
+            this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+        })
       });
-    else
+      this.provinceCount = 1;
+      this.districtCount = this.values.length;
+      this.farmerCount = fCount;
+      this.divisionCount = this.divisions.size;
+
+    }
+
+    else {
+      var fCount = 0;
       this.divisions.forEach((value: number, key: string) => {
         console.log(key, value);
-
+        fCount += value;
         this.values.push({
           key: key,
           value: value
         });
       });
+      this.provinceCount = 1;
+      this.districtCount = 1;
+      this.divisionCount = this.values.length;
+      this.farmerCount = fCount;
+
+    }
+
     console.log(this.values)
     this.dataSource = new MatTableDataSource(this.values);
     this.dataSource.paginator = this.paginator;
@@ -223,6 +277,7 @@ export class AdminFarmerReportsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.tempCounts = [0, 0, 0, 0];
 
     if (this.role == 'farmer') {
       this.userService.getActiveUsers(this.role).subscribe(data => {
@@ -262,6 +317,10 @@ export class AdminFarmerReportsComponent implements OnInit {
             this.provinceCount = this.provinces.size;
             this.districtCount = this.districts.size;
             this.divisionCount = this.divisions.size;
+            this.tempCounts[0] = this.users.length;
+            this.tempCounts[1] = this.provinces.size;
+            this.tempCounts[2] = this.districts.size;
+            this.tempCounts[3] = this.divisions.size;
 
             this.onOptionSelected('Provinces');
           })
@@ -289,6 +348,10 @@ export class AdminFarmerReportsComponent implements OnInit {
         this.provinceCount = this.provinces.size;
         this.districtCount = this.districts.size;
         this.divisionCount = this.divisions.size;
+        this.tempCounts[0] = this.users.length;
+        this.tempCounts[1] = this.provinces.size;
+        this.tempCounts[2] = this.districts.size;
+        this.tempCounts[3] = this.divisions.size;
 
         this.onOptionSelected('Provinces');
 
@@ -312,6 +375,10 @@ export class AdminFarmerReportsComponent implements OnInit {
         this.provinceCount = this.provinces.size;
         this.districtCount = this.districts.size;
         this.divisionCount = this.divisions.size;
+        this.tempCounts[0] = this.users.length;
+        this.tempCounts[1] = this.provinces.size;
+        this.tempCounts[2] = this.districts.size;
+        this.tempCounts[3] = this.divisions.size;
 
         this.onOptionSelected('Provinces');
 
