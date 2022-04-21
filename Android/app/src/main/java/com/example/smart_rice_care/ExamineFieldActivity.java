@@ -42,7 +42,7 @@ public class ExamineFieldActivity extends AppCompatActivity {
 
     String requestId, fieldId, farmerId;
     EditText etDelayTime;
-    Button btStart, btClearData, btAddBoundaries;
+    Button btStart, btClearData, btAddBoundaries, btInsertData;
     ProgressBar progressBar;
     Boolean isStateBusy = false;
     TextView tvBoundaryCount;
@@ -62,6 +62,7 @@ public class ExamineFieldActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         btAddBoundaries = findViewById(R.id.btAddBoundries);
         tvBoundaryCount = findViewById(R.id.tvBoundaryCount);
+        btInsertData = findViewById(R.id.btInsertData);
 
 
         Intent getIntent = getIntent();
@@ -77,6 +78,17 @@ public class ExamineFieldActivity extends AppCompatActivity {
 
         }
         tvBoundaryCount.setText("No. of Boundary Points : "+ polygonList.size());
+
+        btInsertData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExamineFieldActivity.this, InsertData.class);
+                intent.putExtra("requestId", requestId);
+                intent.putExtra("fieldId", farmerId);
+                intent.putExtra("farmerId", farmerId);
+                startActivity(intent);
+            }
+        });
 
 
         if(!isStateBusy){

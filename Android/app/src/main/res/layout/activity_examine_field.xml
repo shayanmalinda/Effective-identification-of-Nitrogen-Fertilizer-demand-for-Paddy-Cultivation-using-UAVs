@@ -156,6 +156,16 @@
 
         </LinearLayout>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btInsertData"
+            android:text="Insert Data"
+            android:layout_gravity="center"
+            >
+
+        </Button>
+
     </LinearLayout>
 
 </LinearLayout>
