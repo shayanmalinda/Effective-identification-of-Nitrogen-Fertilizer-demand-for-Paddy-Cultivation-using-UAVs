@@ -110,6 +110,7 @@ export class UserProfileComponent implements OnInit {
   // }
 
   processFile(imageInput: any) {
+    console.log('filing')
 
     const file: File = imageInput.files[0];
     const reader = new FileReader();

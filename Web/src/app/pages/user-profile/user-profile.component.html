@@ -1,9 +1,9 @@
 <div class="wrapper">
     <div class="page-header section-dark" style="background-image: url('assets/img/paddy one.jpg')">
         <div class="filter"></div>
-        <div class="content-center" style="height: auto; margin:35px; width: 800px;">
+        <div class="content-center" style="height: auto; margin:35px; width: 800px; ">
 
-            <div class=" container " style="padding-bottom: 0px; margin-bottom: 0px; " [ngStyle]="{'height':type === 'request' ? '350px' : '500px'}">
+            <div class=" container " style="padding-bottom: 0px; margin-bottom: 0px;  " [ngStyle]="{'height':type === 'request' ? '390px' : '500px'}">
                 <div class="owner " *ngIf=" type!='request' ">
 
                     <div class="avatar ">
@@ -20,8 +20,8 @@
                         <h2 class="title " aria-disabled style="font-size: x-large; ">{{fullName}}<br></h2>
                     </div>
                 </div>
-                <div class="container owner " style="align-content: center; " *ngIf=" type=='request' ">
-                    <h2 class="title " aria-disabled style="font-size: x-large; ">Officer Request<br></h2>
+                <div class="container owner " style="align-content: center; margin-top: -40px; margin-bottom: 40px;" *ngIf=" type=='request' ">
+                    <h2 style="background-color: black; " aria-disabled style="font-size: x-large; ">Aggricultural Officer Request<br></h2>
                 </div>
                 <div class="row ">
                     <div class="col-lg-6 col-sm-6 " style="padding-bottom: 0px; height: 0px;width:600px; ">

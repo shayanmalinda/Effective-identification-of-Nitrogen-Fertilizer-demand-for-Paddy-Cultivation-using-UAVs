@@ -13,13 +13,10 @@
                     <div class="title-brand" *ngIf="type==''"><label>Divisions</label></div>
                     <div class="title-brand2" *ngIf="type!=''"><label>Divisional Reports</label></div>
                     <div class="filters">
-                        <div class="input-group form-group-no-border transparent"
-                            [ngClass]="{'input-group-focus':focus1===true}">
+                        <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}">
                             <div class="dropdown">
 
-                                <select class="dropbtn" name="dropdownProvince" id="dropdownProvince"
-                                    [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)"
-                                    style="padding-top: 0px; ">
+                                <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding-top: 0px; ">
 
                                     <option [value]="none" disabled selected hidden>Province</option>
                                     <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
@@ -27,13 +24,10 @@
                                 <!-- </div> -->
                             </div>
                         </div>
-                        <div class="input-group form-group-no-border transparent"
-                            [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; ">
+                        <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; ">
                             <div class="dropdown">
 
-                                <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict"
-                                    [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)"
-                                    [value]="none" style="padding-top: 0px; ">
+                                <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding-top: 0px; ">
 
                                     <option [value]="none" disabled selected hidden>District</option>
                                     <option *ngFor="let district of districts" [value]="district">{{district}}</option>
@@ -41,13 +35,10 @@
                                 <!-- </div> -->
                             </div>
                         </div>
-                        <div class="input-group form-group-no-border transparent"
-                            [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px;">
+                        <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px;">
                             <div class="dropdown">
 
-                                <select class="dropbtn" name="dropdownDivision" id="dropdownDivision"
-                                    [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)"
-                                    style="padding-top: 0px;">
+                                <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding-top: 0px;">
 
                                     <option [value]="none" disabled selected hidden>Division</option>
                                     <option *ngFor="let division of divisions" [value]="division">{{division}}</option>
@@ -57,10 +48,18 @@
                         </div>
                     </div>
                     <div class="labels" *ngIf="type==''">
-                        <label class="label label-info right">Diviisons : {{users.length}}</label>&nbsp;
+                        <label class="label label-info right">Divisons : {{users.length}}</label>&nbsp;
 
                     </div>
 
+                    <div class="labels" *ngIf="type==''">
+                        <label class="label label-info right">Districts : {{districtSet.size}}</label>&nbsp;
+
+                    </div>
+                    <div class="labels" *ngIf="type==''">
+                        <label class="label label-info right">Provinces : {{provinceSet.size}}</label>&nbsp;
+
+                    </div>
 
                     <mat-form-field appearance="standard">
                         <mat-label class="background">Filter</mat-label>
@@ -112,8 +111,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
 
-                                    <button mat-icon-button color="primary" (click)="viewDistrictDetails()"
-                                        aria-label="Example icon button with a home icon">
+                                    <button mat-icon-button color="primary" (click)="viewDistrictDetails()" aria-label="Example icon button with a home icon">
                                         <mat-icon [ngStyle]="{'color':'blue'}">visibility</mat-icon>
                                     </button>
                                 </td>
@@ -122,16 +120,14 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                                 <td mat-cell *matCellDef="let element">
 
-                                    <button mat-icon-button color="primary" (click)="viewReport()"
-                                        aria-label="Example icon button with a home icon">
+                                    <button mat-icon-button color="primary" (click)="viewReport()" aria-label="Example icon button with a home icon">
                                         <i class="fa fa-file-text" aria-hidden="true"></i>
                                     </button>
                                 </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                                [ngClass]="{highlighted: selectedRowIndex == row.id}" (click)="getRecord(row)"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{highlighted: selectedRowIndex == row.id}" (click)="getRecord(row)"></tr>
 
                             <!-- Row shown when there is no matching data. -->
                             <tr class="mat-row" *matNoDataRow>
@@ -139,8 +135,7 @@
                             </tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[5,6,7,8,9,10,15,20, 25,50, 100]"
-                            aria-label="Select page of users"></mat-paginator>
+                        <mat-paginator [pageSizeOptions]="[5,6,7,8,9,10,15,20, 25,50, 100]" aria-label="Select page of users"></mat-paginator>
                     </div>
 
 

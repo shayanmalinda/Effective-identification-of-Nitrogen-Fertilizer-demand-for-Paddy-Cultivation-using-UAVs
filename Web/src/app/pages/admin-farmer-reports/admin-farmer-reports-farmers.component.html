@@ -9,7 +9,7 @@
         <br>
         <br>
         <br>
-        <div class="row content">
+        <!-- <div class="row content">
             <div class="col-sm-12 col-lg-12" style="margin-top: 15px;">
                 <div class="row">
                     <div class="col-sm-4"></div>
@@ -19,7 +19,7 @@
                     <div class="col-sm-4 "></div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div id="upperDetailsArea" class="row content">
             <div class="col-sm-12 col-lg-12">
                 <table>
@@ -39,6 +39,35 @@
                     </tr> -->
                     <tr>
                         <td colspan="1"></td>
+                    </tr>
+
+
+                    <tr>
+                        <td colspan="12" style="color: white; font-weight: bold;">
+                            <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}">
+                                <div class="dropdown">
+                                    <label *ngIf="name=='Officers'" style="color: rgb(48, 47, 47); margin-left: 90px;">Report Type</label>
+                                    <label *ngIf="name!='Officers'" style="color: rgb(48, 47, 47); margin-left: 110px;">Report Type</label>
+
+                                    <select class="dropbtn" style="margin-left: 90px;" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="optionSelected" (ngModelChange)="onOptionSelected($event)">
+
+                                        <option [value]="none" disabled selected hidden>Province</option>
+                                        <option *ngFor="let selection of selections" [value]="selection">{{selection}}
+                                        </option>
+                                        </select>
+                                    <select *ngIf="show()" class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="proviceSelected" (ngModelChange)="onValueSelected($event)">
+
+                                    <option [value]="none" disabled selected hidden>Select</option>
+                                    <option *ngFor="let province of list" [value]="province" >{{province}}
+                                    </option>
+                                    </select>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1"></td>
                         <td colspan="10" style="background-color: gray; text-align: left; padding: 10px; color: white; font-weight: bold;">Summary</td>
                         <td colspan="1"></td>
                     </tr>
@@ -51,7 +80,7 @@
 
                             <table>
                                 <tr>
-                                    <td colspan="4" class="sumtd">Farmers : </td>
+                                    <td colspan="4" class="sumtd">{{name}} : </td>
                                     <td colspan="2" class="sumtd" style="text-align: center;">{{farmerCount}}</td>
                                     <td colspan="4" class="sumtd"> Provinces : </td>
                                     <td colspan="2" class="sumtd" style="text-align: center;">{{provinceCount}}</td>
@@ -83,33 +112,7 @@
                             <td colspan="10" style="background-color: gray; text-align: left; padding: 10px; color: white; font-weight: bold;">Details</td>
                             <td colspan="1"></td>
                         </tr>
-                        <tr>
-                            <td colspan="1"></td>
-                        </tr>
 
-
-                        <tr>
-                            <td colspan="12" style="color: white;">
-                                <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}">
-                                    <div class="dropdown">
-
-                                        <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="optionSelected" (ngModelChange)="onOptionSelected($event)">
-
-                                        <option [value]="none" disabled selected hidden>Province</option>
-                                        <option *ngFor="let selection of selections" [value]="selection">{{selection}}
-                                        </option>
-                                        </select>
-                                        <select *ngIf="show()" class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="proviceSelected" (ngModelChange)="onValueSelected($event)" style="padding-top: 0px;">
-
-                                            <option [value]="none" disabled selected hidden>Select</option>
-                                            <option *ngFor="let province of list" [value]="province">{{province}}
-                                            </option>
-                                        </select>
-                                        <!-- </div> -->
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
                         <tr>
                             <td colspan="1"></td>
                         </tr>
