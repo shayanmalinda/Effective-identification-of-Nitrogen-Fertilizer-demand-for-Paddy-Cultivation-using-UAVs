@@ -98,6 +98,10 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.documentName = "Field Visit Request Report";
       this.name = "Requests";
 
+    }else if (this.role == 'field visit') {
+      this.documentName = "Field Visit Report";
+      this.name = "Field Visits";
+
     }
 
   }
@@ -212,7 +216,7 @@ export class AdminFarmerReportsComponent implements OnInit {
     var select = value.toString();
     this.districts.clear();
     this.divisions.clear();
-    if (this.role == 'field visit req') {
+    if (this.role == 'field visit req' || this.role=='field visit') {
       this.fieldvisitReqs.forEach(e => {
         console.log(e.province)
         if (e.province == value)
@@ -238,7 +242,7 @@ export class AdminFarmerReportsComponent implements OnInit {
           key: key,
           value: value
         });
-        if (this.role == 'field visit req') {
+        if (this.role == 'field visit req' || this.role=='field visit') {
           this.fieldvisitReqs.forEach(e => {
 
             if (e.district == key)
@@ -398,6 +402,42 @@ export class AdminFarmerReportsComponent implements OnInit {
           this.fieldService.getField(temp.fieldId).subscribe(data => {
             var tfield = data.payload.data() as Field;
             if (tfield.status == "active") {
+              temp.division = tfield.division;
+              temp.district = tfield.district;
+              temp.province = tfield.province;
+              this.fieldvisitReqs.push(temp)
+
+              //add counts
+              this.provinces.set(temp.province, this.provinces.get(temp.province) == null ? 1 : this.provinces.get(temp.province) + 1);
+              this.districts.set(temp.district, this.districts.get(temp.district) == null ? 1 : this.districts.get(temp.district) + 1);
+              this.divisions.set(temp.division, this.divisions.get(temp.division) == null ? 1 : this.divisions.get(temp.division) + 1);
+
+            }
+            this.farmerCount = this.fieldvisitReqs.length;
+            this.provinceCount = this.provinces.size;
+            this.districtCount = this.districts.size;
+            this.divisionCount = this.divisions.size;
+            this.tempCounts[0] = this.fieldvisitReqs.length;
+            this.tempCounts[1] = this.provinces.size;
+            this.tempCounts[2] = this.districts.size;
+            this.tempCounts[3] = this.divisions.size;
+
+            this.onOptionSelected('Provinces');
+          })
+          // return temp;
+        })
+      });
+    }else if (this.role == 'field visit') {
+      this.fieldvisitReqs = [];
+      this.fieldVisitService.getAllFieldVisitRequests().subscribe(data1 => {
+        this.totalFarmers = data1.length;
+        data1.forEach(e => {
+          var temp = {
+            ...e as FieldVisitReqTemp
+          }
+          this.fieldService.getField(temp.fieldId).subscribe(data => {
+            var tfield = data.payload.data() as Field;
+            if (tfield.status == "active" && (temp.status=="processing" || temp.status=="completed")) {
               temp.division = tfield.division;
               temp.district = tfield.district;
               temp.province = tfield.province;
