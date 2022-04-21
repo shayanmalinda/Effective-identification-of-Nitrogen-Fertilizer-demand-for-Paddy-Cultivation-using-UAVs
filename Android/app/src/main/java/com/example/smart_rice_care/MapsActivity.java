@@ -73,7 +73,7 @@ public class MapsActivity extends FragmentActivity implements
 
     private String requestId;
     private Integer plantAge;
-    private Long fertilizer2, fertilizer3, fertilizer4;
+    private Double fertilizer2, fertilizer3, fertilizer4;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private UiSettings mUiSettings;
@@ -355,10 +355,10 @@ public class MapsActivity extends FragmentActivity implements
 
                                                                     for (QueryDocumentSnapshot document : task3.getResult()) {
                                                                         ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
-                                                                        HashMap<String, Long> weekData = data.get(plantAge-1);
-                                                                        fertilizer2 = weekData.get("levelTwo");
-                                                                        fertilizer3 = weekData.get("levelThree");
-                                                                        fertilizer4 = weekData.get("levelFour");
+                                                                        HashMap<String, Double> weekData = data.get(plantAge-1);
+                                                                        fertilizer2 = Double.parseDouble(String.valueOf(weekData.get("levelTwo")));
+                                                                        fertilizer3 = Double.parseDouble(String.valueOf(weekData.get("levelThree")));
+                                                                        fertilizer4 = Double.parseDouble(String.valueOf(weekData.get("levelFour")));
                                                                     }
                                                                 }
                                                                 else{
@@ -372,10 +372,10 @@ public class MapsActivity extends FragmentActivity implements
                                                 // Get specific LCC details
                                                 for (QueryDocumentSnapshot document : task2.getResult()) {
                                                     ArrayList<HashMap> data = (ArrayList<HashMap>) document.get("weekDetails");
-                                                    HashMap<String, Long> weekData = data.get(plantAge-1);
-                                                    fertilizer2 = weekData.get("levelTwo");
-                                                    fertilizer3 = weekData.get("levelThree");
-                                                    fertilizer4 = weekData.get("levelFour");
+                                                    HashMap<String, Double> weekData = data.get(plantAge-1);
+                                                    fertilizer2 = Double.parseDouble(String.valueOf(weekData.get("levelTwo")));
+                                                    fertilizer3 = Double.parseDouble(String.valueOf(weekData.get("levelThree")));
+                                                    fertilizer4 = Double.parseDouble(String.valueOf(weekData.get("levelFour")));
                                                 }
                                             }
                                         }
