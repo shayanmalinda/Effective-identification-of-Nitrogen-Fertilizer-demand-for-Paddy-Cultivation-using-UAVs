@@ -162,6 +162,7 @@
             android:id="@+id/btInsertData"
             android:text="Insert Data"
             android:layout_gravity="center"
+            android:visibility="gone"
             >
 
         </Button>
