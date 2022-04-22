@@ -139,7 +139,7 @@ export class UsersComponent implements OnInit {
     console.log(this.user)
 
     if (this.type == 'request')
-      this.router.navigate(['/farmer-request'], { state: { user: this.user, id: this.user.id, type: this.type } });
+      this.router.navigate(['/officer-request'], { state: { user: this.user, id: this.user.id, type: this.type } });
     else
       this.router.navigate(['/farmer-profile'], { state: { user: this.user, id: this.user.id, type: this.type } });
 
@@ -154,6 +154,13 @@ export class UsersComponent implements OnInit {
     // this.userService.changeUserStatus(this.user.id, 'inactive')
     // this.fieldService.getFieldofFarmer(this.user.id).subscribe(data => {  
     this.userService.changeuserActivation(this.user.id, this.field, 'inactive');
+
+    // })
+  }
+  activate() {
+    // this.userService.changeUserStatus(this.user.id, 'inactive')
+    // this.fieldService.getFieldofFarmer(this.user.id).subscribe(data => {  
+    this.userService.changeuserActivation(this.user.id, this.field, 'active');
 
     // })
   }

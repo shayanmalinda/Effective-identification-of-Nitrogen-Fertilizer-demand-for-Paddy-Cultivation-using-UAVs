@@ -35,6 +35,7 @@ import { UserReportsFieldsComponent } from './pages/user-reports-fields/user-rep
 import { UserReportsRequestsComponent } from './pages/user-reports-requests/user-reports-requests.component';
 import { UserReportsVisitsComponent } from './pages/user-reports-visits/user-reports-visits.component';
 import { AdminFarmerReportsComponent } from './pages/admin-farmer-reports/admin-farmer-reports-farmers.component';
+import { AdminFieldVisitReportsComponent } from './pages/admin-field-visit-reports/admin-field-visit-reports.component';
 
 
 
@@ -54,9 +55,10 @@ const routes: Routes =[
     { path: 'agricultural-officers',      component: UsersComponent },
     { path: 'admin-dashboard',      component: AdminDashboardComponent },
     { path: 'requests',      component: UsersComponent },
-    { path: 'farmer-request',     component: UserProfileComponent },
+    { path: 'officer-request',     component: UserProfileComponent },
     { path: 'officer-requests',     component: UsersComponent },
     { path: 'officers',     component: UsersComponent, canActivate : [AuthGuard]  },
+    { path: 'admin-officers',     component: UsersComponent},
     { path: 'lcc-details',      component: LccDetailsComponent},
     { path: 'field-visits',      component: FieldVisitsComponent},
     { path: 'field-visit-details',      component: FieldVisitDetailsComponent},
@@ -82,11 +84,8 @@ const routes: Routes =[
     { path: 'admin-farmer-reports',       component: AdminFarmerReportsComponent},
     { path: 'admin-officer-reports',       component: AdminFarmerReportsComponent},
     { path: 'admin-field-reports',       component: AdminFarmerReportsComponent},
-
-
-
-
-
+    { path: 'admin-field-visit-req-reports',       component: AdminFieldVisitReportsComponent},
+    { path: 'admin-field-visit-reports',       component: AdminFieldVisitReportsComponent},
 
 
 ];

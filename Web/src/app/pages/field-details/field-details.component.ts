@@ -19,6 +19,8 @@ export class FieldDetailsComponent implements OnInit {
   counts: any[];
   valueChanged;
 
+
+
   constructor(private router: Router, private fieldVisitService: FieldVisitService) {
     this.field = this.router.getCurrentNavigation().extras.state.field;
 

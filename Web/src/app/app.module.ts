@@ -46,6 +46,7 @@ import { MaterialModule } from './material/material.module';
 import { AuthGuard } from './services/auth/auth.guard';
 import { AgmCoreModule } from '@agm/core';
 import { UserViewMapComponent } from './pages/user-view-map/user-view-map.component';
+import { MyBarChartComponent } from './my-bar-chart/my-bar-chart.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { UserViewMapComponent } from './pages/user-view-map/user-view-map.compon
     UserFieldHistoryComponent,
     MetaDataComponent,
     UserViewMapComponent,
+    MyBarChartComponent,
   ],
   imports: [
     MatTableExporterModule,

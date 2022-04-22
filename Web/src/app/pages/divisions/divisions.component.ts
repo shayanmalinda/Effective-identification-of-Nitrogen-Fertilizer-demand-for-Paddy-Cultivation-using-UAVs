@@ -60,14 +60,17 @@ export class DivisionsComponent implements OnInit {
   districtSelected: string;
   divisionSelected: string;
   filterPredicate;
+  provinceSet = new Set();
+  districtSet = new Set();
+
   constructor(private renderer: Renderer2, private userService: UserService, private fieldService: FieldService, private router: Router) {
     this.role = this.router.getCurrentNavigation().extras.state.role;
     this.type = this.router.getCurrentNavigation().extras.state.type;
     console.log(this.type == '')
     if (this.type == '')
-      this.displayedColumns = ['province', 'district','division',  'view'];
+      this.displayedColumns = ['province', 'district', 'division', 'view'];
     else
-      this.displayedColumns = ['province', 'district','division',  'viewReport'];
+      this.displayedColumns = ['province', 'district', 'division', 'viewReport'];
 
     this.loadLocationFilters();
   }
@@ -352,7 +355,11 @@ export class DivisionsComponent implements OnInit {
           id: e.payload.doc.id,
         } as UserTemp;
       })
-      console.log(this.users)
+      this.users.forEach(a => {
+        this.provinceSet.add(a.province)
+        this.districtSet.add(a.district)
+      })
+
       this.dataSource = new MatTableDataSource(this.users);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

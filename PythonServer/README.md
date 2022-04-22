@@ -1,4 +1,12 @@
-### Input to the /dtprocessfire [POST] url should be formatted as following key-value pairs :
+## Please go through the following steps to configure the web server
+
+1. Go to your terminal and type the following command:
+
+    $ pip3 install Flask
+    
+2. Install OpenCV,ScikitLearn,Numpy, Pandas,Piexif,Pillow python libraries providing the installation commands like above
+
+### Input to the /svcprocessfire [POST] url should be formatted as following key-value pairs :
 
 #### image => the image that is captured to get the color level
 #### field_data => the json file containing the following data format :
