@@ -34,10 +34,10 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   division = "Sample Division";
   role; type;
   users: UserTemp[];
+  usersForActive: UserTemp[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
 
   dataSource: MatTableDataSource<Counts>;
   farmerCount;
@@ -70,6 +70,9 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   provincesInitial: Map<string, number> = new Map<string, number>();
   districtsInitial: Map<string, number> = new Map<string, number>();
   divisionsInitial: Map<string, number> = new Map<string, number>();
+  provincesActive: Map<string, number> = new Map<string, number>();
+  districtsActive: Map<string, number> = new Map<string, number>();
+  divisionsActive: Map<string, number> = new Map<string, number>();
   values: Counts[] = [];
   none;
   focus1;
@@ -115,14 +118,14 @@ export class AdminFieldVisitReportsComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.values);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    
+
     var province = value.toString();
     if (this.timeSelected == 'Month') {
       this.periods = this.months;
-      this.period="Select";
+      this.period = "Select";
     } else if (this.timeSelected == 'Year') {
       this.periods = this.years;
-      this.period="Select";
+      this.period = "Select";
     } else if (this.timeSelected == "All") {
       this.fieldvisitReqs = [];  //NS
       this.fieldvisitReqsInitial = [];
@@ -137,6 +140,22 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   onOptionSelected(value: any) {
     this.values = [];
     // this.timeSelected = "All";
+    //get Active div,pro,dis
+    this.userService.getActiveUsers('agricultural officer').subscribe(data => {
+      this.usersForActive = data.map(e => {
+        return {
+          ...e.payload.doc.data() as {},
+          id: e.payload.doc.id,
+        } as UserTemp;
+      })
+
+      this.usersForActive.forEach(e => {
+        this.provincesActive.set(e.province, this.provincesActive.get(e.province) == null ? 1 : this.provincesActive.get(e.province) + 1);
+        this.districtsActive.set(e.district, this.districtsActive.get(e.district) == null ? 1 : this.districtsActive.get(e.district) + 1);
+        this.divisionsActive.set(e.division, this.divisionsActive.get(e.division) == null ? 1 : this.divisionsActive.get(e.division) + 1);
+      })
+    });
+    // other 
 
     if (this.optionSelected == 'Provinces') {
       this.provinces.forEach((value: number, key: string) => {
@@ -175,7 +194,7 @@ export class AdminFieldVisitReportsComponent implements OnInit {
     }
     else if (this.optionSelected == 'Province') {
       this.clearTable();
-      this.list = this.divisionalData.provinces;
+      this.list = Array.from(this.provincesActive.keys()).sort();;
       this.farmerCount = 0;
       this.provinceCount = 0;
       this.districtCount = 0;
@@ -188,16 +207,34 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       this.provinceCount = 0;
       this.districtCount = 0;
       this.divisionCount = 0;
-      this.list = this.divisionalData.provinces;
-      let val, i;
-      let allDistricts = [];
-      this.divisionalData.provinces.forEach(pro => {
-        val = this.divisionalData["" + pro + ""];
-        for (i = 0; i < val.length; i++) {
-          allDistricts.push(val[i]);
-        }
-      })
-      this.list = allDistricts.sort();
+      // this.list = this.divisionalData.provinces;
+      // let val, i;
+      // let allDistricts = [];
+      // this.divisionalData.provinces.forEach(pro => {
+      //   val = this.divisionalData["" + pro + ""];
+      //   for (i = 0; i < val.length; i++) {
+      //     allDistricts.push(val[i]);
+      //   }
+      // })
+      this.list = Array.from(this.districtsActive.keys()).sort();;
+
+    } else if (this.optionSelected == 'Division') {
+      this.clearTable();
+      this.farmerCount = 0;
+      this.provinceCount = 0;
+      this.districtCount = 0;
+      this.divisionCount = 0;
+      // this.list = this.divisionalData.provinces;
+      // let val, i;
+      // let allDistricts = [];
+      // this.divisionalData.provinces.forEach(pro => {
+      //   val = this.divisionalData["" + pro + ""];
+      //   for (i = 0; i < val.length; i++) {
+      //     allDistricts.push(val[i]);
+      //   }
+      // })
+      this.list = Array.from(this.divisionsActive.keys()).sort();;
+
     }
     else if (this.optionSelected == 'Divisions') { // has to implement
       this.clearTable();
@@ -242,7 +279,7 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   onMonthorYearSelected(value: any) {
     console.log("Month Yr Selected")
     var select = value.toString();
- 
+
     //should filter dates from the month and year seperatly
     this.fieldvisitReqs = [];
     this.provinces.clear();
