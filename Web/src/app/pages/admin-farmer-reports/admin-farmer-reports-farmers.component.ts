@@ -52,6 +52,7 @@ export class AdminFarmerReportsComponent implements OnInit {
   havePreviousRecords: boolean = false;
   divisionalData = divisionalDataFile;
   list;
+  periods;
   userField: Field[];
   approved = 0;
   declined = 0;
@@ -59,6 +60,7 @@ export class AdminFarmerReportsComponent implements OnInit {
   all = 0;
   fields: Field[];
   fieldvisitReqs: FieldVisitReqTemp[];
+  fieldvisitReqsInitial: FieldVisitReqTemp[];
   passedUser: User;
   length = false;
   totalFarmers;
@@ -71,13 +73,19 @@ export class AdminFarmerReportsComponent implements OnInit {
   optionSelected;
   proviceSelected;
   displayedColumns;
+  timeSelected;
   name;
   selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District'];
+  timeSelections = ['All', 'Year', 'Month'];
+  years= new Set(); 
+  months = new Set(); 
+  column;
   // dataSource: MatTableDataSource<User>;
 
   constructor(private router: Router, private userService: UserService, private datepipe: DatePipe, private userFarmersService: UserFarmersService, private fieldService: FieldService, private fieldVisitService: FieldVisitService) {
     this.date = this.datepipe.transform((new Date), 'MMM d, y').toString();
     this.optionSelected = 'Provinces'
+    this.timeSelected = 'All';
     this.displayedColumns = ['key', 'value'];
     this.role = this.router.getCurrentNavigation().extras.state.role;
     if (this.role == 'farmer') {
@@ -98,7 +106,7 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.documentName = "Field Visit Request Report";
       this.name = "Requests";
 
-    }else if (this.role == 'field visit') {
+    } else if (this.role == 'field visit') {
       this.documentName = "Field Visit Report";
       this.name = "Field Visits";
 
@@ -111,6 +119,17 @@ export class AdminFarmerReportsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
+  onTimeOptionSelected(value: any) {
+    this.values = [];
+    var province = value.toString();
+    if (this.timeSelected == 'Month') {
+      this.periods=this.months;
+    }else if(this.timeSelected == 'Year') {
+      this.periods=this.years;
+    }
+  }
+
   onOptionSelected(value: any) {
     this.values = [];
     var province = value.toString();
@@ -129,6 +148,8 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.provinceCount = this.tempCounts[1];
       this.districtCount = this.tempCounts[2];
       this.divisionCount = this.tempCounts[3];
+      this.column="Province";
+
     } else if (this.optionSelected == 'Districts') {
       this.districts.forEach((value: number, key: string) => {
         this.values.push({
@@ -144,6 +165,8 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.provinceCount = this.tempCounts[1];
       this.districtCount = this.tempCounts[2];
       this.divisionCount = this.tempCounts[3];
+      this.column="District";
+
     }
     else if (this.optionSelected == 'Province') {
       this.clearTable();
@@ -206,9 +229,16 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.values);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.column="Division";
+
 
 
     }
+
+  }
+  onMonthorYearSelected(value: any) {
+    var select = value.toString();
+    //should filter dates from the month and year seperatly
 
   }
 
@@ -216,7 +246,7 @@ export class AdminFarmerReportsComponent implements OnInit {
     var select = value.toString();
     this.districts.clear();
     this.divisions.clear();
-    if (this.role == 'field visit req' || this.role=='field visit') {
+    if (this.role == 'field visit req' || this.role == 'field visit') {
       this.fieldvisitReqs.forEach(e => {
         console.log(e.province)
         if (e.province == value)
@@ -242,7 +272,7 @@ export class AdminFarmerReportsComponent implements OnInit {
           key: key,
           value: value
         });
-        if (this.role == 'field visit req' || this.role=='field visit') {
+        if (this.role == 'field visit req' || this.role == 'field visit') {
           this.fieldvisitReqs.forEach(e => {
 
             if (e.district == key)
@@ -260,6 +290,8 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.districtCount = this.values.length;
       this.farmerCount = fCount;
       this.divisionCount = this.divisions.size;
+      this.column="District";
+
 
     }
 
@@ -276,17 +308,24 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.districtCount = 1;
       this.divisionCount = this.values.length;
       this.farmerCount = fCount;
-
+      this.column="Division";
     }
 
     this.dataSource = new MatTableDataSource(this.values);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
 
   show() {
     if (this.optionSelected == 'Provinces' || this.optionSelected == 'Districts' || this.optionSelected == 'Divisions') {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  show2() {
+    if (this.timeSelected == 'All') {
       return false
     } else {
       return true
@@ -393,6 +432,7 @@ export class AdminFarmerReportsComponent implements OnInit {
       });
     } else if (this.role == 'field visit req') {
       this.fieldvisitReqs = [];
+      this.fieldvisitReqsInitial = [];
       this.fieldVisitService.getAllFieldVisitRequests().subscribe(data1 => {
         this.totalFarmers = data1.length;
         data1.forEach(e => {
@@ -406,6 +446,13 @@ export class AdminFarmerReportsComponent implements OnInit {
               temp.district = tfield.district;
               temp.province = tfield.province;
               this.fieldvisitReqs.push(temp)
+              this.fieldvisitReqsInitial.push(temp)
+
+              var date=new Date(temp.createdDate);
+              this.years.add(date.getFullYear().toString())
+              var monthYr=(date.getMonth()+1).toString()+" / "+date.getFullYear().toString();
+              this.months.add(monthYr)
+
 
               //add counts
               this.provinces.set(temp.province, this.provinces.get(temp.province) == null ? 1 : this.provinces.get(temp.province) + 1);
@@ -427,8 +474,9 @@ export class AdminFarmerReportsComponent implements OnInit {
           // return temp;
         })
       });
-    }else if (this.role == 'field visit') {
+    } else if (this.role == 'field visit') {
       this.fieldvisitReqs = [];
+      this.fieldvisitReqsInitial = [];
       this.fieldVisitService.getAllFieldVisitRequests().subscribe(data1 => {
         this.totalFarmers = data1.length;
         data1.forEach(e => {
@@ -437,11 +485,16 @@ export class AdminFarmerReportsComponent implements OnInit {
           }
           this.fieldService.getField(temp.fieldId).subscribe(data => {
             var tfield = data.payload.data() as Field;
-            if (tfield.status == "active" && (temp.status=="processing" || temp.status=="completed")) {
+            if (tfield.status == "active" && (temp.status == "processing" || temp.status == "completed")) {
               temp.division = tfield.division;
               temp.district = tfield.district;
               temp.province = tfield.province;
               this.fieldvisitReqs.push(temp)
+              this.fieldvisitReqsInitial.push(temp)
+              var date=new Date(temp.visitDate);
+              this.years.add(date.getFullYear().toString())
+              var monthYr=(date.getMonth()+1).toString()+" / "+date.getFullYear().toString();
+              this.months.add(monthYr)
 
               //add counts
               this.provinces.set(temp.province, this.provinces.get(temp.province) == null ? 1 : this.provinces.get(temp.province) + 1);
@@ -459,8 +512,8 @@ export class AdminFarmerReportsComponent implements OnInit {
             this.tempCounts[3] = this.divisions.size;
 
             this.onOptionSelected('Provinces');
+            this.column="Province";
           })
-          // return temp;
         })
       });
     }
