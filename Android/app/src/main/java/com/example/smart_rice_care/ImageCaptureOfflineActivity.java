@@ -248,7 +248,9 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
     }
 
     private File captureImage(ImageCapture imgCap) {
-        shutterSound.start();
+
+//        success.start();
+//        shutterSound.start();
         responseWaiting = true;
         long currentTimestamp = System.currentTimeMillis();
         String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + folderName + "/" + currentTimestamp + ".jpg";
@@ -257,6 +259,7 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onImageSaved(@NonNull @NotNull File file) {
+//                success.start();
                 fileNames.add(currentTimestamp);
                 tvColorLevel.setText("Saving...");
                 ExifInterface exif = null;
@@ -271,12 +274,13 @@ public class ImageCaptureOfflineActivity extends AppCompatActivity implements Se
                     System.out.println("testing=== "+ "suceess");
                     exif.saveAttributes();
                     String msg = "Pic captured at " + file.getAbsolutePath();
-                    shutterSound.pause();
+//                    shutterSound.pause();
                     success.start();
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
                             tvColorLevel.setText("Ready...");
+//                            success.pause();
                             responseWaiting = false;
                         }
                     }, 2000);

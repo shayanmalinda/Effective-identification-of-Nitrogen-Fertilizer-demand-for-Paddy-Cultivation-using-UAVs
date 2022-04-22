@@ -33,6 +33,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Intent myIntent = new Intent(HomeActivity.this, SignInActivity.class);
+        startActivity(myIntent);
 
         btn_signin = findViewById(R.id.button_signin);
         btn_signup = findViewById(R.id.button_signup);
