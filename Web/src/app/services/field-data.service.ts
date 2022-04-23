@@ -33,6 +33,7 @@ export class FieldDataService {
 
   getLevelFromServer(fd : FormData){
 <<<<<<< HEAD
+<<<<<<< HEAD
     // return this.http.post<number>('http://192.168.1.100:5000/process', fd);    //changed on 22nd march for dongle
     return this.http.post<number>('http://192.168.1.100:5000/svcprocess', fd);    //changed on 4th april for wifi
     // return this.http.post<number>('http://172.20.10.2:5000/process', fd);    //changed on 4th april for mobile phone data
@@ -41,6 +42,11 @@ export class FieldDataService {
     return this.http.post<number>('http://192.168.1.101:5000/svcprocess', fd);    //changed on 4th april for wifi
     // return this.http.post<number>('http://172.20.10.2:5000/svcprocess', fd);    //changed on 4th april for mobile phone data
 >>>>>>> 0f4fe394ca9dfce38d43bfa673a8b2f82b2ebd82
+=======
+    // return this.http.post<number>('http://192.168.1.100:5000/svcprocess', fd);    //changed on 22nd march for dongle
+    return this.http.post<number>('http://192.168.1.101:5000/svcprocess', fd);    //changed on 4th april for wifi
+    // return this.http.post<number>('http://172.20.10.2:5000/svcprocess', fd);    //changed on 4th april for mobile phone data
+>>>>>>> 3a468bedba3357a03a2b1aeb6c83ff7406c48785
   }
 
   getFieldDataUsingRequestId(fieldData : FieldData){
