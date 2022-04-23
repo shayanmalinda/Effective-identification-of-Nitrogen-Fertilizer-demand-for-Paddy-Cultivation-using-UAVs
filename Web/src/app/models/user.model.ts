@@ -43,5 +43,14 @@ export class UserTemp {
 export class Counts {
     key:string;
     value: number;
-  
+}
+export class Counts2 {
+    key:string;
+    value: number[];
+}
+export class CountsVisit {
+    key:string;
+    processing: number;
+    completed: number;
+    total: number;
 }

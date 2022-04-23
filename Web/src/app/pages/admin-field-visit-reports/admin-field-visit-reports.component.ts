@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Counts } from 'app/models/user.model';
+import { CountsVisit } from 'app/models/user.model';
 import { User, UserCredential, UserTemp } from 'app/models/user.model';
 import { LCCMainDetails, LCCWeekDetails } from 'app/models/lcc.model';
 import { LccService } from 'app/services/lcc.service';
@@ -39,7 +39,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  dataSource: MatTableDataSource<Counts>;
+  dataSource: MatTableDataSource<CountsVisit>;
+
   farmerCount;
   provinceCount;
   districtCount;
@@ -64,16 +65,16 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   passedUser: User;
   length = false;
   totalFarmers;
-  provinces: Map<string, number> = new Map<string, number>();
-  districts: Map<string, number> = new Map<string, number>();
-  divisions: Map<string, number> = new Map<string, number>();
-  provincesInitial: Map<string, number> = new Map<string, number>();
-  districtsInitial: Map<string, number> = new Map<string, number>();
-  divisionsInitial: Map<string, number> = new Map<string, number>();
+  provinces: Map<string, number[]> = new Map<string, number[]>();
+  districts: Map<string, number[]> = new Map<string, number[]>();
+  divisions: Map<string, number[]> = new Map<string, number[]>();
+  provincesInitial: Map<string, number[]> = new Map<string, number[]>();
+  districtsInitial: Map<string, number[]> = new Map<string, number[]>();
+  divisionsInitial: Map<string, number[]> = new Map<string, number[]>();
   provincesActive: Map<string, number> = new Map<string, number>();
   districtsActive: Map<string, number> = new Map<string, number>();
   divisionsActive: Map<string, number> = new Map<string, number>();
-  values: Counts[] = [];
+  values: CountsVisit[] = [];
   none;
   focus1;
   optionSelected;
@@ -92,7 +93,7 @@ export class AdminFieldVisitReportsComponent implements OnInit {
     this.date = this.datepipe.transform((new Date), 'MMM d, y').toString();
     this.optionSelected = 'Provinces'
     this.timeSelected = 'All';
-    this.displayedColumns = ['key', 'value'];
+    this.displayedColumns = ['key', 'processing', 'completed', 'total'];
     this.role = this.router.getCurrentNavigation().extras.state.role;
     if (this.role == 'field visit req') {
       this.documentName = "Field Visit Request Report";
@@ -158,10 +159,12 @@ export class AdminFieldVisitReportsComponent implements OnInit {
     // other 
 
     if (this.optionSelected == 'Provinces') {
-      this.provinces.forEach((value: number, key: string) => {
+      this.provinces.forEach((value: number[], key: string) => {
         this.values.push({
           key: key,
-          value: value
+          processing: value[0],
+          completed: value[1],
+          total: value[2],
         });
       });
 
@@ -175,10 +178,12 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       this.column = "Province";
 
     } else if (this.optionSelected == 'Districts') {
-      this.districts.forEach((value: number, key: string) => {
+      this.districts.forEach((value: number[], key: string) => {
         this.values.push({
           key: key,
-          value: value
+          processing: value[0],
+          completed: value[1],
+          total: value[2],
         });
       });
 
@@ -257,10 +262,12 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       })
       this.list = allDivisions.sort; // add divisions to dropdown
 
-      this.divisions.forEach((value: number, key: string) => {
+      this.divisions.forEach((value: number[], key: string) => {
         this.values.push({
           key: key,
-          value: value
+          processing: value[0],
+          completed: value[1],
+          total: value[2],
         });
       });
 
@@ -277,7 +284,6 @@ export class AdminFieldVisitReportsComponent implements OnInit {
 
   }
   onMonthorYearSelected(value: any) {
-    console.log("Month Yr Selected")
     var select = value.toString();
 
     //should filter dates from the month and year seperatly
@@ -291,17 +297,25 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
       if (this.timeSelected == "Month" && monthYr == select) {
         this.fieldvisitReqs.push(req)
+        if (this.provinces.get(req.province) == null) this.provinces.set(req.province, [0, 0, 0]);
+        if (this.districts.get(req.district) == null) this.districts.set(req.district, [0, 0, 0]);
+        if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0]);
+        
         //add counts
-        this.provinces.set(req.province, this.provinces.get(req.province) == null ? 1 : this.provinces.get(req.province) + 1);
-        this.districts.set(req.district, this.districts.get(req.district) == null ? 1 : this.districts.get(req.district) + 1);
-        this.divisions.set(req.division, this.divisions.get(req.division) == null ? 1 : this.divisions.get(req.division) + 1);
+        this.provinces.set(req.province, [req.status == "processing" ? this.provinces.get(req.province)[0] + 1 : this.provinces.get(req.province)[0], req.status == 'completed' ? this.provinces.get(req.province)[1] + 1 : this.provinces.get(req.province)[1], this.provinces.get(req.province)[2] + 1]);
+        this.districts.set(req.district, [req.status == "processing" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'completed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1], this.districts.get(req.district)[2] + 1]);
+        this.divisions.set(req.division, [req.status == "processing" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'completed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1], this.divisions.get(req.division)[2] + 1]);
 
       } else if (this.timeSelected == "Year" && year == select) {
         this.fieldvisitReqs.push(req)
+        if (this.provinces.get(req.province) == null) this.provinces.set(req.province, [0, 0, 0]);
+        if (this.districts.get(req.district) == null) this.districts.set(req.district, [0, 0, 0]);
+        if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0]);
+        
         //add counts
-        this.provinces.set(req.province, this.provinces.get(req.province) == null ? 1 : this.provinces.get(req.province) + 1);
-        this.districts.set(req.district, this.districts.get(req.district) == null ? 1 : this.districts.get(req.district) + 1);
-        this.divisions.set(req.division, this.divisions.get(req.division) == null ? 1 : this.divisions.get(req.division) + 1);
+        this.provinces.set(req.province, [req.status == "processing" ? this.provinces.get(req.province)[0] + 1 : this.provinces.get(req.province)[0], req.status == 'completed' ? this.provinces.get(req.province)[1] + 1 : this.provinces.get(req.province)[1], this.provinces.get(req.province)[2] + 1]);
+        this.districts.set(req.district, [req.status == "processing" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'completed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1], this.districts.get(req.district)[2] + 1]);
+        this.divisions.set(req.division, [req.status == "processing" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'completed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1], this.divisions.get(req.division)[2] + 1]);
 
       }
 
@@ -318,30 +332,35 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   onValueSelected(value: any) {
     var select = value.toString();
     this.districts.clear();
-    this.divisions.clear();
+    this.divisions.clear(); var p = 0;
     this.fieldvisitReqs.forEach(e => {
-      console.log(e.province)
-      if (e.province == value)
-        this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
-      if (e.district == value)
-        this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+      if (e.province == value) {
+        if (this.districts.get(e.district) == null) this.districts.set(e.district, [0, 0, 0]);
+        this.districts.set(e.district, [e.status == "processing" ? this.districts.get(e.district)[0] + 1 : this.districts.get(e.district)[0], e.status == 'completed' ? this.districts.get(e.district)[1] + 1 : this.districts.get(e.district)[1], this.districts.get(e.district)[2] + 1]);
+      }
+      if (e.district == value) {
+        if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0]); 
+        this.divisions.set(e.division, [e.status == "processing" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'completed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1], this.divisions.get(e.division)[2] + 1]);
+      }
     })
 
-
-
     if (this.optionSelected == 'Province') {
+      this.clearTable();
       var fCount = 0;
-      this.districts.forEach((value: number, key: string) => {
-        fCount += value;
+      this.districts.forEach((value: number[], key: string) => {
+        fCount += value[2]; ////
+        //fCount--;
         this.values.push({
           key: key,
-          value: value
+          processing: value[0],
+          completed: value[1],
+          total: value[2],
         });
         if (this.role == 'field visit req' || this.role == 'field visit') {
           this.fieldvisitReqs.forEach(e => {
 
             if (e.district == key)
-              this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+              this.divisions.set(e.division, [e.status == "processing" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'completed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1], this.divisions.get(e.division)[2] + 1]);
           })
         }
       });
@@ -350,17 +369,17 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       this.farmerCount = fCount;
       this.divisionCount = this.divisions.size;
       this.column = "District";
+    } else {
+      this.clearTable();
 
-
-    }
-
-    else {
       var fCount = 0;
-      this.divisions.forEach((value: number, key: string) => {
-        fCount += value;
+      this.divisions.forEach((value: number[], key: string) => {
+        fCount += value[2];
         this.values.push({
           key: key,
-          value: value
+          processing: value[0],
+          completed: value[1],
+          total: value[2],
         });
       });
       this.provinceCount = 1;
@@ -393,7 +412,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
 
   ngOnInit(): void {
     this.tempCounts = [0, 0, 0, 0];
-    this.fieldvisitReqs = [];
+    this.fieldvisitReqs = []; var c1 = 0; var c2 = 0;
+
 
 
     if (this.role == 'field visit req') {
@@ -419,14 +439,21 @@ export class AdminFieldVisitReportsComponent implements OnInit {
               var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
               this.months.add(monthYr)
 
+              if (this.provinces.get(temp.province) == null) this.provinces.set(temp.province, [0, 0, 0]);
+              if (this.districts.get(temp.district) == null) this.districts.set(temp.district, [0, 0, 0]);
+              if (this.divisions.get(temp.division) == null) this.divisions.set(temp.division, [0, 0, 0]);
+              if (this.provincesInitial.get(temp.province) == null) this.provincesInitial.set(temp.province, [0, 0, 0]);
+              if (this.districtsInitial.get(temp.district) == null) this.districtsInitial.set(temp.district, [0, 0, 0]);
+              if (this.divisionsInitial.get(temp.division) == null) this.divisionsInitial.set(temp.division, [0, 0, 0]);
 
               //add counts
-              this.provinces.set(temp.province, this.provinces.get(temp.province) == null ? 1 : this.provinces.get(temp.province) + 1);
-              this.districts.set(temp.district, this.districts.get(temp.district) == null ? 1 : this.districts.get(temp.district) + 1);
-              this.divisions.set(temp.division, this.divisions.get(temp.division) == null ? 1 : this.divisions.get(temp.division) + 1);
-              this.provincesInitial.set(temp.province, this.provincesInitial.get(temp.province) == null ? 1 : this.provincesInitial.get(temp.province) + 1);
-              this.districtsInitial.set(temp.district, this.districtsInitial.get(temp.district) == null ? 1 : this.districtsInitial.get(temp.district) + 1);
-              this.divisionsInitial.set(temp.division, this.divisionsInitial.get(temp.division) == null ? 1 : this.divisionsInitial.get(temp.division) + 1);
+              this.provinces.set(temp.province, [temp.status == "processing" ? this.provinces.get(temp.province)[0] + 1 : this.provinces.get(temp.province)[0], temp.status == 'completed' ? this.provinces.get(temp.province)[1] + 1 : this.provinces.get(temp.province)[1], this.provinces.get(temp.province)[2] + 1]);
+              this.districts.set(temp.district, [temp.status == "processing" ? this.districts.get(temp.district)[0] + 1 : this.districts.get(temp.district)[0], temp.status == 'completed' ? this.districts.get(temp.district)[1] + 1 : this.districts.get(temp.district)[1], this.districts.get(temp.district)[2] + 1]);
+              this.divisions.set(temp.division, [temp.status == "processing" ? this.divisions.get(temp.division)[0] + 1 : this.divisions.get(temp.division)[0], temp.status == 'completed' ? this.divisions.get(temp.division)[1] + 1 : this.divisions.get(temp.division)[1], this.divisions.get(temp.division)[2] + 1]);
+
+              this.provincesInitial.set(temp.province, [temp.status == "processing" ? this.provincesInitial.get(temp.province)[0] + 1 : this.provincesInitial.get(temp.province)[0], temp.status == 'completed' ? this.provincesInitial.get(temp.province)[1] + 1 : this.provincesInitial.get(temp.province)[1], this.provincesInitial.get(temp.province)[2] + 1]);
+              this.districtsInitial.set(temp.district, [temp.status == "processing" ? this.districtsInitial.get(temp.district)[0] + 1 : this.districtsInitial.get(temp.district)[0], temp.status == 'completed' ? this.districtsInitial.get(temp.district)[1] + 1 : this.districtsInitial.get(temp.district)[1], this.districtsInitial.get(temp.district)[2] + 1]);
+              this.divisionsInitial.set(temp.division, [temp.status == "processing" ? this.divisionsInitial.get(temp.division)[0] + 1 : this.divisionsInitial.get(temp.division)[0], temp.status == 'completed' ? this.divisionsInitial.get(temp.division)[1] + 1 : this.divisionsInitial.get(temp.division)[1], this.divisionsInitial.get(temp.division)[2] + 1]);
 
             }
             this.farmerCount = this.fieldvisitReqs.length;
@@ -467,14 +494,27 @@ export class AdminFieldVisitReportsComponent implements OnInit {
               this.months.add(monthYr)
 
               //add counts
-              this.provinces.set(temp.province, this.provinces.get(temp.province) == null ? 1 : this.provinces.get(temp.province) + 1);
-              this.districts.set(temp.district, this.districts.get(temp.district) == null ? 1 : this.districts.get(temp.district) + 1);
-              this.divisions.set(temp.division, this.divisions.get(temp.division) == null ? 1 : this.divisions.get(temp.division) + 1);
-              this.provincesInitial.set(temp.province, this.provincesInitial.get(temp.province) == null ? 1 : this.provincesInitial.get(temp.province) + 1);
-              this.districtsInitial.set(temp.district, this.districtsInitial.get(temp.district) == null ? 1 : this.districtsInitial.get(temp.district) + 1);
-              this.divisionsInitial.set(temp.division, this.divisionsInitial.get(temp.division) == null ? 1 : this.divisionsInitial.get(temp.division) + 1);
+
+              if (temp.status == 'completed') c1++; else c2++;
+              console.log(c1, "kkkkkkkkkkkkkkkkkk", c2)
+              if (this.provinces.get(temp.province) == null) this.provinces.set(temp.province, [0, 0, 0]);
+              if (this.districts.get(temp.district) == null) this.districts.set(temp.district, [0, 0, 0]);
+              if (this.divisions.get(temp.division) == null) this.divisions.set(temp.division, [0, 0, 0]);
+              if (this.provincesInitial.get(temp.province) == null) this.provincesInitial.set(temp.province, [0, 0, 0]);
+              if (this.districtsInitial.get(temp.district) == null) this.districtsInitial.set(temp.district, [0, 0, 0]);
+              if (this.divisionsInitial.get(temp.division) == null) this.divisionsInitial.set(temp.division, [0, 0, 0]);
+
+              this.provinces.set(temp.province, [temp.status == "processing" ? (this.provinces.get(temp.province)[0] + 1) : this.provinces.get(temp.province)[0], temp.status == 'completed' ? this.provinces.get(temp.province)[1] + 1 : this.provinces.get(temp.province)[1], this.provinces.get(temp.province)[2] + 1]);
+              this.districts.set(temp.district, [temp.status == "processing" ? this.districts.get(temp.district)[0] + 1 : this.districts.get(temp.district)[0], temp.status == 'completed' ? this.districts.get(temp.district)[1] + 1 : this.districts.get(temp.district)[1], this.districts.get(temp.district)[2] + 1]);
+              this.divisions.set(temp.division, [temp.status == "processing" ? this.divisions.get(temp.division)[0] + 1 : this.divisions.get(temp.division)[0], temp.status == 'completed' ? this.divisions.get(temp.division)[1] + 1 : this.divisions.get(temp.division)[1], this.divisions.get(temp.division)[2] + 1]);
+
+              this.provincesInitial.set(temp.province, [temp.status == "processing" ? this.provincesInitial.get(temp.province)[0] + 1 : this.provincesInitial.get(temp.province)[0], temp.status == 'completed' ? this.provincesInitial.get(temp.province)[1] + 1 : this.provincesInitial.get(temp.province)[1], this.provincesInitial.get(temp.province)[2] + 1]);
+              this.districtsInitial.set(temp.district, [temp.status == "processing" ? this.districtsInitial.get(temp.district)[0] + 1 : this.districtsInitial.get(temp.district)[0], temp.status == 'completed' ? this.districtsInitial.get(temp.district)[1] + 1 : this.districtsInitial.get(temp.district)[1], this.districtsInitial.get(temp.district)[2] + 1]);
+              this.divisionsInitial.set(temp.division, [temp.status == "processing" ? this.divisionsInitial.get(temp.division)[0] + 1 : this.divisionsInitial.get(temp.division)[0], temp.status == 'completed' ? this.divisionsInitial.get(temp.division)[1] + 1 : this.divisionsInitial.get(temp.division)[1], this.divisionsInitial.get(temp.division)[2] + 1]);
 
             }
+            console.log("kkkkkkkkkkkkkkkkkk", this.provinces)
+
             this.farmerCount = this.fieldvisitReqs.length;
             this.provinceCount = this.provinces.size;
             this.districtCount = this.districts.size;
