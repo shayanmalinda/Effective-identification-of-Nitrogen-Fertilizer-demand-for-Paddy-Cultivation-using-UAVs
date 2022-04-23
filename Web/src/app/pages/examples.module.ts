@@ -37,6 +37,7 @@ import { AdminFieldVisitReportsComponent } from './admin-field-visit-reports/adm
 import { AdminFieldVisitReqReportsComponent } from './admin-field-visit-req-reports/admin-field-visit-req-reports.component';
 import {MatCardModule} from '@angular/material/card';
 import { ChartsModule } from 'ng2-charts';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 
@@ -79,6 +80,7 @@ import { ChartsModule } from 'ng2-charts';
         AdminFarmerReportsComponent,
         AdminFieldVisitReportsComponent,
         AdminFieldVisitReqReportsComponent
+        NotFoundComponent
     ]
 })
 export class ExamplesModule { }

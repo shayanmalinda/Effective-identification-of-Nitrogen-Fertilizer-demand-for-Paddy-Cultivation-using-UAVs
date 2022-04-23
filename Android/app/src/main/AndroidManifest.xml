@@ -14,6 +14,7 @@
         <activity android:name=".DeleteImageActivity"></activity>
         <activity android:name=".CalibrateSensorActivity" />
         <activity android:name=".FarmerViewResultsActivity" />
+        <activity android:name=".InsertData" />
         <activity android:name=".ExamineFieldActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>

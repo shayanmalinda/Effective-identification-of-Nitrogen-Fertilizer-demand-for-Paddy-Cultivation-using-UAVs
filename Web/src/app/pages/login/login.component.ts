@@ -55,7 +55,14 @@ export class LoginComponent implements OnInit {
   submitted = true;
   loading = false;
 
-  constructor(private formBuilder: FormBuilder, private dialog: DialogService, private userService: UserService, private router: Router, private authenticationService: AuthenticationService) { }
+  constructor(private formBuilder: FormBuilder, private dialog: DialogService, private userService: UserService, private router: Router, private authenticationService: AuthenticationService) {
+    console.log("in login constructor")
+    if(authenticationService.isAlreadyLoggedIn){
+      console.log("already signed in ");
+      console.log("user details : ",authenticationService.getCurrentUser());
+      this.ifloggedin(authenticationService.getCurrentUser());
+    }
+   }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group(
@@ -68,6 +75,47 @@ export class LoginComponent implements OnInit {
         phoneNumber: ['', [Validators.required]],
       }
     )
+  }
+
+  ifloggedin(res){
+    if (this.authenticationService.isLoggedIn) {
+      console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
+      var redirect;
+      console.log("User role : "+res.userRole);
+      if (res.userRole == "agricultural officer") {
+        if (res.status == "active") {
+          this.loading = false;
+          redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
+          this.router.navigateByUrl(redirect);
+        } else if (res.status == "pending") {
+          this.loading = false;
+          this.message.title = "warning";
+          this.message.showMessage = "You still haven't recieve the admin approval to interact with the system !!";
+          this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+            this.clearFields();
+          })
+        }else if (res.status == "inactive") {
+          this.loading = false;
+          this.message.title = "error";
+          this.message.showMessage = "Please contact system admin to interact with the system !!";
+          this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+            this.clearFields();
+          })
+        }
+      } else if (res.userRole == "admin") {
+        console.log(this.authenticationService.isLoggedIn)
+        // the redirect url should come here edit follow code and set the url
+        redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'admin-dashboard'
+        this.router.navigateByUrl(redirect);
+      } else {
+        this.loading = false;
+        this.message.title = "error";
+        this.message.showMessage = "Invalid login !!"
+        this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
+          this.clearFields();
+        })
+      }
+    }
   }
 
   logInClicked() {
@@ -89,43 +137,9 @@ export class LoginComponent implements OnInit {
 
           //testing region 
           // console.log("is logged in : " + this.authenticationService.isLoggedIn);
-          if (this.authenticationService.isLoggedIn) {
-            console.log("this is the rederected url in login : " + this.authenticationService.redirectUrl);
-            var redirect;
-            if (res.userRole == "agricultural officer") {
-              if (res.status == "active") {
-                this.loading = false;
-                redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'user-dashboard'
-                this.router.navigateByUrl(redirect);
-              } else if (res.status == "pending") {
-                this.loading = false;
-                this.message.title = "warning";
-                this.message.showMessage = "You still haven't recieve the admin approval to interact with the system !!";
-                this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-                  this.clearFields();
-                })
-              }else if (res.status == "inactive") {
-                this.loading = false;
-                this.message.title = "error";
-                this.message.showMessage = "Please contact system admin to interact with the system !!";
-                this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-                  this.clearFields();
-                })
-              }
-            } else if (res.userRole == "admin") {
-              console.log(this.authenticationService.isLoggedIn)
-              // the redirect url should come here edit follow code and set the url
-              redirect = this.authenticationService.redirectUrl ? this.router.parseUrl(this.authenticationService.redirectUrl) : 'admin-dashboard'
-              this.router.navigateByUrl(redirect);
-            } else {
-              this.loading = false;
-              this.message.title = "error";
-              this.message.showMessage = "Invalid login !!"
-              this.dialog.openConfirmDialog(this.message).afterClosed().subscribe(res => {
-                this.clearFields();
-              })
-            }
-          }
+          
+          this.ifloggedin(res);
+          
           //end of the testing region
 
         }, err => {
