@@ -135,7 +135,7 @@ export class AdminDashboardComponent implements OnInit {
       })
 
 
-      this.nChartLabels2 = Array.from(this.nLevelCountsMap5.keys()).sort();;
+      this.nChartLabels2 = Array.from(this.nLevelCountsMap5.keys()).sort();
       this.nChartData2 = [
         { data: Array.from(this.nLevelCountsMap2.values()).sort(), label: 'Level 2' },
         { data: Array.from(this.nLevelCountsMap3.values()).sort(), label: 'Level 3' },
