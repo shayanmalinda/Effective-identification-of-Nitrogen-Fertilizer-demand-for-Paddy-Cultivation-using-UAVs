@@ -36,6 +36,7 @@ import { UserReportsRequestsComponent } from './pages/user-reports-requests/user
 import { UserReportsVisitsComponent } from './pages/user-reports-visits/user-reports-visits.component';
 import { AdminFarmerReportsComponent } from './pages/admin-farmer-reports/admin-farmer-reports-farmers.component';
 import { AdminFieldVisitReportsComponent } from './pages/admin-field-visit-reports/admin-field-visit-reports.component';
+import { AdminFieldVisitReqReportsComponent } from './pages/admin-field-visit-req-reports/admin-field-visit-req-reports.component';
 
 
 
@@ -84,7 +85,7 @@ const routes: Routes =[
     { path: 'admin-farmer-reports',       component: AdminFarmerReportsComponent},
     { path: 'admin-officer-reports',       component: AdminFarmerReportsComponent},
     { path: 'admin-field-reports',       component: AdminFarmerReportsComponent},
-    { path: 'admin-field-visit-req-reports',       component: AdminFieldVisitReportsComponent},
+    { path: 'admin-field-visit-req-reports',       component: AdminFieldVisitReqReportsComponent},
     { path: 'admin-field-visit-reports',       component: AdminFieldVisitReportsComponent},
 
 

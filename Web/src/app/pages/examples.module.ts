@@ -34,6 +34,7 @@ import { UserReportsRequestsComponent } from './user-reports-requests/user-repor
 import { DivisionReportsComponent } from './division-reports/division-reports.component';
 import { AdminFarmerReportsComponent } from './admin-farmer-reports/admin-farmer-reports-farmers.component';
 import { AdminFieldVisitReportsComponent } from './admin-field-visit-reports/admin-field-visit-reports.component';
+import { AdminFieldVisitReqReportsComponent } from './admin-field-visit-req-reports/admin-field-visit-req-reports.component';
 import {MatCardModule} from '@angular/material/card';
 import { ChartsModule } from 'ng2-charts';
 
@@ -76,7 +77,8 @@ import { ChartsModule } from 'ng2-charts';
         UserReportsRequestsComponent,
         DivisionReportsComponent,
         AdminFarmerReportsComponent,
-        AdminFieldVisitReportsComponent
+        AdminFieldVisitReportsComponent,
+        AdminFieldVisitReqReportsComponent
     ]
 })
 export class ExamplesModule { }
