@@ -87,7 +87,7 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
   displayedColumns;
   timeSelected;
   name;
-  selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District'];
+  selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District','Division'];
   timeSelections = ['All', 'Year', 'Month'];
   years = new Set();
   months = new Set();
@@ -98,7 +98,7 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
     this.date = this.datepipe.transform((new Date), 'MMM d, y').toString();
     this.optionSelected = 'Provinces'
     this.timeSelected = 'All';
-    this.displayedColumns = ['key', 'pending','confirmed','declined','processing', 'visited', 'total'];
+    this.displayedColumns = ['key', 'pending', 'confirmed', 'declined', 'processing', 'visited', 'total'];
     this.role = this.router.getCurrentNavigation().extras.state.role;
     if (this.role == 'field visit req') {
       this.documentName = "Field Visit Request Report";
@@ -334,9 +334,9 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
       var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
       if (this.timeSelected == "Month" && monthYr == select) {
         this.fieldvisitReqs.push(req)
-        if (this.provinces.get(req.province) == null) this.provinces.set(req.province, [0, 0, 0,0,0,0]);
-        if (this.districts.get(req.district) == null) this.districts.set(req.district, [0, 0, 0,0,0,0]);
-        if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0,0,0,0]);
+        if (this.provinces.get(req.province) == null) this.provinces.set(req.province, [0, 0, 0, 0, 0, 0]);
+        if (this.districts.get(req.district) == null) this.districts.set(req.district, [0, 0, 0, 0, 0, 0]);
+        if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0, 0, 0, 0]);
 
         //add counts
         if (req.status == "pending") this.pendingCount++;
@@ -345,14 +345,14 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
         if (req.status == "processing") this.processingCount++;
         if (req.status == "completed") this.completedCount++;
         this.provinces.set(req.province, [req.status == "pending" ? (this.provinces.get(req.province)[0] + 1) : this.provinces.get(req.province)[0], req.status == "confirmed" ? (this.provinces.get(req.province)[1] + 1) : this.provinces.get(req.province)[1], req.status == "declined" ? (this.provinces.get(req.province)[2] + 1) : this.provinces.get(req.province)[2], req.status == "processing" ? (this.provinces.get(req.province)[3] + 1) : this.provinces.get(req.province)[3], req.status == 'completed' ? this.provinces.get(req.province)[4] + 1 : this.provinces.get(req.province)[4], this.provinces.get(req.province)[5] + 1]);
-        this.districts.set(req.district, [req.status == "pending" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'confirmed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1],req.status == "declined" ? this.districts.get(req.district)[2] + 1 : this.districts.get(req.district)[2],req.status == "processing" ? this.districts.get(req.district)[3] + 1 : this.districts.get(req.district)[3],req.status == "completed" ? this.districts.get(req.district)[4] + 1 : this.districts.get(req.district)[4],  this.districts.get(req.district)[5] + 1]);
-        this.divisions.set(req.division, [req.status == "pending" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'confirmed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1],req.status == "declined" ? this.divisions.get(req.division)[2] + 1 : this.divisions.get(req.division)[2], req.status == "processing" ? this.divisions.get(req.division)[3] + 1 : this.divisions.get(req.division)[3], req.status == "completed" ? this.divisions.get(req.division)[4] + 1 : this.divisions.get(req.division)[4],  this.divisions.get(req.division)[5] + 1]);
+        this.districts.set(req.district, [req.status == "pending" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'confirmed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1], req.status == "declined" ? this.districts.get(req.district)[2] + 1 : this.districts.get(req.district)[2], req.status == "processing" ? this.districts.get(req.district)[3] + 1 : this.districts.get(req.district)[3], req.status == "completed" ? this.districts.get(req.district)[4] + 1 : this.districts.get(req.district)[4], this.districts.get(req.district)[5] + 1]);
+        this.divisions.set(req.division, [req.status == "pending" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'confirmed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1], req.status == "declined" ? this.divisions.get(req.division)[2] + 1 : this.divisions.get(req.division)[2], req.status == "processing" ? this.divisions.get(req.division)[3] + 1 : this.divisions.get(req.division)[3], req.status == "completed" ? this.divisions.get(req.division)[4] + 1 : this.divisions.get(req.division)[4], this.divisions.get(req.division)[5] + 1]);
 
       } else if (this.timeSelected == "Year" && year == select) {
         this.fieldvisitReqs.push(req)
-        if (this.provinces.get(req.province) == null) this.provinces.set(req.province, [0, 0, 0,0,0,0]);
-        if (this.districts.get(req.district) == null) this.districts.set(req.district, [0, 0, 0,0,0,0]);
-        if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0,0,0,0]);
+        if (this.provinces.get(req.province) == null) this.provinces.set(req.province, [0, 0, 0, 0, 0, 0]);
+        if (this.districts.get(req.district) == null) this.districts.set(req.district, [0, 0, 0, 0, 0, 0]);
+        if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0, 0, 0, 0]);
 
         //add counts
         if (req.status == "pending") this.pendingCount++;
@@ -361,8 +361,8 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
         if (req.status == "processing") this.processingCount++;
         if (req.status == "completed") this.completedCount++;
         this.provinces.set(req.province, [req.status == "pending" ? (this.provinces.get(req.province)[0] + 1) : this.provinces.get(req.province)[0], req.status == "confirmed" ? (this.provinces.get(req.province)[1] + 1) : this.provinces.get(req.province)[1], req.status == "declined" ? (this.provinces.get(req.province)[2] + 1) : this.provinces.get(req.province)[2], req.status == "processing" ? (this.provinces.get(req.province)[3] + 1) : this.provinces.get(req.province)[3], req.status == 'completed' ? this.provinces.get(req.province)[4] + 1 : this.provinces.get(req.province)[4], this.provinces.get(req.province)[5] + 1]);
-        this.districts.set(req.district, [req.status == "pending" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'confirmed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1],req.status == "declined" ? this.districts.get(req.district)[2] + 1 : this.districts.get(req.district)[2],req.status == "processing" ? this.districts.get(req.district)[3] + 1 : this.districts.get(req.district)[3],req.status == "completed" ? this.districts.get(req.district)[4] + 1 : this.districts.get(req.district)[4],  this.districts.get(req.district)[5] + 1]);
-        this.divisions.set(req.division, [req.status == "pending" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'confirmed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1],req.status == "declined" ? this.divisions.get(req.division)[2] + 1 : this.divisions.get(req.division)[2], req.status == "processing" ? this.divisions.get(req.division)[3] + 1 : this.divisions.get(req.division)[3], req.status == "completed" ? this.divisions.get(req.division)[4] + 1 : this.divisions.get(req.division)[4],  this.divisions.get(req.division)[5] + 1]);
+        this.districts.set(req.district, [req.status == "pending" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'confirmed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1], req.status == "declined" ? this.districts.get(req.district)[2] + 1 : this.districts.get(req.district)[2], req.status == "processing" ? this.districts.get(req.district)[3] + 1 : this.districts.get(req.district)[3], req.status == "completed" ? this.districts.get(req.district)[4] + 1 : this.districts.get(req.district)[4], this.districts.get(req.district)[5] + 1]);
+        this.divisions.set(req.division, [req.status == "pending" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'confirmed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1], req.status == "declined" ? this.divisions.get(req.division)[2] + 1 : this.divisions.get(req.division)[2], req.status == "processing" ? this.divisions.get(req.division)[3] + 1 : this.divisions.get(req.division)[3], req.status == "completed" ? this.divisions.get(req.division)[4] + 1 : this.divisions.get(req.division)[4], this.divisions.get(req.division)[5] + 1]);
 
       }
 
@@ -384,13 +384,13 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
     this.completedCount = 0;
     this.fieldvisitReqs.forEach(e => {
       if (e.province == value) {
-        if (this.districts.get(e.district) == null) this.districts.set(e.district, [0, 0, 0,0,0,0]);
+        if (this.districts.get(e.district) == null) this.districts.set(e.district, [0, 0, 0, 0, 0, 0]);
         if (e.status == "pending") this.pendingCount++;
         if (e.status == "declined") this.declinedCount++;
         if (e.status == "confirmed") this.confirmedCount++;
         if (e.status == "processing") this.processingCount++;
         if (e.status == "completed") this.completedCount++;
-        this.districts.set(e.district, [e.status == "pending" ? this.districts.get(e.district)[0] + 1 : this.districts.get(e.district)[0], e.status == 'confirmed' ? this.districts.get(e.district)[1] + 1 : this.districts.get(e.district)[1],e.status == "declined" ? this.districts.get(e.district)[2] + 1 : this.districts.get(e.district)[2],e.status == "processing" ? this.districts.get(e.district)[3] + 1 : this.districts.get(e.district)[3],e.status == "completed" ? this.districts.get(e.district)[4] + 1 : this.districts.get(e.district)[4],  this.districts.get(e.district)[5] + 1]);
+        this.districts.set(e.district, [e.status == "pending" ? this.districts.get(e.district)[0] + 1 : this.districts.get(e.district)[0], e.status == 'confirmed' ? this.districts.get(e.district)[1] + 1 : this.districts.get(e.district)[1], e.status == "declined" ? this.districts.get(e.district)[2] + 1 : this.districts.get(e.district)[2], e.status == "processing" ? this.districts.get(e.district)[3] + 1 : this.districts.get(e.district)[3], e.status == "completed" ? this.districts.get(e.district)[4] + 1 : this.districts.get(e.district)[4], this.districts.get(e.district)[5] + 1]);
       }
       if (e.district == value) {
         if (e.status == "pending") this.pendingCount++;
@@ -398,8 +398,8 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
         if (e.status == "confirmed") this.confirmedCount++;
         if (e.status == "processing") this.processingCount++;
         if (e.status == "completed") this.completedCount++;
-        if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0,0,0,0]);
-        this.divisions.set(e.division, [e.status == "pending" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'confirmed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1],e.status == "declined" ? this.divisions.get(e.division)[2] + 1 : this.divisions.get(e.division)[2], e.status == "processing" ? this.divisions.get(e.division)[3] + 1 : this.divisions.get(e.division)[3], e.status == "completed" ? this.divisions.get(e.division)[4] + 1 : this.divisions.get(e.division)[4],  this.divisions.get(e.division)[5] + 1]);
+        if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0, 0, 0, 0]);
+        this.divisions.set(e.division, [e.status == "pending" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'confirmed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1], e.status == "declined" ? this.divisions.get(e.division)[2] + 1 : this.divisions.get(e.division)[2], e.status == "processing" ? this.divisions.get(e.division)[3] + 1 : this.divisions.get(e.division)[3], e.status == "completed" ? this.divisions.get(e.division)[4] + 1 : this.divisions.get(e.division)[4], this.divisions.get(e.division)[5] + 1]);
       }
     })
 
@@ -429,8 +429,8 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
               if (e.status == "confirmed") this.confirmedCount++;
               if (e.status == "processing") this.processingCount++;
               if (e.status == "completed") this.completedCount++;
-              if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0,0,0,0]);
-              this.divisions.set(e.division, [e.status == "pending" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'confirmed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1],e.status == "declined" ? this.divisions.get(e.division)[2] + 1 : this.divisions.get(e.division)[2], e.status == "processing" ? this.divisions.get(e.division)[3] + 1 : this.divisions.get(e.division)[3], e.status == "completed" ? this.divisions.get(e.division)[4] + 1 : this.divisions.get(e.division)[4],  this.divisions.get(e.division)[5] + 1]);
+              if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0, 0, 0, 0]);
+              this.divisions.set(e.division, [e.status == "pending" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'confirmed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1], e.status == "declined" ? this.divisions.get(e.division)[2] + 1 : this.divisions.get(e.division)[2], e.status == "processing" ? this.divisions.get(e.division)[3] + 1 : this.divisions.get(e.division)[3], e.status == "completed" ? this.divisions.get(e.division)[4] + 1 : this.divisions.get(e.division)[4], this.divisions.get(e.division)[5] + 1]);
             }
           })
         }
@@ -441,7 +441,7 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
       this.farmerCount = fCount;
       this.divisionCount = this.divisions.size;
       this.column = "District";
-    } else {
+    } else if (this.optionSelected == 'District') {
       this.clearTable();
 
       var fCount = 0;
@@ -456,6 +456,29 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
           completed: value[4],
           total: value[5],
         });
+      });
+      this.provinceCount = 1;
+      this.districtCount = 1;
+      this.divisionCount = this.values.length;
+      this.farmerCount = fCount;
+      this.column = "Division";
+    } else if (this.optionSelected == 'Division') {
+      this.clearTable();
+
+      var fCount = 0;
+      this.divisions.forEach((value: number[], key: string) => {
+        if (select == key) {
+          fCount += value[2];
+          this.values.push({
+            key: key,
+            pending: value[0],
+            confirmed: value[1],
+            declined: value[2],
+            processing: value[3],
+            completed: value[4],
+            total: value[5],
+          });
+        }
       });
       this.provinceCount = 1;
       this.districtCount = 1;
@@ -518,12 +541,12 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
               var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
               this.months.add(monthYr)
 
-              if (this.provinces.get(temp.province) == null) this.provinces.set(temp.province, [0, 0, 0,0,0,0]);
-              if (this.districts.get(temp.district) == null) this.districts.set(temp.district, [0, 0, 0,0,0,0]);
-              if (this.divisions.get(temp.division) == null) this.divisions.set(temp.division, [0, 0, 0,0,0,0]);
-              if (this.provincesInitial.get(temp.province) == null) this.provincesInitial.set(temp.province, [0, 0, 0,0,0,0]);
-              if (this.districtsInitial.get(temp.district) == null) this.districtsInitial.set(temp.district, [0, 0, 0,0,0,0]);
-              if (this.divisionsInitial.get(temp.division) == null) this.divisionsInitial.set(temp.division, [0, 0, 0,0,0,0]);
+              if (this.provinces.get(temp.province) == null) this.provinces.set(temp.province, [0, 0, 0, 0, 0, 0]);
+              if (this.districts.get(temp.district) == null) this.districts.set(temp.district, [0, 0, 0, 0, 0, 0]);
+              if (this.divisions.get(temp.division) == null) this.divisions.set(temp.division, [0, 0, 0, 0, 0, 0]);
+              if (this.provincesInitial.get(temp.province) == null) this.provincesInitial.set(temp.province, [0, 0, 0, 0, 0, 0]);
+              if (this.districtsInitial.get(temp.district) == null) this.districtsInitial.set(temp.district, [0, 0, 0, 0, 0, 0]);
+              if (this.divisionsInitial.get(temp.division) == null) this.divisionsInitial.set(temp.division, [0, 0, 0, 0, 0, 0]);
 
               //add counts
               if (temp.status == "pending") this.pendingCount++;
@@ -533,12 +556,12 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
               if (temp.status == "completed") this.completedCount++;
 
               this.provinces.set(temp.province, [temp.status == "pending" ? (this.provinces.get(temp.province)[0] + 1) : this.provinces.get(temp.province)[0], temp.status == "confirmed" ? (this.provinces.get(temp.province)[1] + 1) : this.provinces.get(temp.province)[1], temp.status == "declined" ? (this.provinces.get(temp.province)[2] + 1) : this.provinces.get(temp.province)[2], temp.status == "processing" ? (this.provinces.get(temp.province)[3] + 1) : this.provinces.get(temp.province)[3], temp.status == 'completed' ? this.provinces.get(temp.province)[4] + 1 : this.provinces.get(temp.province)[4], this.provinces.get(temp.province)[5] + 1]);
-              this.districts.set(temp.district, [temp.status == "pending" ? this.districts.get(temp.district)[0] + 1 : this.districts.get(temp.district)[0], temp.status == 'confirmed' ? this.districts.get(temp.district)[1] + 1 : this.districts.get(temp.district)[1],temp.status == "declined" ? this.districts.get(temp.district)[2] + 1 : this.districts.get(temp.district)[2],temp.status == "processing" ? this.districts.get(temp.district)[3] + 1 : this.districts.get(temp.district)[3],temp.status == "completed" ? this.districts.get(temp.district)[4] + 1 : this.districts.get(temp.district)[4],  this.districts.get(temp.district)[5] + 1]);
-              this.divisions.set(temp.division, [temp.status == "pending" ? this.divisions.get(temp.division)[0] + 1 : this.divisions.get(temp.division)[0], temp.status == 'confirmed' ? this.divisions.get(temp.division)[1] + 1 : this.divisions.get(temp.division)[1],temp.status == "declined" ? this.divisions.get(temp.division)[2] + 1 : this.divisions.get(temp.division)[2], temp.status == "processing" ? this.divisions.get(temp.division)[3] + 1 : this.divisions.get(temp.division)[3], temp.status == "completed" ? this.divisions.get(temp.division)[4] + 1 : this.divisions.get(temp.division)[4],  this.divisions.get(temp.division)[5] + 1]);
+              this.districts.set(temp.district, [temp.status == "pending" ? this.districts.get(temp.district)[0] + 1 : this.districts.get(temp.district)[0], temp.status == 'confirmed' ? this.districts.get(temp.district)[1] + 1 : this.districts.get(temp.district)[1], temp.status == "declined" ? this.districts.get(temp.district)[2] + 1 : this.districts.get(temp.district)[2], temp.status == "processing" ? this.districts.get(temp.district)[3] + 1 : this.districts.get(temp.district)[3], temp.status == "completed" ? this.districts.get(temp.district)[4] + 1 : this.districts.get(temp.district)[4], this.districts.get(temp.district)[5] + 1]);
+              this.divisions.set(temp.division, [temp.status == "pending" ? this.divisions.get(temp.division)[0] + 1 : this.divisions.get(temp.division)[0], temp.status == 'confirmed' ? this.divisions.get(temp.division)[1] + 1 : this.divisions.get(temp.division)[1], temp.status == "declined" ? this.divisions.get(temp.division)[2] + 1 : this.divisions.get(temp.division)[2], temp.status == "processing" ? this.divisions.get(temp.division)[3] + 1 : this.divisions.get(temp.division)[3], temp.status == "completed" ? this.divisions.get(temp.division)[4] + 1 : this.divisions.get(temp.division)[4], this.divisions.get(temp.division)[5] + 1]);
 
               this.provincesInitial.set(temp.province, [temp.status == "pending" ? (this.provincesInitial.get(temp.province)[0] + 1) : this.provincesInitial.get(temp.province)[0], temp.status == "confirmed" ? (this.provincesInitial.get(temp.province)[1] + 1) : this.provincesInitial.get(temp.province)[1], temp.status == "declined" ? (this.provincesInitial.get(temp.province)[2] + 1) : this.provincesInitial.get(temp.province)[2], temp.status == "processing" ? (this.provincesInitial.get(temp.province)[3] + 1) : this.provincesInitial.get(temp.province)[3], temp.status == 'completed' ? this.provincesInitial.get(temp.province)[4] + 1 : this.provincesInitial.get(temp.province)[4], this.provincesInitial.get(temp.province)[5] + 1]);
-              this.districtsInitial.set(temp.district, [temp.status == "pending" ? this.districtsInitial.get(temp.district)[0] + 1 : this.districtsInitial.get(temp.district)[0], temp.status == 'confirmed' ? this.districtsInitial.get(temp.district)[1] + 1 : this.districtsInitial.get(temp.district)[1],temp.status == "declined" ? this.districtsInitial.get(temp.district)[2] + 1 : this.districtsInitial.get(temp.district)[2],temp.status == "processing" ? this.districtsInitial.get(temp.district)[3] + 1 : this.districtsInitial.get(temp.district)[3],temp.status == "completed" ? this.districtsInitial.get(temp.district)[4] + 1 : this.districtsInitial.get(temp.district)[4],  this.districtsInitial.get(temp.district)[5] + 1]);
-              this.divisionsInitial.set(temp.division, [temp.status == "pending" ? this.divisionsInitial.get(temp.division)[0] + 1 : this.divisionsInitial.get(temp.division)[0], temp.status == 'confirmed' ? this.divisionsInitial.get(temp.division)[1] + 1 : this.divisionsInitial.get(temp.division)[1],temp.status == "declined" ? this.divisionsInitial.get(temp.division)[2] + 1 : this.divisionsInitial.get(temp.division)[2], temp.status == "processing" ? this.divisionsInitial.get(temp.division)[3] + 1 : this.divisionsInitial.get(temp.division)[3], temp.status == "completed" ? this.divisionsInitial.get(temp.division)[4] + 1 : this.divisionsInitial.get(temp.division)[4],  this.divisionsInitial.get(temp.division)[5] + 1]);
+              this.districtsInitial.set(temp.district, [temp.status == "pending" ? this.districtsInitial.get(temp.district)[0] + 1 : this.districtsInitial.get(temp.district)[0], temp.status == 'confirmed' ? this.districtsInitial.get(temp.district)[1] + 1 : this.districtsInitial.get(temp.district)[1], temp.status == "declined" ? this.districtsInitial.get(temp.district)[2] + 1 : this.districtsInitial.get(temp.district)[2], temp.status == "processing" ? this.districtsInitial.get(temp.district)[3] + 1 : this.districtsInitial.get(temp.district)[3], temp.status == "completed" ? this.districtsInitial.get(temp.district)[4] + 1 : this.districtsInitial.get(temp.district)[4], this.districtsInitial.get(temp.district)[5] + 1]);
+              this.divisionsInitial.set(temp.division, [temp.status == "pending" ? this.divisionsInitial.get(temp.division)[0] + 1 : this.divisionsInitial.get(temp.division)[0], temp.status == 'confirmed' ? this.divisionsInitial.get(temp.division)[1] + 1 : this.divisionsInitial.get(temp.division)[1], temp.status == "declined" ? this.divisionsInitial.get(temp.division)[2] + 1 : this.divisionsInitial.get(temp.division)[2], temp.status == "processing" ? this.divisionsInitial.get(temp.division)[3] + 1 : this.divisionsInitial.get(temp.division)[3], temp.status == "completed" ? this.divisionsInitial.get(temp.division)[4] + 1 : this.divisionsInitial.get(temp.division)[4], this.divisionsInitial.get(temp.division)[5] + 1]);
 
             }
             this.farmerCount = this.fieldvisitReqs.length;
@@ -585,12 +608,12 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
               //add counts
               if (temp.status == "processing") this.processingCount++;
               if (temp.status == "completed") this.completedCount++;
-              if (this.provinces.get(temp.province) == null) this.provinces.set(temp.province, [0, 0, 0,0,0,0]);
-              if (this.districts.get(temp.district) == null) this.districts.set(temp.district, [0, 0, 0,0,0,0]);
-              if (this.divisions.get(temp.division) == null) this.divisions.set(temp.division, [0, 0, 0,0,0,0]);
-              if (this.provincesInitial.get(temp.province) == null) this.provincesInitial.set(temp.province, [0, 0, 0,0,0,0]);
-              if (this.districtsInitial.get(temp.district) == null) this.districtsInitial.set(temp.district, [0, 0, 0,0,0,0]);
-              if (this.divisionsInitial.get(temp.division) == null) this.divisionsInitial.set(temp.division, [0, 0, 0,0,0,0]);
+              if (this.provinces.get(temp.province) == null) this.provinces.set(temp.province, [0, 0, 0, 0, 0, 0]);
+              if (this.districts.get(temp.district) == null) this.districts.set(temp.district, [0, 0, 0, 0, 0, 0]);
+              if (this.divisions.get(temp.division) == null) this.divisions.set(temp.division, [0, 0, 0, 0, 0, 0]);
+              if (this.provincesInitial.get(temp.province) == null) this.provincesInitial.set(temp.province, [0, 0, 0, 0, 0, 0]);
+              if (this.districtsInitial.get(temp.district) == null) this.districtsInitial.set(temp.district, [0, 0, 0, 0, 0, 0]);
+              if (this.divisionsInitial.get(temp.division) == null) this.divisionsInitial.set(temp.division, [0, 0, 0, 0, 0, 0]);
 
               this.provinces.set(temp.province, [temp.status == "processing" ? (this.provinces.get(temp.province)[0] + 1) : this.provinces.get(temp.province)[0], temp.status == 'completed' ? this.provinces.get(temp.province)[1] + 1 : this.provinces.get(temp.province)[1], this.provinces.get(temp.province)[2] + 1]);
               this.districts.set(temp.district, [temp.status == "processing" ? this.districts.get(temp.district)[0] + 1 : this.districts.get(temp.district)[0], temp.status == 'completed' ? this.districts.get(temp.district)[1] + 1 : this.districts.get(temp.district)[1], this.districts.get(temp.district)[2] + 1]);

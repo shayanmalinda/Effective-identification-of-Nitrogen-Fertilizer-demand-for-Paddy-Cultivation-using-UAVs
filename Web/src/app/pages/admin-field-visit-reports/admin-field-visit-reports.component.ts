@@ -84,7 +84,7 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   displayedColumns;
   timeSelected;
   name;
-  selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District'];
+  selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District','Division'];
   timeSelections = ['All', 'Year', 'Month'];
   years = new Set();
   months = new Set();
@@ -383,7 +383,7 @@ export class AdminFieldVisitReportsComponent implements OnInit {
           total: value[2],
         });
         if (this.role == 'field visit req' || this.role == 'field visit') {
-          
+
           this.fieldvisitReqs.forEach(e => {
 
             if (e.district == key) {
@@ -398,11 +398,11 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       });
       this.provinceCount = 1;
       this.districtCount = this.values.length;
-      console.log(this.farmerCount+"heereeeeeeeeeeee")
+      console.log(this.farmerCount + "heereeeeeeeeeeee")
       this.farmerCount = fCount;
       this.divisionCount = this.divisions.size;
       this.column = "District";
-    } else {
+    } else if (this.optionSelected == 'District') {
       this.clearTable();
 
       var fCount = 0;
@@ -414,6 +414,26 @@ export class AdminFieldVisitReportsComponent implements OnInit {
           completed: value[1],
           total: value[2],
         });
+      });
+      this.provinceCount = 1;
+      this.districtCount = 1;
+      this.divisionCount = this.values.length;
+      this.farmerCount = fCount;
+      this.column = "Division";
+    } else if (this.optionSelected == 'Division') {
+      this.clearTable();
+
+      var fCount = 0;
+      this.divisions.forEach((value: number[], key: string) => {
+        if (select == key) {
+          fCount += value[2];
+          this.values.push({
+            key: key,
+            processing: value[0],
+            completed: value[1],
+            total: value[2],
+          });
+        }
       });
       this.provinceCount = 1;
       this.districtCount = 1;

@@ -79,10 +79,10 @@ export class AdminFarmerReportsComponent implements OnInit {
   displayedColumns;
   timeSelected;
   name;
-  selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District','Division'];
+  selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District', 'Division'];
   timeSelections = ['All', 'Year', 'Month'];
-  years= new Set(); 
-  months = new Set(); 
+  years = new Set();
+  months = new Set();
   column;
   // dataSource: MatTableDataSource<User>;
 
@@ -128,9 +128,9 @@ export class AdminFarmerReportsComponent implements OnInit {
     this.values = [];
     var province = value.toString();
     if (this.timeSelected == 'Month') {
-      this.periods=this.months;
-    }else if(this.timeSelected == 'Year') {
-      this.periods=this.years;
+      this.periods = this.months;
+    } else if (this.timeSelected == 'Year') {
+      this.periods = this.years;
     }
   }
 
@@ -152,7 +152,7 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.provinceCount = this.tempCounts[1];
       this.districtCount = this.tempCounts[2];
       this.divisionCount = this.tempCounts[3];
-      this.column="Province";
+      this.column = "Province";
 
     } else if (this.optionSelected == 'Districts') {
       this.districts.forEach((value: number, key: string) => {
@@ -169,7 +169,7 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.provinceCount = this.tempCounts[1];
       this.districtCount = this.tempCounts[2];
       this.divisionCount = this.tempCounts[3];
-      this.column="District";
+      this.column = "District";
 
     }
     else if (this.optionSelected == 'Province') {
@@ -198,7 +198,7 @@ export class AdminFarmerReportsComponent implements OnInit {
       // })
       this.list = Array.from(this.districtsActive.keys()).sort();;
 
-    }else if (this.optionSelected == 'Division') {
+    } else if (this.optionSelected == 'Division') {
       this.clearTable();
       this.farmerCount = 0;
       this.provinceCount = 0;
@@ -251,7 +251,7 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.values);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.column="Division";
+      this.column = "Division";
     }
 
   }
@@ -309,12 +309,12 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.districtCount = this.values.length;
       this.farmerCount = fCount;
       this.divisionCount = this.divisions.size;
-      this.column="District";
+      this.column = "District";
 
 
     }
 
-    else {
+    else if (this.optionSelected == 'District') {
       var fCount = 0;
       this.divisions.forEach((value: number, key: string) => {
         fCount += value;
@@ -327,7 +327,23 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.districtCount = 1;
       this.divisionCount = this.values.length;
       this.farmerCount = fCount;
-      this.column="Division";
+      this.column = "Division";
+    } else if (this.optionSelected == 'Division') {
+      var fCount = 0;
+      this.divisions.forEach((value: number, key: string) => {
+        if (select == key) {
+          fCount += value;
+          this.values.push({
+            key: key,
+            value: value
+          });
+        }
+      });
+      this.provinceCount = 1;
+      this.districtCount = 1;
+      this.divisionCount = this.values.length;
+      this.farmerCount = fCount;
+      this.column = "Division";
     }
 
     this.dataSource = new MatTableDataSource(this.values);
@@ -484,9 +500,9 @@ export class AdminFarmerReportsComponent implements OnInit {
               this.fieldvisitReqs.push(temp)
               this.fieldvisitReqsInitial.push(temp)
 
-              var date=new Date(temp.createdDate);
+              var date = new Date(temp.createdDate);
               this.years.add(date.getFullYear().toString())
-              var monthYr=(date.getMonth()+1).toString()+" / "+date.getFullYear().toString();
+              var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
               this.months.add(monthYr)
 
 
@@ -527,9 +543,9 @@ export class AdminFarmerReportsComponent implements OnInit {
               temp.province = tfield.province;
               this.fieldvisitReqs.push(temp)
               this.fieldvisitReqsInitial.push(temp)
-              var date=new Date(temp.visitDate);
+              var date = new Date(temp.visitDate);
               this.years.add(date.getFullYear().toString())
-              var monthYr=(date.getMonth()+1).toString()+" / "+date.getFullYear().toString();
+              var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
               this.months.add(monthYr)
 
               //add counts
@@ -548,7 +564,7 @@ export class AdminFarmerReportsComponent implements OnInit {
             this.tempCounts[3] = this.divisions.size;
 
             this.onOptionSelected('Provinces');
-            this.column="Province";
+            this.column = "Province";
           })
         })
       });
