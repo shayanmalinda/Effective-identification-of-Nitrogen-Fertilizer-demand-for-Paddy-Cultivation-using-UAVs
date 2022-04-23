@@ -6,5 +6,11 @@
 ### 2.To open the application
 #### ng serve
 
+### Deployed using Firebase Hosting
+### URL : https://smart-rice-care.web.app
+
+
+
+
 
 Used [Paper Kit 2 Angular - Free Bootstrap 4 UI Kit](https://demos.creative-tim.com/paper-kit-2-angular/)
