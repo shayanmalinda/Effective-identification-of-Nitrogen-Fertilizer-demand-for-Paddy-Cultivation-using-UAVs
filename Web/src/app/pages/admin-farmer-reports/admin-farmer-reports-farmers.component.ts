@@ -106,14 +106,6 @@ export class AdminFarmerReportsComponent implements OnInit {
       this.documentName = "Field Report";
       this.name = "Fields";
 
-    } else if (this.role == 'field visit req') {
-      this.documentName = "Field Visit Request Report";
-      this.name = "Requests";
-
-    } else if (this.role == 'field visit') {
-      this.documentName = "Field Visit Report";
-      this.name = "Field Visits";
-
     }
 
   }
@@ -265,16 +257,15 @@ export class AdminFarmerReportsComponent implements OnInit {
     var select = value.toString();
     this.districts.clear();
     this.divisions.clear();
-    if (this.role == 'field visit req' || this.role == 'field visit') {
-      this.fieldvisitReqs.forEach(e => {
-        console.log(e.province)
+    if (this.role == 'agricultural officer' || this.role == 'farmer') {
+      this.users.forEach(e => {
         if (e.province == value)
           this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
         if (e.district == value)
           this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
       })
-    } else {
-      this.users.forEach(e => {
+    } else if (this.role == 'field') {
+      this.fields.forEach(e => {
         if (e.province == value)
           this.districts.set(e.district, this.districts.get(e.district) == null ? 1 : this.districts.get(e.district) + 1);
         if (e.district == value)
@@ -298,11 +289,18 @@ export class AdminFarmerReportsComponent implements OnInit {
               this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
           })
         } else {
-          this.users.forEach(e => {
+          if (this.role == 'agricultural officer' || this.role == 'farmer')
+            this.users.forEach(e => {
 
-            if (e.district == key)
-              this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
-          })
+              if (e.district == key)
+                this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+            })
+          else if (this.role == 'field')
+            this.fields.forEach(e => {
+
+              if (e.district == key)
+                this.divisions.set(e.division, this.divisions.get(e.division) == null ? 1 : this.divisions.get(e.division) + 1);
+            })
         }
       });
       this.provinceCount = 1;
@@ -473,7 +471,7 @@ export class AdminFarmerReportsComponent implements OnInit {
         this.provinceCount = this.provinces.size;
         this.districtCount = this.districts.size;
         this.divisionCount = this.divisions.size;
-        this.tempCounts[0] = this.users.length;
+        this.tempCounts[0] = this.fields.length;
         this.tempCounts[1] = this.provinces.size;
         this.tempCounts[2] = this.districts.size;
         this.tempCounts[3] = this.divisions.size;
@@ -481,92 +479,6 @@ export class AdminFarmerReportsComponent implements OnInit {
         this.onOptionSelected('Provinces');
 
 
-      });
-    } else if (this.role == 'field visit req') {
-      this.fieldvisitReqs = [];
-      this.fieldvisitReqsInitial = [];
-      this.fieldVisitService.getAllFieldVisitRequests().subscribe(data1 => {
-        this.totalFarmers = data1.length;
-        data1.forEach(e => {
-          var temp = {
-            ...e as FieldVisitReqTemp
-          }
-          this.fieldService.getField(temp.fieldId).subscribe(data => {
-            var tfield = data.payload.data() as Field;
-            if (tfield.status == "active") {
-              temp.division = tfield.division;
-              temp.district = tfield.district;
-              temp.province = tfield.province;
-              this.fieldvisitReqs.push(temp)
-              this.fieldvisitReqsInitial.push(temp)
-
-              var date = new Date(temp.createdDate);
-              this.years.add(date.getFullYear().toString())
-              var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
-              this.months.add(monthYr)
-
-
-              //add counts
-              this.provinces.set(temp.province, this.provinces.get(temp.province) == null ? 1 : this.provinces.get(temp.province) + 1);
-              this.districts.set(temp.district, this.districts.get(temp.district) == null ? 1 : this.districts.get(temp.district) + 1);
-              this.divisions.set(temp.division, this.divisions.get(temp.division) == null ? 1 : this.divisions.get(temp.division) + 1);
-
-            }
-            this.farmerCount = this.fieldvisitReqs.length;
-            this.provinceCount = this.provinces.size;
-            this.districtCount = this.districts.size;
-            this.divisionCount = this.divisions.size;
-            this.tempCounts[0] = this.fieldvisitReqs.length;
-            this.tempCounts[1] = this.provinces.size;
-            this.tempCounts[2] = this.districts.size;
-            this.tempCounts[3] = this.divisions.size;
-
-            this.onOptionSelected('Provinces');
-          })
-          // return temp;
-        })
-      });
-    } else if (this.role == 'field visit') {
-      this.fieldvisitReqs = [];
-      this.fieldvisitReqsInitial = [];
-      this.fieldVisitService.getAllFieldVisitRequests().subscribe(data1 => {
-        this.totalFarmers = data1.length;
-        data1.forEach(e => {
-          var temp = {
-            ...e as FieldVisitReqTemp
-          }
-          this.fieldService.getField(temp.fieldId).subscribe(data => {
-            var tfield = data.payload.data() as Field;
-            if (tfield.status == "active" && (temp.status == "processing" || temp.status == "completed")) {
-              temp.division = tfield.division;
-              temp.district = tfield.district;
-              temp.province = tfield.province;
-              this.fieldvisitReqs.push(temp)
-              this.fieldvisitReqsInitial.push(temp)
-              var date = new Date(temp.visitDate);
-              this.years.add(date.getFullYear().toString())
-              var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
-              this.months.add(monthYr)
-
-              //add counts
-              this.provinces.set(temp.province, this.provinces.get(temp.province) == null ? 1 : this.provinces.get(temp.province) + 1);
-              this.districts.set(temp.district, this.districts.get(temp.district) == null ? 1 : this.districts.get(temp.district) + 1);
-              this.divisions.set(temp.division, this.divisions.get(temp.division) == null ? 1 : this.divisions.get(temp.division) + 1);
-
-            }
-            this.farmerCount = this.fieldvisitReqs.length;
-            this.provinceCount = this.provinces.size;
-            this.districtCount = this.districts.size;
-            this.divisionCount = this.divisions.size;
-            this.tempCounts[0] = this.fieldvisitReqs.length;
-            this.tempCounts[1] = this.provinces.size;
-            this.tempCounts[2] = this.districts.size;
-            this.tempCounts[3] = this.divisions.size;
-
-            this.onOptionSelected('Provinces');
-            this.column = "Province";
-          })
-        })
       });
     }
   }
