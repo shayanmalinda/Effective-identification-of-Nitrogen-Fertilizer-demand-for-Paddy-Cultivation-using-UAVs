@@ -7,7 +7,7 @@ import { Router, RouteReuseStrategy } from '@angular/router';
 import { Message } from 'app/models/message.model';
 import { DialogService } from './dialog.service';
 import { tap, delay } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -38,37 +38,57 @@ export class AuthenticationService {
   isLoggedIn = false;
   redirectUrl : string;
 
-  constructor(private dialog : DialogService, private angularFireAuth : AngularFireAuth, private userService : UserService, private router : Router) { }
+  loggedIn = new BehaviorSubject<boolean>(false);
+  loggedIn$ = this.loggedIn.asObservable();
 
-  //sign up service with authentication in firebase
-  // signUp(userCredential : UserCredential, user : User){
-  //   this.angularFireAuth.createUserWithEmailAndPassword(userCredential.email, userCredential.password)
-  //   .then(res => {
-  //     userCredential.userID = res.user.uid;
-  //     sessionStorage.setItem("userID", res.user.uid);
-  //     this.userService.addUser(userCredential,user);
-  //     this.updateSessionDetails(userCredential, user);
-  //     console.log(res);
-  //     // console.log("it comes here ")
-  //     // this.router.navigate(['/profile']);   //should be updated as dashboard !!!
-  //   })
-  //   .catch(err =>{
-  //     if(err.message == "Password should be at least 6 characters"){
-  //       alert("The password should be at least 6 characters");
-  //       //the error msg is here
-  //     }
-  //     if(err.message == "The email address is badly formatted."){
-  //       alert("The email address is badly formatted.");
-  //       //the error msg is here
-  //     }
-  //     if(err.message == "The email address is already in use by another account."){
-  //       alert("The email address is already in use by another account.");
-  //       //the error msg is here
-  //     }
-      
-  //     return "";
-  //   })
-  // }
+  constructor(private dialog : DialogService, 
+    private angularFireAuth : AngularFireAuth, 
+    private userService : UserService, 
+    private router : Router) 
+    { 
+      this.angularFireAuth.onAuthStateChanged((user) => {
+        if (user) {
+          this.loggedIn.next(true);
+          this.isLoggedIn=true;
+        }else {
+          // not logged in
+          this.loggedIn.next(false);
+          this.isLoggedIn=false;
+        } 
+    });
+    
+  }
+
+
+  isAlreadyLoggedIn(): boolean {
+    return !!this.angularFireAuth.currentUser;
+  }
+
+  getCurrentUser(){
+    //return fireuser=this.angularFireAuth.currentUser;
+    var u=new User();
+    u.email=sessionStorage.getItem('email')
+    u.firstName=sessionStorage.getItem('firstName');
+    u.lastName=sessionStorage.getItem('lastName');
+    u.nic=sessionStorage.getItem('nic');
+    u.phone=sessionStorage.getItem('phone');
+    u.userRole=sessionStorage.getItem('userRole');
+    u.status=sessionStorage.getItem('status');
+    u.division=sessionStorage.getItem('division');
+    u.district=sessionStorage.getItem('district');
+    u.province=sessionStorage.getItem('province');
+    u.image=sessionStorage.getItem('image');
+    u.registeredDate=sessionStorage.getItem('registeredDate');
+    u.createdTimestamp=Number(sessionStorage.getItem('createdTimestamp'));
+    u.createdDate=sessionStorage.getItem('createdDate');
+    u.modifiedDate=sessionStorage.getItem('modifiedDate');
+    u.modifiedTimestamp=Number(sessionStorage.getItem('modifiedTimestamp'));
+    
+    if(u.userRole!=null){
+      this.isLoggedIn=true;
+    }
+    return u;
+  }
 
   signUp(userCredential : UserCredential, user : User){
     return new Promise<any>((resolve, reject) => {
