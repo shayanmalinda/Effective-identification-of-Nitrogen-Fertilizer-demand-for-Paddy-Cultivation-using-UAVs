@@ -20,3 +20,6 @@
             
 ### The response along with the color level is sent to the database and the color level is sent back to the Android or Web client
 
+## Access the server with follownig URL
+#### https://docker-python3-opencv-uvbeppe6ea-el.a.run.app/process
+
