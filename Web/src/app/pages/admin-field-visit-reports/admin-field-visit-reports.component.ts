@@ -42,6 +42,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   dataSource: MatTableDataSource<CountsVisit>;
 
   farmerCount;
+  processingCount;
+  completedCount;
   provinceCount;
   districtCount;
   divisionCount;
@@ -175,6 +177,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       this.provinceCount = this.tempCounts[1];
       this.districtCount = this.tempCounts[2];
       this.divisionCount = this.tempCounts[3];
+      this.processingCount = this.tempCounts[4];
+      this.completedCount = this.tempCounts[5];
       this.column = "Province";
 
     } else if (this.optionSelected == 'Districts') {
@@ -194,6 +198,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       this.provinceCount = this.tempCounts[1];
       this.districtCount = this.tempCounts[2];
       this.divisionCount = this.tempCounts[3];
+      this.processingCount = this.tempCounts[4];
+      this.completedCount = this.tempCounts[5];
       this.column = "District";
 
     }
@@ -204,6 +210,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       this.provinceCount = 0;
       this.districtCount = 0;
       this.divisionCount = 0;
+      this.processingCount = 0;
+      this.completedCount = 0;
 
     }
     else if (this.optionSelected == 'District') {
@@ -212,6 +220,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       this.provinceCount = 0;
       this.districtCount = 0;
       this.divisionCount = 0;
+      this.processingCount = 0;
+      this.completedCount = 0;
       // this.list = this.divisionalData.provinces;
       // let val, i;
       // let allDistricts = [];
@@ -229,6 +239,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       this.provinceCount = 0;
       this.districtCount = 0;
       this.divisionCount = 0;
+      this.processingCount = 0;
+      this.completedCount = 0;
       // this.list = this.divisionalData.provinces;
       // let val, i;
       // let allDistricts = [];
@@ -275,6 +287,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
       this.provinceCount = this.tempCounts[1];
       this.districtCount = this.tempCounts[2];
       this.divisionCount = this.tempCounts[3];
+      this.processingCount = this.tempCounts[4];
+      this.completedCount = this.tempCounts[5];
       this.dataSource = new MatTableDataSource(this.values);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -288,6 +302,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
 
     //should filter dates from the month and year seperatly
     this.fieldvisitReqs = [];
+    this.processingCount = 0;
+    this.completedCount = 0;
     this.provinces.clear();
     this.districts.clear();
     this.divisions.clear();
@@ -300,8 +316,10 @@ export class AdminFieldVisitReportsComponent implements OnInit {
         if (this.provinces.get(req.province) == null) this.provinces.set(req.province, [0, 0, 0]);
         if (this.districts.get(req.district) == null) this.districts.set(req.district, [0, 0, 0]);
         if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0]);
-        
+
         //add counts
+        if (req.status == "processing") this.processingCount++;
+        if (req.status == "completed") this.completedCount++;
         this.provinces.set(req.province, [req.status == "processing" ? this.provinces.get(req.province)[0] + 1 : this.provinces.get(req.province)[0], req.status == 'completed' ? this.provinces.get(req.province)[1] + 1 : this.provinces.get(req.province)[1], this.provinces.get(req.province)[2] + 1]);
         this.districts.set(req.district, [req.status == "processing" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'completed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1], this.districts.get(req.district)[2] + 1]);
         this.divisions.set(req.division, [req.status == "processing" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'completed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1], this.divisions.get(req.division)[2] + 1]);
@@ -311,8 +329,10 @@ export class AdminFieldVisitReportsComponent implements OnInit {
         if (this.provinces.get(req.province) == null) this.provinces.set(req.province, [0, 0, 0]);
         if (this.districts.get(req.district) == null) this.districts.set(req.district, [0, 0, 0]);
         if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0]);
-        
+
         //add counts
+        if (req.status == "processing") this.processingCount++;
+        if (req.status == "completed") this.completedCount++;
         this.provinces.set(req.province, [req.status == "processing" ? this.provinces.get(req.province)[0] + 1 : this.provinces.get(req.province)[0], req.status == 'completed' ? this.provinces.get(req.province)[1] + 1 : this.provinces.get(req.province)[1], this.provinces.get(req.province)[2] + 1]);
         this.districts.set(req.district, [req.status == "processing" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'completed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1], this.districts.get(req.district)[2] + 1]);
         this.divisions.set(req.division, [req.status == "processing" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'completed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1], this.divisions.get(req.division)[2] + 1]);
@@ -333,13 +353,19 @@ export class AdminFieldVisitReportsComponent implements OnInit {
     var select = value.toString();
     this.districts.clear();
     this.divisions.clear(); var p = 0;
+    this.processingCount = 0;
+    this.completedCount = 0;
     this.fieldvisitReqs.forEach(e => {
       if (e.province == value) {
         if (this.districts.get(e.district) == null) this.districts.set(e.district, [0, 0, 0]);
+        if (e.status == "processing") this.processingCount++;
+        if (e.status == "completed") this.completedCount++;
         this.districts.set(e.district, [e.status == "processing" ? this.districts.get(e.district)[0] + 1 : this.districts.get(e.district)[0], e.status == 'completed' ? this.districts.get(e.district)[1] + 1 : this.districts.get(e.district)[1], this.districts.get(e.district)[2] + 1]);
       }
       if (e.district == value) {
-        if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0]); 
+        if (e.status == "processing") this.processingCount++;
+        if (e.status == "completed") this.completedCount++;
+        if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0]);
         this.divisions.set(e.division, [e.status == "processing" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'completed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1], this.divisions.get(e.division)[2] + 1]);
       }
     })
@@ -357,15 +383,22 @@ export class AdminFieldVisitReportsComponent implements OnInit {
           total: value[2],
         });
         if (this.role == 'field visit req' || this.role == 'field visit') {
+          
           this.fieldvisitReqs.forEach(e => {
 
-            if (e.district == key)
+            if (e.district == key) {
+
+              if (e.status == "processing") this.processingCount++;
+              if (e.status == "completed") this.completedCount++;
+              if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0]);
               this.divisions.set(e.division, [e.status == "processing" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'completed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1], this.divisions.get(e.division)[2] + 1]);
+            }
           })
         }
       });
       this.provinceCount = 1;
       this.districtCount = this.values.length;
+      console.log(this.farmerCount+"heereeeeeeeeeeee")
       this.farmerCount = fCount;
       this.divisionCount = this.divisions.size;
       this.column = "District";
@@ -411,10 +444,10 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tempCounts = [0, 0, 0, 0];
-    this.fieldvisitReqs = []; var c1 = 0; var c2 = 0;
-
-
+    this.tempCounts = [0, 0, 0, 0, 0, 0];
+    this.fieldvisitReqs = [];
+    this.processingCount = 0;
+    this.completedCount = 0;
 
     if (this.role == 'field visit req') {
       this.fieldvisitReqs = [];
@@ -447,6 +480,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
               if (this.divisionsInitial.get(temp.division) == null) this.divisionsInitial.set(temp.division, [0, 0, 0]);
 
               //add counts
+
+
               this.provinces.set(temp.province, [temp.status == "processing" ? this.provinces.get(temp.province)[0] + 1 : this.provinces.get(temp.province)[0], temp.status == 'completed' ? this.provinces.get(temp.province)[1] + 1 : this.provinces.get(temp.province)[1], this.provinces.get(temp.province)[2] + 1]);
               this.districts.set(temp.district, [temp.status == "processing" ? this.districts.get(temp.district)[0] + 1 : this.districts.get(temp.district)[0], temp.status == 'completed' ? this.districts.get(temp.district)[1] + 1 : this.districts.get(temp.district)[1], this.districts.get(temp.district)[2] + 1]);
               this.divisions.set(temp.division, [temp.status == "processing" ? this.divisions.get(temp.division)[0] + 1 : this.divisions.get(temp.division)[0], temp.status == 'completed' ? this.divisions.get(temp.division)[1] + 1 : this.divisions.get(temp.division)[1], this.divisions.get(temp.division)[2] + 1]);
@@ -494,9 +529,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
               this.months.add(monthYr)
 
               //add counts
-
-              if (temp.status == 'completed') c1++; else c2++;
-              console.log(c1, "kkkkkkkkkkkkkkkkkk", c2)
+              if (temp.status == "processing") this.processingCount++;
+              if (temp.status == "completed") this.completedCount++;
               if (this.provinces.get(temp.province) == null) this.provinces.set(temp.province, [0, 0, 0]);
               if (this.districts.get(temp.district) == null) this.districts.set(temp.district, [0, 0, 0]);
               if (this.divisions.get(temp.division) == null) this.divisions.set(temp.division, [0, 0, 0]);
@@ -523,6 +557,8 @@ export class AdminFieldVisitReportsComponent implements OnInit {
             this.tempCounts[1] = this.provinces.size;
             this.tempCounts[2] = this.districts.size;
             this.tempCounts[3] = this.divisions.size;
+            this.tempCounts[4] = this.processingCount;
+            this.tempCounts[5] = this.completedCount;
 
             this.onOptionSelected('Provinces');
             this.column = "Province";
