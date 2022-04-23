@@ -79,7 +79,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
         DivisionReportsComponent,
         AdminFarmerReportsComponent,
         AdminFieldVisitReportsComponent,
-        AdminFieldVisitReqReportsComponent
+        AdminFieldVisitReqReportsComponent,
         NotFoundComponent
     ]
 })
