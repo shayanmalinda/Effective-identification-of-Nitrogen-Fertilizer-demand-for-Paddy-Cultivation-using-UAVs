@@ -421,7 +421,7 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/admin-profile'], { state: { type: 'admin' } });
   }
   divisionReports() {
-    this.router.navigate(['/select-report'], { state: { role: 'officer', type: 'division' } });
+    this.router.navigate(['/admin-n-level-reports'], { state: { role: 'field visit req' } });
   }
   officerReports() {
     this.router.navigate(['/admin-officer-reports'], { state: { role: 'agricultural officer' } });

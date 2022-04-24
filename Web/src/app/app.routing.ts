@@ -1,3 +1,4 @@
+import { AdminNLevelReportsComponent } from './pages/admin-n-level-reports/admin-n-level-reports.component';
 import { DivisionReportsComponent } from './pages/division-reports/division-reports.component';
 import { DivisionsComponent } from './pages/divisions/divisions.component';
 import { FieldVisitsComponent } from './pages/field-visits/field-visits.component';
@@ -87,6 +88,7 @@ const routes: Routes =[
     { path: 'admin-field-reports',       component: AdminFarmerReportsComponent},
     { path: 'admin-field-visit-req-reports',       component: AdminFieldVisitReqReportsComponent},
     { path: 'admin-field-visit-reports',       component: AdminFieldVisitReportsComponent},
+    { path: 'admin-n-level-reports',       component: AdminNLevelReportsComponent},
     { path: '**', pathMatch: 'full', component: NotFoundComponent },
 
 ];
