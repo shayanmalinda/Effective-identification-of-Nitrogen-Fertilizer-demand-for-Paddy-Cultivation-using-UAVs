@@ -8,6 +8,7 @@ import { SelectorListContext } from '@angular/compiler';
 import { Message } from 'app/models/message.model';
 import { DialogService } from 'app/services/dialog.service';
 import { DatePipe } from '@angular/common';
+import { AuthenticationService } from 'app/services/authentication.service';
 
 @Component({
   selector: 'app-update-profile',
@@ -57,7 +58,7 @@ export class UpdateProfileComponent implements OnInit {
   districtSelected: string;
   divisionSelected: string;
 
-  constructor(private datepipe : DatePipe, private userService: UserService, private router: Router, private dialog: DialogService) { }
+  constructor(private datepipe : DatePipe, private userService: UserService, private router: Router, private dialog: DialogService, private authentication : AuthenticationService) { }
 
   ngOnInit(): void {
     this.loadSessionDetails();
@@ -147,6 +148,12 @@ export class UpdateProfileComponent implements OnInit {
     this.districtSelected = sessionStorage.getItem('district');
     this.loadDivisionSelected(this.districtSelected);
     this.divisionSelected = sessionStorage.getItem('division');
+  }
+
+  onLogoutClick(){
+    this.authentication.logOut();
+    this.router.navigate(['/signup']);
+    console.log(" finaly logs out !! ");
   }
 
   updateSessionDetails() {
