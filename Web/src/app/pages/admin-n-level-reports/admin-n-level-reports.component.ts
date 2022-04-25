@@ -19,13 +19,15 @@ import { UserService } from '../../services/user.service';
 import divisionalDataFile from '../../../assets/jsonfiles/divisions.json';
 import { Router } from '@angular/router';
 import { FieldVisitReqTemp } from '../../models/field-visit.model';
+import { FieldDataService } from '../../services/field-data.service';
+import { FieldData } from 'app/models/field-data.model';
 
 @Component({
-  selector: 'app-admin-field-visit-req-reports',
-  templateUrl: './admin-field-visit-req-reports.component.html',
-  styleUrls: ['./admin-field-visit-req-reports.component.css']
+  selector: 'app-admin-n-level-reports',
+  templateUrl: './admin-n-level-reports.component.html',
+  styleUrls: ['./admin-n-level-reports.component.css']
 })
-export class AdminFieldVisitReqReportsComponent implements OnInit {
+export class AdminNLevelReportsComponent implements OnInit {
   // displayedColumns: string[];
   documentName = "Sample Name";
   date: string;
@@ -70,6 +72,7 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
   passedUser: User;
   length = false;
   totalFarmers;
+  NLevelsofAVisit: Map<string, number[]> = new Map<string, number[]>();
   provinces: Map<string, number[]> = new Map<string, number[]>();
   districts: Map<string, number[]> = new Map<string, number[]>();
   divisions: Map<string, number[]> = new Map<string, number[]>();
@@ -92,13 +95,15 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
   years = new Set();
   months = new Set();
   column;
+  fieldData: FieldData[];
+
   // dataSource: MatTableDataSource<User>;
 
-  constructor(private router: Router, private userService: UserService, private datepipe: DatePipe, private userFarmersService: UserFarmersService, private fieldService: FieldService, private fieldVisitService: FieldVisitService) {
+  constructor(private router: Router, private fieldDataService: FieldDataService, private userService: UserService, private datepipe: DatePipe, private userFarmersService: UserFarmersService, private fieldService: FieldService, private fieldVisitService: FieldVisitService) {
     this.date = this.datepipe.transform((new Date), 'MMM d, y').toString();
     this.optionSelected = 'Provinces'
     this.timeSelected = 'All';
-    this.displayedColumns = ['key', 'pending', 'confirmed', 'declined', 'processing', 'visited', 'total'];
+    this.displayedColumns = ['key', 'pending', 'confirmed', 'declined', 'processing'];
     this.role = this.router.getCurrentNavigation().extras.state.role;
     if (this.role == 'field visit req') {
       this.documentName = "Field Visit Request Report";
@@ -144,6 +149,7 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
   }
 
   onOptionSelected(value: any) {
+    console.log("NMNMNMNMNMNMMMMMMMMMMMMMMMMMMM")
     this.values = [];
     // this.timeSelected = "All";
     //get Active div,pro,dis
@@ -179,6 +185,7 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.values);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      // console.log(this.tempCounts)
       this.farmerCount = this.tempCounts[0];
       this.provinceCount = this.tempCounts[1];
       this.districtCount = this.tempCounts[2];
@@ -226,10 +233,11 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
       this.districtCount = 0;
       this.divisionCount = 0;
       this.processingCount = 0;
-      this.completedCount = 0;
-      this.declinedCount = 0;
-      this.pendingCount = 0;
       this.confirmedCount = 0;
+      this.pendingCount = 0;
+      this.declinedCount = 0;
+      this.completedCount = 0;
+
 
     }
     else if (this.optionSelected == 'District') {
@@ -239,10 +247,10 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
       this.districtCount = 0;
       this.divisionCount = 0;
       this.processingCount = 0;
-      this.completedCount = 0;
-      this.declinedCount = 0;
-      this.pendingCount = 0;
       this.confirmedCount = 0;
+      this.pendingCount = 0;
+      this.declinedCount = 0;
+      this.completedCount = 0;
       // this.list = this.divisionalData.provinces;
       // let val, i;
       // let allDistricts = [];
@@ -261,10 +269,10 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
       this.districtCount = 0;
       this.divisionCount = 0;
       this.processingCount = 0;
-      this.completedCount = 0;
-      this.declinedCount = 0;
-      this.pendingCount = 0;
       this.confirmedCount = 0;
+      this.pendingCount = 0;
+      this.declinedCount = 0;
+      this.completedCount = 0;
       // this.list = this.divisionalData.provinces;
       // let val, i;
       // let allDistricts = [];
@@ -334,6 +342,9 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
     this.fieldvisitReqs = [];
     this.processingCount = 0;
     this.completedCount = 0;
+    this.confirmedCount = 0;
+    this.declinedCount = 0;
+    this.pendingCount = 0;
     this.provinces.clear();
     this.districts.clear();
     this.divisions.clear();
@@ -348,14 +359,31 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
         if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0, 0, 0, 0]);
 
         //add counts
-        if (req.status == "pending") this.pendingCount++;
-        if (req.status == "declined") this.declinedCount++;
-        if (req.status == "confirmed") this.confirmedCount++;
-        if (req.status == "processing") this.processingCount++;
-        if (req.status == "completed") this.completedCount++;
-        this.provinces.set(req.province, [req.status == "pending" ? (this.provinces.get(req.province)[0] + 1) : this.provinces.get(req.province)[0], req.status == "confirmed" ? (this.provinces.get(req.province)[1] + 1) : this.provinces.get(req.province)[1], req.status == "declined" ? (this.provinces.get(req.province)[2] + 1) : this.provinces.get(req.province)[2], req.status == "processing" ? (this.provinces.get(req.province)[3] + 1) : this.provinces.get(req.province)[3], req.status == 'completed' ? this.provinces.get(req.province)[4] + 1 : this.provinces.get(req.province)[4], this.provinces.get(req.province)[5] + 1]);
-        this.districts.set(req.district, [req.status == "pending" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'confirmed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1], req.status == "declined" ? this.districts.get(req.district)[2] + 1 : this.districts.get(req.district)[2], req.status == "processing" ? this.districts.get(req.district)[3] + 1 : this.districts.get(req.district)[3], req.status == "completed" ? this.districts.get(req.district)[4] + 1 : this.districts.get(req.district)[4], this.districts.get(req.district)[5] + 1]);
-        this.divisions.set(req.division, [req.status == "pending" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'confirmed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1], req.status == "declined" ? this.divisions.get(req.division)[2] + 1 : this.divisions.get(req.division)[2], req.status == "processing" ? this.divisions.get(req.division)[3] + 1 : this.divisions.get(req.division)[3], req.status == "completed" ? this.divisions.get(req.division)[4] + 1 : this.divisions.get(req.division)[4], this.divisions.get(req.division)[5] + 1]);
+        // if (req.status == "pending") this.pendingCount++;
+        // if (req.status == "declined") this.declinedCount++;
+        // if (req.status == "confirmed") this.confirmedCount++;
+        // if (req.status == "processing") this.processingCount++;
+        // if (req.status == "completed") this.completedCount++;
+        if (this.optionSelected == "Provinces") {
+          this.pendingCount = this.provinces.get(req.province)[0];
+          this.declinedCount = this.provinces.get(req.province)[1];
+          this.confirmedCount = this.provinces.get(req.province)[2];
+          this.processingCount = this.provinces.get(req.province)[3];
+        } else if (this.optionSelected == "Districts" || this.optionSelected == "Province") {
+          this.pendingCount = this.districts.get(req.district)[0];
+          this.declinedCount = this.districts.get(req.district)[1];
+          this.confirmedCount = this.districts.get(req.district)[2];
+          this.processingCount = this.districts.get(req.district)[3];
+        } else if (this.optionSelected == "Divisions" || this.optionSelected == "District" || this.optionSelected == "Division") {
+          this.pendingCount = this.divisions.get(req.division)[0];
+          this.declinedCount = this.divisions.get(req.division)[1];
+          this.confirmedCount = this.divisions.get(req.division)[2];
+          this.processingCount = this.divisions.get(req.division)[3];
+        }
+
+        this.provinces.set(req.province, [this.provinces.get(req.province)[0] + this.NLevelsofAVisit.get(req.id)[0], this.provinces.get(req.province)[1] + this.NLevelsofAVisit.get(req.id)[1], this.provinces.get(req.province)[2] + this.NLevelsofAVisit.get(req.id)[2], this.provinces.get(req.province)[3] + this.NLevelsofAVisit.get(req.id)[3]])
+        this.districts.set(req.district, [this.districts.get(req.district)[0] + this.NLevelsofAVisit.get(req.id)[0], this.districts.get(req.district)[1] + this.NLevelsofAVisit.get(req.id)[1], this.districts.get(req.district)[2] + this.NLevelsofAVisit.get(req.id)[2], this.districts.get(req.district)[3] + this.NLevelsofAVisit.get(req.id)[3]])
+        this.divisions.set(req.division, [this.divisions.get(req.division)[0] + this.NLevelsofAVisit.get(req.id)[0], this.divisions.get(req.division)[1] + this.NLevelsofAVisit.get(req.id)[1], this.divisions.get(req.division)[2] + this.NLevelsofAVisit.get(req.id)[2], this.divisions.get(req.division)[3] + this.NLevelsofAVisit.get(req.id)[3]])
 
       } else if (this.timeSelected == "Year" && year == select) {
         this.fieldvisitReqs.push(req)
@@ -364,14 +392,25 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
         if (this.divisions.get(req.division) == null) this.divisions.set(req.division, [0, 0, 0, 0, 0, 0]);
 
         //add counts
-        if (req.status == "pending") this.pendingCount++;
-        if (req.status == "declined") this.declinedCount++;
-        if (req.status == "confirmed") this.confirmedCount++;
-        if (req.status == "processing") this.processingCount++;
-        if (req.status == "completed") this.completedCount++;
-        this.provinces.set(req.province, [req.status == "pending" ? (this.provinces.get(req.province)[0] + 1) : this.provinces.get(req.province)[0], req.status == "confirmed" ? (this.provinces.get(req.province)[1] + 1) : this.provinces.get(req.province)[1], req.status == "declined" ? (this.provinces.get(req.province)[2] + 1) : this.provinces.get(req.province)[2], req.status == "processing" ? (this.provinces.get(req.province)[3] + 1) : this.provinces.get(req.province)[3], req.status == 'completed' ? this.provinces.get(req.province)[4] + 1 : this.provinces.get(req.province)[4], this.provinces.get(req.province)[5] + 1]);
-        this.districts.set(req.district, [req.status == "pending" ? this.districts.get(req.district)[0] + 1 : this.districts.get(req.district)[0], req.status == 'confirmed' ? this.districts.get(req.district)[1] + 1 : this.districts.get(req.district)[1], req.status == "declined" ? this.districts.get(req.district)[2] + 1 : this.districts.get(req.district)[2], req.status == "processing" ? this.districts.get(req.district)[3] + 1 : this.districts.get(req.district)[3], req.status == "completed" ? this.districts.get(req.district)[4] + 1 : this.districts.get(req.district)[4], this.districts.get(req.district)[5] + 1]);
-        this.divisions.set(req.division, [req.status == "pending" ? this.divisions.get(req.division)[0] + 1 : this.divisions.get(req.division)[0], req.status == 'confirmed' ? this.divisions.get(req.division)[1] + 1 : this.divisions.get(req.division)[1], req.status == "declined" ? this.divisions.get(req.division)[2] + 1 : this.divisions.get(req.division)[2], req.status == "processing" ? this.divisions.get(req.division)[3] + 1 : this.divisions.get(req.division)[3], req.status == "completed" ? this.divisions.get(req.division)[4] + 1 : this.divisions.get(req.division)[4], this.divisions.get(req.division)[5] + 1]);
+        if (this.optionSelected == "Provinces") {
+          this.pendingCount = this.provinces.get(req.province)[0];
+          this.declinedCount = this.provinces.get(req.province)[1];
+          this.confirmedCount = this.provinces.get(req.province)[2];
+          this.processingCount = this.provinces.get(req.province)[3];
+        } else if (this.optionSelected == "Districts" || this.optionSelected == "Province") {
+          this.pendingCount = this.districts.get(req.district)[0];
+          this.declinedCount = this.districts.get(req.district)[1];
+          this.confirmedCount = this.districts.get(req.district)[2];
+          this.processingCount = this.districts.get(req.district)[3];
+        } else if (this.optionSelected == "Divisions" || this.optionSelected == "District" || this.optionSelected == "Division") {
+          this.pendingCount = this.divisions.get(req.division)[0];
+          this.declinedCount = this.divisions.get(req.division)[1];
+          this.confirmedCount = this.divisions.get(req.division)[2];
+          this.processingCount = this.divisions.get(req.division)[3];
+        }
+        this.provinces.set(req.province, [this.provinces.get(req.province)[0] + this.NLevelsofAVisit.get(req.id)[0], this.provinces.get(req.province)[1] + this.NLevelsofAVisit.get(req.id)[1], this.provinces.get(req.province)[2] + this.NLevelsofAVisit.get(req.id)[2], this.provinces.get(req.province)[3] + this.NLevelsofAVisit.get(req.id)[3]])
+        this.districts.set(req.district, [this.districts.get(req.district)[0] + this.NLevelsofAVisit.get(req.id)[0], this.districts.get(req.district)[1] + this.NLevelsofAVisit.get(req.id)[1], this.districts.get(req.district)[2] + this.NLevelsofAVisit.get(req.id)[2], this.districts.get(req.district)[3] + this.NLevelsofAVisit.get(req.id)[3]])
+        this.divisions.set(req.division, [this.divisions.get(req.division)[0] + this.NLevelsofAVisit.get(req.id)[0], this.divisions.get(req.division)[1] + this.NLevelsofAVisit.get(req.id)[1], this.divisions.get(req.division)[2] + this.NLevelsofAVisit.get(req.id)[2], this.divisions.get(req.division)[3] + this.NLevelsofAVisit.get(req.id)[3]])
 
       }
 
@@ -391,6 +430,9 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
     this.divisions.clear(); var p = 0;
     this.processingCount = 0;
     this.completedCount = 0;
+    this.declinedCount = 0;
+    this.pendingCount = 0;
+    this.confirmedCount = 0;
     this.fieldvisitReqs.forEach(e => {
       if (e.province == value) {
         if (this.districts.get(e.district) == null) this.districts.set(e.district, [0, 0, 0, 0, 0, 0]);
@@ -399,7 +441,7 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
         // if (e.status == "confirmed") this.confirmedCount++;
         // if (e.status == "processing") this.processingCount++;
         // if (e.status == "completed") this.completedCount++;
-        this.districts.set(e.district, [e.status == "pending" ? this.districts.get(e.district)[0] + 1 : this.districts.get(e.district)[0], e.status == 'confirmed' ? this.districts.get(e.district)[1] + 1 : this.districts.get(e.district)[1], e.status == "declined" ? this.districts.get(e.district)[2] + 1 : this.districts.get(e.district)[2], e.status == "processing" ? this.districts.get(e.district)[3] + 1 : this.districts.get(e.district)[3], e.status == "completed" ? this.districts.get(e.district)[4] + 1 : this.districts.get(e.district)[4], this.districts.get(e.district)[5] + 1]);
+        this.districts.set(e.district, [this.districts.get(e.district)[0] + this.NLevelsofAVisit.get(e.id)[0], this.districts.get(e.district)[1] + this.NLevelsofAVisit.get(e.id)[1], this.districts.get(e.district)[2] + this.NLevelsofAVisit.get(e.id)[2], this.districts.get(e.district)[3] + this.NLevelsofAVisit.get(e.id)[3]])
       }
       if (e.district == value) {
         // if (e.status == "pending") this.pendingCount++;
@@ -408,7 +450,7 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
         // if (e.status == "processing") this.processingCount++;
         // if (e.status == "completed") this.completedCount++;
         if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0, 0, 0, 0]);
-        this.divisions.set(e.division, [e.status == "pending" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'confirmed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1], e.status == "declined" ? this.divisions.get(e.division)[2] + 1 : this.divisions.get(e.division)[2], e.status == "processing" ? this.divisions.get(e.division)[3] + 1 : this.divisions.get(e.division)[3], e.status == "completed" ? this.divisions.get(e.division)[4] + 1 : this.divisions.get(e.division)[4], this.divisions.get(e.division)[5] + 1]);
+        this.divisions.set(e.division, [this.divisions.get(e.division)[0] + this.NLevelsofAVisit.get(e.id)[0], this.divisions.get(e.division)[1] + this.NLevelsofAVisit.get(e.id)[1], this.divisions.get(e.division)[2] + this.NLevelsofAVisit.get(e.id)[2], this.divisions.get(e.division)[3] + this.NLevelsofAVisit.get(e.id)[3]])
       }
     })
 
@@ -416,6 +458,7 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
       this.clearTable();
       var fCount = 0;
       this.districts.forEach((value: number[], key: string) => {
+        console.log(value + "In Provinceeeee")
         fCount += value[2]; ////
         //fCount--;
         this.values.push({
@@ -433,13 +476,12 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
 
             if (e.district == key) {
 
-              if (e.status == "pending") this.pendingCount++;
-              if (e.status == "declined") this.declinedCount++;
-              if (e.status == "confirmed") this.confirmedCount++;
-              if (e.status == "processing") this.processingCount++;
-              if (e.status == "completed") this.completedCount++;
+              this.pendingCount = this.provinces.get(e.province)[0];
+              this.declinedCount = this.provinces.get(e.province)[1];
+              this.confirmedCount = this.provinces.get(e.province)[2];
+              this.processingCount = this.provinces.get(e.province)[3];
               if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0, 0, 0, 0]);
-              this.divisions.set(e.division, [e.status == "pending" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'confirmed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1], e.status == "declined" ? this.divisions.get(e.division)[2] + 1 : this.divisions.get(e.division)[2], e.status == "processing" ? this.divisions.get(e.division)[3] + 1 : this.divisions.get(e.division)[3], e.status == "completed" ? this.divisions.get(e.division)[4] + 1 : this.divisions.get(e.division)[4], this.divisions.get(e.division)[5] + 1]);
+              this.divisions.set(e.division, [this.divisions.get(e.division)[0] + this.NLevelsofAVisit.get(e.id)[0], this.divisions.get(e.division)[1] + this.NLevelsofAVisit.get(e.id)[1], this.divisions.get(e.division)[2] + this.NLevelsofAVisit.get(e.id)[2], this.divisions.get(e.division)[3] + this.NLevelsofAVisit.get(e.id)[3]])
             }
           })
         }
@@ -456,21 +498,22 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
       var fCount = 0;
       this.divisions.forEach((value: number[], key: string) => {
         // if (select == key) {
-          fCount += value[2];
-          this.values.push({
-            key: key,
-            pending: value[0],
-            confirmed: value[1],
-            declined: value[2],
-            processing: value[3],
-            completed: value[4],
-            total: value[5],
-          });
-          this.pendingCount += value[0];
-          this.confirmedCount += value[1];
-          this.declinedCount += value[2];
-          this.processingCount += value[3];
-          this.completedCount += value[4];
+
+        fCount += value[2];
+        this.values.push({
+          key: key,
+          pending: value[0],
+          confirmed: value[1],
+          declined: value[2],
+          processing: value[3],
+          completed: value[4],
+          total: value[5],
+        });
+        this.pendingCount += value[0];
+        this.confirmedCount += value[1];
+        this.declinedCount += value[2];
+        this.processingCount += value[3];
+        this.completedCount += value[4];
         // }
       });
       this.provinceCount = 1;
@@ -494,12 +537,12 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
             completed: value[4],
             total: value[5],
           });
-          this.pendingCount += value[0];
-          this.confirmedCount += value[1];
-          this.declinedCount += value[2];
-          this.processingCount += value[3];
-          this.completedCount += value[4];
         }
+        this.pendingCount += value[0];
+        this.confirmedCount += value[1];
+        this.declinedCount += value[2];
+        this.processingCount += value[3];
+        this.completedCount += value[4];
       });
       this.provinceCount = 1;
       this.districtCount = 1;
@@ -528,6 +571,9 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
       return true
     }
   }
+  round(x: number) {
+    return Math.round((x / (this.pendingCount + this.confirmedCount + this.declinedCount + this.processingCount) * 100))
+  }
 
   ngOnInit(): void {
     this.tempCounts = [0, 0, 0, 0, 0, 0];
@@ -542,66 +588,123 @@ export class AdminFieldVisitReqReportsComponent implements OnInit {
     if (this.role == 'field visit req') {
       this.fieldvisitReqs = [];
       this.fieldvisitReqsInitial = [];
-      this.fieldVisitService.getAllFieldVisitRequests().subscribe(data1 => {
-        this.totalFarmers = data1.length;
-        data1.forEach(e => {
-          var temp = {
-            ...e as FieldVisitReqTemp
-          }
-          this.fieldService.getField(temp.fieldId).subscribe(data => {
-            var tfield = data.payload.data() as Field;
-            if (tfield.status == "active") {
-              temp.division = tfield.division;
-              temp.district = tfield.district;
-              temp.province = tfield.province;
-              this.fieldvisitReqs.push(temp)
-              this.fieldvisitReqsInitial.push(temp)
+      this.fieldVisitService.getAllAdminFieldVisitRequests().subscribe(data1 => {
 
-              var date = new Date(temp.createdDate);
-              this.years.add(date.getFullYear().toString())
-              var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
-              this.months.add(monthYr)
+        this.fieldDataService.getAllFieldData().subscribe(data => {
 
-              if (this.provinces.get(temp.province) == null) this.provinces.set(temp.province, [0, 0, 0, 0, 0, 0]);
-              if (this.districts.get(temp.district) == null) this.districts.set(temp.district, [0, 0, 0, 0, 0, 0]);
-              if (this.divisions.get(temp.division) == null) this.divisions.set(temp.division, [0, 0, 0, 0, 0, 0]);
-              if (this.provincesInitial.get(temp.province) == null) this.provincesInitial.set(temp.province, [0, 0, 0, 0, 0, 0]);
-              if (this.districtsInitial.get(temp.district) == null) this.districtsInitial.set(temp.district, [0, 0, 0, 0, 0, 0]);
-              if (this.divisionsInitial.get(temp.division) == null) this.divisionsInitial.set(temp.division, [0, 0, 0, 0, 0, 0]);
-
-              //add counts
-              if (temp.status == "pending") this.pendingCount++;
-              if (temp.status == "declined") this.declinedCount++;
-              if (temp.status == "confirmed") this.confirmedCount++;
-              if (temp.status == "processing") this.processingCount++;
-              if (temp.status == "completed") this.completedCount++;
-
-              this.provinces.set(temp.province, [temp.status == "pending" ? (this.provinces.get(temp.province)[0] + 1) : this.provinces.get(temp.province)[0], temp.status == "confirmed" ? (this.provinces.get(temp.province)[1] + 1) : this.provinces.get(temp.province)[1], temp.status == "declined" ? (this.provinces.get(temp.province)[2] + 1) : this.provinces.get(temp.province)[2], temp.status == "processing" ? (this.provinces.get(temp.province)[3] + 1) : this.provinces.get(temp.province)[3], temp.status == 'completed' ? this.provinces.get(temp.province)[4] + 1 : this.provinces.get(temp.province)[4], this.provinces.get(temp.province)[5] + 1]);
-              this.districts.set(temp.district, [temp.status == "pending" ? this.districts.get(temp.district)[0] + 1 : this.districts.get(temp.district)[0], temp.status == 'confirmed' ? this.districts.get(temp.district)[1] + 1 : this.districts.get(temp.district)[1], temp.status == "declined" ? this.districts.get(temp.district)[2] + 1 : this.districts.get(temp.district)[2], temp.status == "processing" ? this.districts.get(temp.district)[3] + 1 : this.districts.get(temp.district)[3], temp.status == "completed" ? this.districts.get(temp.district)[4] + 1 : this.districts.get(temp.district)[4], this.districts.get(temp.district)[5] + 1]);
-              this.divisions.set(temp.division, [temp.status == "pending" ? this.divisions.get(temp.division)[0] + 1 : this.divisions.get(temp.division)[0], temp.status == 'confirmed' ? this.divisions.get(temp.division)[1] + 1 : this.divisions.get(temp.division)[1], temp.status == "declined" ? this.divisions.get(temp.division)[2] + 1 : this.divisions.get(temp.division)[2], temp.status == "processing" ? this.divisions.get(temp.division)[3] + 1 : this.divisions.get(temp.division)[3], temp.status == "completed" ? this.divisions.get(temp.division)[4] + 1 : this.divisions.get(temp.division)[4], this.divisions.get(temp.division)[5] + 1]);
-
-              this.provincesInitial.set(temp.province, [temp.status == "pending" ? (this.provincesInitial.get(temp.province)[0] + 1) : this.provincesInitial.get(temp.province)[0], temp.status == "confirmed" ? (this.provincesInitial.get(temp.province)[1] + 1) : this.provincesInitial.get(temp.province)[1], temp.status == "declined" ? (this.provincesInitial.get(temp.province)[2] + 1) : this.provincesInitial.get(temp.province)[2], temp.status == "processing" ? (this.provincesInitial.get(temp.province)[3] + 1) : this.provincesInitial.get(temp.province)[3], temp.status == 'completed' ? this.provincesInitial.get(temp.province)[4] + 1 : this.provincesInitial.get(temp.province)[4], this.provincesInitial.get(temp.province)[5] + 1]);
-              this.districtsInitial.set(temp.district, [temp.status == "pending" ? this.districtsInitial.get(temp.district)[0] + 1 : this.districtsInitial.get(temp.district)[0], temp.status == 'confirmed' ? this.districtsInitial.get(temp.district)[1] + 1 : this.districtsInitial.get(temp.district)[1], temp.status == "declined" ? this.districtsInitial.get(temp.district)[2] + 1 : this.districtsInitial.get(temp.district)[2], temp.status == "processing" ? this.districtsInitial.get(temp.district)[3] + 1 : this.districtsInitial.get(temp.district)[3], temp.status == "completed" ? this.districtsInitial.get(temp.district)[4] + 1 : this.districtsInitial.get(temp.district)[4], this.districtsInitial.get(temp.district)[5] + 1]);
-              this.divisionsInitial.set(temp.division, [temp.status == "pending" ? this.divisionsInitial.get(temp.division)[0] + 1 : this.divisionsInitial.get(temp.division)[0], temp.status == 'confirmed' ? this.divisionsInitial.get(temp.division)[1] + 1 : this.divisionsInitial.get(temp.division)[1], temp.status == "declined" ? this.divisionsInitial.get(temp.division)[2] + 1 : this.divisionsInitial.get(temp.division)[2], temp.status == "processing" ? this.divisionsInitial.get(temp.division)[3] + 1 : this.divisionsInitial.get(temp.division)[3], temp.status == "completed" ? this.divisionsInitial.get(temp.division)[4] + 1 : this.divisionsInitial.get(temp.division)[4], this.divisionsInitial.get(temp.division)[5] + 1]);
-
-            }
-            this.farmerCount = this.fieldvisitReqs.length;
-            this.provinceCount = this.provinces.size;
-            this.districtCount = this.districts.size;
-            this.divisionCount = this.divisions.size;
-            this.tempCounts[0] = this.fieldvisitReqs.length;
-            this.tempCounts[1] = this.provinces.size;
-            this.tempCounts[2] = this.districts.size;
-            this.tempCounts[3] = this.divisions.size;
-            this.tempCounts[4] = this.pendingCount;
-            this.tempCounts[5] = this.confirmedCount;
-            this.tempCounts[6] = this.declinedCount;
-            this.tempCounts[7] = this.processingCount;
-            this.tempCounts[8] = this.completedCount;
-            this.onOptionSelected('Provinces');
+          this.fieldData = data.map(e => {
+            return {
+              ...e.payload.doc.data() as {},
+            } as FieldData;
           })
-          // return temp;
+          this.fieldData.forEach(fd => {
+            if (this.NLevelsofAVisit.get(fd.requestId) == null)
+              this.NLevelsofAVisit.set(fd.requestId, [0, 0, 0, 0]);
+            var temp = this.NLevelsofAVisit.get(fd.requestId);
+            if (fd.level == 2)
+              this.NLevelsofAVisit.set(fd.requestId, [temp[0] + 1, temp[1], temp[2], temp[3]])
+            if (fd.level == 3)
+              this.NLevelsofAVisit.set(fd.requestId, [temp[0], temp[1] + 1, temp[2], temp[3]])
+            if (fd.level == 4)
+              this.NLevelsofAVisit.set(fd.requestId, [temp[0], temp[1], temp[2] + 1, temp[3]])
+            if (fd.level == 5)
+              this.NLevelsofAVisit.set(fd.requestId, [temp[0], temp[1], temp[2], temp[3] + 1])
+          })
+          this.totalFarmers = data1.length;
+          var data1Temp = data1.map(e => {
+            return {
+              ...e.payload.doc.data() as {},
+              id: e.payload.doc.id,
+            } as FieldVisitReqTemp;
+          })
+          data1Temp.forEach(e => {
+            var temp = {
+              ...e as FieldVisitReqTemp
+            }
+            this.fieldService.getField(temp.fieldId).subscribe(data => {
+              var tfield = data.payload.data() as Field;
+              if (tfield.status == "active" && temp.status == "completed") {
+                temp.division = tfield.division;
+                temp.district = tfield.district;
+                temp.province = tfield.province;
+                temp.createdDate = temp.visitDate; //
+                temp.lvl2 = this.NLevelsofAVisit.get(temp.id)[0];
+                temp.lvl3 = this.NLevelsofAVisit.get(temp.id)[1];
+                temp.lvl4 = this.NLevelsofAVisit.get(temp.id)[2];
+                temp.lvl5 = this.NLevelsofAVisit.get(temp.id)[3];
+                this.fieldvisitReqs.push(temp)
+                this.fieldvisitReqsInitial.push(temp)
+
+                var date = new Date(temp.createdDate);
+                this.years.add(date.getFullYear().toString())
+                var monthYr = (date.getMonth() + 1).toString() + " / " + date.getFullYear().toString();
+                this.months.add(monthYr)
+
+                if (this.provinces.get(temp.province) == null) this.provinces.set(temp.province, [0, 0, 0, 0]);
+                if (this.districts.get(temp.district) == null) this.districts.set(temp.district, [0, 0, 0, 0]);
+                if (this.divisions.get(temp.division) == null) this.divisions.set(temp.division, [0, 0, 0, 0]);
+                if (this.provincesInitial.get(temp.province) == null) this.provincesInitial.set(temp.province, [0, 0, 0, 0]);
+                if (this.districtsInitial.get(temp.district) == null) this.districtsInitial.set(temp.district, [0, 0, 0, 0]);
+                if (this.divisionsInitial.get(temp.division) == null) this.divisionsInitial.set(temp.division, [0, 0, 0, 0]);
+
+                this.provinces.set(temp.province, [this.provinces.get(temp.province)[0] + this.NLevelsofAVisit.get(temp.id)[0], this.provinces.get(temp.province)[1] + this.NLevelsofAVisit.get(temp.id)[1], this.provinces.get(temp.province)[2] + this.NLevelsofAVisit.get(temp.id)[2], this.provinces.get(temp.province)[3] + this.NLevelsofAVisit.get(temp.id)[3]])
+                this.districts.set(temp.district, [this.districts.get(temp.district)[0] + this.NLevelsofAVisit.get(temp.id)[0], this.districts.get(temp.district)[1] + this.NLevelsofAVisit.get(temp.id)[1], this.districts.get(temp.district)[2] + this.NLevelsofAVisit.get(temp.id)[2], this.districts.get(temp.district)[3] + this.NLevelsofAVisit.get(temp.id)[3]])
+                this.divisions.set(temp.division, [this.divisions.get(temp.division)[0] + this.NLevelsofAVisit.get(temp.id)[0], this.divisions.get(temp.division)[1] + this.NLevelsofAVisit.get(temp.id)[1], this.divisions.get(temp.division)[2] + this.NLevelsofAVisit.get(temp.id)[2], this.divisions.get(temp.division)[3] + this.NLevelsofAVisit.get(temp.id)[3]])
+                this.provincesInitial.set(temp.province, [this.provincesInitial.get(temp.province)[0] + this.NLevelsofAVisit.get(temp.id)[0], this.provincesInitial.get(temp.province)[1] + this.NLevelsofAVisit.get(temp.id)[1], this.provincesInitial.get(temp.province)[2] + this.NLevelsofAVisit.get(temp.id)[2], this.provincesInitial.get(temp.province)[3] + this.NLevelsofAVisit.get(temp.id)[3]])
+                this.districtsInitial.set(temp.district, [this.districtsInitial.get(temp.district)[0] + this.NLevelsofAVisit.get(temp.id)[0], this.districtsInitial.get(temp.district)[1] + this.NLevelsofAVisit.get(temp.id)[1], this.districtsInitial.get(temp.district)[2] + this.NLevelsofAVisit.get(temp.id)[2], this.districtsInitial.get(temp.district)[3] + this.NLevelsofAVisit.get(temp.id)[3]])
+                this.divisionsInitial.set(temp.division, [this.divisionsInitial.get(temp.division)[0] + this.NLevelsofAVisit.get(temp.id)[0], this.divisionsInitial.get(temp.division)[1] + this.NLevelsofAVisit.get(temp.id)[1], this.divisionsInitial.get(temp.division)[2] + this.NLevelsofAVisit.get(temp.id)[2], this.divisionsInitial.get(temp.division)[3] + this.NLevelsofAVisit.get(temp.id)[3]])
+
+                // this.pendingCount = this.provinces.get(temp.province)[0];
+                // this.declinedCount = this.provinces.get(temp.province)[1];
+                // this.confirmedCount = this.provinces.get(temp.province)[2];
+                // this.processingCount = this.provinces.get(temp.province)[3];
+                // var finalTotal = this.provinces.get(temp.province)[0]+this.provinces.get(temp.province)[1]+this.provinces.get(temp.province)[2]+this.provinces.get(temp.province)[3];
+                // console.log(finalTotal+"KLKLKL")
+                //add counts
+                // if (temp.status == "pending") this.pendingCount++;
+                // if (temp.status == "declined") this.declinedCount++;
+                // if (temp.status == "confirmed") this.confirmedCount++;
+                // if (temp.status == "processing") this.processingCount++;
+                // if (temp.status == "completed") this.completedCount++;
+
+              }
+              
+              console.log(this.provinces)
+              this.provinces.forEach(p => {
+                // console.log(p + "All Counts of levels for a province")
+                // console.log(this.pendingCount)
+                this.pendingCount += p[0];
+                // console.log(p[0] + "mmm" + this.pendingCount)
+                this.confirmedCount += p[1];
+                this.declinedCount += p[2];
+                this.processingCount += p[3];
+
+              })
+
+              var finalCount = this.pendingCount + this.confirmedCount + this.declinedCount + this.processingCount;
+              this.farmerCount = finalCount;
+              this.provinceCount = this.provinces.size;
+              this.districtCount = this.districts.size;
+              this.divisionCount = this.divisions.size;
+              this.tempCounts[0] = finalCount;
+              this.tempCounts[1] = this.provinces.size;
+              this.tempCounts[2] = this.districts.size;
+              this.tempCounts[3] = this.divisions.size;
+              this.tempCounts[4] = Math.round((this.pendingCount / finalCount) * 100);
+              this.tempCounts[5] = Math.round((this.confirmedCount / finalCount) * 100);
+              this.tempCounts[6] = Math.round((this.declinedCount / finalCount) * 100);
+              this.tempCounts[7] = Math.round((this.processingCount / finalCount) * 100);
+              this.tempCounts[8] = Math.round((this.completedCount / finalCount) * 100);
+              // console.log(this.tempCounts)
+
+              this.onOptionSelected('Provinces');
+
+            })
+            // return temp;
+          })
         })
+
+
       });
     } else if (this.role == 'field visit') {
       this.fieldvisitReqs = [];

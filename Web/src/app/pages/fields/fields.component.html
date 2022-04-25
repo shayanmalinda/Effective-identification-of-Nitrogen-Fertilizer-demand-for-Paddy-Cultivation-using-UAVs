@@ -11,7 +11,7 @@
                                 <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}">
                                     <div class="dropdown">
 
-                                        <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding-top: 0px; ">
+                                        <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding : 5px ">
         
                                             <option [value]="none" disabled selected hidden>Province</option>
                                             <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
@@ -22,7 +22,7 @@
                                 <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; ">
                                     <div class="dropdown">
 
-                                        <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding-top: 0px; ">
+                                        <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding : 5px ">
         
                                             <option [value]="none" disabled selected hidden>District</option>
                                             <option *ngFor="let district of districts" [value]="district">{{district}}</option>
@@ -33,7 +33,7 @@
                                 <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; padding-right: 30px;">
                                     <div class="dropdown">
 
-                                        <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding-top: 0px;">
+                                        <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding : 5px">
         
                                             <option [value]="none" disabled selected hidden>Division</option>
                                             <option *ngFor="let division of divisions" [value]="division">{{division}}</option>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="labels">
-                            <label class="label label-info right">Fields : {{fields.length}}</label>&nbsp;
+                            <label class="label label-info right" style="padding : 5px ">Fields : {{fields.length}}</label>&nbsp;
 
                         </div>
                     </div>

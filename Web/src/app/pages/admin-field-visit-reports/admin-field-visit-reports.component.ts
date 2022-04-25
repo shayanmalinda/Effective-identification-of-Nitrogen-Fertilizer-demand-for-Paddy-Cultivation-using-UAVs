@@ -84,7 +84,7 @@ export class AdminFieldVisitReportsComponent implements OnInit {
   displayedColumns;
   timeSelected;
   name;
-  selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District','Division'];
+  selections = ['Provinces', 'Districts', 'Divisions', 'Province', 'District', 'Division'];
   timeSelections = ['All', 'Year', 'Month'];
   years = new Set();
   months = new Set();
@@ -358,13 +358,13 @@ export class AdminFieldVisitReportsComponent implements OnInit {
     this.fieldvisitReqs.forEach(e => {
       if (e.province == value) {
         if (this.districts.get(e.district) == null) this.districts.set(e.district, [0, 0, 0]);
-        if (e.status == "processing") this.processingCount++;
-        if (e.status == "completed") this.completedCount++;
+        // if (e.status == "processing") this.processingCount++;
+        // if (e.status == "completed") this.completedCount++;
         this.districts.set(e.district, [e.status == "processing" ? this.districts.get(e.district)[0] + 1 : this.districts.get(e.district)[0], e.status == 'completed' ? this.districts.get(e.district)[1] + 1 : this.districts.get(e.district)[1], this.districts.get(e.district)[2] + 1]);
       }
       if (e.district == value) {
-        if (e.status == "processing") this.processingCount++;
-        if (e.status == "completed") this.completedCount++;
+        // if (e.status == "processing") this.processingCount++;
+        // if (e.status == "completed") this.completedCount++;
         if (this.divisions.get(e.division) == null) this.divisions.set(e.division, [0, 0, 0]);
         this.divisions.set(e.division, [e.status == "processing" ? this.divisions.get(e.division)[0] + 1 : this.divisions.get(e.division)[0], e.status == 'completed' ? this.divisions.get(e.division)[1] + 1 : this.divisions.get(e.division)[1], this.divisions.get(e.division)[2] + 1]);
       }
@@ -407,6 +407,7 @@ export class AdminFieldVisitReportsComponent implements OnInit {
 
       var fCount = 0;
       this.divisions.forEach((value: number[], key: string) => {
+        // if (select == key) {
         fCount += value[2];
         this.values.push({
           key: key,
@@ -414,7 +415,11 @@ export class AdminFieldVisitReportsComponent implements OnInit {
           completed: value[1],
           total: value[2],
         });
+        this.processingCount += value[0];
+        this.completedCount += value[1];
+      // }
       });
+
       this.provinceCount = 1;
       this.districtCount = 1;
       this.divisionCount = this.values.length;
@@ -433,8 +438,11 @@ export class AdminFieldVisitReportsComponent implements OnInit {
             completed: value[1],
             total: value[2],
           });
+          this.processingCount += value[0];
+          this.completedCount += value[1];
         }
       });
+
       this.provinceCount = 1;
       this.districtCount = 1;
       this.divisionCount = this.values.length;

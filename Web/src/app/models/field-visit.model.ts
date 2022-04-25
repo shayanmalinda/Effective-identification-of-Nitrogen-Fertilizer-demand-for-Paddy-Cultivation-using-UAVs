@@ -58,4 +58,8 @@ export class FieldVisitReqTemp {
     note : string;
     visitDate : string; 
     createdDate : string; 
+    lvl5:number;
+    lvl2:number;
+    lvl3:number;
+    lvl4:number;
 }

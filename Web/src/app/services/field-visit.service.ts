@@ -16,6 +16,9 @@ export class FieldVisitService {
   getAllFieldVisitRequests() {
     return this.fireStore.collection('FieldRequests').valueChanges();
   }
+  getAllAdminFieldVisitRequests() {
+    return this.fireStore.collection('FieldRequests').snapshotChanges();
+  }
 
   getFieldVisitRequests(fieldId: String) {
     return this.fireStore.collection('FieldRequests', ref => ref.where('fieldId', '==', fieldId)).valueChanges();

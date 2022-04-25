@@ -1,3 +1,4 @@
+import { AdminNLevelReportsComponent } from './admin-n-level-reports/admin-n-level-reports.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -80,7 +81,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
         AdminFarmerReportsComponent,
         AdminFieldVisitReportsComponent,
         AdminFieldVisitReqReportsComponent,
-        NotFoundComponent
+        NotFoundComponent,
+        AdminNLevelReportsComponent,
+
     ]
 })
 export class ExamplesModule { }
