@@ -38,7 +38,10 @@ export class DivisionsDetailsComponent implements OnInit {
   nLevelCountsMap3 = new Map<string, any>();
   nLevelCountsMap4 = new Map<string, any>();
   nLevelCountsMap5 = new Map<string, any>();
-
+  temp2 = new Map<string, any>();
+  temp3 = new Map<string, any>();
+  temp4 = new Map<string, any>();
+  temp5 = new Map<string, any>();
   farmersactive: User[];
   fieldData: FieldData[];
   filteredFieldData: FieldData[];
@@ -158,7 +161,7 @@ export class DivisionsDetailsComponent implements OnInit {
             }
             var values = [];
             Array.from(this.nLevelCountsMap.values()).forEach(val => {
-              values.push(val * 100 / this.filteredFieldData.length)
+              values.push(Math.round(val * 100 / this.filteredFieldData.length))
             })
 
             this.nChartLabels = keys;
@@ -198,11 +201,25 @@ export class DivisionsDetailsComponent implements OnInit {
               var yr = new Date(f.timestamp).getFullYear().toString();
               var key = yr + "/" + mnt;
 
-              this.nLevelCountsMap2.set(key, 0);
-              this.nLevelCountsMap3.set(key, 0);
-              this.nLevelCountsMap4.set(key, 0);
-              this.nLevelCountsMap5.set(key, 0);
+              this.temp2.set(key, 0);
+              this.temp3.set(key, 0);
+              this.temp4.set(key, 0);
+              this.temp5.set(key, 0);
             })
+
+            Array.from(this.temp2.keys()).sort().forEach(q => {
+              this.nLevelCountsMap2.set(q, 0);
+            })
+            Array.from(this.temp3.keys()).sort().forEach(q => {
+              this.nLevelCountsMap3.set(q, 0);
+            })
+            Array.from(this.temp4.keys()).sort().forEach(q => {
+              this.nLevelCountsMap4.set(q, 0);
+            })
+            Array.from(this.temp5.keys()).sort().forEach(q => {
+              this.nLevelCountsMap5.set(q, 0);
+            })
+
             this.filteredFieldData.forEach(f => {
               var mnt = new Date(f.timestamp).getMonth().toString();
               var yr = new Date(f.timestamp).getFullYear().toString();
@@ -210,30 +227,36 @@ export class DivisionsDetailsComponent implements OnInit {
               var o = 0;
               if (f.level == 2) {
                 var val = this.nLevelCountsMap2.get(key);
-                this.nLevelCountsMap2.set(key, val+1);
+                this.nLevelCountsMap2.set(key, val + 1);
+                this.temp2.set(key, val + 1);
               }
               else if (f.level == 3) {
                 var val = this.nLevelCountsMap3.get(key);
-                this.nLevelCountsMap3.set(key, val+1);
+                this.temp3.set(key, val + 1);
               }
               else if (f.level == 4) {
                 var val = this.nLevelCountsMap4.get(key);
-                this.nLevelCountsMap4.set(key, val+1);
+                this.temp4.set(key, val + 1);
               }
               else if (f.level == 5) {
                 var val = this.nLevelCountsMap5.get(key);
-                this.nLevelCountsMap5.set(key, val+1);
+                this.temp5.set(key, val + 1);
               }
               console.log(o)
             })
-
-
+            
             this.nChartLabels2 = Array.from(this.nLevelCountsMap5.keys()).sort();;
+            this.nChartLabels2.forEach(element => {
+              this.nLevelCountsMap2.set(element,Math.round(this.temp2.get(element)/(this.temp2.get(element)+this.temp3.get(element)+this.temp4.get(element)+this.temp5.get(element))*100))
+              this.nLevelCountsMap3.set(element,Math.round(this.temp3.get(element)/(this.temp2.get(element)+this.temp3.get(element)+this.temp4.get(element)+this.temp5.get(element))*100))
+              this.nLevelCountsMap4.set(element,Math.round(this.temp4.get(element)/(this.temp2.get(element)+this.temp3.get(element)+this.temp4.get(element)+this.temp5.get(element))*100))
+              this.nLevelCountsMap5.set(element,Math.round(this.temp5.get(element)/(this.temp2.get(element)+this.temp3.get(element)+this.temp4.get(element)+this.temp5.get(element))*100))
+            });
             this.nChartData2 = [
-              { data: Array.from(this.nLevelCountsMap2.values()).sort(), label: 'Level 2' },
-              { data: Array.from(this.nLevelCountsMap3.values()).sort(), label: 'Level 3' },
-              { data: Array.from(this.nLevelCountsMap4.values()).sort(), label: 'Level 4' },
-              { data: Array.from(this.nLevelCountsMap5.values()).sort(), label: 'Level 5' },
+              { data: Array.from(this.nLevelCountsMap2.values()), label: 'Level 2' },
+              { data: Array.from(this.nLevelCountsMap3.values()), label: 'Level 3' },
+              { data: Array.from(this.nLevelCountsMap4.values()), label: 'Level 4' },
+              { data: Array.from(this.nLevelCountsMap5.values()), label: 'Level 5' },
             ];
             this.isLoaded4 = true;
           }

@@ -24,16 +24,16 @@
                         </div>
 
                         <div class="labels">
-                            <label class="label label-primary right">All : {{fieldVisits.length}}</label>&nbsp;
-                            <label class="label label-warning right" *ngIf="type=='request'">Pending :
+                            <label class="label label-primary right" style="padding: 5px;">All : {{fieldVisits.length}}</label>&nbsp;
+                            <label class="label label-default right" *ngIf="type=='request'" style="padding: 5px;">Pending :
                                 {{pending}}</label>&nbsp;
-                            <label class="label label-warning right" *ngIf="type=='request'">Confirmed :
+                            <label class="label label-success right" *ngIf="type=='request'" style="padding: 5px;">Confirmed :
                                 {{confirmed}}</label>&nbsp;
-                            <label class="label label-warning right" *ngIf="type=='request'">Declined :
+                            <label class="label label-warning right" *ngIf="type=='request'" style="padding: 5px;">Declined :
                                 {{confirmed}}</label>&nbsp;
-                            <label class="label label-info right" *ngIf="type=='visit'">Processing :
+                            <label class="label label-info right" *ngIf="type=='visit'" style="padding: 5px;">Processing :
                                 {{processing}}</label>&nbsp;
-                            <label class="label label-success right" *ngIf="type=='visit'">Completed :
+                            <label class="label label-success right" *ngIf="type=='visit'" style="padding: 5px;">Completed :
                                 {{completed}}</label>&nbsp;
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                         <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}">
                             <div class="dropdown">
 
-                                <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding-top: 0px;">
+                                <select class="dropbtn" name="dropdownProvince" id="dropdownProvince" [(ngModel)]="provinceSelected" (ngModelChange)="onProvinceSelected($event)" style="padding: 5px;">
 
                                     <option [value]="none" disabled selected hidden>Province</option>
                                     <option *ngFor="let province of provinces" [value]="province">{{province}}
@@ -53,7 +53,7 @@
                         <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; ">
                             <div class="dropdown">
 
-                                <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding-top: 0px; ">
+                                <select class="dropbtn" name="dropdownDistrict" id="dropdownDistrict" [(ngModel)]="districtSelected" (ngModelChange)="onDistrictSelected($event)" [value]="none" style="padding: 5px;">
 
                                     <option [value]="none" disabled selected hidden>District</option>
                                     <option *ngFor="let district of districts" [value]="district">{{district}}
@@ -65,7 +65,7 @@
                         <div class="input-group form-group-no-border transparent" [ngClass]="{'input-group-focus':focus1===true}" style="padding-left: 15px; padding-right: 30px;">
                             <div class="dropdown">
 
-                                <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding-top: 0px; ">
+                                <select class="dropbtn" name="dropdownDivision" id="dropdownDivision" [(ngModel)]="divisionSelected" (ngModelChange)="onDivisionSelected($event)" style="padding: 5px;">
 
                                     <option [value]="none" disabled selected hidden>Division</option>
                                     <option *ngFor="let division of divisions" [value]="division">{{division}}
@@ -130,8 +130,8 @@
                             <ng-container matColumnDef="status">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <label *ngIf="row.status=='pending'" class="label label-warning">{{row.status}}</label>
-                                    <label *ngIf="row.status=='confirmed'" class="label label-warning">{{row.status}}</label>
+                                    <label *ngIf="row.status=='pending'" class="label label-default">{{row.status}}</label>
+                                    <label *ngIf="row.status=='confirmed'" class="label label-success">{{row.status}}</label>
                                     <label *ngIf="row.status=='declined'" class="label label-warning">{{row.status}}</label>
                                     <label *ngIf="row.status=='processing'" class="label label-info">{{row.status}}</label>
                                     <label *ngIf="row.status=='completed'" class="label label-success">{{row.status}}</label>

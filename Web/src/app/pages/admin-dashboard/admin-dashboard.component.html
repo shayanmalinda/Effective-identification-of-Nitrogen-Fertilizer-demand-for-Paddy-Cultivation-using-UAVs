@@ -12,7 +12,7 @@
                 <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewOfficers()">Officers</button><br />
                 <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewUsers()">Farmers</button><br />
                 <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewFields()">Fields</button><br />
-                <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewFieldVisitRequests()">Field
+                <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewFieldVisitRequests()">
                     Visit Requests</button><br />
                 <button type="button" class="btn btn-outline-neutral btn-round" (click)="viewFieldVisits()">Field
                     Visits</button><br />
@@ -28,7 +28,6 @@
                 <button type="button" (click)="fieldReports()" class="btn btn-outline-neutral btn-round btn2">Field Reports</button><br />
                 <button type="button" (click)="requestReports()" class="btn btn-outline-neutral btn-round btn2">Visit Request Reports</button><br />
                 <button type="button" (click)="visitReports()" class="btn btn-outline-neutral btn-round btn2">Field Visit Reports</button><br />
-                <button type="button" (click)="divisionReports()" class="btn btn-outline-neutral btn-round btn2">Field Result Reports</button><br />
                 <div class="icon">
                     <button type="button" class="btn btn-default btn-just-icon" (click)="viewNav()"> <i
                             class="fa fa-angle-double-up" aria-hidden="true"></i></button>
@@ -69,7 +68,7 @@
                                 <table>
                                     <tr>
                                         <td style=" font-weight: bold; "> Divisions </td>
-                                        <td style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px; ">{{this.divisions.size}}</td>
+                                        <td style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px; ">{{this.officers.length}}</td>
                                     </tr>
                                 </table>
                             </mat-card-content>
@@ -114,39 +113,39 @@
                 </div>
                 <div *ngIf="isLoaded && isLoaded2 && isLoaded3 && isLoaded4 && isLoaded5" class="row" style="padding-left:25px;">
 
-                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px">
+                    <div style=" width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px">
                         <div style="display: block; ">
                             <canvas id="chart4" baseChart [datasets]="nChartData " [labels]="nChartLabels " [options]="options " [legend]="'true' " [chartType]="'doughnut' ">
                             </canvas>
                         </div>
                     </div>
-                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px ">
+                    <div style=" width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px ">
                         <div style="display: block; ">
                             <canvas id="chart5 " baseChart [datasets]="nChartData2 " [labels]="nChartLabels2 " [options]="options " [legend]="'true'  " [chartType]="'line' ">
                             </canvas>
                         </div>
                     </div>
 
-                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px ">
+                    <div style=" width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px ">
                         <div style="display: block; ">
                             <canvas id="chart3 " baseChart [datasets]="farmerChartData " [labels]="farmerChartLabels " [options]="options " [legend]="'true'  " [chartType]="'line'  ">
                             </canvas>
                         </div>
                     </div>
 
-                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px ">
+                    <div style="  width:30%; height:30% ; background-color: rgb(253, 253, 253); margin:10px ">
                         <div style="display: block; ">
                             <canvas id="chart5 " baseChart [datasets]="reqChartData " [labels]="reqChartLabels " [options]="options " [legend]="'true'  " [chartType]="'doughnut'  ">
                             </canvas>
                         </div>
                     </div>
-                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px ">
+                    <div style=" width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px ">
                         <div style="display: block; ">
                             <canvas id="chart2 " baseChart [datasets]="fieldVisitReqChartData " [labels]="fieldVisitReqChartLabels " [options]="options " [legend]="'true'  " [chartType]="'line'  ">
                             </canvas>
                         </div>
                     </div>
-                    <div style=" opacity: 80%; width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px ">
+                    <div style=" width:30%; height:30% ; background-color: rgb(255, 255, 255); margin:10px ">
                         <div style="display: block; ">
                             <canvas id="chart3 " baseChart [datasets]="officerChartData " [labels]="officerChartLabels " [options]="options " [legend]="'true'  " [chartType]="'line'  ">
                             </canvas>

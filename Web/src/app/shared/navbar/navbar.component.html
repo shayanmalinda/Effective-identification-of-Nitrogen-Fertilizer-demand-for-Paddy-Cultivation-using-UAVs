@@ -1,91 +1,188 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-transparent" color-on-scroll="500">
-    <div class="container">
-        <div class="navbar-translate">
-            <a class="navbar-brand">Smart Rice Care</a>
-            <button class="navbar-toggler navbar-burger" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation" (click)="sidebarToggle()">
-                <span class="navbar-toggler-bar"></span>
-                <span class="navbar-toggler-bar"></span>
-                <span class="navbar-toggler-bar"></span>
+
+    <div class="container" *ngIf="!isAdminPages()">
+        <div class=" navbar-translate ">
+            <a class="navbar-brand ">Smart Rice Care</a>
+            <button class="navbar-toggler navbar-burger " type="button " data-toggle="collapse " data-target="#navbarToggler " aria-controls="navbarTogglerDemo02 " aria-expanded="false " aria-label="Toggle navigation " (click)="sidebarToggle() ">
+                <span class="navbar-toggler-bar "></span>
+                <span class="navbar-toggler-bar "></span>
+                <span class="navbar-toggler-bar "></span>
             </button>
         </div>
-        <div class="navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item" *ngIf="isDocumentation()">
-                    <a class="nav-link" rel="tooltip" title="Follow us on Twitter" data-placement="bottom" href="https://twitter.com/CreativeTim" target="_blank">
-                        <i class="fa fa-twitter"></i>
-                        <p class="d-lg-none">Twitter</p>
+        <div class="navbar-collapse " id="navbarToggler ">
+            <ul class="navbar-nav ml-auto ">
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a class="nav-link " rel="tooltip " title="Follow us on Twitter " data-placement="bottom " href="https://twitter.com/CreativeTim " target="_blank ">
+                        <i class="fa fa-twitter "></i>
+                        <p class="d-lg-none ">Twitter</p>
                     </a>
                 </li>
-                <li class="nav-item" *ngIf="isDocumentation()">
-                    <a class="nav-link" rel="tooltip" title="Like us on Facebook" data-placement="bottom" href="https://www.facebook.com/CreativeTim" target="_blank">
-                        <i class="fa fa-facebook-square"></i>
-                        <p class="d-lg-none">Facebook</p>
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a class="nav-link " rel="tooltip " title="Like us on Facebook " data-placement="bottom " href="https://www.facebook.com/CreativeTim " target="_blank ">
+                        <i class="fa fa-facebook-square "></i>
+                        <p class="d-lg-none ">Facebook</p>
                     </a>
                 </li>
-                <li class="nav-item" *ngIf="isDocumentation()">
-                    <a class="nav-link" rel="tooltip" title="Follow us on Instagram" data-placement="bottom" href="https://www.instagram.com/CreativeTimOfficial" target="_blank">
-                        <i class="fa fa-instagram"></i>
-                        <p class="d-lg-none">Instagram</p>
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a class="nav-link " rel="tooltip " title="Follow us on Instagram " data-placement="bottom " href="https://www.instagram.com/CreativeTimOfficial " target="_blank ">
+                        <i class="fa fa-instagram "></i>
+                        <p class="d-lg-none ">Instagram</p>
                     </a>
                 </li>
-                <li class="nav-item" *ngIf="isDocumentation()">
-                    <a class="nav-link" rel="tooltip" title="Star on GitHub" data-placement="bottom" href="https://www.github.com/CreativeTimOfficial/paper-kit-2-angular" target="_blank">
-                        <i class="fa fa-github"></i>
-                        <p class="d-lg-none">GitHub</p>
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a class="nav-link " rel="tooltip " title="Star on GitHub " data-placement="bottom " href="https://www.github.com/CreativeTimOfficial/paper-kit-2-angular " target="_blank ">
+                        <i class="fa fa-github "></i>
+                        <p class="d-lg-none ">GitHub</p>
                     </a>
                 </li>
-                <li class="nav-item" *ngIf="!isDocumentation()">
-                    <!-- <a href="http://pk2-angular.creative-tim.com/documentation/tutorial" class="nav-link" target="_blank"><i class="nc-icon nc-book-bookmark"></i> Documentation</a> -->
+                <li class="nav-item " *ngIf="!isDocumentation() ">
+                    <!-- <a href="http://pk2-angular.creative-tim.com/documentation/tutorial " class="nav-link " target="_blank "><i class="nc-icon nc-book-bookmark "></i> Documentation</a> -->
                 </li>
-                <li class="nav-item" *ngIf="isHome()">
-                    <a href="/login" class="btn btn-outline-success btn-round" id="loginButton">Log in</a>
+                <li class="nav-item " *ngIf="isHome() ">
+                    <a href="/login " class="btn btn-outline-success btn-round " id="loginButton ">Log in</a>
                 </li>
-                <!-- <li class="nav-item" *ngIf="isDashboard()">
-                    <a class="btn btn-outline-success btn-round" id="profileButton" [routerLink]="['/profile']" routerLinkActive="router-link-active" ><i class="fa fa-user"></i>&nbsp; &nbsp; Profile</a>
+                <!-- <li class="nav-item " *ngIf="isDashboard() ">
+                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/profile'] " routerLinkActive="router-link-active " ><i class="fa fa-user "></i>&nbsp; &nbsp; Profile</a>
                 </li> -->
-                <li class="nav-item" *ngIf="isRelevantPages()">
-                    <a class="btn btn-outline-success btn-round" id="profileButton" [routerLink]="['/profile']" routerLinkActive="router-link-active"><i class="fa fa-user"></i>&nbsp; &nbsp; Profile</a>
+                <li class="nav-item " *ngIf="isRelevantPages() ">
+                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/profile'] " routerLinkActive="router-link-active "><i class="fa fa-user "></i>&nbsp; &nbsp; Profile</a>
                 </li>
-                <li class="nav-item" *ngIf="isAdminPages()">
-                    <a class="btn btn-outline-success btn-round" id="profileButton" [routerLink]="['/admin-profile']" routerLinkActive="router-link-active">Profile</a>
-                </li>
-                <li class="nav-item" *ngIf="isAdminPages()">
-                    <a class="btn btn-outline-success btn-round" id="profileButton" [routerLink]="['/admin-profile']" routerLinkActive="router-link-active">Log Out</a>
-                </li>
-                <!-- <div class="profile" *ngIf="type=='admin'">
-                    <button type="button" class="btn btn-info btn-outline-neutral btn-just-icon" (click)="viewProfile()"><i
-                            class="fa fa-user"></i></button>
-                </div> -->
-                <li class="nav-item" *ngIf="isRelevantDashPages()">
-                    <a class="btn btn-outline-success btn-round" id="dashButton" [routerLink]="['/user-dashboard']" routerLinkActive="router-link-active"><i class="fa fa-home"></i>&nbsp; &nbsp; Dashboard</a>
-                </li>
-                <li class="nav-item" *ngIf="type=='other'">
-                    <a class="btn btn-outline-success btn-round" id="dashButton" [routerLink]="['/user-dashboard']" routerLinkActive="router-link-active"><i class="fa fa-home"></i>&nbsp; &nbsp; Dashboard</a>
-                </li>
-                <li class="nav-item" *ngIf="isLogin()">
-                    <a href="/signup" class="btn btn-outline-success btn-round">Sign up</a>
-                </li>
-                <li class="nav-item" *ngIf="isSignUp()">
-                    <a href="/login" class="btn btn-outline-success btn-round">Log in</a>
-                </li>
-                <li class="nav-item" *ngIf="isReport()">
 
-                    <a href="/select-report" class="btn btn-outline-default btn-round" *ngIf="type=='admin'">back</a>
-                    <a (click)="onLccReportClick()" class="btn btn-outline-success btn-round" *ngIf="type!='admin'">LCC</a>
-                    <a (click)="onFarmersReportClick()" class="btn btn-outline-success btn-round" *ngIf="type!='admin'">Farmers</a>
-                    <a (click)="onRequestsReportClick()" class="btn btn-outline-success btn-round" *ngIf="type!='admin'">Requests</a>
-                    <a (click)="onFieldsReportClick()" class="btn btn-outline-success btn-round" *ngIf="type!='admin'">Fields</a>
-                    <a (click)="onVisitsReportClick()" class="btn btn-outline-success btn-round" style="margin-right: 100px;" *ngIf="type!='admin'">Visits</a>
-                    <a [routerLink]="['/user-dashboard']" routerLinkActive="router-link-active"  class="btn btn-outline-default btn-round" *ngIf="type!='admin'">back</a>
-                    <a (click)="printClick()" class="btn btn-outline-success btn-round">Print</a>
+                <!-- <div class="profile " *ngIf="type=='admin' ">
+                    <button type="button " class="btn btn-info btn-outline-neutral btn-just-icon " (click)="viewProfile() "><i
+                            class="fa fa-user "></i></button>
+                </div> -->
+                <li class="nav-item " *ngIf="isRelevantDashPages() ">
+                    <a class="btn btn-outline-success btn-round " id="dashButton " [routerLink]="[ '/user-dashboard'] " routerLinkActive="router-link-active "><i class="fa fa-home "></i>&nbsp; &nbsp; Dashboard</a>
                 </li>
-                <li class="nav-item" *ngIf="!isHome()">
-                    <!-- <a [routerLink]="['/home']" *ngIf="!isDocumentation()" class="nav-link"><i class="nc-icon nc-layout-11"></i>Components</a> -->
-                    <a [routerLink]="['/home']" *ngIf="isUserProfile()" class="btn btn-outline-success btn-round">Log out</a>
-                    <a [routerLink]="['/home']" *ngIf="isDocumentation()" class="nav-link">Back to Kit</a>
+                <li class="nav-item " *ngIf="type=='other' ">
+                    <a class="btn btn-outline-success btn-round " id="dashButton " [routerLink]="[ '/user-dashboard'] " routerLinkActive="router-link-active "><i class="fa fa-home "></i>&nbsp; &nbsp; Dashboard</a>
                 </li>
-                <li class="nav-item" *ngIf="isDocumentation()">
-                    <a href="https://github.com/creativetimofficial/paper-kit-2-angular/issues?ref=pk2-free-local" target="_blank" class="nav-link">Have an issue</a>
+
+                <li class="nav-item " *ngIf="isLogin() ">
+                    <a href="/signup " class="btn btn-outline-success btn-round ">Sign up</a>
+                </li>
+                <li class="nav-item " *ngIf="isSignUp() ">
+                    <a href="/login " class="btn btn-outline-success btn-round ">Log in</a>
+                </li>
+                <li class="nav-item " *ngIf="isReport() ">
+
+                    <a href="/select-report " class="btn btn-outline-default btn-round " *ngIf="type=='admin' ">back</a>
+                    <a (click)="onLccReportClick() " class="btn btn-outline-success btn-round " *ngIf="type!='admin' ">LCC</a>
+                    <a (click)="onFarmersReportClick() " class="btn btn-outline-success btn-round " *ngIf="type!='admin' ">Farmers</a>
+                    <a (click)="onRequestsReportClick() " class="btn btn-outline-success btn-round " *ngIf="type!='admin' ">Requests</a>
+                    <a (click)="onFieldsReportClick() " class="btn btn-outline-success btn-round " *ngIf="type!='admin' ">Fields</a>
+                    <a (click)="onVisitsReportClick() " class="btn btn-outline-success btn-round " style="margin-right: 100px; " *ngIf="type!='admin' ">Visits</a>
+                    <a [routerLink]="[ '/user-dashboard'] " routerLinkActive="router-link-active " class="btn btn-outline-default btn-round " *ngIf="type!='admin' ">back</a>
+                    <a (click)="printClick() " class="btn btn-outline-success btn-round ">Print</a>
+                </li>
+                <li class="nav-item " *ngIf="!isHome() ">
+                    <!-- <a [routerLink]="[ '/home'] " *ngIf="!isDocumentation() " class="nav-link "><i class="nc-icon nc-layout-11 "></i>Components</a> -->
+                    <a [routerLink]="[ '/home'] " *ngIf="isUserProfile() " class="btn btn-outline-success btn-round ">Log out</a>
+                    <a [routerLink]="[ '/home'] " *ngIf="isDocumentation() " class="nav-link ">Back to Kit</a>
+                </li>
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a href="https://github.com/creativetimofficial/paper-kit-2-angular/issues?ref=pk2-free-local " target="_blank " class="nav-link ">Have an issue</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container " *ngIf="isAdminPages() ">
+        <div class=" navbar-translate ">
+            <a class="navbar-brand " style="margin-left: -180px; ">Smart Rice Carei</a>
+            <button class="navbar-toggler navbar-burger " type="button " data-toggle="collapse " data-target="#navbarToggler " aria-controls="navbarTogglerDemo02 " aria-expanded="false " aria-label="Toggle navigation " (click)="sidebarToggle() ">
+                <span class="navbar-toggler-bar "></span>
+                <span class="navbar-toggler-bar "></span>
+                <span class="navbar-toggler-bar "></span>
+            </button>
+        </div>
+        <div class="navbar-collapse " id="navbarToggler ">
+            <ul class="navbar-nav ml-auto ">
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a class="nav-link " rel="tooltip " title="Follow us on Twitter " data-placement="bottom " href="https://twitter.com/CreativeTim " target="_blank ">
+                        <i class="fa fa-twitter "></i>
+                        <p class="d-lg-none ">Twitter</p>
+                    </a>
+                </li>
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a class="nav-link " rel="tooltip " title="Like us on Facebook " data-placement="bottom " href="https://www.facebook.com/CreativeTim " target="_blank ">
+                        <i class="fa fa-facebook-square "></i>
+                        <p class="d-lg-none ">Facebook</p>
+                    </a>
+                </li>
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a class="nav-link " rel="tooltip " title="Follow us on Instagram " data-placement="bottom " href="https://www.instagram.com/CreativeTimOfficial " target="_blank ">
+                        <i class="fa fa-instagram "></i>
+                        <p class="d-lg-none ">Instagram</p>
+                    </a>
+                </li>
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a class="nav-link " rel="tooltip " title="Star on GitHub " data-placement="bottom " href="https://www.github.com/CreativeTimOfficial/paper-kit-2-angular " target="_blank ">
+                        <i class="fa fa-github "></i>
+                        <p class="d-lg-none ">GitHub</p>
+                    </a>
+                </li>
+                <li class="nav-item " *ngIf="!isDocumentation() ">
+                    <!-- <a href="http://pk2-angular.creative-tim.com/documentation/tutorial " class="nav-link " target="_blank "><i class="nc-icon nc-book-bookmark "></i> Documentation</a> -->
+                </li>
+                <li class="nav-item " *ngIf="isHome() ">
+                    <a href="/login " class="btn btn-outline-success btn-round " id="loginButton ">Log in</a>
+                </li>
+                <!-- <li class="nav-item " *ngIf="isDashboard() ">
+                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/profile'] " routerLinkActive="router-link-active " ><i class="fa fa-user "></i>&nbsp; &nbsp; Profile</a>
+                </li> -->
+                <li class="nav-item " *ngIf="isRelevantPages() ">
+                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/profile'] " routerLinkActive="router-link-active "><i class="fa fa-user "></i>&nbsp; &nbsp; Profile</a>
+                </li>
+                <li class="nav-item " *ngIf="isAdminDashboard() ">
+                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/admin-profile'] " routerLinkActive="router-link-active ">Profile</a>
+                </li>
+                <li class="nav-item " style="margin-right: -150px " *ngIf="isAdminDashboard() ">
+                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/admin-profile'] " routerLinkActive="router-link-active ">Log Out</a>
+                </li>
+                <li class="nav-item " style="margin-right: -150px " *ngIf="toDashboard() ">
+                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/admin-dashboard'] " routerLinkActive="router-link-active ">Dashboard</a>
+                </li>
+                <li class="nav-item " *ngIf="toReports() ">
+                    <a class="btn btn-outline-success btn-round " id="profileButton " (click)="printClick() " routerLinkActive="router-link-active ">Print</a>
+                </li>
+                <li class="nav-item " *ngIf="toReports() ">
+                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="['admin-dashboard-reports']" routerLinkActive="router-link-active"> Reports</a>
+                </li>
+                <!-- <div class="profile " *ngIf="type=='admin' ">
+                    <button type="button " class="btn btn-info btn-outline-neutral btn-just-icon " (click)="viewProfile() "><i
+                            class="fa fa-user "></i></button>
+                </div> -->
+                <li class="nav-item " *ngIf="isRelevantDashPages() ">
+                    <a class="btn btn-outline-success btn-round " id="dashButton " [routerLink]="[ '/user-dashboard'] " routerLinkActive="router-link-active "><i class="fa fa-home "></i>&nbsp; &nbsp; Dashboard</a>
+                </li>
+                <li class="nav-item " *ngIf="type=='other' ">
+                    <a class="btn btn-outline-success btn-round " id="dashButton " [routerLink]="[ '/user-dashboard'] " routerLinkActive="router-link-active "><i class="fa fa-home "></i>&nbsp; &nbsp; Dashboard</a>
+                </li>
+                <li class="nav-item " *ngIf="isLogin() ">
+                    <a href="/signup " class="btn btn-outline-success btn-round ">Sign up</a>
+                </li>
+                <li class="nav-item " *ngIf="isSignUp() ">
+                    <a href="/login " class="btn btn-outline-success btn-round ">Log in</a>
+                </li>
+                <li class="nav-item " *ngIf="isReport() ">
+
+                    <a href="/select-report " class="btn btn-outline-default btn-round " *ngIf="type=='admin' ">back</a>
+                    <a (click)="onLccReportClick() " class="btn btn-outline-success btn-round " *ngIf="type!='admin' ">LCC</a>
+                    <a (click)="onFarmersReportClick() " class="btn btn-outline-success btn-round " *ngIf="type!='admin' ">Farmers</a>
+                    <a (click)="onRequestsReportClick() " class="btn btn-outline-success btn-round " *ngIf="type!='admin' ">Requests</a>
+                    <a (click)="onFieldsReportClick() " class="btn btn-outline-success btn-round " *ngIf="type!='admin' ">Fields</a>
+                    <a (click)="onVisitsReportClick() " class="btn btn-outline-success btn-round " style="margin-right: 100px; " *ngIf="type!='admin' ">Visits</a>
+                    <a [routerLink]="[ '/user-dashboard'] " routerLinkActive="router-link-active " class="btn btn-outline-default btn-round " *ngIf="type!='admin' ">back</a>
+                    <a (click)="printClick() " class="btn btn-outline-success btn-round ">Print</a>
+                </li>
+                <li class="nav-item " *ngIf="!isHome() ">
+                    <!-- <a [routerLink]="[ '/home'] " *ngIf="!isDocumentation() " class="nav-link "><i class="nc-icon nc-layout-11 "></i>Components</a> -->
+                    <a [routerLink]="[ '/home'] " *ngIf="isUserProfile() " class="btn btn-outline-success btn-round ">Log out</a>
+                    <a [routerLink]="[ '/home'] " *ngIf="isDocumentation() " class="nav-link ">Back to Kit</a>
+                </li>
+                <li class="nav-item " *ngIf="isDocumentation() ">
+                    <a href="https://github.com/creativetimofficial/paper-kit-2-angular/issues?ref=pk2-free-local " target="_blank " class="nav-link ">Have an issue</a>
                 </li>
             </ul>
         </div>
