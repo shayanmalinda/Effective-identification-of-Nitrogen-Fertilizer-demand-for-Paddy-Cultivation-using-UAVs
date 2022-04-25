@@ -54,7 +54,7 @@ export class AdminDashboardComponent implements OnInit {
   //   let mp = new Map();
   // mp.set('1','Annad');
 
-  constructor(private router: Router, private userService: UserService, private fieldDataService: FieldDataService, private fieldVisitService: FieldVisitService) {
+  constructor(private router: Router,private userService: UserService, private fieldDataService: FieldDataService, private fieldVisitService: FieldVisitService) {
     // if (this.router.getCurrentNavigation().extras.state != undefined)
     //   this.type = this.router.getCurrentNavigation().extras.state.type;
     var currentUrl = window.location.href;
@@ -100,6 +100,8 @@ export class AdminDashboardComponent implements OnInit {
     this.getNLevelChangingData();
     this.getofficerChartData();
   }
+
+
 
   getNLevelChangingData() {
     this.fieldDataService.getAllFieldData().subscribe(data => {

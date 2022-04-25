@@ -138,7 +138,7 @@
                     <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/admin-profile'] " routerLinkActive="router-link-active ">Profile</a>
                 </li>
                 <li class="nav-item " style="margin-right: -150px " *ngIf="isAdminDashboard() ">
-                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/admin-profile'] " routerLinkActive="router-link-active ">Log Out</a>
+                    <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/admin-profile'] " routerLinkActive="router-link-active " (click)="adminLogout() ">Log Out</a>
                 </li>
                 <li class="nav-item " style="margin-right: -150px " *ngIf="toDashboard() ">
                     <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/admin-dashboard'] " routerLinkActive="router-link-active ">Dashboard</a>

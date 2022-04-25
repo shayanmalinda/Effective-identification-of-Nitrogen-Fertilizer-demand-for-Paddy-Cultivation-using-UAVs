@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'app/services/authentication.service';
 
 @Component({
     selector: 'app-navbar',
@@ -15,7 +16,7 @@ export class NavbarComponent implements OnInit {
     showReports:any;
 
 
-    constructor(public location: Location, private element: ElementRef, private router: Router) {
+    constructor(public location: Location, private element: ElementRef, private router: Router, private authentication : AuthenticationService) {
 
         this.sidebarVisible = false;
    
@@ -120,6 +121,11 @@ export class NavbarComponent implements OnInit {
             return false;
         }
     };
+    adminLogout(){
+        this.authentication.logOut();
+        this.router.navigate(['/login']);
+    }
+
     isAdminPages() {
         var titlee = this.location.prepareExternalUrl(this.location.path());
         if (titlee.charAt(0) === '#') {
