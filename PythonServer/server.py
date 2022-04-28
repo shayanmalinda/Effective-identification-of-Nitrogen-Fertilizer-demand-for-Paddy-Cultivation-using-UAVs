@@ -24,6 +24,9 @@ cors = CORS(app)
 IMG_WIDTH=300
 IMG_HEIGHT=400
 
+@app.route("/",methods=['GET'])
+def connect():
+    return str("Connection Success!");
 
 @app.route("/svcprocess", methods=['POST'])
 def svcprocess():

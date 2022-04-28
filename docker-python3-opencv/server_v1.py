@@ -1,18 +1,14 @@
 from flask import Flask,request
+from io import BytesIO
 from flask_cors import CORS
-import json
+import os
 import cv2
 import  numpy as np
 import pandas as pd
 import piexif
 import joblib
-import firebase_admin
-from firebase_admin import credentials, firestore, initialize_app
-
-cred = credentials.Certificate("./smart-rice-care-firebase-adminsdk.json")
-firestore_app = initialize_app(cred)
-db = firestore.client()
-result_ref = db.collection('TestingFieldData')
+from PIL import Image
+import io
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -20,75 +16,41 @@ cors = CORS(app)
 IMG_WIDTH=300
 IMG_HEIGHT=400
 
-@app.route("/", methods=['GET'])
-def connect():
-    return str("Connection Success!");
+@app.route("/image", methods=['POST','GET'])
+def image():
+    img = request.files["image"]
+    #img.raw.decode_content = True
+    image_bytes = Image.open(io.BytesIO(img.read()))
+    b = BytesIO()
+    image_bytes.save(b,"jpeg")
+    image_bytes.save("image.jpg",quality=95,subsampling=0)
+    #print("######",str(img),type(img))
+    os.remove("image.jpg")
+    return str(image_bytes);
 
-
-@app.route("/process", methods=['POST'])
-def svcprocess():
+@app.route("/process", methods=['POST','GET'])
+def process():
     #capture the image from request
     img = request.files["image"].read()
+
     #preprocess & predict from saved image
     preprocessed_image=preprocess(img);
     arr_rgb=rgb_mean(preprocessed_image);
-    df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
-    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
-    print("###RGB : ",str(df))
-    df['shutter_speed']=df_metadata['shutter_speed']
-    df['exposure_time']=df_metadata['exposure_time']
-    result=predictSVC(df);
+    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]  
+    print(str(df))
+    result=predict(df);
     #print(str(arr_rgb))
     return str(result[0]);
 
-
-@app.route("/processfire", methods=['POST'])
-def svcprocessfire():
-    #capture the image from request
-    img = request.files["image"].read()
-    #preprocess & predict from saved image
-    preprocessed_image=preprocess(img);
-    arr_rgb=rgb_mean(preprocessed_image);
-    df_metadata=extract_metadata(img);
-    df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
-    df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
-    print("###RGB : ",str(df))
-    #df['brightness']=df_metadata['brightness']
-    df['shutter_speed']=df_metadata['shutter_speed']
-    df['exposure_time']=df_metadata['exposure_time']
-    result=predictSVC(df);
-    #print(str(arr_rgb))
-    write_response=writeToServer(result[0])
-    print("Response from Firestore : ",write_response);
-    if (write_response=="success"):
-        return str(result[0]);
-    else:    
-        return str(-1);
-
-def writeToServer(computed_level):
-    try:
-        field_data_json=request.files["field_data"].read()
-        field_data = json.loads(field_data_json)
-        request_id=field_data["requestId"]
-        doc_ref = result_ref.document(request_id)
-        field_data['level']=int(computed_level)
-        doc_ref.set(field_data)
-        return "success"
-    except Exception as e:
-        return "error"
-        
-
-def predictSVC(df):
+def predict(df):
     print("predict")
     # Load the model from the file
-    model_svc = joblib.load('./svcmodel.pkl')
+    model = joblib.load('./model_rgb.pkl')
     
     # Use the loaded model to make predictions
-    prd=model_svc.predict(df)
+    prd=model.predict(df)
     return prd;
-
-
 
 def preprocess(image):
     image = np.asarray(bytearray(image), dtype="uint8")
@@ -143,6 +105,7 @@ def extract_metadata(image):
 
     # Iterate through all the other ifd names and print them
     #print(exif_dict.get('Exif'));
+
     for tag in exif_dict['Exif']:
         tag_name = piexif.TAGS['Exif'][tag]["name"]
         tag_value = exif_dict['Exif'][tag]
@@ -160,8 +123,9 @@ def extract_metadata(image):
             img_mdata[2]=tag_value[0]/tag_value[1]
 
     df.loc[0] =[img_mdata[0]] + [img_mdata[1]] + [img_mdata[2]]
-    print("###Metadata",str(df))
+    #print("###Metadata",str(df))
     return df
+
 
 
 if __name__ == '__main__':

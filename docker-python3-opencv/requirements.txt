@@ -4,4 +4,4 @@ pandas
 sklearn
 piexif
 joblib
-Pillow
+firebase_admin
