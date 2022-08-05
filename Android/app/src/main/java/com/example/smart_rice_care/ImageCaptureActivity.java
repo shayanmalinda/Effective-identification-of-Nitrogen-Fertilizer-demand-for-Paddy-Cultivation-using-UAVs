@@ -495,7 +495,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     public void processImage(File file, Location location, Long currentTimestamp) throws IOException {
         tvColorLevel.setText("Processing...");
-        String url = "https://docker-python3-opencv-uvbeppe6ea-el.a.run.app/process";
+        String url = "http://127.0.0.1:5000/svcprocess";
 
         Thread thread = new Thread(new Runnable() {
 
