@@ -171,9 +171,17 @@ export class NavbarComponent implements OnInit {
         if (titlee.charAt(0) === '#') {
             titlee = titlee.slice(1);
         }
-        if (titlee === '/user-dashboard') {
+        if (
+            titlee === '/user-dashboard'
+            ||titlee === '/lcc-details'
+            ||titlee === '/user-farmers'
+            ||titlee === '/user-farmer-requests'
+            ||titlee === '/user-fields'
+            ||titlee === '/user-field-visits'
+        ) {
             return true;
-        }
+        } 
+     
         if (titlee === '/updateuser') {
             return true;
         }

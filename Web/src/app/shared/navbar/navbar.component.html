@@ -17,7 +17,7 @@
                 <!-- <li class="nav-item " *ngIf="isDashboard() ">
                     <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/profile'] " routerLinkActive="router-link-active " ><i class="fa fa-user "></i>&nbsp; &nbsp; Profile</a>
                 </li> -->
-                <li class="nav-item ">
+                <li class="nav-item " *ngIf="isRelevantPages() ">
                     <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/profile'] " routerLinkActive="router-link-active "><i class="fa fa-user "></i>&nbsp; &nbsp; Profile</a>
                 </li>
 
@@ -99,7 +99,7 @@
                 <!-- <li class="nav-item " *ngIf="isDashboard() ">
                     <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/profile'] " routerLinkActive="router-link-active " ><i class="fa fa-user "></i>&nbsp; &nbsp; Profile</a>
                 </li> -->
-                <li class="nav-item ">
+                <li class="nav-item " *ngIf="isRelevantPages() ">
                     <a class="btn btn-outline-success btn-round " id="profileButton " [routerLink]="[ '/profile'] " routerLinkActive="router-link-active "><i class="fa fa-user "></i>&nbsp; &nbsp; Profile</a>
                 </li>
                 <li class="nav-item " *ngIf="isAdminDashboard() ">
