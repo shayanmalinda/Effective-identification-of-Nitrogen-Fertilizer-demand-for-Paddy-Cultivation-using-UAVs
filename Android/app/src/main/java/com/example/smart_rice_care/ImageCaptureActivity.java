@@ -495,7 +495,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
 
     public void processImage(File file, Location location, Long currentTimestamp) throws IOException {
         tvColorLevel.setText("Processing...");
-        String url = "https://docker-python3-opencv-uvbeppe6ea-el.a.run.app/process";
+        String url = "http://127.0.0.1:5000/svcprocess";
 
         Thread thread = new Thread(new Runnable() {
 
@@ -514,7 +514,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         System.out.print("Response===no response");
-//                        Toast.makeText(ImageCaptureActivity.this, "No response from the Server", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ImageCaptureActivity.this, "No response from the Server", Toast.LENGTH_SHORT).show();
                         beep.start();
                     }
 

@@ -65,11 +65,7 @@ public class UploadImageActivity extends AppCompatActivity {
             OkHttpClient client=new OkHttpClient().newBuilder().build();
 
             RequestBody formBody=new FormBody.Builder().add("imagebytes", String.valueOf(jsonObject)).build();//jsonObject.toString()
-            //RequestBody formBody=new FormBody.Builder().add("imagebytes",RequestBody.create(file,MediaType.parse("image/jpeg"))).build();
-
-           /* RequestBody formBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("imagebytes","imagebytes", RequestBody.create(file,MediaType.parse("image/jpeg"))).build();
-*/
+           
 
 
             Request request=new Request.Builder().url("http://192.168.1.3:5000/image").post(formBody).build();
