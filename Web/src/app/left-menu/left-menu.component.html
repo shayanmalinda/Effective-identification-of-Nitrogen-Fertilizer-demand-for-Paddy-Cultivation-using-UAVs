@@ -1,0 +1,22 @@
+<div class='content'>
+             
+    <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" 
+    [routerLink]="['/lcc-details']" [class.active]="isRouterActive('lcc-details')" [style.color]="getTextColor('lcc-details')" >LCC Details</button>
+    <br />
+    <button type="button" class="btn btn-outline-neutral btn-round button-dashboard"
+     [routerLink]="['/user-farmers']" [class.active]="isRouterActive('user-farmers')" [style.color]="getTextColor('user-farmers')" >Farmers</button>
+    <br />
+    <button type="button" class="btn btn-outline-neutral btn-round button-dashboard"
+     [routerLink]="['/user-farmer-requests']" [class.active]="isRouterActive('user-farmer-requests')" [style.color]="getTextColor('user-farmer-requests')" >Farmer Requests</button>
+    <br />
+    <button type="button" class="btn btn-outline-neutral btn-round button-dashboard"
+     [routerLink]="['/user-fields']" [class.active]="isRouterActive('user-fields')" [style.color]="getTextColor('user-fields')" >Fields</button>
+    <br />
+    <button type="button" class="btn btn-outline-neutral btn-round button-dashboard"
+     [routerLink]="['/user-field-visits']" [class.active]="isRouterActive('user-field-visits')" [style.color]="getTextColor('user-field-visits')" >Field Visits</button>
+    <br />
+    <button type="button" class="btn btn-outline-neutral btn-round button-dashboard"
+     (click)="onReportsButtonClick()">Reports</button>
+    <br />
+    
+</div>

@@ -7,13 +7,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
-import { ComponentsComponent } from './components/components.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { LoginComponent } from './pages/login/login.component';
-import { LandingComponent } from './pages/landing/landing.component';
-import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
 import { UsersComponent } from './pages/users/users.component';
 import { UpdateProfileComponent } from './pages/update-profile/update-profile.component';
 import { FieldsComponent } from './pages/fields/fields.component';
@@ -39,6 +36,7 @@ import { AdminFarmerReportsComponent } from './pages/admin-farmer-reports/admin-
 import { AdminFieldVisitReportsComponent } from './pages/admin-field-visit-reports/admin-field-visit-reports.component';
 import { AdminFieldVisitReqReportsComponent } from './pages/admin-field-visit-req-reports/admin-field-visit-req-reports.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { LeftMenuComponent } from './left-menu/left-menu.component';
 
 
 
@@ -49,7 +47,6 @@ const routes: Routes =[
     { path: 'profile',          component: ProfileComponent},
     { path: 'signup',           component: SignupComponent },
     { path: 'login',            component: LoginComponent },
-    { path: 'nucleoicons',      component: NucleoiconsComponent },
     { path: 'farmers',      component: UsersComponent },
     { path: 'updateuser',       component: UpdateProfileComponent},
     { path: 'fields',      component: FieldsComponent },
@@ -90,6 +87,7 @@ const routes: Routes =[
     { path: 'admin-field-visit-req-reports',       component: AdminFieldVisitReqReportsComponent},
     { path: 'admin-field-visit-reports',       component: AdminFieldVisitReportsComponent},
     { path: 'admin-n-level-reports',       component: AdminNLevelReportsComponent},
+    { path: 'left-menu',  component:LeftMenuComponent},
     { path: '**', pathMatch: 'full', component: NotFoundComponent },
 
 ];

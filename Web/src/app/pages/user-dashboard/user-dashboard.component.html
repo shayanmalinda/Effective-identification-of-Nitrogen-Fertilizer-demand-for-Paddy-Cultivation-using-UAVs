@@ -1,230 +1,179 @@
-<div class="page-header" style="background-image: url('assets/img/paddy one.jpg');">
-    <div class="filter"></div>
-    <div class="spinner" *ngIf="loading"></div>
-    <div class="container" *ngIf="!loading">
-        <!-- <div class="profile" style="padding-right: 20px;"> -->
-            <!-- <button type="button" class="btn btn-info btn-outline-neutral btn-just-icon"><i class="fa fa-user"></i></button> -->
-            <!-- <a aria-haspopup="true" id="dropdownBasic1" ngbdropdowntoggle="" class="dropdown-toggle nav-link" aria-expanded="false" style="color: white;">
-                <i class="fa fa-user" style="color: white;"></i>
-                </a>
-                <div ngbdropdownmenu="" aria-labelledby="dropdownBasic1" class="dropdown-danger dropdown-menu-right dropdown-menu show" style="margin-right: 25px; padding-top: 0px;">
-                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Action - 1</a>
-                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Another Action</a>
-                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Action - 1</a>
-                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Another Action</a>
-                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Action - 1</a>
-                    <a class="dropdown-item" style="font-size: small;" [routerLink]="['/profile']">Another Action</a>
-                </div> -->
-                <!-- <div _ngcontent-emb-c218="" ngbdropdown="" class="d-inline-block show dropdown" style="padding-right: 20px; "><a _ngcontent-emb-c218="" aria-haspopup="true" id="dropdownBasic1" ngbdropdowntoggle="" class="dropdown-toggle nav-link" aria-expanded="false">Dropdown</a><div _ngcontent-emb-c218="" ngbdropdownmenu="" aria-labelledby="dropdownBasic1" class="dropdown-primary dropdown-menu show"><a _ngcontent-emb-c218="" class="dropdown-item">Action - 1</a><a _ngcontent-emb-c218="" class="dropdown-item">Another Action</a><a _ngcontent-emb-c218="" class="dropdown-item">Something else is here</a></div></div>
-        </div> -->
-        <div class="profile" style="margin-top: 20px; padding-right: 80px;">
-            <!-- <button type="button" class="btn btn-info btn-outline-neutral btn-just-icon" > Profile</button> -->
-            <!-- <button type="button" class="btn btn-info btn-outline-neutral btn-round"><i class="fa fa-user"></i>  Profile</button> -->
-            <!-- <button type="button" class="btn btn-info btn-outline-neutral btn-just-icon" (click)="onProfileClick()"><i class="fa fa-user"></i></button> -->
-        </div>
-        <br>
-        <br>
-        <div class="row content">
-            <div class="motto left col-sm-11 col-lg-4" style="text-align: center; margin-top: 50px;">
-                <!-- <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/profile']" routerLinkActive="router-link-active" >Profile</button>
-                <br /> -->
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/lcc-details']" routerLinkActive="router-link-active" >LCC Details</button>
-                <br />
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/user-farmers']" routerLinkActive="router-link-active" >Farmers</button>
-                <br />
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/user-farmer-requests']" routerLinkActive="router-link-active" >Farmer Requests</button>
-                <br />
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/user-fields']" routerLinkActive="router-link-active" >Fields</button>
-                <br />
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" [routerLink]="['/user-field-visits']" routerLinkActive="router-link-active" >Field Visits</button>
-                <br />
-                <button type="button" class="btn btn-outline-neutral btn-round button-dashboard" (click)="onReportsButtonClick()">Reports</button>
-                <!-- <button type="button" class="btn btn-outline-neutral btn-round button-dashboard">Reports</button> -->
-                <br />
-            </div>
-            <div class="motto right col-sm-12 col-lg-8" style="margin-top: 15px;">
-                <div class="row">
-                    <div class="col-sm-4" ></div>
-                    <div class="col-sm-7 ">
-                        <h1>User Dashboard</h1>
-                    </div>
-                    <div class="col-sm-1 "></div>
-                </div>
-                <div class="row">
-                    <!-- <div class="col-sm-1"></div> -->
-                    <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
-                        <!-- <p style="color: black;">four</p> -->
-                        <mat-card>
-                            <mat-card-content>
-                                <table class="col-sm-12 col-lg-12">
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold;">Total Farmers </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{farmersAll}}</td>
-                                    </tr>
-                                </table>
-                            </mat-card-content>
-                          </mat-card>
-                    </div>
-                    <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
-                        <mat-card>
-                            <mat-card-content>
-                                <table class="col-sm-12 col-lg-12">
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold;">Total Fields </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{fieldsAll}}</td>
-                                    </tr>
-                                </table>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </div>
-                <div class="row">
-                    <!-- <div class="col-sm-1"></div> -->
-                    <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
-                        <!-- <p style="color: black;">four</p> -->
-                        <mat-card>
-                            <mat-card-content>
-                                <table class="col-sm-12 col-lg-12">
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold;">Total Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{visitsAll + requestsAll}}</td>
-                                    </tr>
-                                </table>
-                            </mat-card-content>
-                          </mat-card>
-                    </div>
-                    <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
-                    </div>
-                </div>
-                <!-- <button type="button" class="btn btn-outline-neutral btn-round">Download</button><br /> -->
-                <div class="row" style="margin-bottom: 30px;">
-                    <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
-                        <mat-card>
-                            <mat-card-content>
-                                <table class="col-sm-12 col-lg-12">
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold;">Farmer Requests </td>
-                                        <td colspan="4" style="text-align: center; font-weight: bold;"></td>
-                                    </tr>
-                                </table>
-                            </mat-card-content>
-                            <canvas id="myCanvas" height="250px" [hidden]="hiddenRequestAll"></canvas>
-                            <br>
-                            <mat-card-content *ngIf="requestsAll > 0">
-                                <table class="col-sm-12 col-lg-12">
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Total Farmer Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{requestsAll}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Pending Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{pendingRequests}} ({{pendingRequestsPrecentage}}%) </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Confirmed Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{confirmedRequests}} ({{confirmedRequestsPrecentage}}%) </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Declined Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{declinedRequests}} ({{declinedRequestsPrecentage}}%) </td>
-                                    </tr>
-                                </table>
-                            </mat-card-content>
-                            <mat-card-content *ngIf="requestsAll == 0">
-                                <table class="col-sm-12 col-lg-12">
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold;  padding: 5px;">Total Farmer Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">0</td>
-                                    </tr><tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Pending Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{pendingRequests}} </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Confirmed Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{confirmedRequests}} </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Declined Requests </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{declinedRequests}} </td>
-                                    </tr>
-                                </table>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                    <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
-                        <mat-card>
-                            <mat-card-content>
-                                <table class="col-sm-12 col-lg-12">
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold;">Field Visits </td>
-                                        <td colspan="4" style="text-align: center; font-weight: bold;"></td>
-                                    </tr>
-                                </table>
-                            </mat-card-content>
-                            <canvas id="myCanvas2" height="250px" [hidden]="hiddenVisitAll"></canvas>
-                            <br>
-                            <mat-card-content *ngIf="visitsAll != 0">
-                                <table class="col-sm-12 col-lg-12">
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Total Field Visits </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{visitsAll}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Completed Visits </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{completedRequests}} ({{completedRequestsPrecentage}}%) </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Processing Visits </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{processingRequests}} ({{processingRequestsPrecentage}}%) </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">&nbsp;</td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">&nbsp;</td>
-                                    </tr>
-                                </table>
-                            </mat-card-content>
-                            <mat-card-content *ngIf="visitsAll == 0">
-                                <table class="col-sm-12 col-lg-12">
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold;  padding: 5px;">Total Field Visits </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">0</td>
-                                    </tr><tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Completed Visits </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{completedRequests}} </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">Processing Visits </td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{processingRequests}} </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="8" style="font-weight: bold; padding: 5px;">&nbsp;</td>
-                                        <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">&nbsp;</td>
-                                    </tr>
-                                </table>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </div>
-                <!-- <div class="row">
-                    <div class="col-sm-11 col-lg-3" style="padding:15px">
-                        <mat-card>
-                            <mat-card-subtitle>Start</mat-card-subtitle>
-                          </mat-card>
-                        <br>
-                    </div>
-                    <div class="col-sm-11 col-lg-3" style="padding:15px">
-                        <mat-card>
-                            <mat-card-subtitle>Start</mat-card-subtitle>
-                        </mat-card>
+<div class="wrapper">
+    <div class="full-width-table">
+        <div class="filter"></div>
+        <div class="content-center">
+            <div class="spinner" *ngIf="loading"></div>
+            <div class="container" *ngIf="!loading">
+                <div class="row content">
+                    <div class="profile" style="margin-top: 20px; padding-right: 80px;"></div>
                     <br>
+                    <br>
+                    <div class="motto left col-sm-12 col-md-2 col-lg-2">
+                        <app-left-menu routename=""></app-left-menu>
                     </div>
-                    <div class="col-sm-11 col-lg-4" style="padding:15px">
-                        <mat-card>
-                            <mat-card-subtitle>Start</mat-card-subtitle>
-                        </mat-card>
+                    <div class="motto right col-sm-12 col-md-10 col-lg-10" style="margin-top: 15px;">
+                        <div class="row">
+                            <div class="col-sm-4" ></div>
+                            <div class="col-sm-7 ">
+                                <h1>User Dashboard</h1>
+                            </div>
+                            <div class="col-sm-1 "></div>
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
+                            
+                                <mat-card>
+                                    <mat-card-content>
+                                        <table class="col-sm-12 col-lg-12">
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold;">Total Farmers </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{farmersAll}}</td>
+                                            </tr>
+                                        </table>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                            <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
+                                <mat-card>
+                                    <mat-card-content>
+                                        <table class="col-sm-12 col-lg-12">
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold;">Total Fields </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{fieldsAll}}</td>
+                                            </tr>
+                                        </table>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;"> 
+                                <mat-card>
+                                    <mat-card-content>
+                                        <table class="col-sm-12 col-lg-12">
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold;">Total Requests </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{visitsAll + requestsAll}}</td>
+                                            </tr>
+                                        </table>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                            <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
+                            </div>
+                        </div>
+                    <div class="row" style="margin-bottom: 30px;">
+                            <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
+                                <mat-card>
+                                    <mat-card-content>
+                                        <table class="col-sm-12 col-lg-12">
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold;">Farmer Requests </td>
+                                                <td colspan="4" style="text-align: center; font-weight: bold;"></td>
+                                            </tr>
+                                        </table>
+                                    </mat-card-content>
+                                    <canvas id="myCanvas" height="250px" [hidden]="hiddenRequestAll"></canvas>
+                                    <br>
+                                    <mat-card-content *ngIf="requestsAll > 0">
+                                        <table class="col-sm-12 col-lg-12">
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold; padding: 5px;">Total Farmer Requests </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{requestsAll}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold; padding: 5px;">Pending Requests </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{pendingRequests}} ({{pendingRequestsPrecentage}}%) </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold; padding: 5px;">Confirmed Requests </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{confirmedRequests}} ({{confirmedRequestsPrecentage}}%) </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold; padding: 5px;">Declined Requests </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{declinedRequests}} ({{declinedRequestsPrecentage}}%) </td>
+                                            </tr>
+                                        </table>
+                                    </mat-card-content>
+                                    <mat-card-content *ngIf="requestsAll == 0">
+                                        <table class="col-sm-12 col-lg-12">
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold;  padding: 5px;">Total Farmer Requests </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">0</td>
+                                            </tr><tr>
+                                                <td colspan="8" style="font-weight: bold; padding: 5px;">Pending Requests </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{pendingRequests}} </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold; padding: 5px;">Confirmed Requests </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{confirmedRequests}} </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="8" style="font-weight: bold; padding: 5px;">Declined Requests </td>
+                                                <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{declinedRequests}} </td>
+                                            </tr>
+                                        </table>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        <div class="col-sm-11 col-lg-5" style="padding:5px; opacity: 80%;">
+                            <mat-card>
+                                <mat-card-content>
+                                    <table class="col-sm-12 col-lg-12">
+                                        <tr>
+                                            <td colspan="8" style="font-weight: bold;">Field Visits </td>
+                                            <td colspan="4" style="text-align: center; font-weight: bold;"></td>
+                                        </tr>
+                                    </table>
+                                </mat-card-content>
+                                <canvas id="myCanvas2" height="250px" [hidden]="hiddenVisitAll"></canvas>
+                                <br>
+                                <mat-card-content *ngIf="visitsAll != 0">
+                                    <table class="col-sm-12 col-lg-12">
+                                        <tr>
+                                            <td colspan="8" style="font-weight: bold; padding: 5px;">Total Field Visits </td>
+                                            <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{visitsAll}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" style="font-weight: bold; padding: 5px;">Completed Visits </td>
+                                            <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{completedRequests}} ({{completedRequestsPrecentage}}%) </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" style="font-weight: bold; padding: 5px;">Processing Visits </td>
+                                            <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{processingRequests}} ({{processingRequestsPrecentage}}%) </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" style="font-weight: bold; padding: 5px;">&nbsp;</td>
+                                            <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </mat-card-content>
+                                <mat-card-content *ngIf="visitsAll == 0">
+                                    <table class="col-sm-12 col-lg-12">
+                                        <tr>
+                                            <td colspan="8" style="font-weight: bold;  padding: 5px;">Total Field Visits </td>
+                                            <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">0</td>
+                                        </tr><tr>
+                                            <td colspan="8" style="font-weight: bold; padding: 5px;">Completed Visits </td>
+                                            <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{completedRequests}} </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" style="font-weight: bold; padding: 5px;">Processing Visits </td>
+                                            <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">{{processingRequests}} </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" style="font-weight: bold; padding: 5px;">&nbsp;</td>
+                                            <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; padding-right: 15px;">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                </div>
                     </div>
-                </div> -->
+                </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
