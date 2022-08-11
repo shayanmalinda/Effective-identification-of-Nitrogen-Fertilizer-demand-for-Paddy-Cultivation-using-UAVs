@@ -13,6 +13,10 @@ export class LeftMenuComponent implements OnInit {
     
   }
 
+  onReportsButtonClick(){
+    this.router.navigate(['/user-reports'], { state : { type : "lcc" }});
+  }
+
   isRouterActive(name:string){
     
     if(this.routename==name){
