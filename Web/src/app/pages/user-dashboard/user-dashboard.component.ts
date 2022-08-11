@@ -85,51 +85,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     this.getVisitDetailsWithFieldsTesting();
     // this.getVisitDetailsWithFieldsNew();
     this.getVisitDetailsWithFieldsPendingTesting();
-    // this.getCalculations();
-    // this.TotalRequests = this.requestsAll + this.visitsAll;
-    // console.log(this.TotalRequests);
-    
 
-    // var ctx = document.getElementById('myChart')as HTMLCanvasElement;
-//     var myChart = new Chart('myChart', {
-//     type: 'bar',
-//     data: {
-//         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-//         datasets: [{
-//             label: '# of Votes',
-//             data: [12, 19, 3, 5, 2, 3],
-//             backgroundColor: [
-//                 'rgba(255, 99, 132, 0.2)',
-//                 'rgba(54, 162, 235, 0.2)',
-//                 'rgba(255, 206, 86, 0.2)',
-//                 'rgba(75, 192, 192, 0.2)',
-//                 'rgba(153, 102, 255, 0.2)',
-//                 'rgba(255, 159, 64, 0.2)'
-//             ],
-//             borderColor: [
-//                 'rgba(255, 99, 132, 1)',
-//                 'rgba(54, 162, 235, 1)',
-//                 'rgba(255, 206, 86, 1)',
-//                 'rgba(75, 192, 192, 1)',
-//                 'rgba(153, 102, 255, 1)',
-//                 'rgba(255, 159, 64, 1)'
-//             ],
-//             borderWidth: 1
-//         }]
-//     },
-//     options: {
-//         // scales: {
-//         //     y: {
-//         //         beginAtZero: true
-//         //     }
-//         // }
-//     }
-// });
   }
-
-  // onProfileClick(){
-  //   this.router.navigate(['/profile']);
-  // }
 
   viewFields() {
     this.router.navigate(['/fields']);
@@ -249,14 +206,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
             this.pendingRequestsPrecentage = (this.requestsAll == 0 ? "0" : ((this.pendingRequests/this.requestsAll)*100).toFixed(1));
             this.labelsForChartTwo = [this.completedRequests, this.processingRequests];
           }
-          // console.log(i);
-          // if(i == data.length){
-          //   console.log(this.testingFields)
-          //   this.dataSource = new MatTableDataSource(this.testingFields);
-          //   this.dataSource.paginator = this.paginator;
-          //   this.dataSource.sort = this.sort;
-          // }
-          // i++;
+        
         })
         var myChart = new Chart("myCanvas", {
           type: 'doughnut',
@@ -304,11 +254,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
       })
 
       fieldVisits.forEach(f => {
-        // if (f.status == 'request pending') requestPending += 1;
-        // else if (f.status == 'visit pending') visitPending += 1;
-        // else if (f.status == 'processing') processing += 1;
-        // else if (f.status == 'completed') completed += 1;
-        // console.log("in here");
+      
         if(f.status == "pending" || f.status == "confirmed" || f.status == "declined"){
           if(f.status == "pending"){ this.pendingRequests++; }
           else if(f.status == "confirmed"){ this.confirmedRequests++; }
@@ -385,14 +331,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
               this.labelsForChartTwo = [this.completedRequests, this.processingRequests];
             }else{
             }
-            // console.log(i);
-            // if(i == data.length){
-            //   console.log(this.testingFields)
-            //   this.dataSource = new MatTableDataSource(this.testingFields);
-            //   this.dataSource.paginator = this.paginator;
-            //   this.dataSource.sort = this.sort;
-            // }
-            // i++;
+         
           })
           var myChart2 = new Chart("myCanvas2", {
             type: 'doughnut',
@@ -517,12 +456,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     this.fireStore.collection('FieldDetails', ref => ref.where('division', '==', this.user.division)).snapshotChanges().subscribe(
       data => {
         this.farmersAll = data.length;
-        // console.log(field);
-        // console.log(this.testingFields)
-        // this.dataSource = new MatTableDataSource(this.testingFields);
-        // this.dataSource.paginator = this.paginator;
-        // this.dataSource.sort = this.sort;
-        
       }
     )
   }
