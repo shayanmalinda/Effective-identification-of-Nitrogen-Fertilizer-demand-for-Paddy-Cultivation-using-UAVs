@@ -1,4 +1,3 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { User, UserCredential } from 'app/models/user.model';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -65,7 +64,6 @@ export class AuthenticationService {
   }
 
   getCurrentUser(){
-    //return fireuser=this.angularFireAuth.currentUser;
     var u=new User();
     u.email=sessionStorage.getItem('email')
     u.firstName=sessionStorage.getItem('firstName');
@@ -124,14 +122,9 @@ export class AuthenticationService {
                 "status" : this.user.status
               });
             }
-            // if(data.docs.length == 0){
-            //   resolve("error")
-            // }
+            
           })
-        // userCredential.userID = res.user.uid;
-        // sessionStorage.setItem("userID", res.user.uid);
-        // this.userService.addUser(userCredential,user);
-        // this.updateSessionDetails(userCredential, user);
+        
         }
         ,err => {
           reject(err.code)

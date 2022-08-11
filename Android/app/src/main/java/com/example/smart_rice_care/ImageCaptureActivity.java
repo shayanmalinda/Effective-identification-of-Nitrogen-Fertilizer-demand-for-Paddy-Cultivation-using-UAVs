@@ -514,7 +514,7 @@ public class ImageCaptureActivity extends AppCompatActivity implements SensorEve
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         System.out.print("Response===no response");
-//                        Toast.makeText(ImageCaptureActivity.this, "No response from the Server", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ImageCaptureActivity.this, "No response from the Server", Toast.LENGTH_SHORT).show();
                         beep.start();
                     }
 

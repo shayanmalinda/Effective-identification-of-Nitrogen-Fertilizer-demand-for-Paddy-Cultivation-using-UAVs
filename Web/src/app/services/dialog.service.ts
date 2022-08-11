@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowMessageComponent } from 'app/show-message/show-message.component';
 import { Message } from 'app/models/message.model';
-import { User } from 'app/models/user.model';
 import { DetailsFormComponent } from 'app/details-form/details-form.component';
 import { Observable } from 'rxjs';
 
@@ -33,12 +32,10 @@ export class DialogService {
         type : detailsType,
         details : passeDetails
       }
-      // data : user
     });
   }
 
   openEditDialog(passedDetails, detailsType : string) : Observable<any>{
-    // console.log("the message is here :" + passedDetails.requestId);
     const dialogRef =  this.dialog.open(DetailsFormComponent, {
       width : '550px',
       disableClose : false,
@@ -47,27 +44,10 @@ export class DialogService {
         type : detailsType,
         details : passedDetails
       }
-      // data : use
     });
-    // console.log("this is the ref : " + dialogRef);
     return dialogRef.afterClosed();
   }
 
-  
-
-  // openDetailsDialog(user : User, detailsType : string){
-  //   console.log("the message is here :" + user.userRole);
-  //   return this.dialog.open(DetailsFormComponent, {
-  //     width : '550px',
-  //     disableClose : false,
-  //     panelClass: 'confirm-dialog-container',
-  //     data : {
-  //       type : detailsType,
-  //       details : user
-  //     }
-  //     // data : user
-  //   });
-  // }
 
   openFarmerDetailsDialog(detailsType : string){
     console.log("in here" + detailsType);
@@ -81,20 +61,7 @@ export class DialogService {
           name : "Heshan"
         }
       }
-      // data : user
     });
   }
 
-  // openFieldDetailsDialog(user : User){
-  //   console.log("the message is here :" + user.userRole);
-  //   return this.dialog.open(DetailsFormComponent, {
-  //     width : '550px',
-  //     disableClose : false,
-  //     panelClass: 'confirm-dialog-container',
-  //     data : {
-  //       passedData : user,
-  //       type : "fieldDetails"
-  //     }
-  //   });
-  // }
 }

@@ -43,15 +43,10 @@
                         <div class="col-sm-12" style="padding-bottom: 30px;">
                             <div class="mat-elevation-z8">
                                 <table mat-table [dataSource]="dataSource" matSort *ngIf="all > 0">
-                                <!-- <table mat-table [dataSource]="dataSource" matSort > -->
-
-                                    <!--- Note that these columns can be defined in any order.
-                                          The actual rendered columns are set as a property on the row definition" -->
-                                  
+                              
                                     <!-- Position Column -->'', '', '', '', 'division', '', 'status'
                                     <ng-container matColumnDef="registrationNumber">
-                                      <!-- <th mat-header-cell *matHeaderCellDef > Week </th> -->
-                                      <th mat-header-cell *matHeaderCellDef mat-sort-header > Field Reg No </th>
+                                       <th mat-header-cell *matHeaderCellDef mat-sort-header > Field Reg No </th>
                                       <td mat-cell *matCellDef="let element"> {{element.registrationNumber}} </td>
                                     </ng-container>
                                   
@@ -74,14 +69,9 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="plantAge">
-                                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Plant Age </th>
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Plant Age (Weeks) </th>
                                         <td mat-cell *matCellDef="let element"> {{element.plantAge}}</td>
                                     </ng-container>
-
-                                    <!-- <ng-container matColumnDef="division">
-                                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Division </th>
-                                        <td mat-cell *matCellDef="let element"> {{element.division}}</td>
-                                    </ng-container> -->
 
                                     <ng-container matColumnDef="requestNote">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header > Request Note </th>
@@ -103,16 +93,12 @@
                                     <ng-container matColumnDef="action">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Action </th>
                                         <td mat-cell *matCellDef="let element" style="text-align: center;">
-                                            <!-- <button mat-icon-button color="primary" style="background-color: white; border: none;" (click)="accept()"
-                                            aria-label="Example icon button with a home icon">
-                                                <mat-icon [ngStyle]="{'color':'blue'}">visibility</mat-icon>
-                                            </button> -->
+                                           
                                             <mat-icon role="img" class="mat-icon notranslate material-icons mat-icon-no-color" style="color: green; cursor: pointer;" aria-hidden="true" data-mat-icon-type="font" (click)="onEditClick(element)">edit</mat-icon>
                                         </td>
                                     </ng-container>
                                   
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
                                     <tr mat-row (change)="onChange(row)" (click)="onViewVisitsClick(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
                                   </table>
                                   <mat-paginator [pageSizeOptions]="[5,10,15]" aria-label="Select page of Fields" showFirstLastButtons *ngIf="all > 0"></mat-paginator>
@@ -124,11 +110,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <br>
-                    <div class="row" style="padding-left: 480px;">
-                        <button class="btn btn-outline-success btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
-                        <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onCancelClick()">cancel</button>
-                    </div> -->
+                  
                 </div>
             </div>
         </div>

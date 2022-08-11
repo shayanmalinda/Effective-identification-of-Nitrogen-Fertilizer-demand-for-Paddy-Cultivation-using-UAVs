@@ -38,11 +38,10 @@ def svcprocess():
     df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
     df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
-    print("###RGB : ",str(df))
+    print("RGB : ",str(df))
     df['shutter_speed']=df_metadata['shutter_speed']
     df['exposure_time']=df_metadata['exposure_time']
     result=predictSVC(df);
-    #print(str(arr_rgb))
     return str(result[0]);
 
 @app.route("/dtprocess", methods=['POST'])
@@ -55,13 +54,11 @@ def dtprocess():
     df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
     df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
-    #df['brightness']=df_metadata['brightness']
     df['shutter_speed']=df_metadata['shutter_speed']
     df['exposure_time']=df_metadata['exposure_time']
      
     print(str(df))
     result=predictDTree(df);
-    #print(str(arr_rgb))
     return str(result[0]);
 
 
@@ -75,13 +72,11 @@ def dtprocessfire():
     df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
     df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
-    #df['brightness']=df_metadata['brightness']
     df['shutter_speed']=df_metadata['shutter_speed']
     df['exposure_time']=df_metadata['exposure_time']
      
     print(str(df))
     result=predictDTree(df);
-    #print(str(arr_rgb))
     write_response=writeToServer(result[0])
     if (write_response=="success"):
         return str(result[0]);
@@ -98,12 +93,10 @@ def svcprocessfire():
     df_metadata=extract_metadata(img);
     df = pd.DataFrame(columns=['red_val','green_val','blue_val'])
     df.loc[0] =[arr_rgb[0]] + [arr_rgb[1]] + [arr_rgb[2]]
-    print("###RGB : ",str(df))
-    #df['brightness']=df_metadata['brightness']
+    print("RGB : ",str(df))
     df['shutter_speed']=df_metadata['shutter_speed']
     df['exposure_time']=df_metadata['exposure_time']
     result=predictSVC(df);
-    #print(str(arr_rgb))
     write_response=writeToServer(result[0])
     print("Response from Firestore : ",write_response);
     if (write_response=="success"):
@@ -121,8 +114,7 @@ def writeToServer(computed_level):
         doc_ref.set(field_data)
         return "success"
     except Exception as e:
-        return "error"
-        #return f"An Error Occured: {e}"
+        return "error while writing to server"
 
 def predictSVC(df):
     print("predict")
@@ -159,7 +151,6 @@ def preprocess(image):
     return image1;
 
 def rgb_mean(image):
-    #print("rgb_mean" ,str(image.shape))
     rowcnt=image.shape[0]
     colcnt=image.shape[1]
 
@@ -171,9 +162,7 @@ def rgb_mean(image):
     nonzerocnt=0;
     for k in range(rowcnt):
         for l in range(colcnt):
-            #print(str(image[k][l]))
             if not(image[k][l][0]==0 and image[k][l][1]==0 and image[k][l][2]==0):
-                #print(images[i][j][k][l])
                 nonzerocnt+=1
                 r+=image[k][l][0];
                 g+=image[k][l][1];
@@ -189,12 +178,8 @@ def extract_metadata(image):
     #pre-process
 
     exif_dict = piexif.load(image)
-    #df = pd.DataFrame(columns=['image', 'brightness','shutter_speed','exposure_time'])
     df = pd.DataFrame(columns=['brightness','shutter_speed','exposure_time'])
     img_mdata=np.zeros(3)
-
-    # Iterate through all the other ifd names and print them
-    #print(exif_dict.get('Exif'));
 
     for tag in exif_dict['Exif']:
         tag_name = piexif.TAGS['Exif'][tag]["name"]
@@ -202,7 +187,7 @@ def extract_metadata(image):
         # Avoid print a large value, just to be pretty
         if isinstance(tag_value, bytes):
             tag_value = tag_value[:10]
-        #print(f'\t{tag_name:25}: {tag_value}')
+        
         if(tag_name=='BrightnessValue'): #string brightness value not found
             img_mdata[0]=tag_value[0]/tag_value[1]
 
@@ -213,7 +198,7 @@ def extract_metadata(image):
             img_mdata[2]=tag_value[0]/tag_value[1]
 
     df.loc[0] =[img_mdata[0]] + [img_mdata[1]] + [img_mdata[2]]
-    print("###Metadata",str(df))
+    print("Metadata",str(df))
     return df
 
 
