@@ -1,9 +1,14 @@
 <div class="wrapper">
-    <div class="page-header section-dark" style="background-image: url('assets/img/paddy one.jpg')">
+    <div class="full-width-table">
         <div class="filter"></div>
         <div class="content-center">
             <div class="spinner" *ngIf="loading"></div>
             <div class="container" *ngIf="!loading">
+                <div class="row content">
+                    <div class="motto left col-sm-12 col-md-2 col-lg-2">
+                        <app-left-menu routename="lcc-details"></app-left-menu>
+                    </div>
+                    <div class="motto right col-sm-12 col-md-10 col-lg-10" style="margin-top: 15px;">
                 <div>
                     <div class="title-brand">
                         <h1>LCC Details</h1>
@@ -62,6 +67,8 @@
                         <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onCancelClick()">cancel</button>
                     </div>
                 </div>
+            </div>
+            </div>
             </div>
         </div>
     </div>

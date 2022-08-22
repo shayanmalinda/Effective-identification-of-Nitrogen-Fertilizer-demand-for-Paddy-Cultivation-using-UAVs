@@ -55,7 +55,7 @@ export class FieldDetailsComponent implements OnInit {
       fieldvisits.forEach(visit => {
         countsTemp[visit.status]++;
       })
-      console.log('-----------------------------------------')
+      
       Object.keys(countsTemp).forEach(key => {
 
         if (countsTemp[key] != 0)

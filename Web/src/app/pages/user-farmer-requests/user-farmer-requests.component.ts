@@ -79,17 +79,8 @@ export class UserFarmerRequestsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSessionDetails();
-
-    //this is the working function 
-    // this.getVisitDetailsWithFields();
     this.getVisitDetailsWithFieldsTesting();
 
-    // this.getLCCDetails();
-    // this.dataSource = new MatTableDataSource(this.changedWeekDetails);
-    // setTimeout(() => this.dataSource.paginator = this.paginator);
-    // setTimeout(() => this.dataSource.sort = this.sort);
-    // this.dataSource.sort = this.sort;
-    // this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(filterValue : string){
@@ -230,11 +221,7 @@ export class UserFarmerRequestsComponent implements OnInit {
         } as FieldVisitTemp;
       })
       fieldVisits.forEach(f => {
-        // if (f.status == 'request pending') requestPending += 1;
-        // else if (f.status == 'visit pending') visitPending += 1;
-        // else if (f.status == 'processing') processing += 1;
-        // else if (f.status == 'completed') completed += 1;
-        // console.log("in here");
+      
         if(f.status == "pending" || f.status == "confirmed" || f.status == "declined"){
           if(f.status == "pending"){ this.pendingRequests++; }
           else if(f.status == "confirmed"){ this.confirmedRequests++; }
@@ -256,17 +243,12 @@ export class UserFarmerRequestsComponent implements OnInit {
               this.dataSource.sort = this.sort;
             });
   
-            // this.dataSource = new MatTableDataSource(this.fieldVisits);
-            // this.dataSource.paginator = this.paginator;
-            // this.dataSource.sort = this.sort;
-  
           });
         }else{
           // console.log(f);
         }
       })
-      // console.log(fieldVisits);
-      // console.log(relevantFields);
+    
     });
   }
 
@@ -343,14 +325,7 @@ export class UserFarmerRequestsComponent implements OnInit {
           }else{
             i++;
           }
-          // console.log(i);
-          // if(i == data.length){
-          //   console.log(this.testingFields)
-          //   this.dataSource = new MatTableDataSource(this.testingFields);
-          //   this.dataSource.paginator = this.paginator;
-          //   this.dataSource.sort = this.sort;
-          // }
-          // i++;
+        
         })
         this.loading = false;
       }
@@ -360,9 +335,6 @@ export class UserFarmerRequestsComponent implements OnInit {
   onViewVisitsClick(row){
     if(this.actionButtonClicked == false){
       console.log(row);
-      // this.message.showMessage = "You have entered invalid password !";
-      // this.message.title = 'success';
-      // console.log(this.message);
       this.dialog.openDetailsDialog(row,"visitDetails").afterClosed();
     }
   }
@@ -381,9 +353,7 @@ export class UserFarmerRequestsComponent implements OnInit {
       createdDate : value.createdDate},
       "addDetails").subscribe(data =>{
       this.actionButtonClicked = !data;
-      // console.log("final")
     })
-    // console.log("comese here");
     
     this.loadSessionDetails();
   }

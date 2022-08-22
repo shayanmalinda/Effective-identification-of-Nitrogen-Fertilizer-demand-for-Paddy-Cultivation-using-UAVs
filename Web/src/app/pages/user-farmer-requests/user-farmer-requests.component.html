@@ -4,7 +4,11 @@
         <div class="content-center">
             <div class="spinner" *ngIf="loading"></div>
             <div class="container" *ngIf="!loading">
-                <div>
+                <div class="row content">
+                    <div class="motto left col-sm-12 col-md-2 col-lg-2">
+                        <app-left-menu routename="user-farmer-requests"></app-left-menu>
+                    </div>
+                    <div class="motto right col-sm-12 col-md-10 col-lg-10" style="margin-top: 15px;">
                     <br>
                     <br>
                     <div class="title-brand">
@@ -26,8 +30,8 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-3">
-                            <mat-form-field id="fieldInput" >
-                                <input class="form-control" (keyup)="applyFilter($event.target.value)" matInput placeholder="Filter" >
+                            <mat-form-field id="fieldInput" style="padding-top:10px;">
+                                <input class="form-control" (keyup)="applyFilter($event.target.value)" matInput placeholder="Filter" style="background-color:transparent;color:white;border-color:transparent;margin-bottom:0px">
                             </mat-form-field>
                             <br>
                         </div>
@@ -123,11 +127,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <br>
-                    <div class="row" style="padding-left: 480px;">
-                        <button class="btn btn-outline-success btn-round" style="width: 100px;" (click)="onSaveClick()">Save</button>
-                        <button class="btn btn-outline-default btn-round" style="width: 100px;" (click)="onCancelClick()">cancel</button>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>

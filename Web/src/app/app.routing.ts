@@ -7,13 +7,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
-import { ComponentsComponent } from './components/components.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { LoginComponent } from './pages/login/login.component';
-import { LandingComponent } from './pages/landing/landing.component';
-import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
 import { UsersComponent } from './pages/users/users.component';
 import { UpdateProfileComponent } from './pages/update-profile/update-profile.component';
 import { FieldsComponent } from './pages/fields/fields.component';
@@ -39,57 +36,57 @@ import { AdminFarmerReportsComponent } from './pages/admin-farmer-reports/admin-
 import { AdminFieldVisitReportsComponent } from './pages/admin-field-visit-reports/admin-field-visit-reports.component';
 import { AdminFieldVisitReqReportsComponent } from './pages/admin-field-visit-req-reports/admin-field-visit-req-reports.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { LeftMenuComponent } from './left-menu/left-menu.component';
 
 
 
 const routes: Routes =[
     // { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: '',            component: LoginComponent },
-    { path: 'farmer-profile',     component: UserProfileComponent },
-    { path: 'profile',          component: ProfileComponent},
+    { path: 'farmer-profile',     component: UserProfileComponent, canActivate: [AuthGuard] },
+    { path: 'profile',          component: ProfileComponent, canActivate: [AuthGuard]},
     { path: 'signup',           component: SignupComponent },
     { path: 'login',            component: LoginComponent },
-    { path: 'nucleoicons',      component: NucleoiconsComponent },
-    { path: 'farmers',      component: UsersComponent },
-    { path: 'updateuser',       component: UpdateProfileComponent},
-    { path: 'fields',      component: FieldsComponent },
-    { path: 'field-details',      component: FieldDetailsComponent },
-    { path: 'agricultural-officers',      component: UsersComponent },
-    { path: 'admin-dashboard',      component: AdminDashboardComponent },
-    { path: 'admin-dashboard-reports',      component: AdminDashboardComponent },
-    { path: 'requests',      component: UsersComponent },
-    { path: 'officer-request',     component: UserProfileComponent },
-    { path: 'officer-requests',     component: UsersComponent },
+    { path: 'farmers',      component: UsersComponent, canActivate: [AuthGuard] },
+    { path: 'updateuser',       component: UpdateProfileComponent, canActivate: [AuthGuard]},
+    { path: 'fields',      component: FieldsComponent, canActivate: [AuthGuard] },
+    { path: 'field-details',      component: FieldDetailsComponent, canActivate: [AuthGuard] },
+    { path: 'agricultural-officers',      component: UsersComponent, canActivate: [AuthGuard] },
+    { path: 'admin-dashboard',      component: AdminDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'admin-dashboard-reports',      component: AdminDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'requests',      component: UsersComponent, canActivate: [AuthGuard] },
+    { path: 'officer-request',     component: UserProfileComponent, canActivate: [AuthGuard] },
+    { path: 'officer-requests',     component: UsersComponent, canActivate: [AuthGuard] },
     { path: 'officers',     component: UsersComponent, canActivate : [AuthGuard]  },
-    { path: 'admin-officers',     component: UsersComponent},
-    { path: 'lcc-details',      component: LccDetailsComponent},
-    { path: 'field-visits',      component: FieldVisitsComponent},
-    { path: 'field-visit-details',      component: FieldVisitDetailsComponent},
-    { path: 'user-dashboard',     component: UserDashboardComponent},
-    { path: 'user-farmers',     component: UserFarmersComponent},
-    { path: 'user-farmer-requests',     component: UserFarmerRequestsComponent},
-    { path: 'user-fields',     component: UserFeildsComponent},
-    { path: 'user-field-visits',     component: UserFieldVisitsComponent,},
-    { path: 'user-reports',     component: UserReportsComponent},
+    { path: 'admin-officers',     component: UsersComponent, canActivate: [AuthGuard]},
+    { path: 'lcc-details',      component: LccDetailsComponent, canActivate: [AuthGuard]},
+    { path: 'field-visits',      component: FieldVisitsComponent, canActivate: [AuthGuard]},
+    { path: 'field-visit-details',      component: FieldVisitDetailsComponent, canActivate: [AuthGuard]},
+    { path: 'user-dashboard',     component: UserDashboardComponent, canActivate: [AuthGuard]},
+    { path: 'user-farmers',     component: UserFarmersComponent, canActivate: [AuthGuard]},
+    { path: 'user-farmer-requests',     component: UserFarmerRequestsComponent, canActivate: [AuthGuard]},
+    { path: 'user-fields',     component: UserFeildsComponent, canActivate: [AuthGuard]},
+    { path: 'user-field-visits',     component: UserFieldVisitsComponent, canActivate: [AuthGuard]},
+    { path: 'user-reports',     component: UserReportsComponent, canActivate: [AuthGuard]},
     { path: 'user-reports-farmers',     component: UserReportsFarmersComponent, canActivate : [AuthGuard] },
-    { path: 'user-reports-fields',     component: UserReportsFieldsComponent},
+    { path: 'user-reports-fields',     component: UserReportsFieldsComponent, canActivate: [AuthGuard]},
     { path: 'user-reports-requests',     component: UserReportsRequestsComponent, canActivate : [AuthGuard] },
     { path: 'user-reports-visits',     component: UserReportsVisitsComponent, canActivate : [AuthGuard] },
-    { path: 'user-field-history',     component: UserFieldHistoryComponent,},
-    { path: 'admin-profile',       component: UpdateProfileComponent},
-    { path: 'divisions',       component: DivisionsComponent},
-    { path: 'division-details',       component: DivisionsDetailsComponent},
-    { path: 'user-upload-images',       component: MetaDataComponent},
-    { path: 'user-view-map',       component: UserViewMapComponent},
-    { path: 'field-visit-requests',      component: FieldVisitsComponent},
-    { path: 'select-report',       component: DivisionsComponent},
-    { path: 'division-report',       component: DivisionReportsComponent},
-    { path: 'admin-farmer-reports',       component: AdminFarmerReportsComponent},
-    { path: 'admin-officer-reports',       component: AdminFarmerReportsComponent},
-    { path: 'admin-field-reports',       component: AdminFarmerReportsComponent},
-    { path: 'admin-field-visit-req-reports',       component: AdminFieldVisitReqReportsComponent},
-    { path: 'admin-field-visit-reports',       component: AdminFieldVisitReportsComponent},
-    { path: 'admin-n-level-reports',       component: AdminNLevelReportsComponent},
+    { path: 'user-field-history',     component: UserFieldHistoryComponent, canActivate: [AuthGuard]},
+    { path: 'admin-profile',       component: UpdateProfileComponent, canActivate: [AuthGuard]},
+    { path: 'divisions',       component: DivisionsComponent, canActivate: [AuthGuard]},
+    { path: 'division-details',       component: DivisionsDetailsComponent, canActivate: [AuthGuard]},
+    { path: 'user-upload-images',       component: MetaDataComponent, canActivate: [AuthGuard]},
+    { path: 'user-view-map',       component: UserViewMapComponent, canActivate: [AuthGuard]},
+    { path: 'field-visit-requests',      component: FieldVisitsComponent, canActivate: [AuthGuard]},
+    { path: 'select-report',       component: DivisionsComponent, canActivate: [AuthGuard]},
+    { path: 'division-report',       component: DivisionReportsComponent, canActivate: [AuthGuard]},
+    { path: 'admin-farmer-reports',       component: AdminFarmerReportsComponent, canActivate: [AuthGuard]},
+    { path: 'admin-officer-reports',       component: AdminFarmerReportsComponent, canActivate: [AuthGuard]},
+    { path: 'admin-field-reports',       component: AdminFarmerReportsComponent, canActivate: [AuthGuard]},
+    { path: 'admin-field-visit-req-reports',       component: AdminFieldVisitReqReportsComponent, canActivate: [AuthGuard]},
+    { path: 'admin-field-visit-reports',       component: AdminFieldVisitReportsComponent, canActivate: [AuthGuard]},
+    { path: 'admin-n-level-reports',       component: AdminNLevelReportsComponent, canActivate: [AuthGuard]},
     { path: '**', pathMatch: 'full', component: NotFoundComponent },
 
 ];
